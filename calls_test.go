@@ -447,6 +447,11 @@ func TestCallsValidation(t *testing.T) {
 			_, err := client.Calls.ListWithTranscripts(ctx, nil)
 			return err
 		}},
+		{"list with transcripts: too many IDs", func() error {
+			ids := make([]string, 21)
+			_, err := client.Calls.ListWithTranscripts(ctx, ids)
+			return err
+		}},
 		{"collect by external ID: empty", func() error {
 			_, err := client.Calls.CollectFinVoiceCallByExternalID(ctx, "")
 			return err

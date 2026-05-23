@@ -122,6 +122,9 @@ func (s *CallsService) ListWithTranscripts(ctx context.Context, conversationIDs 
 	if len(conversationIDs) == 0 {
 		return nil, fmt.Errorf("intercom: at least one conversation ID is required")
 	}
+	if len(conversationIDs) > 20 {
+		return nil, fmt.Errorf("intercom: at most 20 conversation IDs are allowed")
+	}
 	body := gen.ListCallsWithTranscriptsJSONRequestBody{ConversationIds: conversationIDs}
 	res, err := s.client.generated.ListCallsWithTranscriptsWithResponse(ctx, nil, body)
 	if err != nil {
