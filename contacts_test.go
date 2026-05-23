@@ -608,6 +608,125 @@ func TestContactsTransportErrors(t *testing.T) {
 				return err
 			},
 		},
+		{
+			name: "get by external ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.GetByExternalID(ctx, "ext-1")
+				return err
+			},
+		},
+		{
+			name: "create contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Create(ctx, ContactCreate{})
+				return err
+			},
+		},
+		{
+			name: "update contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Update(ctx, "contact-1", ContactUpdate{})
+				return err
+			},
+		},
+		{
+			name: "merge contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Merge(ctx, "lead-1", "contact-2")
+				return err
+			},
+		},
+		{
+			name: "archive contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Archive(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "unarchive contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Unarchive(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "block contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Block(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "delete contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Delete(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "list notes",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListNotes(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "create note",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.CreateNote(ctx, "123", "body", "")
+				return err
+			},
+		},
+		{
+			name: "list segments",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSegments(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "list subscriptions",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSubscriptions(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "attach subscription",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "contact-1", "sub-1", "opt_in")
+				return err
+			},
+		},
+		{
+			name: "detach subscription",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachSubscription(ctx, "contact-1", "sub-1")
+				return err
+			},
+		},
+		{
+			name: "list tags",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListTags(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "attach tag",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachTag(ctx, "contact-1", "tag-1")
+				return err
+			},
+		},
+		{
+			name: "detach tag",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachTag(ctx, "contact-1", "tag-1")
+				return err
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -622,6 +741,15 @@ func TestContactsTransportErrors(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestMarshalBodyPanic(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("expected panic for non-serializable type")
+		}
+	}()
+	marshalBody(make(chan int))
 }
 
 func TestContactsValidation(t *testing.T) {
@@ -717,6 +845,62 @@ func TestContactsValidation(t *testing.T) {
 			name: "create note: non-numeric contact ID",
 			call: func(ctx context.Context, client *Client) error {
 				_, err := client.Contacts.CreateNote(ctx, "not-an-int", "body", "")
+				return err
+			},
+		},
+		{
+			name: "list segments: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSegments(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "list subscriptions: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSubscriptions(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "attach subscription: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "", "sub-1", "opt_in")
+				return err
+			},
+		},
+		{
+			name: "attach subscription: empty subscription ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "contact-1", "", "opt_in")
+				return err
+			},
+		},
+		{
+			name: "attach subscription: empty consent type",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "contact-1", "sub-1", "")
+				return err
+			},
+		},
+		{
+			name: "detach subscription: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachSubscription(ctx, "", "sub-1")
+				return err
+			},
+		},
+		{
+			name: "detach subscription: empty subscription ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachSubscription(ctx, "contact-1", "")
+				return err
+			},
+		},
+		{
+			name: "list tags: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListTags(ctx, "")
 				return err
 			},
 		},

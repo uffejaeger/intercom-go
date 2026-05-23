@@ -134,12 +134,7 @@ func (s *ContactsService) Search(ctx context.Context, search ContactSearch) (*Co
 
 // Create creates a new contact.
 func (s *ContactsService) Create(ctx context.Context, contact ContactCreate) (*Contact, error) {
-	body, err := marshalBody(contact)
-	if err != nil {
-		return nil, err
-	}
-
-	res, err := s.client.generated.CreateContactWithBodyWithResponse(ctx, nil, "application/json", body)
+	res, err := s.client.generated.CreateContactWithBodyWithResponse(ctx, nil, "application/json", marshalBody(contact))
 	if err != nil {
 		return nil, err
 	}
@@ -153,12 +148,7 @@ func (s *ContactsService) Update(ctx context.Context, contactID string, contact 
 		return nil, fmt.Errorf("intercom: contact ID is required")
 	}
 
-	body, err := marshalBody(contact)
-	if err != nil {
-		return nil, err
-	}
-
-	res, err := s.client.generated.UpdateContactWithBodyWithResponse(ctx, contactID, nil, "application/json", body)
+	res, err := s.client.generated.UpdateContactWithBodyWithResponse(ctx, contactID, nil, "application/json", marshalBody(contact))
 	if err != nil {
 		return nil, err
 	}
@@ -469,13 +459,14 @@ func contactSearchValue(value any) (gen.SingleFilterSearchRequest_Value, error) 
 	}
 }
 
-// marshalBody marshals v to JSON and returns it as an io.Reader.
-func marshalBody(v any) (*bytes.Reader, error) {
+// marshalBody marshals v to JSON and returns it as a *bytes.Reader.
+// Panics if v is not JSON-serializable; callers must only pass known-safe types.
+func marshalBody(v any) *bytes.Reader {
 	b, err := json.Marshal(v)
 	if err != nil {
-		return nil, fmt.Errorf("intercom: marshal request body: %w", err)
+		panic(fmt.Sprintf("intercom: marshal request body: %v", err))
 	}
-	return bytes.NewReader(b), nil
+	return bytes.NewReader(b)
 }
 
 // contactIDToInt converts a string contact ID to int as required by some generated endpoints.
