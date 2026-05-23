@@ -42,6 +42,8 @@ type Client struct {
 	AIContent         *AIContentService
 	Articles          *ArticlesService
 	AwayStatusReasons *AwayStatusReasonsService
+	Brands            *BrandsService
+	Calls             *CallsService
 	Companies         *CompaniesService
 	Contacts          *ContactsService
 	Conversations     *ConversationsService
@@ -83,6 +85,8 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 	client.AIContent = &AIContentService{client: client}
 	client.Articles = &ArticlesService{client: client}
 	client.AwayStatusReasons = &AwayStatusReasonsService{client: client}
+	client.Brands = &BrandsService{client: client}
+	client.Calls = &CallsService{client: client}
 	client.Companies = &CompaniesService{client: client}
 	client.Contacts = &ContactsService{client: client}
 	client.Conversations = &ConversationsService{client: client}
