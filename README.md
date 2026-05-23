@@ -49,7 +49,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-fmt.Println(*admin.Email)
+	fmt.Println(*admin.Email)
 }
 ```
 
@@ -65,6 +65,11 @@ contacts, err := client.Contacts.Search(ctx, intercom.ContactSearch{
 	PerPage:  25,
 })
 ```
+
+## Examples
+
+- [`examples/identify_admin`](examples/identify_admin)
+- [`examples/search_contacts`](examples/search_contacts)
 
 ## Design Principles
 

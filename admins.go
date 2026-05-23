@@ -2,8 +2,6 @@ package intercom
 
 import (
 	"context"
-	"fmt"
-	"net/http"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
@@ -23,12 +21,5 @@ func (s *AdminsService) Me(ctx context.Context) (*Admin, error) {
 		return nil, err
 	}
 
-	if res.StatusCode() != http.StatusOK {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
-	}
-	if res.JSON200 == nil {
-		return nil, fmt.Errorf("intercom: identify admin returned status %d without a response body", res.StatusCode())
-	}
-
-	return res.JSON200, nil
+	return requireOK("identify admin", res.StatusCode(), res.Body, res.JSON200)
 }

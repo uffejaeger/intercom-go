@@ -4,13 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
 	intercom "github.com/uffejaeger/intercom-go"
 )
 
 func main() {
-	client, err := intercom.NewClient(os.Getenv("INTERCOM_ACCESS_TOKEN"))
+	client, err := intercom.NewClientFromEnv()
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -3,7 +3,6 @@ package intercom
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
@@ -50,14 +49,7 @@ func (s *ContactsService) Get(ctx context.Context, contactID string) (*Contact, 
 		return nil, err
 	}
 
-	if res.StatusCode() != http.StatusOK {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
-	}
-	if res.JSON200 == nil {
-		return nil, fmt.Errorf("intercom: get contact returned status %d without a response body", res.StatusCode())
-	}
-
-	return res.JSON200, nil
+	return requireOK("get contact", res.StatusCode(), res.Body, res.JSON200)
 }
 
 // List returns contacts.
@@ -67,14 +59,7 @@ func (s *ContactsService) List(ctx context.Context) (*ContactList, error) {
 		return nil, err
 	}
 
-	if res.StatusCode() != http.StatusOK {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
-	}
-	if res.JSON200 == nil {
-		return nil, fmt.Errorf("intercom: list contacts returned status %d without a response body", res.StatusCode())
-	}
-
-	return res.JSON200, nil
+	return requireOK("list contacts", res.StatusCode(), res.Body, res.JSON200)
 }
 
 // Search searches contacts using one Intercom search filter.
@@ -89,14 +74,7 @@ func (s *ContactsService) Search(ctx context.Context, search ContactSearch) (*Co
 		return nil, err
 	}
 
-	if res.StatusCode() != http.StatusOK {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
-	}
-	if res.JSON200 == nil {
-		return nil, fmt.Errorf("intercom: search contacts returned status %d without a response body", res.StatusCode())
-	}
-
-	return res.JSON200, nil
+	return requireOK("search contacts", res.StatusCode(), res.Body, res.JSON200)
 }
 
 func (s ContactSearch) toGenerated() (gen.SearchContactsJSONRequestBody, error) {
