@@ -39,6 +39,7 @@ type Client struct {
 	generated  *gen.ClientWithResponses
 
 	Admins        *AdminsService
+	Companies     *CompaniesService
 	Contacts      *ContactsService
 	Conversations *ConversationsService
 }
@@ -76,6 +77,7 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 
 	client.generated = generated
 	client.Admins = &AdminsService{client: client}
+	client.Companies = &CompaniesService{client: client}
 	client.Contacts = &ContactsService{client: client}
 	client.Conversations = &ConversationsService{client: client}
 

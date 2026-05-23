@@ -57,7 +57,7 @@ func TestConversationsServiceRequests(t *testing.T) {
 				msg, err := client.Conversations.Create(ctx, ConversationCreate{
 					Body: "hello",
 					From: struct {
-						Id   openapi_types.UUID                   `json:"id"`
+						Id   openapi_types.UUID                    `json:"id"`
 						Type gen.CreateConversationRequestFromType `json:"type"`
 					}{Type: "user"},
 				})

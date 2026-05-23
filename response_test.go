@@ -29,7 +29,7 @@ func TestRequireOKErrors(t *testing.T) {
 			name:       "non ok",
 			statusCode: http.StatusUnauthorized,
 			body:       []byte(`{"type":"error.list","errors":[{"code":"unauthorized"}]}`),
-			value:      ptr("ignored"),
+			value:      new("ignored"),
 			wantType:   &ErrorResponse{},
 		},
 		{
@@ -59,6 +59,7 @@ func TestRequireOKErrors(t *testing.T) {
 	}
 }
 
+//go:fix inline
 func ptr[T any](value T) *T {
-	return &value
+	return new(value)
 }
