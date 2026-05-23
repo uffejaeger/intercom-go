@@ -11,8 +11,12 @@ Early bootstrap work is in progress.
 - The Intercom API `2.15` OpenAPI spec is pinned in [`spec/intercom.openapi.yaml`](spec/intercom.openapi.yaml).
 - Spec source metadata is tracked in [`spec/metadata.json`](spec/metadata.json).
 - The root package contains the initial public client primitives.
+- OpenAPI-generated client stubs are committed under [`internal/generated/intercom`](internal/generated/intercom).
 - CI runs `go test ./...`.
-- Full generated endpoint coverage is being evaluated behind `internal/generated/...`.
+
+Generated code is kept internal while the public SDK surface is designed. Community-facing endpoint services will wrap the generated client instead of exposing generator-specific APIs directly.
+
+See [`docs/generation.md`](docs/generation.md) for the generation workflow.
 
 ## Install
 
