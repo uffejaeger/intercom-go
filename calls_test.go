@@ -234,15 +234,24 @@ func TestCallsServiceRequests(t *testing.T) {
 	})
 
 	t.Run("get recording 302 redirect", func(t *testing.T) {
+		// Transport returns 302 for the /calls endpoint and 200 with audio data for the signed URL.
 		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if req.URL.Host == "example.test" {
+				return &http.Response{
+					StatusCode: http.StatusFound,
+					Header:     http.Header{"Location": []string{"https://storage.example.com/recording.mp3"}},
+					Body:       io.NopCloser(strings.NewReader("")),
+					Request:    req,
+				}, nil
+			}
 			return &http.Response{
-				StatusCode: http.StatusFound,
-				Header:     http.Header{"Location": []string{"https://storage.example.com/recording.mp3"}},
-				Body:       io.NopCloser(strings.NewReader("")),
+				StatusCode: http.StatusOK,
+				Header:     http.Header{"Content-Type": []string{"audio/mpeg"}},
+				Body:       io.NopCloser(strings.NewReader("audio-from-storage")),
 				Request:    req,
 			}, nil
 		})
-		// Use a client that does not follow redirects so the 302 is returned as-is.
+		// Disable auto-redirect so the 302 is returned to GetRecording for manual handling.
 		noRedirectClient := &http.Client{
 			Transport:     transport,
 			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
@@ -251,9 +260,111 @@ func TestCallsServiceRequests(t *testing.T) {
 		if err != nil {
 			t.Fatalf("NewClient returned error: %v", err)
 		}
-		_, err = client.Calls.GetRecording(context.Background(), "c1")
+		data, err := client.Calls.GetRecording(context.Background(), "c1")
 		if err != nil {
 			t.Fatalf("GetRecording 302 returned error: %v", err)
+		}
+		if string(data) != "audio-from-storage" {
+			t.Fatalf("data = %q, want audio-from-storage", string(data))
+		}
+	})
+
+	t.Run("get recording 302 missing location", func(t *testing.T) {
+		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return &http.Response{
+				StatusCode: http.StatusFound,
+				Header:     http.Header{},
+				Body:       io.NopCloser(strings.NewReader("")),
+				Request:    req,
+			}, nil
+		})
+		noRedirectClient := &http.Client{
+			Transport:     transport,
+			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+		}
+		client, err := NewClient("token", WithBaseURL("https://example.test"), WithHTTPClient(noRedirectClient))
+		if err != nil {
+			t.Fatalf("NewClient returned error: %v", err)
+		}
+		if _, err := client.Calls.GetRecording(context.Background(), "c1"); err == nil {
+			t.Fatal("expected error for missing Location header")
+		}
+	})
+
+	t.Run("get recording 302 invalid location url", func(t *testing.T) {
+		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return &http.Response{
+				StatusCode: http.StatusFound,
+				Header:     http.Header{"Location": []string{":not-a-url"}},
+				Body:       io.NopCloser(strings.NewReader("")),
+				Request:    req,
+			}, nil
+		})
+		noRedirectClient := &http.Client{
+			Transport:     transport,
+			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+		}
+		client, err := NewClient("token", WithBaseURL("https://example.test"), WithHTTPClient(noRedirectClient))
+		if err != nil {
+			t.Fatalf("NewClient returned error: %v", err)
+		}
+		if _, err := client.Calls.GetRecording(context.Background(), "c1"); err == nil {
+			t.Fatal("expected error for invalid Location URL")
+		}
+	})
+
+	t.Run("get recording 302 storage transport error", func(t *testing.T) {
+		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if req.URL.Host == "example.test" {
+				return &http.Response{
+					StatusCode: http.StatusFound,
+					Header:     http.Header{"Location": []string{"https://storage.example.com/recording.mp3"}},
+					Body:       io.NopCloser(strings.NewReader("")),
+					Request:    req,
+				}, nil
+			}
+			return nil, errors.New("storage unreachable")
+		})
+		noRedirectClient := &http.Client{
+			Transport:     transport,
+			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+		}
+		client, err := NewClient("token", WithBaseURL("https://example.test"), WithHTTPClient(noRedirectClient))
+		if err != nil {
+			t.Fatalf("NewClient returned error: %v", err)
+		}
+		if _, err := client.Calls.GetRecording(context.Background(), "c1"); err == nil {
+			t.Fatal("expected transport error for storage request")
+		}
+	})
+
+	t.Run("get recording 302 body read error", func(t *testing.T) {
+		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if req.URL.Host == "example.test" {
+				return &http.Response{
+					StatusCode: http.StatusFound,
+					Header:     http.Header{"Location": []string{"https://storage.example.com/recording.mp3"}},
+					Body:       io.NopCloser(strings.NewReader("")),
+					Request:    req,
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Header:     http.Header{"Content-Type": []string{"audio/mpeg"}},
+				Body:       io.NopCloser(errReader{}),
+				Request:    req,
+			}, nil
+		})
+		noRedirectClient := &http.Client{
+			Transport:     transport,
+			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+		}
+		client, err := NewClient("token", WithBaseURL("https://example.test"), WithHTTPClient(noRedirectClient))
+		if err != nil {
+			t.Fatalf("NewClient returned error: %v", err)
+		}
+		if _, err := client.Calls.GetRecording(context.Background(), "c1"); err == nil {
+			t.Fatal("expected body read error")
 		}
 	})
 
@@ -498,3 +609,8 @@ func TestCallsValidation(t *testing.T) {
 		})
 	}
 }
+
+// errReader is an io.Reader that always returns an error.
+type errReader struct{}
+
+func (errReader) Read([]byte) (int, error) { return 0, errors.New("read error") }

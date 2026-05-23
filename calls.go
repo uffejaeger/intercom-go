@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
@@ -87,7 +88,8 @@ func (s *CallsService) Get(ctx context.Context, callID string) (*Call, error) {
 	return requireOK("get call", res.StatusCode(), res.Body, res.JSON200)
 }
 
-// GetRecording downloads the raw recording for a call.
+// GetRecording downloads the recording for a call.
+// The API returns a 302 redirect to a signed URL; this method follows it automatically.
 func (s *CallsService) GetRecording(ctx context.Context, callID string) ([]byte, error) {
 	if callID == "" {
 		return nil, fmt.Errorf("intercom: call ID is required")
@@ -96,12 +98,28 @@ func (s *CallsService) GetRecording(ctx context.Context, callID string) ([]byte,
 	if err != nil {
 		return nil, err
 	}
-	// The API spec documents 302 (redirect to signed URL); Go's default http.Client
-	// follows redirects automatically, yielding 200. Accept both for custom clients.
-	if code := res.StatusCode(); code != http.StatusOK && code != http.StatusFound {
-		return nil, parseErrorResponse(code, res.Body)
+	switch res.StatusCode() {
+	case http.StatusOK:
+		return res.Body, nil
+	case http.StatusFound:
+		location := res.HTTPResponse.Header.Get("Location")
+		if location == "" {
+			return nil, fmt.Errorf("intercom: get recording: 302 response missing Location header")
+		}
+		req, _ := http.NewRequestWithContext(ctx, http.MethodGet, location, nil)
+		resp, err := s.client.httpClient.Do(req)
+		if err != nil {
+			return nil, fmt.Errorf("intercom: get recording: %w", err)
+		}
+		defer resp.Body.Close()
+		data, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return nil, fmt.Errorf("intercom: get recording: read body: %w", err)
+		}
+		return data, nil
+	default:
+		return nil, parseErrorResponse(res.StatusCode(), res.Body)
 	}
-	return res.Body, nil
 }
 
 // GetTranscript downloads the raw transcript for a call.
