@@ -96,8 +96,10 @@ func (s *CallsService) GetRecording(ctx context.Context, callID string) ([]byte,
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode() != http.StatusOK {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
+	// The API spec documents 302 (redirect to signed URL); Go's default http.Client
+	// follows redirects automatically, yielding 200. Accept both for custom clients.
+	if code := res.StatusCode(); code != http.StatusOK && code != http.StatusFound {
+		return nil, parseErrorResponse(code, res.Body)
 	}
 	return res.Body, nil
 }

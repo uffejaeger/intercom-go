@@ -233,6 +233,30 @@ func TestCallsServiceRequests(t *testing.T) {
 		}
 	})
 
+	t.Run("get recording 302 redirect", func(t *testing.T) {
+		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return &http.Response{
+				StatusCode: http.StatusFound,
+				Header:     http.Header{"Location": []string{"https://storage.example.com/recording.mp3"}},
+				Body:       io.NopCloser(strings.NewReader("")),
+				Request:    req,
+			}, nil
+		})
+		// Use a client that does not follow redirects so the 302 is returned as-is.
+		noRedirectClient := &http.Client{
+			Transport:     transport,
+			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+		}
+		client, err := NewClient("token", WithBaseURL("https://example.test"), WithHTTPClient(noRedirectClient))
+		if err != nil {
+			t.Fatalf("NewClient returned error: %v", err)
+		}
+		_, err = client.Calls.GetRecording(context.Background(), "c1")
+		if err != nil {
+			t.Fatalf("GetRecording 302 returned error: %v", err)
+		}
+	})
+
 	t.Run("get transcript", func(t *testing.T) {
 		var gotMethod, gotPath string
 		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
