@@ -743,13 +743,35 @@ func TestContactsTransportErrors(t *testing.T) {
 	}
 }
 
-func TestMarshalBodyPanic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Fatal("expected panic for non-serializable type")
-		}
-	}()
-	marshalBody(make(chan int))
+func TestMarshalBodyError(t *testing.T) {
+	_, err := marshalBody(make(chan int))
+	if err == nil {
+		t.Fatal("expected error for non-serializable type")
+	}
+}
+
+func TestContactsCreateMarshalError(t *testing.T) {
+	client := newContactsTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+		t.Fatal("unexpected HTTP request")
+		return nil, nil
+	}))
+	attrs := map[string]interface{}{"x": make(chan int)}
+	_, err := client.Contacts.Create(context.Background(), ContactCreate{CustomAttributes: &attrs})
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestContactsUpdateMarshalError(t *testing.T) {
+	client := newContactsTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+		t.Fatal("unexpected HTTP request")
+		return nil, nil
+	}))
+	attrs := map[string]interface{}{"x": make(chan int)}
+	_, err := client.Contacts.Update(context.Background(), "contact-1", ContactUpdate{CustomAttributes: &attrs})
+	if err == nil {
+		t.Fatal("expected error")
+	}
 }
 
 func TestContactsValidation(t *testing.T) {
@@ -845,6 +867,13 @@ func TestContactsValidation(t *testing.T) {
 			name: "create note: non-numeric contact ID",
 			call: func(ctx context.Context, client *Client) error {
 				_, err := client.Contacts.CreateNote(ctx, "not-an-int", "body", "")
+				return err
+			},
+		},
+		{
+			name: "create note: partial-numeric contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.CreateNote(ctx, "123abc", "body", "")
 				return err
 			},
 		},

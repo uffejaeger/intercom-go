@@ -39,7 +39,7 @@ make generate-check
 
 ## Commit & Pull Request Guidelines
 
-Commit history uses short, imperative summaries such as `Add public Contacts service`. Keep commits focused and preserve review history; do not force push PR branches unless a maintainer explicitly asks. Work on feature branches and open PRs into `main`; do not push directly to `main`. PRs should explain changed SDK behavior, list verification commands, and link issues. CI must pass before merge, especially the required `test` check.
+Commit history uses short, imperative summaries such as `Add public Contacts service`. Keep commits focused and preserve review history. **Never force-push or amend commits on PR branches.** Each round of changes (e.g. addressing review feedback) gets its own new commit, so the PR history shows what changed over time. Squashing happens only at merge to main — that is where the history gets cleaned up, not on the PR branch. Work on feature branches and open PRs into `main`; do not push directly to `main`. PRs should explain changed SDK behavior, list verification commands, and link issues. CI must pass before merge, especially the required `test` check.
 
 ## Security & Configuration Tips
 
