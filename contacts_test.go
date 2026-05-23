@@ -755,7 +755,7 @@ func TestContactsCreateMarshalError(t *testing.T) {
 		t.Fatal("unexpected HTTP request")
 		return nil, nil
 	}))
-	attrs := map[string]interface{}{"x": make(chan int)}
+	attrs := map[string]any{"x": make(chan int)}
 	_, err := client.Contacts.Create(context.Background(), ContactCreate{CustomAttributes: &attrs})
 	if err == nil {
 		t.Fatal("expected error")
@@ -767,7 +767,7 @@ func TestContactsUpdateMarshalError(t *testing.T) {
 		t.Fatal("unexpected HTTP request")
 		return nil, nil
 	}))
-	attrs := map[string]interface{}{"x": make(chan int)}
+	attrs := map[string]any{"x": make(chan int)}
 	_, err := client.Contacts.Update(context.Background(), "contact-1", ContactUpdate{CustomAttributes: &attrs})
 	if err == nil {
 		t.Fatal("expected error")
