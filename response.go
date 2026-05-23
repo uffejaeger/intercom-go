@@ -14,3 +14,10 @@ func requireOK[T any](operation string, statusCode int, body []byte, value *T) (
 	}
 	return value, nil
 }
+
+func requireEmpty(statusCode int, body []byte) error {
+	if statusCode >= 200 && statusCode < 300 {
+		return nil
+	}
+	return parseErrorResponse(statusCode, body)
+}
