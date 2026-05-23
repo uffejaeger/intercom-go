@@ -26,5 +26,5 @@ jobs:
       - name: Check generated client
         run: make generate-check
 
-      - name: Test
-        run: go test ./...
+      - name: Test with coverage
+        run: make coverage

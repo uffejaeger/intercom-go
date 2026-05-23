@@ -2,17 +2,18 @@
 
 ## Project Structure & Module Organization
 
-This repository is a Go module for an idiomatic Intercom SDK. Public SDK code lives in the root package, for example `client.go`, `options.go`, `admins.go`, `contacts.go`, and related `*_test.go` files. Generated OpenAPI client code is committed under `internal/generated/intercom` and should stay internal. The pinned upstream spec is in `spec/intercom.openapi.yaml`, with metadata in `spec/metadata.json`. Spec normalization tooling lives in `internal/tools/normalize-spec`. Runnable examples are in `examples/identify_admin` and `examples/search_contacts`.
+This repository is a Go module for an idiomatic Intercom SDK. Public SDK code lives in the root package, for example `client.go`, `options.go`, `admins.go`, `contacts.go`, and related `*_test.go` files. Generated OpenAPI client code is committed under `internal/generated/intercom` and should stay internal. The pinned upstream spec is in `spec/intercom.openapi.yaml`, with metadata in `spec/metadata.json`. Spec normalization tooling lives in `internal/tools/normalize-spec`. Examples are in `examples/identify_admin` and `examples/search_contacts`.
 
 ## Build, Test, and Development Commands
 
 - `go fix ./...`: apply standard Go source rewrites.
-- `gofmt -w $(git ls-files '*.go')`: format tracked Go files.
+- `gofmt -w $(git ls-files --cached --others --exclude-standard '*.go')`: format repo Go files.
 - `go vet ./...`: run the standard Go lint checks.
 - `go test ./...`: run the full test suite.
+- `make coverage`: run root package coverage and enforce `COVERAGE_THRESHOLD` (default `80`).
 - `make generate`: normalize the pinned spec, then regenerate `internal/generated/intercom/client.gen.go`.
 - `make generate-check`: regenerate stubs and fail if committed generated files are stale.
-- `make pre-push`: shorthand for `fix`, `format`, `lint`, `test`, and `generate-check`; use this before pushing to GitHub.
+- `make pre-push`: shorthand for `fix`, `format`, `lint`, `coverage`, and `generate-check`; use this before pushing to GitHub.
 
 When local sandboxing blocks the default Go cache, use workspace-local cache paths:
 
@@ -22,7 +23,7 @@ GOCACHE=.cache/go-build GOMODCACHE=.cache/go-mod go test ./...
 
 ## Coding Style & Naming Conventions
 
-Use standard Go style: tabs from `gofmt`, concise exported comments, and lowercase package names. Format tracked Go files with `gofmt -w $(git ls-files '*.go')` before committing. Prefer small public service wrappers, such as `client.Admins.Me(ctx)` or `client.Contacts.Get(ctx, id)`, over exposing generated types directly. Keep generated changes reproducible through `make generate`.
+Use standard Go style: tabs from `gofmt`, concise exported comments, and lowercase package names. Prefer small public service wrappers, such as `client.Admins.Me(ctx)` or `client.Contacts.Get(ctx, id)`, over exposing generated types directly. Keep generated changes reproducible through `make generate`.
 
 ## Testing Guidelines
 
@@ -30,15 +31,15 @@ Tests use Go’s standard `testing` package. Keep tests next to covered code in 
 
 ```sh
 go fix ./...
-gofmt -w $(git ls-files '*.go')
+gofmt -w $(git ls-files --cached --others --exclude-standard '*.go')
 go vet ./...
-go test ./...
+make coverage
 make generate-check
 ```
 
 ## Commit & Pull Request Guidelines
 
-Commit history uses short, imperative summaries such as `Add public Contacts service` and `Tidy SDK service structure`. Keep commits focused and preserve review history; do not force push PR branches unless a maintainer explicitly asks for it. Work on feature branches and open pull requests into `main`; do not push directly to `main`. PRs should explain changed SDK behavior, list verification commands, and link issues when applicable. CI must pass before merge, especially the required `test` check.
+Commit history uses short, imperative summaries such as `Add public Contacts service`. Keep commits focused and preserve review history; do not force push PR branches unless a maintainer explicitly asks. Work on feature branches and open PRs into `main`; do not push directly to `main`. PRs should explain changed SDK behavior, list verification commands, and link issues. CI must pass before merge, especially the required `test` check.
 
 ## Security & Configuration Tips
 
