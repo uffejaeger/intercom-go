@@ -321,6 +321,26 @@ func TestCallsServiceRequests(t *testing.T) {
 		}{
 			{"list", func(ctx context.Context, c *Client) error { _, err := c.Calls.List(ctx); return err }},
 			{"get", func(ctx context.Context, c *Client) error { _, err := c.Calls.Get(ctx, "c1"); return err }},
+			{"get recording", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.GetRecording(ctx, "c1")
+				return err
+			}},
+			{"get transcript", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.GetTranscript(ctx, "c1")
+				return err
+			}},
+			{"list with transcripts", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.ListWithTranscripts(ctx, []string{"conv1"})
+				return err
+			}},
+			{"collect by phone number", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.CollectFinVoiceCallByPhoneNumber(ctx, "+1")
+				return err
+			}},
+			{"collect by conversation ID", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.CollectFinVoiceCallsByConversationID(ctx, "conv-1")
+				return err
+			}},
 		}
 		for _, tt := range calls {
 			t.Run(tt.name, func(t *testing.T) {
@@ -329,6 +349,80 @@ func TestCallsServiceRequests(t *testing.T) {
 				}))
 				if err := tt.call(context.Background(), client); err == nil {
 					t.Fatal("expected transport error")
+				}
+			})
+		}
+	})
+
+	// The generated client only parses JSON content types. Non-JSON responses bypass
+	// schema unmarshaling and hit our status-check and body-parse branches directly.
+	t.Run("non-json error status", func(t *testing.T) {
+		// status != 200, non-JSON content: exercises the parseErrorResponse branch
+		calls := []struct {
+			name string
+			call func(context.Context, *Client) error
+		}{
+			{"get recording", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.GetRecording(ctx, "c1")
+				return err
+			}},
+			{"list with transcripts", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.ListWithTranscripts(ctx, []string{"conv1"})
+				return err
+			}},
+			{"collect by phone number", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.CollectFinVoiceCallByPhoneNumber(ctx, "+1")
+				return err
+			}},
+			{"collect by conversation ID", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.CollectFinVoiceCallsByConversationID(ctx, "conv-1")
+				return err
+			}},
+		}
+		for _, tt := range calls {
+			t.Run(tt.name, func(t *testing.T) {
+				client := newCallsTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+					return &http.Response{
+						StatusCode: http.StatusInternalServerError,
+						Header:     http.Header{"Content-Type": []string{"text/plain"}},
+						Body:       io.NopCloser(strings.NewReader("internal error")),
+						Request:    req,
+					}, nil
+				}))
+				if err := tt.call(context.Background(), client); err == nil {
+					t.Fatal("expected error")
+				}
+			})
+		}
+	})
+
+	t.Run("non-json body unmarshal error", func(t *testing.T) {
+		// status 200, non-JSON content: exercises the json.Unmarshal error branch
+		calls := []struct {
+			name string
+			call func(context.Context, *Client) error
+		}{
+			{"list with transcripts", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.ListWithTranscripts(ctx, []string{"conv1"})
+				return err
+			}},
+			{"collect by phone number", func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.CollectFinVoiceCallByPhoneNumber(ctx, "+1")
+				return err
+			}},
+		}
+		for _, tt := range calls {
+			t.Run(tt.name, func(t *testing.T) {
+				client := newCallsTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+					return &http.Response{
+						StatusCode: http.StatusOK,
+						Header:     http.Header{"Content-Type": []string{"text/plain"}},
+						Body:       io.NopCloser(strings.NewReader("not-json{")),
+						Request:    req,
+					}, nil
+				}))
+				if err := tt.call(context.Background(), client); err == nil {
+					t.Fatal("expected unmarshal error")
 				}
 			})
 		}
