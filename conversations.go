@@ -1,8 +1,11 @@
 package intercom
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"strconv"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
@@ -149,7 +152,8 @@ func (s *ConversationsService) Reply(ctx context.Context, conversationID string,
 	if conversationID == "" {
 		return nil, fmt.Errorf("intercom: conversation ID is required")
 	}
-	res, err := s.client.generated.ReplyConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", marshalBody(reply))
+	b, _ := json.Marshal(reply)
+	res, err := s.client.generated.ReplyConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +165,8 @@ func (s *ConversationsService) ReplyAsContact(ctx context.Context, conversationI
 	if conversationID == "" {
 		return nil, fmt.Errorf("intercom: conversation ID is required")
 	}
-	res, err := s.client.generated.ReplyConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", marshalBody(reply))
+	b, _ := json.Marshal(reply)
+	res, err := s.client.generated.ReplyConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +178,8 @@ func (s *ConversationsService) Assign(ctx context.Context, conversationID string
 	if conversationID == "" {
 		return nil, fmt.Errorf("intercom: conversation ID is required")
 	}
-	res, err := s.client.generated.ManageConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", marshalBody(assign))
+	b, _ := json.Marshal(assign)
+	res, err := s.client.generated.ManageConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +191,8 @@ func (s *ConversationsService) Close(ctx context.Context, conversationID string,
 	if conversationID == "" {
 		return nil, fmt.Errorf("intercom: conversation ID is required")
 	}
-	res, err := s.client.generated.ManageConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", marshalBody(req))
+	b, _ := json.Marshal(req)
+	res, err := s.client.generated.ManageConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +204,8 @@ func (s *ConversationsService) Open(ctx context.Context, conversationID string, 
 	if conversationID == "" {
 		return nil, fmt.Errorf("intercom: conversation ID is required")
 	}
-	res, err := s.client.generated.ManageConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", marshalBody(req))
+	b, _ := json.Marshal(req)
+	res, err := s.client.generated.ManageConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
@@ -209,7 +217,8 @@ func (s *ConversationsService) Snooze(ctx context.Context, conversationID string
 	if conversationID == "" {
 		return nil, fmt.Errorf("intercom: conversation ID is required")
 	}
-	res, err := s.client.generated.ManageConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", marshalBody(req))
+	b, _ := json.Marshal(req)
+	res, err := s.client.generated.ManageConversationWithBodyWithResponse(ctx, conversationID, nil, "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
@@ -245,7 +254,8 @@ func (s *ConversationsService) DetachContact(ctx context.Context, conversationID
 
 // RedactPart redacts a message part from a conversation.
 func (s *ConversationsService) RedactPart(ctx context.Context, req ConversationRedactPart) (*Conversation, error) {
-	res, err := s.client.generated.RedactConversationWithBodyWithResponse(ctx, nil, "application/json", marshalBody(req))
+	b, _ := json.Marshal(req)
+	res, err := s.client.generated.RedactConversationWithBodyWithResponse(ctx, nil, "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
@@ -254,7 +264,8 @@ func (s *ConversationsService) RedactPart(ctx context.Context, req ConversationR
 
 // RedactSource redacts a source message from a conversation.
 func (s *ConversationsService) RedactSource(ctx context.Context, req ConversationRedactSource) (*Conversation, error) {
-	res, err := s.client.generated.RedactConversationWithBodyWithResponse(ctx, nil, "application/json", marshalBody(req))
+	b, _ := json.Marshal(req)
+	res, err := s.client.generated.RedactConversationWithBodyWithResponse(ctx, nil, "application/json", bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}
@@ -319,8 +330,8 @@ func (s *ConversationsService) DetachTag(ctx context.Context, conversationID, ta
 }
 
 func conversationIDToInt(conversationID string) (int, error) {
-	var id int
-	if _, err := fmt.Sscanf(conversationID, "%d", &id); err != nil {
+	id, err := strconv.Atoi(conversationID)
+	if err != nil {
 		return 0, fmt.Errorf("intercom: conversation ID %q is not a valid integer: %w", conversationID, err)
 	}
 	return id, nil

@@ -681,6 +681,13 @@ func TestConversationsValidation(t *testing.T) {
 			},
 		},
 		{
+			name: "get: partial-numeric ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Conversations.Get(ctx, "123abc")
+				return err
+			},
+		},
+		{
 			name: "update: empty ID",
 			call: func(ctx context.Context, client *Client) error {
 				_, err := client.Conversations.Update(ctx, "", ConversationUpdate{})

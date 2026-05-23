@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
@@ -134,11 +135,14 @@ func (s *ContactsService) Search(ctx context.Context, search ContactSearch) (*Co
 
 // Create creates a new contact.
 func (s *ContactsService) Create(ctx context.Context, contact ContactCreate) (*Contact, error) {
-	res, err := s.client.generated.CreateContactWithBodyWithResponse(ctx, nil, "application/json", marshalBody(contact))
+	body, err := marshalBody(contact)
 	if err != nil {
 		return nil, err
 	}
-
+	res, err := s.client.generated.CreateContactWithBodyWithResponse(ctx, nil, "application/json", body)
+	if err != nil {
+		return nil, err
+	}
 	return requireOK("create contact", res.StatusCode(), res.Body, res.JSON200)
 }
 
@@ -147,12 +151,14 @@ func (s *ContactsService) Update(ctx context.Context, contactID string, contact 
 	if contactID == "" {
 		return nil, fmt.Errorf("intercom: contact ID is required")
 	}
-
-	res, err := s.client.generated.UpdateContactWithBodyWithResponse(ctx, contactID, nil, "application/json", marshalBody(contact))
+	body, err := marshalBody(contact)
 	if err != nil {
 		return nil, err
 	}
-
+	res, err := s.client.generated.UpdateContactWithBodyWithResponse(ctx, contactID, nil, "application/json", body)
+	if err != nil {
+		return nil, err
+	}
 	return requireOK("update contact", res.StatusCode(), res.Body, res.JSON200)
 }
 
@@ -460,19 +466,18 @@ func contactSearchValue(value any) (gen.SingleFilterSearchRequest_Value, error) 
 }
 
 // marshalBody marshals v to JSON and returns it as a *bytes.Reader.
-// Panics if v is not JSON-serializable; callers must only pass known-safe types.
-func marshalBody(v any) *bytes.Reader {
+func marshalBody(v any) (*bytes.Reader, error) {
 	b, err := json.Marshal(v)
 	if err != nil {
-		panic(fmt.Sprintf("intercom: marshal request body: %v", err))
+		return nil, fmt.Errorf("intercom: marshal request body: %w", err)
 	}
-	return bytes.NewReader(b)
+	return bytes.NewReader(b), nil
 }
 
 // contactIDToInt converts a string contact ID to int as required by some generated endpoints.
 func contactIDToInt(contactID string) (int, error) {
-	var id int
-	if _, err := fmt.Sscanf(contactID, "%d", &id); err != nil {
+	id, err := strconv.Atoi(contactID)
+	if err != nil {
 		return 0, fmt.Errorf("intercom: contact ID %q is not a valid integer: %w", contactID, err)
 	}
 	return id, nil
