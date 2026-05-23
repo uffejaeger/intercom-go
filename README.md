@@ -49,8 +49,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(*admin.Email)
+fmt.Println(*admin.Email)
 }
+```
+
+Contacts:
+
+```go
+contact, err := client.Contacts.Get(ctx, "contact_id")
+contacts, err := client.Contacts.List(ctx)
+contacts, err := client.Contacts.Search(ctx, intercom.ContactSearch{
+	Field:    "email",
+	Operator: intercom.ContactSearchEquals,
+	Value:    "customer@example.com",
+	PerPage:  25,
+})
 ```
 
 ## Design Principles
