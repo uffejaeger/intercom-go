@@ -112,6 +112,9 @@ func (s *CallsService) GetRecording(ctx context.Context, callID string) ([]byte,
 			return nil, fmt.Errorf("intercom: get recording: %w", err)
 		}
 		defer resp.Body.Close()
+		if resp.StatusCode != http.StatusOK {
+			return nil, fmt.Errorf("intercom: get recording: signed URL returned %d", resp.StatusCode)
+		}
 		data, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return nil, fmt.Errorf("intercom: get recording: read body: %w", err)

@@ -338,6 +338,36 @@ func TestCallsServiceRequests(t *testing.T) {
 		}
 	})
 
+	t.Run("get recording 302 storage error status", func(t *testing.T) {
+		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if req.URL.Host == "example.test" {
+				return &http.Response{
+					StatusCode: http.StatusFound,
+					Header:     http.Header{"Location": []string{"https://storage.example.com/recording.mp3"}},
+					Body:       io.NopCloser(strings.NewReader("")),
+					Request:    req,
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: http.StatusForbidden,
+				Header:     http.Header{"Content-Type": []string{"text/plain"}},
+				Body:       io.NopCloser(strings.NewReader("Access Denied")),
+				Request:    req,
+			}, nil
+		})
+		noRedirectClient := &http.Client{
+			Transport:     transport,
+			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+		}
+		client, err := NewClient("token", WithBaseURL("https://example.test"), WithHTTPClient(noRedirectClient))
+		if err != nil {
+			t.Fatalf("NewClient returned error: %v", err)
+		}
+		if _, err := client.Calls.GetRecording(context.Background(), "c1"); err == nil {
+			t.Fatal("expected error for non-200 from signed URL")
+		}
+	})
+
 	t.Run("get recording 302 body read error", func(t *testing.T) {
 		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			if req.URL.Host == "example.test" {
