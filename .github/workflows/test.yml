@@ -23,5 +23,8 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      - name: Check generated client
+        run: make generate-check
+
       - name: Test
         run: go test ./...
