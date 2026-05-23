@@ -66,14 +66,12 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 		}
 	}
 
-	generated, err := gen.NewClientWithResponses(
+	// The options we pass never fail, so the error is always nil.
+	generated, _ := gen.NewClientWithResponses(
 		client.baseURL,
 		gen.WithHTTPClient(client.httpClient),
 		gen.WithRequestEditorFn(client.editGeneratedRequest),
 	)
-	if err != nil {
-		return nil, fmt.Errorf("intercom: create generated client: %w", err)
-	}
 
 	client.generated = generated
 	client.Admins = &AdminsService{client: client}

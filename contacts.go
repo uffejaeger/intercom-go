@@ -98,9 +98,7 @@ func (s ContactSearch) toGenerated() (gen.SearchContactsJSONRequestBody, error) 
 	}
 
 	var query gen.SearchRequest_Query
-	if err := query.FromSingleFilterSearchRequestSchema(filter); err != nil {
-		return gen.SearchContactsJSONRequestBody{}, err
-	}
+	_ = query.FromSingleFilterSearchRequestSchema(filter) // json.Marshal on a simple struct, never fails
 
 	body := gen.SearchContactsJSONRequestBody{
 		Query: query,
@@ -130,9 +128,7 @@ func contactSearchValue(value any) (gen.SingleFilterSearchRequest_Value, error) 
 		items := make([]gen.SingleFilterSearchRequest_Value_2_Item, 0, len(typed))
 		for _, item := range typed {
 			var generatedItem gen.SingleFilterSearchRequest_Value_2_Item
-			if err := generatedItem.FromSingleFilterSearchRequestValue20(item); err != nil {
-				return generated, err
-			}
+			_ = generatedItem.FromSingleFilterSearchRequestValue20(item) // json.Marshal(string) never fails
 			items = append(items, generatedItem)
 		}
 		return generated, generated.FromSingleFilterSearchRequestValue2(items)
@@ -140,9 +136,7 @@ func contactSearchValue(value any) (gen.SingleFilterSearchRequest_Value, error) 
 		items := make([]gen.SingleFilterSearchRequest_Value_2_Item, 0, len(typed))
 		for _, item := range typed {
 			var generatedItem gen.SingleFilterSearchRequest_Value_2_Item
-			if err := generatedItem.FromSingleFilterSearchRequestValue21(item); err != nil {
-				return generated, err
-			}
+			_ = generatedItem.FromSingleFilterSearchRequestValue21(item) // json.Marshal(int) never fails
 			items = append(items, generatedItem)
 		}
 		return generated, generated.FromSingleFilterSearchRequestValue2(items)

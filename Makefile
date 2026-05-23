@@ -2,7 +2,7 @@
 
 OAPI_CODEGEN := go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.6.0
 GO_FILES := $(shell git ls-files --cached --others --exclude-standard '*.go')
-COVERAGE_THRESHOLD ?= 80
+COVERAGE_THRESHOLD ?= 100
 
 fix:
 	go fix ./...

@@ -16,6 +16,16 @@ func TestNewClientRequiresToken(t *testing.T) {
 	}
 }
 
+func TestNewClientNilOption(t *testing.T) {
+	client, err := NewClient("token", nil, nil)
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
+	if client == nil {
+		t.Fatal("expected non-nil client")
+	}
+}
+
 func TestWithRegion(t *testing.T) {
 	tests := []struct {
 		name    string
