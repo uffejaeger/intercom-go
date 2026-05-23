@@ -37,6 +37,22 @@ func TestContactsServiceRequests(t *testing.T) {
 			wantPath:   "/contacts/contact-1",
 		},
 		{
+			name:     "get contact by external ID",
+			response: `{"type":"contact","id":"contact-1","external_id":"ext-1"}`,
+			call: func(ctx context.Context, client *Client) error {
+				contact, err := client.Contacts.GetByExternalID(ctx, "ext-1")
+				if err != nil {
+					return err
+				}
+				if contact.Id == nil || *contact.Id != "contact-1" {
+					t.Fatalf("contact.Id = %v", contact.Id)
+				}
+				return nil
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/contacts/find_by_external_id/ext-1",
+		},
+		{
 			name:     "list contacts",
 			response: `{"type":"list","data":[{"type":"contact","id":"contact-1"}],"total_count":1}`,
 			call: func(ctx context.Context, client *Client) error {
@@ -164,6 +180,267 @@ func TestContactsServiceRequests(t *testing.T) {
 				}
 			},
 		},
+		{
+			name:     "create contact",
+			response: `{"type":"contact","id":"contact-1","email":"new@example.com"}`,
+			call: func(ctx context.Context, client *Client) error {
+				email := "new@example.com"
+				contact, err := client.Contacts.Create(ctx, ContactCreate{Email: &email})
+				if err != nil {
+					return err
+				}
+				if contact.Id == nil || *contact.Id != "contact-1" {
+					t.Fatalf("contact.Id = %v", contact.Id)
+				}
+				return nil
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedString(body, "email"); got != "new@example.com" {
+					t.Fatalf("email = %q", got)
+				}
+			},
+		},
+		{
+			name:     "update contact",
+			response: `{"type":"contact","id":"contact-1","name":"Updated Name"}`,
+			call: func(ctx context.Context, client *Client) error {
+				name := "Updated Name"
+				contact, err := client.Contacts.Update(ctx, "contact-1", ContactUpdate{Name: &name})
+				if err != nil {
+					return err
+				}
+				if contact.Name == nil || *contact.Name != "Updated Name" {
+					t.Fatalf("contact.Name = %v", contact.Name)
+				}
+				return nil
+			},
+			wantMethod: http.MethodPut,
+			wantPath:   "/contacts/contact-1",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedString(body, "name"); got != "Updated Name" {
+					t.Fatalf("name = %q", got)
+				}
+			},
+		},
+		{
+			name:     "merge contacts",
+			response: `{"type":"contact","id":"contact-2"}`,
+			call: func(ctx context.Context, client *Client) error {
+				contact, err := client.Contacts.Merge(ctx, "lead-1", "contact-2")
+				if err != nil {
+					return err
+				}
+				if contact.Id == nil || *contact.Id != "contact-2" {
+					t.Fatalf("contact.Id = %v", contact.Id)
+				}
+				return nil
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts/merge",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedString(body, "from"); got != "lead-1" {
+					t.Fatalf("from = %q", got)
+				}
+				if got := nestedString(body, "into"); got != "contact-2" {
+					t.Fatalf("into = %q", got)
+				}
+			},
+		},
+		{
+			name:     "archive contact",
+			response: `{"type":"contact","id":"contact-1","archived":true}`,
+			call: func(ctx context.Context, client *Client) error {
+				result, err := client.Contacts.Archive(ctx, "contact-1")
+				if err != nil {
+					return err
+				}
+				if result.Id == nil || *result.Id != "contact-1" {
+					t.Fatalf("result.Id = %v", result.Id)
+				}
+				return nil
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts/contact-1/archive",
+		},
+		{
+			name:     "unarchive contact",
+			response: `{"type":"contact","id":"contact-1","archived":false}`,
+			call: func(ctx context.Context, client *Client) error {
+				result, err := client.Contacts.Unarchive(ctx, "contact-1")
+				if err != nil {
+					return err
+				}
+				if result.Id == nil || *result.Id != "contact-1" {
+					t.Fatalf("result.Id = %v", result.Id)
+				}
+				return nil
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts/contact-1/unarchive",
+		},
+		{
+			name:     "block contact",
+			response: `{"type":"contact","id":"contact-1"}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Block(ctx, "contact-1")
+				return err
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts/contact-1/block",
+		},
+		{
+			name:     "delete contact",
+			response: `{"id":"contact-1","object":"contact","deleted":true}`,
+			call: func(ctx context.Context, client *Client) error {
+				result, err := client.Contacts.Delete(ctx, "contact-1")
+				if err != nil {
+					return err
+				}
+				if result.Id == nil || *result.Id != "contact-1" {
+					t.Fatalf("result.Id = %v", result.Id)
+				}
+				return nil
+			},
+			wantMethod: http.MethodDelete,
+			wantPath:   "/contacts/contact-1",
+		},
+		{
+			name:     "list notes",
+			response: `{"type":"list","data":[{"type":"note","id":"1","body":"a note"}]}`,
+			call: func(ctx context.Context, client *Client) error {
+				notes, err := client.Contacts.ListNotes(ctx, "contact-1")
+				if err != nil {
+					return err
+				}
+				if notes.Data == nil || len(*notes.Data) != 1 {
+					t.Fatalf("notes.Data = %v", notes.Data)
+				}
+				return nil
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/contacts/contact-1/notes",
+		},
+		{
+			name:     "create note",
+			response: `{"type":"note","id":"1","body":"a note"}`,
+			call: func(ctx context.Context, client *Client) error {
+				note, err := client.Contacts.CreateNote(ctx, "123", "a note", "admin-1")
+				if err != nil {
+					return err
+				}
+				if note.Body == nil || *note.Body != "a note" {
+					t.Fatalf("note.Body = %v", note.Body)
+				}
+				return nil
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts/123/notes",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedString(body, "body"); got != "a note" {
+					t.Fatalf("body = %q", got)
+				}
+				if got := nestedString(body, "admin_id"); got != "admin-1" {
+					t.Fatalf("admin_id = %q", got)
+				}
+			},
+		},
+		{
+			name:     "list segments",
+			response: `{"type":"list","data":[{"type":"segment","id":"seg-1"}]}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSegments(ctx, "contact-1")
+				return err
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/contacts/contact-1/segments",
+		},
+		{
+			name:     "list subscriptions",
+			response: `{"type":"list","data":[{"type":"subscription_type","id":"sub-1"}]}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSubscriptions(ctx, "contact-1")
+				return err
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/contacts/contact-1/subscriptions",
+		},
+		{
+			name:     "attach subscription",
+			response: `{"type":"subscription_type","id":"sub-1"}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "contact-1", "sub-1", "opt_in")
+				return err
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts/contact-1/subscriptions",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedString(body, "id"); got != "sub-1" {
+					t.Fatalf("id = %q", got)
+				}
+				if got := nestedString(body, "consent_type"); got != "opt_in" {
+					t.Fatalf("consent_type = %q", got)
+				}
+			},
+		},
+		{
+			name:     "detach subscription",
+			response: `{"type":"subscription_type","id":"sub-1"}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachSubscription(ctx, "contact-1", "sub-1")
+				return err
+			},
+			wantMethod: http.MethodDelete,
+			wantPath:   "/contacts/contact-1/subscriptions/sub-1",
+		},
+		{
+			name:     "list tags",
+			response: `{"type":"list","data":[{"type":"tag","id":"tag-1","name":"vip"}]}`,
+			call: func(ctx context.Context, client *Client) error {
+				tags, err := client.Contacts.ListTags(ctx, "contact-1")
+				if err != nil {
+					return err
+				}
+				if tags.Data == nil || len(*tags.Data) != 1 {
+					t.Fatalf("tags.Data = %v", tags.Data)
+				}
+				return nil
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/contacts/contact-1/tags",
+		},
+		{
+			name:     "attach tag",
+			response: `{"type":"tag","id":"tag-1","name":"vip"}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachTag(ctx, "contact-1", "tag-1")
+				return err
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts/contact-1/tags",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedString(body, "id"); got != "tag-1" {
+					t.Fatalf("id = %q", got)
+				}
+			},
+		},
+		{
+			name:     "detach tag",
+			response: `{"type":"tag","id":"tag-1","name":"vip"}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachTag(ctx, "contact-1", "tag-1")
+				return err
+			},
+			wantMethod: http.MethodDelete,
+			wantPath:   "/contacts/contact-1/tags/tag-1",
+		},
 	}
 
 	for _, tt := range tests {
@@ -240,6 +517,27 @@ func TestContactsServiceErrors(t *testing.T) {
 				return err
 			},
 		},
+		{
+			name: "create contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Create(ctx, ContactCreate{})
+				return err
+			},
+		},
+		{
+			name: "update contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Update(ctx, "contact-1", ContactUpdate{})
+				return err
+			},
+		},
+		{
+			name: "delete contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Delete(ctx, "contact-1")
+				return err
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -310,6 +608,125 @@ func TestContactsTransportErrors(t *testing.T) {
 				return err
 			},
 		},
+		{
+			name: "get by external ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.GetByExternalID(ctx, "ext-1")
+				return err
+			},
+		},
+		{
+			name: "create contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Create(ctx, ContactCreate{})
+				return err
+			},
+		},
+		{
+			name: "update contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Update(ctx, "contact-1", ContactUpdate{})
+				return err
+			},
+		},
+		{
+			name: "merge contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Merge(ctx, "lead-1", "contact-2")
+				return err
+			},
+		},
+		{
+			name: "archive contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Archive(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "unarchive contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Unarchive(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "block contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Block(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "delete contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Delete(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "list notes",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListNotes(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "create note",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.CreateNote(ctx, "123", "body", "")
+				return err
+			},
+		},
+		{
+			name: "list segments",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSegments(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "list subscriptions",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSubscriptions(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "attach subscription",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "contact-1", "sub-1", "opt_in")
+				return err
+			},
+		},
+		{
+			name: "detach subscription",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachSubscription(ctx, "contact-1", "sub-1")
+				return err
+			},
+		},
+		{
+			name: "list tags",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListTags(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "attach tag",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachTag(ctx, "contact-1", "tag-1")
+				return err
+			},
+		},
+		{
+			name: "detach tag",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachTag(ctx, "contact-1", "tag-1")
+				return err
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -326,31 +743,214 @@ func TestContactsTransportErrors(t *testing.T) {
 	}
 }
 
-func TestContactSearchValidation(t *testing.T) {
+func TestMarshalBodyPanic(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("expected panic for non-serializable type")
+		}
+	}()
+	marshalBody(make(chan int))
+}
+
+func TestContactsValidation(t *testing.T) {
 	tests := []struct {
-		name   string
-		search ContactSearch
+		name string
+		call func(context.Context, *Client) error
 	}{
 		{
-			name: "missing field",
-			search: ContactSearch{
-				Operator: ContactSearchEquals,
-				Value:    "contact@example.com",
+			name: "get contact: empty ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Get(ctx, "")
+				return err
 			},
 		},
 		{
-			name: "missing operator",
-			search: ContactSearch{
-				Field: "email",
-				Value: "contact@example.com",
+			name: "get by external ID: empty ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.GetByExternalID(ctx, "")
+				return err
 			},
 		},
 		{
-			name: "unsupported value",
-			search: ContactSearch{
-				Field:    "email",
-				Operator: ContactSearchEquals,
-				Value:    true,
+			name: "update contact: empty ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Update(ctx, "", ContactUpdate{})
+				return err
+			},
+		},
+		{
+			name: "merge: empty from",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Merge(ctx, "", "contact-2")
+				return err
+			},
+		},
+		{
+			name: "merge: empty into",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Merge(ctx, "lead-1", "")
+				return err
+			},
+		},
+		{
+			name: "archive: empty ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Archive(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "unarchive: empty ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Unarchive(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "block: empty ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Block(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "delete: empty ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Delete(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "list notes: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListNotes(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "create note: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.CreateNote(ctx, "", "body", "")
+				return err
+			},
+		},
+		{
+			name: "create note: empty body",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.CreateNote(ctx, "123", "", "")
+				return err
+			},
+		},
+		{
+			name: "create note: non-numeric contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.CreateNote(ctx, "not-an-int", "body", "")
+				return err
+			},
+		},
+		{
+			name: "list segments: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSegments(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "list subscriptions: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListSubscriptions(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "attach subscription: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "", "sub-1", "opt_in")
+				return err
+			},
+		},
+		{
+			name: "attach subscription: empty subscription ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "contact-1", "", "opt_in")
+				return err
+			},
+		},
+		{
+			name: "attach subscription: empty consent type",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachSubscription(ctx, "contact-1", "sub-1", "")
+				return err
+			},
+		},
+		{
+			name: "detach subscription: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachSubscription(ctx, "", "sub-1")
+				return err
+			},
+		},
+		{
+			name: "detach subscription: empty subscription ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachSubscription(ctx, "contact-1", "")
+				return err
+			},
+		},
+		{
+			name: "list tags: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.ListTags(ctx, "")
+				return err
+			},
+		},
+		{
+			name: "attach tag: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachTag(ctx, "", "tag-1")
+				return err
+			},
+		},
+		{
+			name: "attach tag: empty tag ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.AttachTag(ctx, "contact-1", "")
+				return err
+			},
+		},
+		{
+			name: "detach tag: empty contact ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachTag(ctx, "", "tag-1")
+				return err
+			},
+		},
+		{
+			name: "detach tag: empty tag ID",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.DetachTag(ctx, "contact-1", "")
+				return err
+			},
+		},
+		{
+			name: "search: missing field",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Search(ctx, ContactSearch{Operator: ContactSearchEquals, Value: "x"})
+				return err
+			},
+		},
+		{
+			name: "search: missing operator",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Search(ctx, ContactSearch{Field: "email", Value: "x"})
+				return err
+			},
+		},
+		{
+			name: "search: unsupported value type",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Search(ctx, ContactSearch{Field: "email", Operator: ContactSearchEquals, Value: true})
+				return err
 			},
 		},
 	}
@@ -361,10 +961,8 @@ func TestContactSearchValidation(t *testing.T) {
 				t.Fatal("unexpected HTTP request")
 				return nil, nil
 			}))
-
-			_, err := client.Contacts.Search(context.Background(), tt.search)
-			if err == nil {
-				t.Fatal("expected error")
+			if err := tt.call(context.Background(), client); err == nil {
+				t.Fatal("expected error, got nil")
 			}
 		})
 	}
