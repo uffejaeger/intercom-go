@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strings"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
@@ -14,7 +15,9 @@ import (
 const (
 	defaultBaseURL    = "https://api.intercom.io"
 	defaultAPIVersion = "2.15"
-	defaultUserAgent  = "intercom-go"
+	// DefaultAccessTokenEnv is the environment variable read by NewClientFromEnv.
+	DefaultAccessTokenEnv = "INTERCOM_ACCESS_TOKEN"
+	defaultUserAgent      = "intercom-go"
 )
 
 // Region identifies an Intercom API region.
@@ -77,6 +80,21 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 	client.Contacts = &ContactsService{client: client}
 
 	return client, nil
+}
+
+// NewClientFromEnv creates an Intercom API client using an access token from the environment.
+func NewClientFromEnv(opts ...Option) (*Client, error) {
+	return NewClientFromEnvVar(DefaultAccessTokenEnv, opts...)
+}
+
+// NewClientFromEnvVar creates an Intercom API client using an access token from the named environment variable.
+func NewClientFromEnvVar(name string, opts ...Option) (*Client, error) {
+	name = strings.TrimSpace(name)
+	if name == "" {
+		return nil, errors.New("intercom: access token environment variable is required")
+	}
+
+	return NewClient(os.Getenv(name), opts...)
 }
 
 // BaseURL returns the API base URL used by the client.

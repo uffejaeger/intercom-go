@@ -26,6 +26,75 @@ func TestWithRegion(t *testing.T) {
 	}
 }
 
+func TestNewClientFromEnv(t *testing.T) {
+	t.Setenv(DefaultAccessTokenEnv, "token")
+
+	client, err := NewClientFromEnv(WithRegion(EU))
+	if err != nil {
+		t.Fatalf("NewClientFromEnv returned error: %v", err)
+	}
+
+	if got, want := client.BaseURL(), "https://api.eu.intercom.io"; got != want {
+		t.Fatalf("BaseURL() = %q, want %q", got, want)
+	}
+}
+
+func TestNewClientFromEnvOverride(t *testing.T) {
+	const tokenEnv = "CUSTOM_INTERCOM_ACCESS_TOKEN"
+	t.Setenv(DefaultAccessTokenEnv, "")
+	t.Setenv(tokenEnv, "token")
+
+	client, err := NewClientFromEnvVar(tokenEnv)
+	if err != nil {
+		t.Fatalf("NewClientFromEnvVar returned error: %v", err)
+	}
+
+	if client == nil {
+		t.Fatal("client is nil")
+	}
+}
+
+func TestNewClientFromEnvRequiresToken(t *testing.T) {
+	t.Setenv(DefaultAccessTokenEnv, "")
+
+	_, err := NewClientFromEnv()
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestNewClientFromEnvVarRequiresName(t *testing.T) {
+	t.Setenv(DefaultAccessTokenEnv, "token")
+
+	_, err := NewClientFromEnvVar(" ")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestNewClientFromEnvAppliesOptionsOnceToInitializedClient(t *testing.T) {
+	t.Setenv(DefaultAccessTokenEnv, "token")
+
+	calls := 0
+	_, err := NewClientFromEnv(func(client *Client) error {
+		calls++
+		if client.httpClient == nil {
+			t.Fatal("httpClient is nil")
+		}
+		if client.baseURL == "" {
+			t.Fatal("baseURL is empty")
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("NewClientFromEnv returned error: %v", err)
+	}
+
+	if calls != 1 {
+		t.Fatalf("option calls = %d, want 1", calls)
+	}
+}
+
 func TestDoAddsHeaders(t *testing.T) {
 	var authorization, version, userAgent string
 
