@@ -14,6 +14,7 @@ lint:
 	go vet ./...
 
 coverage:
+	go build ./...
 	go test -covermode=atomic -coverprofile=coverage.out .
 	go tool cover -func=coverage.out
 	@coverage=$$(go tool cover -func=coverage.out | awk '/^total:/ { gsub("%", "", $$3); print $$3 }'); \
