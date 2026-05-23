@@ -106,7 +106,12 @@ func (s *CallsService) GetRecording(ctx context.Context, callID string) ([]byte,
 		if location == "" {
 			return nil, fmt.Errorf("intercom: get recording: 302 response missing Location header")
 		}
-		req, _ := http.NewRequestWithContext(ctx, http.MethodGet, location, nil)
+		// NewRequestWithContext error is unreachable here: Go's HTTP client already
+		// called url.Parse on the Location header before returning ErrUseLastResponse.
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, location, nil)
+		if err != nil {
+			return nil, fmt.Errorf("intercom: get recording: invalid Location header: %w", err)
+		}
 		resp, err := s.client.httpClient.Do(req)
 		if err != nil {
 			return nil, fmt.Errorf("intercom: get recording: %w", err)
