@@ -2,6 +2,7 @@ package intercom
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	"strings"
@@ -105,5 +106,25 @@ func TestAdminsMeError(t *testing.T) {
 	}
 	if apiErr.RequestID != "req-1" {
 		t.Fatalf("RequestID = %q", apiErr.RequestID)
+	}
+}
+
+func TestAdminsMeTransportError(t *testing.T) {
+	transport := roundTripFunc(func(*http.Request) (*http.Response, error) {
+		return nil, errors.New("network down")
+	})
+
+	client, err := NewClient(
+		"token",
+		WithBaseURL("https://example.test"),
+		WithHTTPClient(&http.Client{Transport: transport}),
+	)
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
+
+	_, err = client.Admins.Me(context.Background())
+	if err == nil {
+		t.Fatal("expected error")
 	}
 }

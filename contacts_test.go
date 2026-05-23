@@ -3,6 +3,7 @@ package intercom
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"reflect"
@@ -88,6 +89,26 @@ func TestContactsServiceRequests(t *testing.T) {
 				}
 				if got := nestedString(body, "pagination", "starting_after"); got != "cursor-1" {
 					t.Fatalf("pagination.starting_after = %q", got)
+				}
+			},
+		},
+		{
+			name:     "search contacts by int scalar value",
+			response: `{"type":"list","data":[],"total_count":0}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Search(ctx, ContactSearch{
+					Field:    "created_at",
+					Operator: ContactSearchGreaterThan,
+					Value:    1700000000,
+				})
+				return err
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/contacts/search",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedFloat(body, "query", "value"); got != float64(1700000000) {
+					t.Fatalf("query.value = %v", got)
 				}
 			},
 		},
@@ -242,6 +263,64 @@ func TestContactsServiceErrors(t *testing.T) {
 			}
 			if apiErr.RequestID != "12a938a3-314e-4939-b773-5cd45738bd21" {
 				t.Fatalf("RequestID = %q", apiErr.RequestID)
+			}
+		})
+	}
+}
+
+func TestContactsGetEmptyID(t *testing.T) {
+	client := newContactsTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+		t.Fatal("unexpected HTTP request")
+		return nil, nil
+	}))
+
+	_, err := client.Contacts.Get(context.Background(), "")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestContactsTransportErrors(t *testing.T) {
+	tests := []struct {
+		name string
+		call func(context.Context, *Client) error
+	}{
+		{
+			name: "get contact",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Get(ctx, "contact-1")
+				return err
+			},
+		},
+		{
+			name: "list contacts",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.List(ctx)
+				return err
+			},
+		},
+		{
+			name: "search contacts",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Contacts.Search(ctx, ContactSearch{
+					Field:    "email",
+					Operator: ContactSearchEquals,
+					Value:    "contact@example.com",
+				})
+				return err
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			transport := roundTripFunc(func(*http.Request) (*http.Response, error) {
+				return nil, errors.New("network down")
+			})
+
+			client := newContactsTestClient(t, transport)
+			if err := tt.call(context.Background(), client); err == nil {
+				t.Fatal("expected error")
 			}
 		})
 	}
