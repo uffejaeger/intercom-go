@@ -35,7 +35,8 @@ type Client struct {
 	httpClient *http.Client
 	generated  *gen.ClientWithResponses
 
-	Admins *AdminsService
+	Admins   *AdminsService
+	Contacts *ContactsService
 }
 
 // NewClient creates an Intercom API client using bearer-token authentication.
@@ -73,6 +74,7 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 
 	client.generated = generated
 	client.Admins = &AdminsService{client: client}
+	client.Contacts = &ContactsService{client: client}
 
 	return client, nil
 }
