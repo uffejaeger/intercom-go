@@ -7,6 +7,8 @@ import (
 	"io"
 	"net/http"
 	"strings"
+
+	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
 
 const (
@@ -31,6 +33,9 @@ type Client struct {
 	apiVersion string
 	userAgent  string
 	httpClient *http.Client
+	generated  *gen.ClientWithResponses
+
+	Admins *AdminsService
 }
 
 // NewClient creates an Intercom API client using bearer-token authentication.
@@ -57,6 +62,18 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 		}
 	}
 
+	generated, err := gen.NewClientWithResponses(
+		client.baseURL,
+		gen.WithHTTPClient(client.httpClient),
+		gen.WithRequestEditorFn(client.editGeneratedRequest),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("intercom: create generated client: %w", err)
+	}
+
+	client.generated = generated
+	client.Admins = &AdminsService{client: client}
+
 	return client, nil
 }
 
@@ -72,10 +89,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	req = req.Clone(req.Context())
-	req.Header.Set("Authorization", "Bearer "+c.token)
-	req.Header.Set("Intercom-Version", c.apiVersion)
-	req.Header.Set("User-Agent", c.userAgent)
-	req.Header.Set("Accept", "application/json")
+	c.applyDefaultHeaders(req)
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -110,4 +124,16 @@ func (c *Client) NewRequest(ctx context.Context, method, path string, body io.Re
 	}
 
 	return req, nil
+}
+
+func (c *Client) editGeneratedRequest(_ context.Context, req *http.Request) error {
+	c.applyDefaultHeaders(req)
+	return nil
+}
+
+func (c *Client) applyDefaultHeaders(req *http.Request) {
+	req.Header.Set("Authorization", "Bearer "+c.token)
+	req.Header.Set("Intercom-Version", c.apiVersion)
+	req.Header.Set("User-Agent", c.userAgent)
+	req.Header.Set("Accept", "application/json")
 }

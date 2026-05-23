@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	intercom "github.com/uffejaeger/intercom-go"
@@ -16,16 +15,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	req, err := client.NewRequest(context.Background(), http.MethodGet, "/me", nil)
+	admin, err := client.Admins.Me(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	res, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer res.Body.Close()
-
-	fmt.Println(res.Status)
+	fmt.Println(*admin.Email)
 }
