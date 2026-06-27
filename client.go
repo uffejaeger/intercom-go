@@ -44,9 +44,24 @@ type Client struct {
 	AwayStatusReasons *AwayStatusReasonsService
 	Brands            *BrandsService
 	Calls             *CallsService
+	Collections       *CollectionsService
 	Companies         *CompaniesService
 	Contacts          *ContactsService
 	Conversations     *ConversationsService
+	Fin               *FinService
+	HelpCenters       *HelpCentersService
+	InternalArticles  *InternalArticlesService
+	Messages          *MessagesService
+	News              *NewsService
+	Notes             *NotesService
+	PhoneSwitches     *PhoneSwitchesService
+	Segments          *SegmentsService
+	SubscriptionTypes *SubscriptionTypesService
+	Tags              *TagsService
+	Teams             *TeamsService
+	Tickets           *TicketsService
+	Visitors          *VisitorsService
+	Workspace         *WorkspaceService
 }
 
 // NewClient creates an Intercom API client using bearer-token authentication.
@@ -87,9 +102,24 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 	client.AwayStatusReasons = &AwayStatusReasonsService{client: client}
 	client.Brands = &BrandsService{client: client}
 	client.Calls = &CallsService{client: client}
+	client.Collections = &CollectionsService{client: client}
 	client.Companies = &CompaniesService{client: client}
 	client.Contacts = &ContactsService{client: client}
 	client.Conversations = &ConversationsService{client: client}
+	client.Fin = &FinService{client: client}
+	client.HelpCenters = &HelpCentersService{client: client}
+	client.InternalArticles = &InternalArticlesService{client: client}
+	client.Messages = &MessagesService{client: client}
+	client.News = &NewsService{client: client}
+	client.Notes = &NotesService{client: client}
+	client.PhoneSwitches = &PhoneSwitchesService{client: client}
+	client.Segments = &SegmentsService{client: client}
+	client.SubscriptionTypes = &SubscriptionTypesService{client: client}
+	client.Tags = &TagsService{client: client}
+	client.Teams = &TeamsService{client: client}
+	client.Tickets = &TicketsService{client: client}
+	client.Visitors = &VisitorsService{client: client}
+	client.Workspace = &WorkspaceService{client: client}
 
 	return client, nil
 }

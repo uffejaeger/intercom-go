@@ -33,27 +33,27 @@ type RegisterFinVoiceCallRequest = gen.RegisterFinVoiceCallRequestSchema
 
 // CallWithTranscript is a call with its full transcript data.
 type CallWithTranscript struct {
-	AdminId             *string                  `json:"admin_id,omitempty"`
-	AnsweredAt          *gen.Datetime            `json:"answered_at,omitempty"`
-	CallType            *string                  `json:"call_type,omitempty"`
-	ContactId           *string                  `json:"contact_id,omitempty"`
-	ConversationId      *string                  `json:"conversation_id,omitempty"`
-	CreatedAt           *gen.Datetime            `json:"created_at,omitempty"`
-	Direction           *string                  `json:"direction,omitempty"`
-	EndedAt             *gen.Datetime            `json:"ended_at,omitempty"`
-	EndedReason         *string                  `json:"ended_reason,omitempty"`
-	FinRecordingUrl     *string                  `json:"fin_recording_url,omitempty"`
-	FinTranscriptionUrl *string                  `json:"fin_transcription_url,omitempty"`
-	Id                  *string                  `json:"id,omitempty"`
-	InitiatedAt         *gen.Datetime            `json:"initiated_at,omitempty"`
-	Phone               *string                  `json:"phone,omitempty"`
-	RecordingUrl        *string                  `json:"recording_url,omitempty"`
-	State               *string                  `json:"state,omitempty"`
+	AdminId             *string          `json:"admin_id,omitempty"`
+	AnsweredAt          *gen.Datetime    `json:"answered_at,omitempty"`
+	CallType            *string          `json:"call_type,omitempty"`
+	ContactId           *string          `json:"contact_id,omitempty"`
+	ConversationId      *string          `json:"conversation_id,omitempty"`
+	CreatedAt           *gen.Datetime    `json:"created_at,omitempty"`
+	Direction           *string          `json:"direction,omitempty"`
+	EndedAt             *gen.Datetime    `json:"ended_at,omitempty"`
+	EndedReason         *string          `json:"ended_reason,omitempty"`
+	FinRecordingUrl     *string          `json:"fin_recording_url,omitempty"`
+	FinTranscriptionUrl *string          `json:"fin_transcription_url,omitempty"`
+	Id                  *string          `json:"id,omitempty"`
+	InitiatedAt         *gen.Datetime    `json:"initiated_at,omitempty"`
+	Phone               *string          `json:"phone,omitempty"`
+	RecordingUrl        *string          `json:"recording_url,omitempty"`
+	State               *string          `json:"state,omitempty"`
 	Transcript          []map[string]any `json:"transcript,omitempty"`
-	TranscriptStatus    *string                  `json:"transcript_status,omitempty"`
-	TranscriptionUrl    *string                  `json:"transcription_url,omitempty"`
-	Type                *string                  `json:"type,omitempty"`
-	UpdatedAt           *gen.Datetime            `json:"updated_at,omitempty"`
+	TranscriptStatus    *string          `json:"transcript_status,omitempty"`
+	TranscriptionUrl    *string          `json:"transcription_url,omitempty"`
+	Type                *string          `json:"type,omitempty"`
+	UpdatedAt           *gen.Datetime    `json:"updated_at,omitempty"`
 }
 
 // CallWithTranscriptList is the response from ListWithTranscripts.
@@ -106,8 +106,6 @@ func (s *CallsService) GetRecording(ctx context.Context, callID string) ([]byte,
 		if location == "" {
 			return nil, fmt.Errorf("intercom: get recording: 302 response missing Location header")
 		}
-		// NewRequestWithContext error is unreachable here: Go's HTTP client already
-		// called url.Parse on the Location header before returning ErrUseLastResponse.
 		req, err := http.NewRequestWithContext(ctx, http.MethodGet, location, nil)
 		if err != nil {
 			return nil, fmt.Errorf("intercom: get recording: invalid Location header: %w", err)
@@ -130,6 +128,11 @@ func (s *CallsService) GetRecording(ctx context.Context, callID string) ([]byte,
 	}
 }
 
+// Recording retrieves the recording for a call.
+func (s *CallsService) Recording(ctx context.Context, callID string) ([]byte, error) {
+	return s.GetRecording(ctx, callID)
+}
+
 // GetTranscript downloads the raw transcript for a call.
 func (s *CallsService) GetTranscript(ctx context.Context, callID string) ([]byte, error) {
 	if callID == "" {
@@ -143,6 +146,11 @@ func (s *CallsService) GetTranscript(ctx context.Context, callID string) ([]byte
 		return nil, parseErrorResponse(res.StatusCode(), res.Body)
 	}
 	return res.Body, nil
+}
+
+// Transcript retrieves the transcript for a call.
+func (s *CallsService) Transcript(ctx context.Context, callID string) ([]byte, error) {
+	return s.GetTranscript(ctx, callID)
 }
 
 // ListWithTranscripts returns calls with transcripts for up to 20 conversation IDs.
@@ -198,7 +206,7 @@ func (s *CallsService) CollectFinVoiceCallByExternalID(ctx context.Context, exte
 	return requireOK("collect fin voice call by external ID", res.StatusCode(), res.Body, res.JSON200)
 }
 
-// CollectFinVoiceCallByPhoneNumber returns a registered Fin Voice call by phone number (E.164 format).
+// CollectFinVoiceCallByPhoneNumber returns a registered Fin Voice call by phone number.
 func (s *CallsService) CollectFinVoiceCallByPhoneNumber(ctx context.Context, phone string) (*FinVoiceCall, error) {
 	if phone == "" {
 		return nil, fmt.Errorf("intercom: phone number is required")
@@ -207,7 +215,6 @@ func (s *CallsService) CollectFinVoiceCallByPhoneNumber(ctx context.Context, pho
 	if err != nil {
 		return nil, err
 	}
-	// The generated client has no JSON200 for this endpoint; parse the body directly.
 	if res.StatusCode() != http.StatusOK {
 		return nil, parseErrorResponse(res.StatusCode(), res.Body)
 	}
