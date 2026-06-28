@@ -253,7 +253,14 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 		}},
 		{"visitors get by user id", func() error { _, err := client.Visitors.GetByUserID(ctx, "u1"); return err }},
 		{"visitors update", func() error { _, err := client.Visitors.Update(ctx, VisitorUpdate{}); return err }},
-		{"visitors convert", func() error { _, err := client.Visitors.Convert(ctx, VisitorConvert{Type: "user"}); return err }},
+		{"visitors convert", func() error {
+			userID := "u1"
+			_, err := client.Visitors.Convert(ctx, VisitorConvert{
+				Type:    "user",
+				Visitor: VisitorConvertSource{UserID: &userID},
+			})
+			return err
+		}},
 		{"workspace get ip allowlist", func() error { _, err := client.Workspace.GetIPAllowlist(ctx); return err }},
 		{"workspace update ip allowlist", func() error { _, err := client.Workspace.UpdateIPAllowlist(ctx, IPAllowlist{}); return err }},
 		{"workspace job status", func() error { _, err := client.Workspace.JobStatus(ctx, "1"); return err }},

@@ -35,7 +35,6 @@ This document tracks which Intercom API areas are exposed through the public `in
 - News: list endpoints are wrapped, but the generated response uses the generic paginated envelope rather than typed item lists.
 - Tags: list/retrieve/delete are typed. The create/update/tagging endpoint is exposed through a generic JSON body wrapper because the upstream spec uses a multi-shape request union.
 - Tickets: reply and ticket tag endpoints are now wrapped, but the request payloads are still intentionally loose because the upstream spec uses union request shapes.
-- Visitors: update and convert reuse generated request unions directly.
 
 ## Pending
 
