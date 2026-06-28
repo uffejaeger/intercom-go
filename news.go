@@ -9,8 +9,19 @@ import (
 // NewsItem is an Intercom news item.
 type NewsItem = gen.NewsItemSchema
 
+// NewsListType identifies the type of a paginated news response.
+type NewsListType = gen.PaginatedResponseType
+
+// NewsCursorPages holds pagination details for a paginated news response.
+type NewsCursorPages = gen.CursorPagesSchema
+
 // NewsItemList is a paginated list of Intercom news items.
-type NewsItemList = gen.PaginatedResponseSchema
+type NewsItemList struct {
+	Data       *[]NewsItem      `json:"data,omitempty"`
+	Pages      *NewsCursorPages `json:"pages,omitempty"`
+	TotalCount *int             `json:"total_count,omitempty"`
+	Type       *NewsListType    `json:"type,omitempty"`
+}
 
 // NewsItemCreate holds the fields for creating a news item.
 type NewsItemCreate = gen.NewsItemRequestSchema
@@ -22,7 +33,12 @@ type NewsItemUpdate = gen.NewsItemRequestSchema
 type Newsfeed = gen.NewsfeedSchema
 
 // NewsfeedList is a paginated list of Intercom newsfeeds.
-type NewsfeedList = gen.PaginatedResponseSchema
+type NewsfeedList struct {
+	Data       *[]Newsfeed      `json:"data,omitempty"`
+	Pages      *NewsCursorPages `json:"pages,omitempty"`
+	TotalCount *int             `json:"total_count,omitempty"`
+	Type       *NewsListType    `json:"type,omitempty"`
+}
 
 // NewsService exposes news-related Intercom API operations.
 type NewsService struct {
@@ -35,7 +51,7 @@ func (s *NewsService) ListItems(ctx context.Context) (*NewsItemList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list news items", res.StatusCode(), res.Body, res.JSON200)
+	return requireJSON[NewsItemList]("list news items", res.StatusCode(), res.Body)
 }
 
 // CreateItem creates a news item.
@@ -92,7 +108,7 @@ func (s *NewsService) ListFeeds(ctx context.Context) (*NewsfeedList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list newsfeeds", res.StatusCode(), res.Body, res.JSON200)
+	return requireJSON[NewsfeedList]("list newsfeeds", res.StatusCode(), res.Body)
 }
 
 // RetrieveFeed returns a newsfeed by ID.
@@ -116,5 +132,5 @@ func (s *NewsService) ListFeedItems(ctx context.Context, newsfeedID string) (*Ne
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list newsfeed items", res.StatusCode(), res.Body, res.JSON200)
+	return requireJSON[NewsItemList]("list newsfeed items", res.StatusCode(), res.Body)
 }

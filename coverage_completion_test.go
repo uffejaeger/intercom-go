@@ -212,7 +212,7 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 		{"segments retrieve", func() error { _, err := client.Segments.Retrieve(ctx, "segment-1"); return err }},
 		{"subscription types list", func() error { _, err := client.SubscriptionTypes.List(ctx); return err }},
 		{"tags list", func() error { _, err := client.Tags.List(ctx); return err }},
-		{"tags create", func() error { _, err := client.Tags.Create(ctx, map[string]any{"name": "tag"}); return err }},
+		{"tags create", func() error { _, err := client.Tags.Create(ctx, TagCreateOrUpdateRequest{Name: "tag"}); return err }},
 		{"tags retrieve", func() error { _, err := client.Tags.Retrieve(ctx, "10"); return err }},
 		{"tags delete", func() error { return client.Tags.Delete(ctx, "10") }},
 		{"teams list", func() error { _, err := client.Teams.List(ctx); return err }},
@@ -229,7 +229,14 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 		{"tickets get", func() error { _, err := client.Tickets.Get(ctx, "20"); return err }},
 		{"tickets update", func() error { _, err := client.Tickets.Update(ctx, "20", TicketUpdate{}); return err }},
 		{"tickets delete", func() error { return client.Tickets.Delete(ctx, "20") }},
-		{"tickets reply", func() error { _, err := client.Tickets.Reply(ctx, "20", map[string]any{"body": "hi"}, nil); return err }},
+		{"tickets reply", func() error {
+			_, err := client.Tickets.Reply(ctx, "20", TicketContactReply{
+				Body:        "hi",
+				Contact:     NewTicketReplyContactByUserID("external-1"),
+				MessageType: TicketReplyMessageTypeComment,
+			}, nil)
+			return err
+		}},
 		{"tickets list states", func() error { _, err := client.Tickets.ListStates(ctx); return err }},
 		{"tickets list types", func() error { _, err := client.Tickets.ListTypes(ctx); return err }},
 		{"tickets get type", func() error { _, err := client.Tickets.GetType(ctx, "1"); return err }},
@@ -354,7 +361,14 @@ func TestCoverageCompletionValidation(t *testing.T) {
 		{"tickets get empty", func() error { _, err := client.Tickets.Get(ctx, ""); return err }},
 		{"tickets update empty", func() error { _, err := client.Tickets.Update(ctx, "", TicketUpdate{}); return err }},
 		{"tickets delete empty", func() error { return client.Tickets.Delete(ctx, "") }},
-		{"tickets reply empty", func() error { _, err := client.Tickets.Reply(ctx, "", map[string]any{}, nil); return err }},
+		{"tickets reply empty", func() error {
+			_, err := client.Tickets.Reply(ctx, "", TicketContactReply{
+				Body:        "hi",
+				Contact:     NewTicketReplyContactByUserID("external-1"),
+				MessageType: TicketReplyMessageTypeComment,
+			}, nil)
+			return err
+		}},
 		{"tickets get type empty", func() error { _, err := client.Tickets.GetType(ctx, ""); return err }},
 		{"tickets update type empty", func() error { _, err := client.Tickets.UpdateType(ctx, "", TicketTypeUpdate{}); return err }},
 		{"tickets create type attribute empty type", func() error {
@@ -435,23 +449,17 @@ func TestCoverageCompletionBehavior(t *testing.T) {
 		}
 	})
 
-	t.Run("tags create marshal error", func(t *testing.T) {
+	t.Run("tickets reply requires exactly one contact identifier", func(t *testing.T) {
 		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			t.Fatal("unexpected request")
 			return nil, nil
 		}))
-		if _, err := client.Tags.Create(context.Background(), make(chan int)); err == nil {
-			t.Fatal("expected marshal error")
-		}
-	})
-
-	t.Run("tickets reply marshal error", func(t *testing.T) {
-		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
-			t.Fatal("unexpected request")
-			return nil, nil
-		}))
-		if _, err := client.Tickets.Reply(context.Background(), "20", make(chan int), nil); err == nil {
-			t.Fatal("expected marshal error")
+		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
+			Body:        "hi",
+			Contact:     TicketReplyContact{},
+			MessageType: TicketReplyMessageTypeComment,
+		}, nil); err == nil {
+			t.Fatal("expected validation error")
 		}
 	})
 
@@ -467,7 +475,11 @@ func TestCoverageCompletionBehavior(t *testing.T) {
 			}
 			return jsonResponse(req, http.StatusOK, `{"type":"ticket_part","id":"156"}`), nil
 		}))
-		if _, err := client.Tickets.Reply(context.Background(), "20", map[string]any{"body": "hi"}, &skip); err != nil {
+		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
+			Body:        "hi",
+			Contact:     NewTicketReplyContactByUserID("external-1"),
+			MessageType: TicketReplyMessageTypeComment,
+		}, &skip); err != nil {
 			t.Fatalf("Reply returned error: %v", err)
 		}
 	})
@@ -484,19 +496,12 @@ func TestCoverageCompletionBehavior(t *testing.T) {
 			}
 			return jsonResponse(req, http.StatusOK, `{"type":"ticket_part","id":"156"}`), nil
 		}))
-		if _, err := client.Tickets.Reply(context.Background(), "20", map[string]any{"body": "hi"}, &skip); err != nil {
+		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
+			Body:        "hi",
+			Contact:     NewTicketReplyContactByUserID("external-1"),
+			MessageType: TicketReplyMessageTypeComment,
+		}, &skip); err != nil {
 			t.Fatalf("Reply returned error: %v", err)
-		}
-	})
-
-	t.Run("tickets reply skip notifications non-object payload", func(t *testing.T) {
-		skip := true
-		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
-			t.Fatal("unexpected request")
-			return nil, nil
-		}))
-		if _, err := client.Tickets.Reply(context.Background(), "20", []string{"hi"}, &skip); err == nil {
-			t.Fatal("expected unmarshal error")
 		}
 	})
 

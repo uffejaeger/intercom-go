@@ -24,7 +24,7 @@ func TestRemainingServicesRequests(t *testing.T) {
 			statusCode: http.StatusOK,
 			response:   `{"id":"105","name":"test"}`,
 			call: func(ctx context.Context, client *Client) error {
-				tag, err := client.Tags.Create(ctx, map[string]any{"name": "test"})
+				tag, err := client.Tags.Create(ctx, TagCreateOrUpdateRequest{Name: "test"})
 				if err != nil {
 					return err
 				}
@@ -252,11 +252,11 @@ func TestRemainingServicesRequests(t *testing.T) {
 			statusCode: http.StatusOK,
 			response:   `{"type":"ticket_part","id":"156"}`,
 			call: func(ctx context.Context, client *Client) error {
-				_, err := client.Tickets.Reply(ctx, "20", map[string]any{
-					"type":         "admin",
-					"admin_id":     "991267943",
-					"message_type": "note",
-					"body":         "hi",
+				body := "hi"
+				_, err := client.Tickets.Reply(ctx, "20", TicketAdminReply{
+					AdminID:     "991267943",
+					Body:        &body,
+					MessageType: TicketReplyMessageTypeNote,
 				}, nil)
 				return err
 			},

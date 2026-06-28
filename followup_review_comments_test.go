@@ -208,8 +208,12 @@ func TestTicketHelpersExposeConstructiblePublicRequests(t *testing.T) {
 
 	t.Run("public tag request types", func(t *testing.T) {
 		var gotPath string
+		var gotBody map[string]any
 		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			gotPath = req.URL.Path
+			if err := json.NewDecoder(req.Body).Decode(&gotBody); err != nil {
+				t.Fatalf("decode body: %v", err)
+			}
 			return jsonResponse(req, http.StatusOK, `{"id":"121","name":"Manual tag"}`), nil
 		}))
 		if _, err := client.Tickets.AttachTag(context.Background(), "20", TicketTagAttachRequest{Id: "121", AdminId: "991267958"}); err != nil {
@@ -218,5 +222,244 @@ func TestTicketHelpersExposeConstructiblePublicRequests(t *testing.T) {
 		if gotPath != "/tickets/20/tags" {
 			t.Fatalf("path = %q", gotPath)
 		}
+		if gotBody["id"] != "121" || gotBody["admin_id"] != "991267958" {
+			t.Fatalf("body = %#v", gotBody)
+		}
 	})
+
+	t.Run("ticket reply request types", func(t *testing.T) {
+		var gotBody map[string]any
+		skip := true
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if err := json.NewDecoder(req.Body).Decode(&gotBody); err != nil {
+				t.Fatalf("decode body: %v", err)
+			}
+			return jsonResponse(req, http.StatusOK, `{"type":"ticket_part","id":"156"}`), nil
+		}))
+		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
+			Body:        "hi",
+			Contact:     NewTicketReplyContactByEmail("user@example.com"),
+			MessageType: TicketReplyMessageTypeComment,
+		}, &skip); err != nil {
+			t.Fatalf("Reply returned error: %v", err)
+		}
+		if gotBody["email"] != "user@example.com" || gotBody["type"] != "user" || gotBody["skip_notifications"] != true {
+			t.Fatalf("body = %#v", gotBody)
+		}
+	})
+
+	t.Run("tag create request types", func(t *testing.T) {
+		var gotBody map[string]any
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if err := json.NewDecoder(req.Body).Decode(&gotBody); err != nil {
+				t.Fatalf("decode body: %v", err)
+			}
+			return jsonResponse(req, http.StatusOK, `{"id":"105","name":"test"}`), nil
+		}))
+		if _, err := client.Tags.Create(context.Background(), TagCreateOrUpdateRequest{Name: "test"}); err != nil {
+			t.Fatalf("Create returned error: %v", err)
+		}
+		if gotBody["name"] != "test" {
+			t.Fatalf("body = %#v", gotBody)
+		}
+	})
+
+	t.Run("tag union request variants", func(t *testing.T) {
+		TagCreateOrUpdateRequest{Name: "direct"}.isTagCreateRequest()
+		TagCompanyRequest{Name: "direct"}.isTagCreateRequest()
+		TagCompanyUntagRequest{Name: "direct"}.isTagCreateRequest()
+		TagUsersRequest{Name: "direct"}.isTagCreateRequest()
+
+		tests := []struct {
+			name string
+			req  TagCreateRequest
+			want func(*testing.T, map[string]any)
+		}{
+			{
+				name: "company tagging",
+				req: TagCompanyRequest{
+					Name:      "enterprise",
+					Companies: []TagCompanyReference{{ID: stringPtr("company-1")}},
+				},
+				want: func(t *testing.T, body map[string]any) {
+					t.Helper()
+					if body["name"] != "enterprise" {
+						t.Fatalf("body = %#v", body)
+					}
+					companies, ok := body["companies"].([]any)
+					if !ok || len(companies) != 1 {
+						t.Fatalf("body = %#v", body)
+					}
+				},
+			},
+			{
+				name: "company untagging",
+				req: TagCompanyUntagRequest{
+					Name:      "enterprise",
+					Companies: []TagCompanyUntagReference{{ID: stringPtr("company-1"), Untag: true}},
+				},
+				want: func(t *testing.T, body map[string]any) {
+					t.Helper()
+					companies := body["companies"].([]any)
+					company := companies[0].(map[string]any)
+					if company["untag"] != true {
+						t.Fatalf("body = %#v", body)
+					}
+				},
+			},
+			{
+				name: "user tagging",
+				req: TagUsersRequest{
+					Name:  "enterprise",
+					Users: []TagUserReference{{ID: "contact-1"}},
+				},
+				want: func(t *testing.T, body map[string]any) {
+					t.Helper()
+					users, ok := body["users"].([]any)
+					if !ok || len(users) != 1 {
+						t.Fatalf("body = %#v", body)
+					}
+				},
+			},
+		}
+
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				tt.req.isTagCreateRequest()
+				var gotBody map[string]any
+				client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+					if err := json.NewDecoder(req.Body).Decode(&gotBody); err != nil {
+						t.Fatalf("decode body: %v", err)
+					}
+					return jsonResponse(req, http.StatusOK, `{"id":"105","name":"test"}`), nil
+				}))
+				if _, err := client.Tags.Create(context.Background(), tt.req); err != nil {
+					t.Fatalf("Create returned error: %v", err)
+				}
+				tt.want(t, gotBody)
+			})
+		}
+	})
+
+	t.Run("tag create marshal error", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			t.Fatal("unexpected request")
+			return nil, nil
+		}))
+		if _, err := client.Tags.Create(context.Background(), invalidTagCreateRequest{}); err == nil {
+			t.Fatal("expected marshal error")
+		}
+	})
+
+	t.Run("tag create transport error", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return nil, io.ErrUnexpectedEOF
+		}))
+		if _, err := client.Tags.Create(context.Background(), TagCreateOrUpdateRequest{Name: "test"}); err == nil {
+			t.Fatal("expected transport error")
+		}
+	})
+
+	t.Run("ticket admin reply request types", func(t *testing.T) {
+		var gotBody map[string]any
+		skip := false
+		body := "internal note"
+		createdAt := 123
+		crossPost := true
+		replyOptions := []TicketReplyOption{{Text: "Yes", UUID: "e1d7f8f2-1234-4c9f-9f4c-6f4f1a0d0001"}}
+		attachments := []string{"https://example.test/a.png"}
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if err := json.NewDecoder(req.Body).Decode(&gotBody); err != nil {
+				t.Fatalf("decode body: %v", err)
+			}
+			return jsonResponse(req, http.StatusOK, `{"type":"ticket_part","id":"156"}`), nil
+		}))
+		req := TicketAdminReply{
+			AdminID:        "991267943",
+			AttachmentURLs: &attachments,
+			Body:           &body,
+			CreatedAt:      &createdAt,
+			CrossPost:      &crossPost,
+			MessageType:    TicketReplyMessageTypeQuickReply,
+			ReplyOptions:   &replyOptions,
+		}
+		req.isTicketReplyRequest()
+		if _, err := client.Tickets.Reply(context.Background(), "20", req, &skip); err != nil {
+			t.Fatalf("Reply returned error: %v", err)
+		}
+		if gotBody["type"] != "admin" || gotBody["skip_notifications"] != false || gotBody["cross_post"] != true {
+			t.Fatalf("body = %#v", gotBody)
+		}
+	})
+
+	t.Run("ticket intercom user reply selector", func(t *testing.T) {
+		var gotBody map[string]any
+		attachments := []string{"https://example.test/a.png"}
+		createdAt := 456
+		replyOptions := []TicketReplyOption{{Text: "Done", UUID: "e1d7f8f2-1234-4c9f-9f4c-6f4f1a0d0002"}}
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if err := json.NewDecoder(req.Body).Decode(&gotBody); err != nil {
+				t.Fatalf("decode body: %v", err)
+			}
+			return jsonResponse(req, http.StatusOK, `{"type":"ticket_part","id":"156"}`), nil
+		}))
+		reply := TicketContactReply{
+			AttachmentURLs: &attachments,
+			Body:           "hi",
+			Contact:        NewTicketReplyContactByIntercomUserID("contact-1"),
+			CreatedAt:      &createdAt,
+			MessageType:    TicketReplyMessageTypeComment,
+			ReplyOptions:   &replyOptions,
+		}
+		reply.isTicketReplyRequest()
+		if _, err := client.Tickets.Reply(context.Background(), "20", reply, nil); err != nil {
+			t.Fatalf("Reply returned error: %v", err)
+		}
+		if gotBody["intercom_user_id"] != "contact-1" || gotBody["created_at"] != float64(456) {
+			t.Fatalf("body = %#v", gotBody)
+		}
+	})
+
+	t.Run("ticket reply marshal error", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			t.Fatal("unexpected request")
+			return nil, nil
+		}))
+		if _, err := client.Tickets.Reply(context.Background(), "20", invalidTicketReplyRequest{}, nil); err == nil {
+			t.Fatal("expected marshal error")
+		}
+	})
+
+	t.Run("ticket reply transport error", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return nil, io.ErrUnexpectedEOF
+		}))
+		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
+			Body:        "hi",
+			Contact:     NewTicketReplyContactByEmail("user@example.com"),
+			MessageType: TicketReplyMessageTypeComment,
+		}, nil); err == nil {
+			t.Fatal("expected transport error")
+		}
+	})
+}
+
+func stringPtr(s string) *string {
+	return &s
+}
+
+type invalidTagCreateRequest struct{}
+
+func (invalidTagCreateRequest) isTagCreateRequest() {}
+
+func (invalidTagCreateRequest) MarshalJSON() ([]byte, error) {
+	return nil, io.ErrUnexpectedEOF
+}
+
+type invalidTicketReplyRequest struct{}
+
+func (invalidTicketReplyRequest) isTicketReplyRequest() {}
+
+func (invalidTicketReplyRequest) payload(skipNotifications *bool) (map[string]any, error) {
+	return map[string]any{"bad": make(chan int)}, nil
 }
