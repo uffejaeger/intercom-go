@@ -1,6 +1,7 @@
 package intercom
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -20,4 +21,17 @@ func requireEmpty(statusCode int, body []byte) error {
 		return nil
 	}
 	return parseErrorResponse(statusCode, body)
+}
+
+func requireJSON[T any](operation string, statusCode int, body []byte) (*T, error) {
+	if statusCode != http.StatusOK {
+		return nil, parseErrorResponse(statusCode, body)
+	}
+
+	var value T
+	if err := json.Unmarshal(body, &value); err != nil {
+		return nil, fmt.Errorf("intercom: decode %s response: %w", operation, err)
+	}
+
+	return &value, nil
 }
