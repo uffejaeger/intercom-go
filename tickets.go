@@ -91,8 +91,11 @@ type TicketReply = gen.TicketReplySchema
 type TicketReplyMessageType string
 
 const (
-	TicketReplyMessageTypeComment    TicketReplyMessageType = "comment"
-	TicketReplyMessageTypeNote       TicketReplyMessageType = "note"
+	// TicketReplyMessageTypeComment posts a visible comment reply to the ticket.
+	TicketReplyMessageTypeComment TicketReplyMessageType = "comment"
+	// TicketReplyMessageTypeNote posts an internal note on the ticket.
+	TicketReplyMessageTypeNote TicketReplyMessageType = "note"
+	// TicketReplyMessageTypeQuickReply posts a reply that includes quick-reply options.
 	TicketReplyMessageTypeQuickReply TicketReplyMessageType = "quick_reply"
 )
 
