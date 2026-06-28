@@ -11,6 +11,39 @@ import (
 // TicketList is a list of Intercom tickets.
 type TicketList = gen.TicketListSchema
 
+// TicketContact is a contact selector included in a ticket create request.
+type TicketContact = gen.CreateTicketRequest_Contacts_Item
+
+// TicketContactID selects a ticket contact by Intercom contact ID.
+type TicketContactID = gen.CreateTicketRequestContacts0
+
+// TicketContactExternalID selects a ticket contact by external ID.
+type TicketContactExternalID = gen.CreateTicketRequestContacts1
+
+// TicketContactEmail selects a ticket contact by email address.
+type TicketContactEmail = gen.CreateTicketRequestContacts2
+
+// NewTicketContactByID constructs a ticket contact selector from an Intercom contact ID.
+func NewTicketContactByID(id string) TicketContact {
+	var contact TicketContact
+	_ = contact.FromCreateTicketRequestContacts0(TicketContactID{Id: id})
+	return contact
+}
+
+// NewTicketContactByExternalID constructs a ticket contact selector from an external contact ID.
+func NewTicketContactByExternalID(externalID string) TicketContact {
+	var contact TicketContact
+	_ = contact.FromCreateTicketRequestContacts1(TicketContactExternalID{ExternalId: externalID})
+	return contact
+}
+
+// NewTicketContactByEmail constructs a ticket contact selector from a contact email.
+func NewTicketContactByEmail(email string) TicketContact {
+	var contact TicketContact
+	_ = contact.FromCreateTicketRequestContacts2(TicketContactEmail{Email: email})
+	return contact
+}
+
 // TicketCreate holds the fields for creating a ticket.
 type TicketCreate = gen.CreateTicketJSONBody
 
@@ -52,6 +85,12 @@ type TicketTypeAttributeUpdate = gen.UpdateTicketTypeAttributeRequestSchema
 
 // TicketReply is the result of replying to a ticket.
 type TicketReply = gen.TicketReplySchema
+
+// TicketTagAttachRequest holds the fields for attaching a tag to a ticket.
+type TicketTagAttachRequest = gen.AttachTagToTicketJSONBody
+
+// TicketTagDetachRequest holds the fields for detaching a tag from a ticket.
+type TicketTagDetachRequest = gen.DetachTagFromTicketJSONBody
 
 // TicketsService exposes ticket-related Intercom API operations.
 type TicketsService struct {
@@ -230,7 +269,7 @@ func (s *TicketsService) UpdateTypeAttribute(ctx context.Context, ticketTypeID, 
 }
 
 // AttachTag attaches a tag to a ticket.
-func (s *TicketsService) AttachTag(ctx context.Context, ticketID string, req gen.AttachTagToTicketJSONBody) (*Tag, error) {
+func (s *TicketsService) AttachTag(ctx context.Context, ticketID string, req TicketTagAttachRequest) (*Tag, error) {
 	if ticketID == "" {
 		return nil, errRequiredID("ticket")
 	}
@@ -242,7 +281,7 @@ func (s *TicketsService) AttachTag(ctx context.Context, ticketID string, req gen
 }
 
 // DetachTag detaches a tag from a ticket.
-func (s *TicketsService) DetachTag(ctx context.Context, ticketID, tagID string, req gen.DetachTagFromTicketJSONBody) (*Tag, error) {
+func (s *TicketsService) DetachTag(ctx context.Context, ticketID, tagID string, req TicketTagDetachRequest) (*Tag, error) {
 	if ticketID == "" {
 		return nil, errRequiredID("ticket")
 	}

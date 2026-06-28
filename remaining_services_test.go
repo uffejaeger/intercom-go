@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"testing"
 	"time"
-
-	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
 
 func TestRemainingServicesRequests(t *testing.T) {
@@ -205,12 +203,12 @@ func TestRemainingServicesRequests(t *testing.T) {
 			call: func(ctx context.Context, client *Client) error {
 				_, err := client.Fin.Reply(ctx, FinReply{
 					ConversationId: "c1",
-					FinAgentMessageSchema: gen.FinAgentMessageSchema{
+					Message: FinMessage{
 						Author:    "user",
 						Body:      "hi",
 						Timestamp: now,
 					},
-					FinAgentUserSchema: gen.FinAgentUserSchema{Id: "u1"},
+					User: FinUser{Id: "u1"},
 				})
 				return err
 			},
@@ -236,11 +234,9 @@ func TestRemainingServicesRequests(t *testing.T) {
 			statusCode: http.StatusOK,
 			response:   `{"type":"job","id":"2","status":"pending"}`,
 			call: func(ctx context.Context, client *Client) error {
-				var contact gen.CreateTicketRequest_Contacts_Item
-				_ = contact.FromCreateTicketRequestContacts0(gen.CreateTicketRequestContacts0{Id: "1234"})
 				_, err := client.Tickets.EnqueueCreate(ctx, TicketCreate{
 					TicketTypeId: "1234",
-					Contacts:     []gen.CreateTicketRequest_Contacts_Item{contact},
+					Contacts:     []TicketContact{NewTicketContactByID("1234")},
 				})
 				return err
 			},
@@ -268,7 +264,7 @@ func TestRemainingServicesRequests(t *testing.T) {
 			statusCode: http.StatusOK,
 			response:   `{"type":"tag","id":"121","name":"Manual tag"}`,
 			call: func(ctx context.Context, client *Client) error {
-				_, err := client.Tickets.AttachTag(ctx, "20", gen.AttachTagToTicketJSONBody{Id: "121", AdminId: "991267958"})
+				_, err := client.Tickets.AttachTag(ctx, "20", TicketTagAttachRequest{Id: "121", AdminId: "991267958"})
 				return err
 			},
 			wantMethod: http.MethodPost,

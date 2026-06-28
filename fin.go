@@ -6,11 +6,70 @@ import (
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
 
+// FinAttachment is an attachment included with a Fin request.
+type FinAttachment = gen.FinAgentAttachmentSchema
+
+// FinAttachmentType identifies the type of attachment included with a Fin request.
+type FinAttachmentType = gen.FinAgentAttachmentType
+
+const (
+	FinAttachmentTypeFile FinAttachmentType = gen.File
+	FinAttachmentTypeURL  FinAttachmentType = gen.Url
+)
+
+// FinConversationMetadata provides extra context for a Fin conversation.
+type FinConversationMetadata = gen.FinAgentConversationMetadataSchema
+
+// FinMessage is a message exchanged within a Fin conversation.
+type FinMessage = gen.FinAgentMessageSchema
+
+// FinMessageAuthor identifies who sent a Fin conversation message.
+type FinMessageAuthor = gen.FinAgentMessageAuthor
+
+const (
+	FinMessageAuthorAgent FinMessageAuthor = gen.FinAgentMessageAuthorAgent
+	FinMessageAuthorFin   FinMessageAuthor = gen.FinAgentMessageAuthorFin
+	FinMessageAuthorUser  FinMessageAuthor = gen.FinAgentMessageAuthorUser
+)
+
+// FinUser identifies the user participating in a Fin conversation.
+type FinUser = gen.FinAgentUserSchema
+
 // FinReply is a request to continue a Fin conversation.
-type FinReply = gen.ReplyToFinJSONBody
+type FinReply struct {
+	Attachments    *[]FinAttachment `json:"attachments,omitempty"`
+	ConversationId string           `json:"conversation_id"`
+	Message        FinMessage       `json:"message"`
+	User           FinUser          `json:"user"`
+}
+
+func (r FinReply) toGenerated() gen.ReplyToFinJSONBody {
+	return gen.ReplyToFinJSONBody{
+		Attachments:           r.Attachments,
+		ConversationId:        r.ConversationId,
+		FinAgentMessageSchema: gen.FinAgentMessageSchema(r.Message),
+		FinAgentUserSchema:    gen.FinAgentUserSchema(r.User),
+	}
+}
 
 // FinStartConversation is a request to start a Fin conversation.
-type FinStartConversation = gen.StartFinConversationJSONBody
+type FinStartConversation struct {
+	Attachments          *[]FinAttachment         `json:"attachments,omitempty"`
+	ConversationId       string                   `json:"conversation_id"`
+	ConversationMetadata *FinConversationMetadata `json:"conversation_metadata,omitempty"`
+	Message              FinMessage               `json:"message"`
+	User                 FinUser                  `json:"user"`
+}
+
+func (r FinStartConversation) toGenerated() gen.StartFinConversationJSONBody {
+	return gen.StartFinConversationJSONBody{
+		Attachments:                        r.Attachments,
+		ConversationId:                     r.ConversationId,
+		FinAgentConversationMetadataSchema: r.ConversationMetadata,
+		FinAgentMessageSchema:              gen.FinAgentMessageSchema(r.Message),
+		FinAgentUserSchema:                 gen.FinAgentUserSchema(r.User),
+	}
+}
 
 // FinConversationResponse is the response from Fin conversation APIs.
 type FinConversationResponse struct {
@@ -29,7 +88,7 @@ type FinService struct {
 
 // Reply continues a Fin conversation.
 func (s *FinService) Reply(ctx context.Context, req FinReply) (*FinConversationResponse, error) {
-	res, err := s.client.generated.ReplyToFinWithResponse(ctx, nil, gen.ReplyToFinJSONRequestBody(req))
+	res, err := s.client.generated.ReplyToFinWithResponse(ctx, nil, gen.ReplyToFinJSONRequestBody(req.toGenerated()))
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +97,7 @@ func (s *FinService) Reply(ctx context.Context, req FinReply) (*FinConversationR
 
 // StartConversation starts a Fin conversation.
 func (s *FinService) StartConversation(ctx context.Context, req FinStartConversation) (*FinConversationResponse, error) {
-	res, err := s.client.generated.StartFinConversationWithResponse(ctx, nil, gen.StartFinConversationJSONRequestBody(req))
+	res, err := s.client.generated.StartFinConversationWithResponse(ctx, nil, gen.StartFinConversationJSONRequestBody(req.toGenerated()))
 	if err != nil {
 		return nil, err
 	}
