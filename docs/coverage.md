@@ -28,7 +28,6 @@ This document tracks which Intercom API areas are exposed through the public `in
 - Tickets
 - Visitors
 - Workspace exports, jobs, and IP allowlist
-
 ## Pending
 
 - Any remaining Intercom API areas not yet represented in the pinned OpenAPI spec normalization output should be added through the same public wrapper pattern.
