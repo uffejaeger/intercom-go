@@ -131,15 +131,18 @@ func (s *TicketsService) Reply(ctx context.Context, ticketID string, req any, sk
 		return nil, err
 	}
 	if skipNotifications != nil {
-		var payload map[string]any
+		var payload map[string]json.RawMessage
 		if err := json.Unmarshal(body, &payload); err != nil {
 			return nil, err
 		}
-		payload["skip_notifications"] = *skipNotifications
-		body, err = json.Marshal(payload)
-		if err != nil {
-			return nil, err
+		if *skipNotifications {
+			payload["skip_notifications"] = json.RawMessage("true")
+		} else {
+			payload["skip_notifications"] = json.RawMessage("false")
 		}
+		// The payload came from a successful JSON marshal/unmarshal cycle, so the
+		// map only contains valid JSON fragments and the boolean above is known-valid.
+		body, _ = json.Marshal(payload)
 	}
 	res, err := s.client.generated.ReplyTicketWithBodyWithResponse(ctx, ticketID, nil, "application/json", bytes.NewReader(body))
 	if err != nil {
