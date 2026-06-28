@@ -190,7 +190,11 @@ func TestRemainingServicesRequests(t *testing.T) {
 			statusCode: http.StatusOK,
 			response:   `{"type":"contact","id":"c1"}`,
 			call: func(ctx context.Context, client *Client) error {
-				_, err := client.Visitors.Convert(ctx, VisitorConvert{Type: "user"})
+				userID := "u1"
+				_, err := client.Visitors.Convert(ctx, VisitorConvert{
+					Type:    "user",
+					Visitor: VisitorConvertSource{UserID: &userID},
+				})
 				return err
 			},
 			wantMethod: http.MethodPost,
