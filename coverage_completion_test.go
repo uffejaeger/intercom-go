@@ -8,8 +8,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
 
 func TestCoverageCompletionRequests(t *testing.T) {
@@ -168,7 +166,7 @@ func TestCoverageCompletionRequests(t *testing.T) {
 		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			return jsonResponse(req, http.StatusOK, `{"id":"121","name":"Manual tag"}`), nil
 		}))
-		_, err := client.Tickets.DetachTag(context.Background(), "20", "121", gen.DetachTagFromTicketJSONBody{AdminId: "991267958"})
+		_, err := client.Tickets.DetachTag(context.Background(), "20", "121", TicketTagDetachRequest{AdminId: "991267958"})
 		if err != nil {
 			t.Fatalf("DetachTag returned error: %v", err)
 		}
@@ -184,8 +182,7 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 	now := time.Date(2026, 1, 2, 3, 4, 5, 0, time.UTC)
 	body := "hello"
 	name := "collection"
-	contact := gen.CreateTicketRequest_Contacts_Item{}
-	_ = contact.FromCreateTicketRequestContacts0(gen.CreateTicketRequestContacts0{Id: "1234"})
+	contact := NewTicketContactByID("1234")
 
 	tests := []struct {
 		name string
@@ -221,11 +218,11 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 		{"teams list", func() error { _, err := client.Teams.List(ctx); return err }},
 		{"teams retrieve", func() error { _, err := client.Teams.Retrieve(ctx, "10"); return err }},
 		{"tickets create", func() error {
-			_, err := client.Tickets.Create(ctx, TicketCreate{TicketTypeId: "1234", Contacts: []gen.CreateTicketRequest_Contacts_Item{contact}})
+			_, err := client.Tickets.Create(ctx, TicketCreate{TicketTypeId: "1234", Contacts: []TicketContact{contact}})
 			return err
 		}},
 		{"tickets enqueue create", func() error {
-			_, err := client.Tickets.EnqueueCreate(ctx, TicketCreate{TicketTypeId: "1234", Contacts: []gen.CreateTicketRequest_Contacts_Item{contact}})
+			_, err := client.Tickets.EnqueueCreate(ctx, TicketCreate{TicketTypeId: "1234", Contacts: []TicketContact{contact}})
 			return err
 		}},
 		{"tickets search", func() error { _, err := client.Tickets.Search(ctx, TicketSearchQuery{}); return err }},
@@ -247,11 +244,11 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 			return err
 		}},
 		{"tickets attach tag", func() error {
-			_, err := client.Tickets.AttachTag(ctx, "20", gen.AttachTagToTicketJSONBody{Id: "121", AdminId: "1"})
+			_, err := client.Tickets.AttachTag(ctx, "20", TicketTagAttachRequest{Id: "121", AdminId: "1"})
 			return err
 		}},
 		{"tickets detach tag", func() error {
-			_, err := client.Tickets.DetachTag(ctx, "20", "121", gen.DetachTagFromTicketJSONBody{AdminId: "1"})
+			_, err := client.Tickets.DetachTag(ctx, "20", "121", TicketTagDetachRequest{AdminId: "1"})
 			return err
 		}},
 		{"visitors get by user id", func() error { _, err := client.Visitors.GetByUserID(ctx, "u1"); return err }},
@@ -285,9 +282,9 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 		{"calls transcript", func() error { _, err := client.Calls.Transcript(ctx, "call-1"); return err }},
 		{"fin reply", func() error {
 			_, err := client.Fin.Reply(ctx, FinReply{
-				ConversationId:        "c1",
-				FinAgentMessageSchema: gen.FinAgentMessageSchema{Author: "user", Body: "hi", Timestamp: now},
-				FinAgentUserSchema:    gen.FinAgentUserSchema{Id: "u1"},
+				ConversationId: "c1",
+				Message:        FinMessage{Author: "user", Body: "hi", Timestamp: now},
+				User:           FinUser{Id: "u1"},
 			})
 			return err
 		}},
@@ -365,13 +362,13 @@ func TestCoverageCompletionValidation(t *testing.T) {
 			_, err := client.Tickets.UpdateTypeAttribute(ctx, "1", "", TicketTypeAttributeUpdate{})
 			return err
 		}},
-		{"tickets attach tag empty", func() error { _, err := client.Tickets.AttachTag(ctx, "", gen.AttachTagToTicketJSONBody{}); return err }},
+		{"tickets attach tag empty", func() error { _, err := client.Tickets.AttachTag(ctx, "", TicketTagAttachRequest{}); return err }},
 		{"tickets detach tag empty ticket", func() error {
-			_, err := client.Tickets.DetachTag(ctx, "", "1", gen.DetachTagFromTicketJSONBody{})
+			_, err := client.Tickets.DetachTag(ctx, "", "1", TicketTagDetachRequest{})
 			return err
 		}},
 		{"tickets detach tag empty tag", func() error {
-			_, err := client.Tickets.DetachTag(ctx, "1", "", gen.DetachTagFromTicketJSONBody{})
+			_, err := client.Tickets.DetachTag(ctx, "1", "", TicketTagDetachRequest{})
 			return err
 		}},
 		{"visitors get empty", func() error { _, err := client.Visitors.GetByUserID(ctx, ""); return err }},

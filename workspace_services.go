@@ -2,6 +2,7 @@ package intercom
 
 import (
 	"context"
+	"net/http"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
@@ -58,6 +59,11 @@ type WorkspaceService struct {
 	client *Client
 }
 
+func acceptOctetStream(_ context.Context, req *http.Request) error {
+	req.Header.Set("Accept", "application/octet-stream")
+	return nil
+}
+
 // GetIPAllowlist returns the workspace IP allowlist configuration.
 func (s *WorkspaceService) GetIPAllowlist(ctx context.Context) (*IPAllowlist, error) {
 	res, err := s.client.generated.GetIpAllowlistWithResponse(ctx, nil)
@@ -102,7 +108,7 @@ func (s *WorkspaceService) DownloadDataExport(ctx context.Context, jobIdentifier
 	if jobIdentifier == "" {
 		return nil, errRequiredID("job identifier")
 	}
-	res, err := s.client.generated.DownloadDataExportWithResponse(ctx, jobIdentifier, nil)
+	res, err := s.client.generated.DownloadDataExportWithResponse(ctx, jobIdentifier, nil, acceptOctetStream)
 	if err != nil {
 		return nil, err
 	}
@@ -187,6 +193,7 @@ func (s *WorkspaceService) DownloadReportingExport(ctx context.Context, jobIdent
 		ctx,
 		jobIdentifier,
 		&gen.GetDownloadReportingDataJobIdentifierParams{AppId: appID, Accept: gen.ApplicationoctetStream},
+		acceptOctetStream,
 	)
 	if err != nil {
 		return nil, err
