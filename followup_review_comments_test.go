@@ -237,13 +237,12 @@ func TestTicketHelpersExposeConstructiblePublicRequests(t *testing.T) {
 			return jsonResponse(req, http.StatusOK, `{"type":"ticket_part","id":"156"}`), nil
 		}))
 		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
-			Body:        "hi",
-			Contact:     NewTicketReplyContactByEmail("user@example.com"),
-			MessageType: TicketReplyMessageTypeComment,
+			Body:    "hi",
+			Contact: NewTicketReplyContactByEmail("user@example.com"),
 		}, &skip); err != nil {
 			t.Fatalf("Reply returned error: %v", err)
 		}
-		if gotBody["email"] != "user@example.com" || gotBody["type"] != "user" || gotBody["skip_notifications"] != true {
+		if gotBody["email"] != "user@example.com" || gotBody["type"] != "user" || gotBody["skip_notifications"] != true || gotBody["message_type"] != "comment" {
 			t.Fatalf("body = %#v", gotBody)
 		}
 	})
@@ -296,7 +295,7 @@ func TestTicketHelpersExposeConstructiblePublicRequests(t *testing.T) {
 				name: "company untagging",
 				req: TagCompanyUntagRequest{
 					Name:      "enterprise",
-					Companies: []TagCompanyUntagReference{{ID: stringPtr("company-1"), Untag: true}},
+					Companies: []TagCompanyUntagReference{{ID: stringPtr("company-1")}},
 				},
 				want: func(t *testing.T, body map[string]any) {
 					t.Helper()
@@ -408,14 +407,13 @@ func TestTicketHelpersExposeConstructiblePublicRequests(t *testing.T) {
 			Body:           "hi",
 			Contact:        NewTicketReplyContactByIntercomUserID("contact-1"),
 			CreatedAt:      &createdAt,
-			MessageType:    TicketReplyMessageTypeComment,
 			ReplyOptions:   &replyOptions,
 		}
 		reply.isTicketReplyRequest()
 		if _, err := client.Tickets.Reply(context.Background(), "20", reply, nil); err != nil {
 			t.Fatalf("Reply returned error: %v", err)
 		}
-		if gotBody["intercom_user_id"] != "contact-1" || gotBody["created_at"] != float64(456) {
+		if gotBody["intercom_user_id"] != "contact-1" || gotBody["created_at"] != float64(456) || gotBody["message_type"] != "comment" {
 			t.Fatalf("body = %#v", gotBody)
 		}
 	})
@@ -435,9 +433,8 @@ func TestTicketHelpersExposeConstructiblePublicRequests(t *testing.T) {
 			return nil, io.ErrUnexpectedEOF
 		}))
 		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
-			Body:        "hi",
-			Contact:     NewTicketReplyContactByEmail("user@example.com"),
-			MessageType: TicketReplyMessageTypeComment,
+			Body:    "hi",
+			Contact: NewTicketReplyContactByEmail("user@example.com"),
 		}, nil); err == nil {
 			t.Fatal("expected transport error")
 		}

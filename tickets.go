@@ -190,12 +190,11 @@ func (r TicketAdminReply) payload(skipNotifications *bool) (map[string]any, erro
 
 // TicketContactReply replies to a ticket on behalf of a contact.
 type TicketContactReply struct {
-	AttachmentURLs *[]string              `json:"attachment_urls,omitempty"`
-	Body           string                 `json:"body"`
-	Contact        TicketReplyContact     `json:"-"`
-	CreatedAt      *int                   `json:"created_at,omitempty"`
-	MessageType    TicketReplyMessageType `json:"message_type"`
-	ReplyOptions   *[]TicketReplyOption   `json:"reply_options,omitempty"`
+	AttachmentURLs *[]string            `json:"attachment_urls,omitempty"`
+	Body           string               `json:"body"`
+	Contact        TicketReplyContact   `json:"-"`
+	CreatedAt      *int                 `json:"created_at,omitempty"`
+	ReplyOptions   *[]TicketReplyOption `json:"reply_options,omitempty"`
 }
 
 func (TicketContactReply) isTicketReplyRequest() {}
@@ -206,7 +205,7 @@ func (r TicketContactReply) payload(skipNotifications *bool) (map[string]any, er
 		return nil, err
 	}
 	payload["body"] = r.Body
-	payload["message_type"] = r.MessageType
+	payload["message_type"] = TicketReplyMessageTypeComment
 	payload["type"] = "user"
 	if r.AttachmentURLs != nil {
 		payload["attachment_urls"] = *r.AttachmentURLs

@@ -231,9 +231,8 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 		{"tickets delete", func() error { return client.Tickets.Delete(ctx, "20") }},
 		{"tickets reply", func() error {
 			_, err := client.Tickets.Reply(ctx, "20", TicketContactReply{
-				Body:        "hi",
-				Contact:     NewTicketReplyContactByUserID("external-1"),
-				MessageType: TicketReplyMessageTypeComment,
+				Body:    "hi",
+				Contact: NewTicketReplyContactByUserID("external-1"),
 			}, nil)
 			return err
 		}},
@@ -363,9 +362,8 @@ func TestCoverageCompletionValidation(t *testing.T) {
 		{"tickets delete empty", func() error { return client.Tickets.Delete(ctx, "") }},
 		{"tickets reply empty", func() error {
 			_, err := client.Tickets.Reply(ctx, "", TicketContactReply{
-				Body:        "hi",
-				Contact:     NewTicketReplyContactByUserID("external-1"),
-				MessageType: TicketReplyMessageTypeComment,
+				Body:    "hi",
+				Contact: NewTicketReplyContactByUserID("external-1"),
 			}, nil)
 			return err
 		}},
@@ -455,9 +453,8 @@ func TestCoverageCompletionBehavior(t *testing.T) {
 			return nil, nil
 		}))
 		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
-			Body:        "hi",
-			Contact:     TicketReplyContact{},
-			MessageType: TicketReplyMessageTypeComment,
+			Body:    "hi",
+			Contact: TicketReplyContact{},
 		}, nil); err == nil {
 			t.Fatal("expected validation error")
 		}
@@ -476,9 +473,8 @@ func TestCoverageCompletionBehavior(t *testing.T) {
 			return jsonResponse(req, http.StatusOK, `{"type":"ticket_part","id":"156"}`), nil
 		}))
 		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
-			Body:        "hi",
-			Contact:     NewTicketReplyContactByUserID("external-1"),
-			MessageType: TicketReplyMessageTypeComment,
+			Body:    "hi",
+			Contact: NewTicketReplyContactByUserID("external-1"),
 		}, &skip); err != nil {
 			t.Fatalf("Reply returned error: %v", err)
 		}
@@ -497,9 +493,8 @@ func TestCoverageCompletionBehavior(t *testing.T) {
 			return jsonResponse(req, http.StatusOK, `{"type":"ticket_part","id":"156"}`), nil
 		}))
 		if _, err := client.Tickets.Reply(context.Background(), "20", TicketContactReply{
-			Body:        "hi",
-			Contact:     NewTicketReplyContactByUserID("external-1"),
-			MessageType: TicketReplyMessageTypeComment,
+			Body:    "hi",
+			Contact: NewTicketReplyContactByUserID("external-1"),
 		}, &skip); err != nil {
 			t.Fatalf("Reply returned error: %v", err)
 		}

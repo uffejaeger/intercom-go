@@ -49,6 +49,30 @@ type TagCompanyUntagRequest struct {
 
 func (TagCompanyUntagRequest) isTagCreateRequest() {}
 
+// MarshalJSON ensures Intercom's required `untag: true` flag is always present.
+func (r TagCompanyUntagRequest) MarshalJSON() ([]byte, error) {
+	type company struct {
+		CompanyID *string `json:"company_id,omitempty"`
+		ID        *string `json:"id,omitempty"`
+		Untag     bool    `json:"untag"`
+	}
+	payload := struct {
+		Companies []company `json:"companies"`
+		Name      string    `json:"name"`
+	}{
+		Companies: make([]company, 0, len(r.Companies)),
+		Name:      r.Name,
+	}
+	for _, c := range r.Companies {
+		payload.Companies = append(payload.Companies, company{
+			CompanyID: c.CompanyID,
+			ID:        c.ID,
+			Untag:     true,
+		})
+	}
+	return json.Marshal(payload)
+}
+
 // TagUserReference identifies a contact in a tag users request.
 type TagUserReference struct {
 	ID string `json:"id"`
