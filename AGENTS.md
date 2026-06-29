@@ -10,7 +10,7 @@ This repository is a Go module for an idiomatic Intercom SDK. Public SDK code li
 - `gofmt -w $(git ls-files --cached --others --exclude-standard '*.go')`: format repo Go files.
 - `go vet ./...`: run the standard Go lint checks.
 - `go test ./...`: run the full test suite.
-- `make coverage`: run root package coverage and enforce `COVERAGE_THRESHOLD` (default `80`).
+- `make coverage`: run root package coverage and enforce `COVERAGE_THRESHOLD` (default `99.9`).
 - `make generate`: normalize the pinned spec, then regenerate `internal/generated/intercom/client.gen.go`.
 - `make generate-check`: regenerate stubs and fail if committed generated files are stale.
 - `make pre-push`: shorthand for `fix`, `format`, `lint`, `coverage`, and `generate-check`; use this before pushing to GitHub.

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
@@ -86,6 +87,147 @@ type TicketTypeAttributeUpdate = gen.UpdateTicketTypeAttributeRequestSchema
 // TicketReply is the result of replying to a ticket.
 type TicketReply = gen.TicketReplySchema
 
+// TicketReplyMessageType identifies the kind of reply sent to a ticket.
+type TicketReplyMessageType string
+
+const (
+	// TicketReplyMessageTypeComment posts a visible comment reply to the ticket.
+	TicketReplyMessageTypeComment TicketReplyMessageType = "comment"
+	// TicketReplyMessageTypeNote posts an internal note on the ticket.
+	TicketReplyMessageTypeNote TicketReplyMessageType = "note"
+	// TicketReplyMessageTypeQuickReply posts a reply that includes quick-reply options.
+	TicketReplyMessageTypeQuickReply TicketReplyMessageType = "quick_reply"
+)
+
+// TicketReplyOption is a quick-reply option included in a ticket reply.
+type TicketReplyOption struct {
+	Text string `json:"text"`
+	UUID string `json:"uuid"`
+}
+
+// TicketReplyContact identifies the contact replying to a ticket.
+type TicketReplyContact struct {
+	Email          *string `json:"email,omitempty"`
+	IntercomUserID *string `json:"intercom_user_id,omitempty"`
+	UserID         *string `json:"user_id,omitempty"`
+}
+
+// NewTicketReplyContactByEmail constructs a ticket reply contact selector from an email address.
+func NewTicketReplyContactByEmail(email string) TicketReplyContact {
+	return TicketReplyContact{Email: &email}
+}
+
+// NewTicketReplyContactByIntercomUserID constructs a ticket reply contact selector from an Intercom contact ID.
+func NewTicketReplyContactByIntercomUserID(intercomUserID string) TicketReplyContact {
+	return TicketReplyContact{IntercomUserID: &intercomUserID}
+}
+
+// NewTicketReplyContactByUserID constructs a ticket reply contact selector from an external user ID.
+func NewTicketReplyContactByUserID(userID string) TicketReplyContact {
+	return TicketReplyContact{UserID: &userID}
+}
+
+func (c TicketReplyContact) payload() (map[string]any, error) {
+	count := 0
+	payload := map[string]any{}
+	if c.Email != nil {
+		count++
+		payload["email"] = *c.Email
+	}
+	if c.IntercomUserID != nil {
+		count++
+		payload["intercom_user_id"] = *c.IntercomUserID
+	}
+	if c.UserID != nil {
+		count++
+		payload["user_id"] = *c.UserID
+	}
+	if count != 1 {
+		return nil, fmt.Errorf("intercom: exactly one ticket reply contact identifier is required")
+	}
+	return payload, nil
+}
+
+// TicketAdminReply replies to a ticket on behalf of an admin.
+type TicketAdminReply struct {
+	AdminID        string                 `json:"admin_id"`
+	AttachmentURLs *[]string              `json:"attachment_urls,omitempty"`
+	Body           *string                `json:"body,omitempty"`
+	CreatedAt      *int                   `json:"created_at,omitempty"`
+	CrossPost      *bool                  `json:"cross_post,omitempty"`
+	MessageType    TicketReplyMessageType `json:"message_type"`
+	ReplyOptions   *[]TicketReplyOption   `json:"reply_options,omitempty"`
+}
+
+func (TicketAdminReply) isTicketReplyRequest() {}
+
+func (r TicketAdminReply) payload(skipNotifications *bool) (map[string]any, error) {
+	payload := map[string]any{
+		"admin_id":     r.AdminID,
+		"message_type": r.MessageType,
+		"type":         "admin",
+	}
+	if r.AttachmentURLs != nil {
+		payload["attachment_urls"] = *r.AttachmentURLs
+	}
+	if r.Body != nil {
+		payload["body"] = *r.Body
+	}
+	if r.CreatedAt != nil {
+		payload["created_at"] = *r.CreatedAt
+	}
+	if r.CrossPost != nil {
+		payload["cross_post"] = *r.CrossPost
+	}
+	if r.ReplyOptions != nil {
+		payload["reply_options"] = *r.ReplyOptions
+	}
+	if skipNotifications != nil {
+		payload["skip_notifications"] = *skipNotifications
+	}
+	return payload, nil
+}
+
+// TicketContactReply replies to a ticket on behalf of a contact.
+type TicketContactReply struct {
+	AttachmentURLs *[]string            `json:"attachment_urls,omitempty"`
+	Body           string               `json:"body"`
+	Contact        TicketReplyContact   `json:"-"`
+	CreatedAt      *int                 `json:"created_at,omitempty"`
+	ReplyOptions   *[]TicketReplyOption `json:"reply_options,omitempty"`
+}
+
+func (TicketContactReply) isTicketReplyRequest() {}
+
+func (r TicketContactReply) payload(skipNotifications *bool) (map[string]any, error) {
+	payload, err := r.Contact.payload()
+	if err != nil {
+		return nil, err
+	}
+	payload["body"] = r.Body
+	payload["message_type"] = TicketReplyMessageTypeComment
+	payload["type"] = "user"
+	if r.AttachmentURLs != nil {
+		payload["attachment_urls"] = *r.AttachmentURLs
+	}
+	if r.CreatedAt != nil {
+		payload["created_at"] = *r.CreatedAt
+	}
+	if r.ReplyOptions != nil {
+		payload["reply_options"] = *r.ReplyOptions
+	}
+	if skipNotifications != nil {
+		payload["skip_notifications"] = *skipNotifications
+	}
+	return payload, nil
+}
+
+// TicketReplyRequest is a supported request body for the ticket reply endpoint.
+type TicketReplyRequest interface {
+	isTicketReplyRequest()
+	payload(skipNotifications *bool) (map[string]any, error)
+}
+
 // TicketTagAttachRequest holds the fields for attaching a tag to a ticket.
 type TicketTagAttachRequest = gen.AttachTagToTicketJSONBody
 
@@ -160,28 +302,18 @@ func (s *TicketsService) Delete(ctx context.Context, ticketID string) error {
 	return requireEmpty(res.StatusCode(), res.Body)
 }
 
-// Reply replies to a ticket. Pass either a generated admin or contact reply payload.
-func (s *TicketsService) Reply(ctx context.Context, ticketID string, req any, skipNotifications *bool) (*TicketReply, error) {
+// Reply replies to a ticket.
+func (s *TicketsService) Reply(ctx context.Context, ticketID string, req TicketReplyRequest, skipNotifications *bool) (*TicketReply, error) {
 	if ticketID == "" {
 		return nil, errRequiredID("ticket")
 	}
-	body, err := json.Marshal(req)
+	payload, err := req.payload(skipNotifications)
 	if err != nil {
 		return nil, err
 	}
-	if skipNotifications != nil {
-		var payload map[string]json.RawMessage
-		if err := json.Unmarshal(body, &payload); err != nil {
-			return nil, err
-		}
-		if *skipNotifications {
-			payload["skip_notifications"] = json.RawMessage("true")
-		} else {
-			payload["skip_notifications"] = json.RawMessage("false")
-		}
-		// The payload came from a successful JSON marshal/unmarshal cycle, so the
-		// map only contains valid JSON fragments and the boolean above is known-valid.
-		body, _ = json.Marshal(payload)
+	body, err := json.Marshal(payload)
+	if err != nil {
+		return nil, fmt.Errorf("intercom: marshal ticket reply request: %w", err)
 	}
 	res, err := s.client.generated.ReplyTicketWithBodyWithResponse(ctx, ticketID, nil, "application/json", bytes.NewReader(body))
 	if err != nil {

@@ -73,12 +73,23 @@ func (r FinStartConversation) toGenerated() gen.StartFinConversationJSONBody {
 
 // FinConversationResponse is the response from Fin conversation APIs.
 type FinConversationResponse struct {
-	ConversationID     *string                            `json:"conversation_id,omitempty"`
-	CreatedAtMs        *string                            `json:"created_at_ms,omitempty"`
-	Errors             *gen.FinAgentAttributeErrorsSchema `json:"errors,omitempty"`
-	SSESubscriptionURL *string                            `json:"sse_subscription_url,omitempty"`
-	Status             *string                            `json:"status,omitempty"`
-	UserID             *string                            `json:"user_id,omitempty"`
+	ConversationID     *string                `json:"conversation_id,omitempty"`
+	CreatedAtMs        *string                `json:"created_at_ms,omitempty"`
+	Errors             *FinConversationErrors `json:"errors,omitempty"`
+	SSESubscriptionURL *string                `json:"sse_subscription_url,omitempty"`
+	Status             *string                `json:"status,omitempty"`
+	UserID             *string                `json:"user_id,omitempty"`
+}
+
+// FinConversationAttributeErrors groups validation errors for a Fin object.
+type FinConversationAttributeErrors struct {
+	Attributes *map[string]string `json:"attributes,omitempty"`
+}
+
+// FinConversationErrors groups validation errors returned by Fin conversation endpoints.
+type FinConversationErrors struct {
+	Conversation *FinConversationAttributeErrors `json:"conversation,omitempty"`
+	User         *FinConversationAttributeErrors `json:"user,omitempty"`
 }
 
 // FinService exposes Fin-related Intercom API operations.
