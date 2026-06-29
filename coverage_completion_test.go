@@ -104,6 +104,53 @@ func TestCoverageCompletionRequests(t *testing.T) {
 		}
 	})
 
+	t.Run("conversation handling events", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			if req.URL.Path != "/conversations/conv-1/handling_events" {
+				t.Fatalf("unexpected path: %s", req.URL.Path)
+			}
+			return jsonResponse(req, http.StatusOK, `{"handling_events":[{"type":"paused","timestamp":"2026-01-09T09:00:00Z","teammate":{"type":"admin","id":123,"name":"Jane Example"}}]}`), nil
+		}))
+		if _, err := client.Conversations.ListHandlingEvents(context.Background(), "conv-1"); err != nil {
+			t.Fatalf("ListHandlingEvents returned error: %v", err)
+		}
+	})
+
+	t.Run("data attributes requests", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			switch req.URL.Path {
+			case "/data_attributes":
+				switch req.Method {
+				case http.MethodGet:
+					return jsonResponse(req, http.StatusOK, `{"type":"list","data":[{"type":"data_attribute","id":77,"model":"contact","name":"plan"}]}`), nil
+				case http.MethodPost:
+					return jsonResponse(req, http.StatusOK, `{"type":"data_attribute","id":77,"model":"contact","name":"plan"}`), nil
+				}
+			case "/data_attributes/77":
+				return jsonResponse(req, http.StatusOK, `{"type":"data_attribute","id":77,"model":"contact","name":"plan","archived":true}`), nil
+			}
+			t.Fatalf("unexpected request: %s %s", req.Method, req.URL.Path)
+			return nil, nil
+		}))
+
+		if _, err := client.DataAttributes.List(context.Background(), DataAttributeListParams{Model: DataAttributeModelContact}); err != nil {
+			t.Fatalf("List returned error: %v", err)
+		}
+		if _, err := client.DataAttributes.Create(context.Background(), DataAttributeCreate{
+			Name:     "plan",
+			Model:    DataAttributeModelContact,
+			DataType: DataAttributeDataTypeList,
+			Options:  []string{"free", "paid"},
+		}); err != nil {
+			t.Fatalf("Create returned error: %v", err)
+		}
+		if _, err := client.DataAttributes.Update(context.Background(), "77", DataAttributeUpdate{
+			Options: []string{"free", "paid"},
+		}); err != nil {
+			t.Fatalf("Update returned error: %v", err)
+		}
+	})
+
 	t.Run("visitors update", func(t *testing.T) {
 		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			return jsonResponse(req, http.StatusOK, `{"type":"visitor","id":"v1","user_id":"u1"}`), nil
@@ -291,8 +338,26 @@ func TestCoverageCompletionTransportErrors(t *testing.T) {
 		{"internal articles retrieve", func() error { _, err := client.InternalArticles.Retrieve(ctx, "10"); return err }},
 		{"internal articles update", func() error { _, err := client.InternalArticles.Update(ctx, "10", InternalArticleUpdate{}); return err }},
 		{"internal articles delete", func() error { _, err := client.InternalArticles.Delete(ctx, "10"); return err }},
+		{"data attributes list", func() error {
+			_, err := client.DataAttributes.List(ctx, DataAttributeListParams{Model: DataAttributeModelContact})
+			return err
+		}},
+		{"data attributes create", func() error {
+			_, err := client.DataAttributes.Create(ctx, DataAttributeCreate{
+				Name:     "plan",
+				Model:    DataAttributeModelContact,
+				DataType: DataAttributeDataTypeList,
+				Options:  []string{"free", "paid"},
+			})
+			return err
+		}},
+		{"data attributes update", func() error {
+			_, err := client.DataAttributes.Update(ctx, "77", DataAttributeUpdate{Options: []string{"free", "paid"}})
+			return err
+		}},
 		{"calls get transcript", func() error { _, err := client.Calls.GetTranscript(ctx, "call-1"); return err }},
 		{"calls transcript", func() error { _, err := client.Calls.Transcript(ctx, "call-1"); return err }},
+		{"conversations handling events", func() error { _, err := client.Conversations.ListHandlingEvents(ctx, "conv-1"); return err }},
 		{"fin reply", func() error {
 			_, err := client.Fin.Reply(ctx, FinReply{
 				ConversationId: "c1",
@@ -340,6 +405,45 @@ func TestCoverageCompletionValidation(t *testing.T) {
 		}},
 		{"internal articles delete empty", func() error { _, err := client.InternalArticles.Delete(ctx, ""); return err }},
 		{"internal articles delete non-numeric", func() error { _, err := client.InternalArticles.Delete(ctx, "abc"); return err }},
+		{"data attributes list invalid model", func() error {
+			_, err := client.DataAttributes.List(ctx, DataAttributeListParams{Model: DataAttributeModel("workspace")})
+			return err
+		}},
+		{"data attributes create empty name", func() error {
+			_, err := client.DataAttributes.Create(ctx, DataAttributeCreate{
+				Model:    DataAttributeModelContact,
+				DataType: DataAttributeDataTypeString,
+			})
+			return err
+		}},
+		{"data attributes create conversation", func() error {
+			_, err := client.DataAttributes.Create(ctx, DataAttributeCreate{
+				Name:     "topic",
+				Model:    DataAttributeModelConversation,
+				DataType: DataAttributeDataTypeString,
+			})
+			return err
+		}},
+		{"data attributes create list needs options", func() error {
+			_, err := client.DataAttributes.Create(ctx, DataAttributeCreate{
+				Name:     "plan",
+				Model:    DataAttributeModelContact,
+				DataType: DataAttributeDataTypeList,
+			})
+			return err
+		}},
+		{"data attributes update empty id", func() error {
+			_, err := client.DataAttributes.Update(ctx, "", DataAttributeUpdate{})
+			return err
+		}},
+		{"data attributes update non-numeric", func() error {
+			_, err := client.DataAttributes.Update(ctx, "abc", DataAttributeUpdate{})
+			return err
+		}},
+		{"data attributes update invalid options", func() error {
+			_, err := client.DataAttributes.Update(ctx, "77", DataAttributeUpdate{Options: []string{"only-one"}})
+			return err
+		}},
 		{"segments retrieve empty", func() error { _, err := client.Segments.Retrieve(ctx, ""); return err }},
 		{"tags retrieve empty", func() error { _, err := client.Tags.Retrieve(ctx, ""); return err }},
 		{"tags delete empty", func() error { return client.Tags.Delete(ctx, "") }},
@@ -351,6 +455,7 @@ func TestCoverageCompletionValidation(t *testing.T) {
 		{"news delete item non-numeric", func() error { return client.News.DeleteItem(ctx, "abc") }},
 		{"news retrieve feed empty", func() error { _, err := client.News.RetrieveFeed(ctx, ""); return err }},
 		{"news list feed items empty", func() error { _, err := client.News.ListFeedItems(ctx, ""); return err }},
+		{"conversations handling events empty", func() error { _, err := client.Conversations.ListHandlingEvents(ctx, ""); return err }},
 		{"notes retrieve empty", func() error { _, err := client.Notes.Retrieve(ctx, ""); return err }},
 		{"notes retrieve non-numeric", func() error { _, err := client.Notes.Retrieve(ctx, "abc"); return err }},
 		{"collections delete empty", func() error { return client.Collections.Delete(ctx, "") }},

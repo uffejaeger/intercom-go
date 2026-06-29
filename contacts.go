@@ -445,21 +445,21 @@ func contactSearchValue(value any) (gen.SingleFilterSearchRequest_Value, error) 
 	case int:
 		return generated, generated.FromSingleFilterSearchRequestValue1(typed)
 	case []string:
-		items := make([]gen.SingleFilterSearchRequest_Value_2_Item, 0, len(typed))
+		items := make([]gen.SingleFilterSearchRequest_Value_3_Item, 0, len(typed))
 		for _, item := range typed {
-			var generatedItem gen.SingleFilterSearchRequest_Value_2_Item
-			_ = generatedItem.FromSingleFilterSearchRequestValue20(item) // json.Marshal(string) never fails
+			var generatedItem gen.SingleFilterSearchRequest_Value_3_Item
+			_ = generatedItem.FromSingleFilterSearchRequestValue30(item) // json.Marshal(string) never fails
 			items = append(items, generatedItem)
 		}
-		return generated, generated.FromSingleFilterSearchRequestValue2(items)
+		return generated, generated.FromSingleFilterSearchRequestValue3(items)
 	case []int:
-		items := make([]gen.SingleFilterSearchRequest_Value_2_Item, 0, len(typed))
+		items := make([]gen.SingleFilterSearchRequest_Value_3_Item, 0, len(typed))
 		for _, item := range typed {
-			var generatedItem gen.SingleFilterSearchRequest_Value_2_Item
-			_ = generatedItem.FromSingleFilterSearchRequestValue21(item) // json.Marshal(int) never fails
+			var generatedItem gen.SingleFilterSearchRequest_Value_3_Item
+			_ = generatedItem.FromSingleFilterSearchRequestValue31(item) // json.Marshal(int) never fails
 			items = append(items, generatedItem)
 		}
-		return generated, generated.FromSingleFilterSearchRequestValue2(items)
+		return generated, generated.FromSingleFilterSearchRequestValue3(items)
 	default:
 		return generated, fmt.Errorf("intercom: unsupported contact search value type %T", value)
 	}
