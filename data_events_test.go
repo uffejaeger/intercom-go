@@ -208,7 +208,8 @@ func TestDataEventsTransportAndValidation(t *testing.T) {
 			return err
 		}},
 		{"create transport", func() error {
-			return client.DataEvents.Create(ctx, DataEventCreate{EventName: "updated-plan", UserID: &userID})
+			now := 1710498600
+			return client.DataEvents.Create(ctx, DataEventCreate{EventName: "updated-plan", CreatedAt: &now, UserID: &userID})
 		}},
 		{"summaries transport", func() error {
 			return client.DataEvents.CreateSummaries(ctx, DataEventSummariesCreate{
@@ -222,13 +223,17 @@ func TestDataEventsTransportAndValidation(t *testing.T) {
 		}},
 		{"create invalid identifiers", func() error {
 			email := "user@example.com"
-			return client.DataEvents.Create(ctx, DataEventCreate{EventName: "updated-plan", UserID: &userID, Email: &email})
+			now := 1710498600
+			return client.DataEvents.Create(ctx, DataEventCreate{EventName: "updated-plan", CreatedAt: &now, UserID: &userID, Email: &email})
 		}},
 		{"create invalid name", func() error {
 			return client.DataEvents.Create(ctx, DataEventCreate{UserID: &userID})
 		}},
+		{"create missing created at", func() error {
+			return client.DataEvents.Create(ctx, DataEventCreate{EventName: "updated-plan", UserID: &userID})
+		}},
 		{"summaries invalid", func() error {
-			return client.DataEvents.CreateSummaries(ctx, DataEventSummariesCreate{})
+			return client.DataEvents.CreateSummaries(ctx, DataEventSummariesCreate{UserID: "user-1"})
 		}},
 		{"summaries invalid name", func() error {
 			return client.DataEvents.CreateSummaries(ctx, DataEventSummariesCreate{

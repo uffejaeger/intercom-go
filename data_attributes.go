@@ -106,6 +106,10 @@ func (s *DataAttributesService) Create(ctx context.Context, attribute DataAttrib
 	if err != nil {
 		return nil, err
 	}
+	wireDataType := attribute.DataType
+	if attribute.DataType == DataAttributeDataTypeList {
+		wireDataType = "options"
+	}
 
 	body, _ := marshalBody(struct {
 		Name              string                `json:"name"`
@@ -117,7 +121,7 @@ func (s *DataAttributesService) Create(ctx context.Context, attribute DataAttrib
 	}{
 		Name:              attribute.Name,
 		Model:             string(model),
-		DataType:          string(attribute.DataType),
+		DataType:          string(wireDataType),
 		Description:       attribute.Description,
 		MessengerWritable: attribute.MessengerWritable,
 		Options:           options,

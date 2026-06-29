@@ -83,6 +83,9 @@ func (s *DataEventsService) Create(ctx context.Context, event DataEventCreate) e
 	if event.EventName == "" {
 		return fmt.Errorf("intercom: data event name is required")
 	}
+	if event.CreatedAt == nil {
+		return fmt.Errorf("intercom: data event created_at is required")
+	}
 	if err := validateDataEventIdentifiers(event.UserID, event.Email, event.ID); err != nil {
 		return err
 	}

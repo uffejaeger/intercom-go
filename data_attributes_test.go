@@ -73,7 +73,7 @@ func TestDataAttributesServiceRequests(t *testing.T) {
 				if got := nestedString(body, "model"); got != "contact" {
 					t.Fatalf("model = %q", got)
 				}
-				if got := nestedString(body, "data_type"); got != "list" {
+				if got := nestedString(body, "data_type"); got != "options" {
 					t.Fatalf("data_type = %q", got)
 				}
 				options, ok := body["options"].([]any)
