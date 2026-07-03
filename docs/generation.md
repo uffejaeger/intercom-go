@@ -36,7 +36,7 @@ That command regenerates the client and fails if `internal/generated/intercom/cl
 
 `make update-spec` reads `spec/metadata.json`, fetches the latest configured upstream spec from `intercom/Intercom-OpenAPI`, writes `spec/intercom.openapi.yaml`, and updates the pinned upstream commit in `spec/metadata.json`.
 
-The scheduled `update-spec` GitHub Actions workflow runs weekly and can also be triggered manually. When upstream changes are detected, it:
+The scheduled `update-spec` GitHub Actions workflow runs hourly and can also be triggered manually. When upstream changes are detected, it:
 
 - updates the pinned spec and metadata,
 - regenerates `spec/intercom.codegen.yaml` and `internal/generated/intercom/client.gen.go`,
