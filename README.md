@@ -18,7 +18,6 @@ Generated code is kept internal while the public SDK surface is designed. Commun
 
 See [`docs/generation.md`](docs/generation.md) for the generation workflow.
 See [`docs/coverage.md`](docs/coverage.md) for public SDK coverage status.
-See [`docs/releasing.md`](docs/releasing.md) for the release workflow.
 
 ## Install
 
