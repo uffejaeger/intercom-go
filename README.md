@@ -88,20 +88,6 @@ The SDK targets Intercom API version `2.15`, pinned in [`spec/intercom.openapi.y
 See [`docs/coverage.md`](docs/coverage.md) for the current public SDK coverage audit.
 See [`docs/generation.md`](docs/generation.md) for the generation workflow.
 
-## Development
-
-```sh
-go test ./...
-make coverage
-make generate-check
-```
-
-Before opening a PR, run:
-
-```sh
-make pre-push
-```
-
 ## License
 
 MIT
