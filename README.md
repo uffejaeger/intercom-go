@@ -88,26 +88,6 @@ The SDK targets Intercom API version `2.15`, pinned in [`spec/intercom.openapi.y
 See [`docs/coverage.md`](docs/coverage.md) for the current public SDK coverage audit.
 See [`docs/generation.md`](docs/generation.md) for the generation workflow.
 
-## Development
-
-```sh
-go test ./...
-make coverage
-make generate-check
-```
-
-Run fuzz targets manually with:
-
-```sh
-go test -run=Fuzz -fuzz=Fuzz -fuzztime=30s .
-```
-
-Before opening a PR, run:
-
-```sh
-make pre-push
-```
-
 ## License
 
 MIT
