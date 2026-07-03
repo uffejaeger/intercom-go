@@ -32,6 +32,7 @@ func TestConversationsServiceRequests(t *testing.T) {
 		call       func(context.Context, *Client) error
 		wantMethod string
 		wantPath   string
+		wantQuery  map[string]string
 		wantBody   func(t *testing.T, body map[string]any)
 	}{
 		{
@@ -49,6 +50,23 @@ func TestConversationsServiceRequests(t *testing.T) {
 			},
 			wantMethod: http.MethodGet,
 			wantPath:   "/conversations",
+		},
+		{
+			name:     "list conversations with pagination",
+			response: `{"type":"conversation.list","conversations":[],"total_count":0}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Conversations.ListWithOptions(ctx, CursorPageOptions{
+					PerPage:       20,
+					StartingAfter: "cursor-1",
+				})
+				return err
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/conversations",
+			wantQuery: map[string]string{
+				"per_page":       "20",
+				"starting_after": "cursor-1",
+			},
 		},
 		{
 			name:     "create conversation",
@@ -165,6 +183,38 @@ func TestConversationsServiceRequests(t *testing.T) {
 			},
 			wantMethod: http.MethodPost,
 			wantPath:   "/conversations/search",
+		},
+		{
+			name:     "search conversations with pagination",
+			response: `{"type":"conversation.list","conversations":[],"total_count":0}`,
+			call: func(ctx context.Context, client *Client) error {
+				var query ConversationSearchQuery
+				filter := gen.SingleFilterSearchRequestSchema{}
+				field := "state"
+				operator := gen.SingleFilterSearchRequestOperator("=")
+				var value gen.SingleFilterSearchRequest_Value
+				_ = value.FromSingleFilterSearchRequestValue0("open")
+				filter.Field = &field
+				filter.Operator = &operator
+				filter.Value = &value
+				_ = query.Query.FromSingleFilterSearchRequestSchema(filter)
+				_, err := client.Conversations.SearchWithOptions(ctx, query, CursorPageOptions{
+					PerPage:       50,
+					StartingAfter: "cursor-1",
+				})
+				return err
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/conversations/search",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedFloat(body, "pagination", "per_page"); got != 50 {
+					t.Fatalf("pagination.per_page = %v, want 50", got)
+				}
+				if got := nestedString(body, "pagination", "starting_after"); got != "cursor-1" {
+					t.Fatalf("pagination.starting_after = %q, want cursor-1", got)
+				}
+			},
 		},
 		{
 			name:     "reply to conversation",
@@ -433,11 +483,13 @@ func TestConversationsServiceRequests(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			var method, path, contentType string
 			var body map[string]any
+			var query map[string]string
 
 			transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
 				method = req.Method
 				path = req.URL.Path
 				contentType = req.Header.Get("Content-Type")
+				query = firstQueryValues(req)
 
 				if req.Body != nil {
 					if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
@@ -459,6 +511,7 @@ func TestConversationsServiceRequests(t *testing.T) {
 			if path != tt.wantPath {
 				t.Fatalf("path = %q, want %q", path, tt.wantPath)
 			}
+			assertQueryValues(t, query, tt.wantQuery)
 			if tt.wantBody != nil {
 				if contentType != "application/json" {
 					t.Fatalf("Content-Type = %q", contentType)

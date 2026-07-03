@@ -39,6 +39,7 @@ func TestCompaniesServiceRequests(t *testing.T) {
 		call       func(context.Context, *Client) error
 		wantMethod string
 		wantPath   string
+		wantQuery  map[string]string
 		wantBody   func(t *testing.T, body map[string]any)
 	}{
 		{
@@ -95,6 +96,32 @@ func TestCompaniesServiceRequests(t *testing.T) {
 			},
 			wantMethod: http.MethodGet,
 			wantPath:   "/companies",
+			wantQuery: map[string]string{
+				"company_id": "ext-1",
+			},
+		},
+		{
+			name:     "list companies with filters and pagination",
+			response: companyListJSON,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Companies.List(ctx, CompanyListOptions{
+					Name:      "Acme",
+					TagID:     "tag-1",
+					SegmentID: "seg-1",
+					Page:      3,
+					PerPage:   15,
+				})
+				return err
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/companies",
+			wantQuery: map[string]string{
+				"name":       "Acme",
+				"tag_id":     "tag-1",
+				"segment_id": "seg-1",
+				"page":       "3",
+				"per_page":   "15",
+			},
 		},
 		{
 			name:     "update company",
@@ -146,6 +173,25 @@ func TestCompaniesServiceRequests(t *testing.T) {
 			wantPath:   "/companies/list",
 		},
 		{
+			name:     "list all companies with pagination",
+			response: companyListJSON,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Companies.ListAllWithOptions(ctx, CompanyListAllOptions{
+					Page:    2,
+					PerPage: 10,
+					Order:   "asc",
+				})
+				return err
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/companies/list",
+			wantQuery: map[string]string{
+				"page":     "2",
+				"per_page": "10",
+				"order":    "asc",
+			},
+		},
+		{
 			name:     "scroll companies",
 			response: companyScrollJSON,
 			call: func(ctx context.Context, client *Client) error {
@@ -160,6 +206,19 @@ func TestCompaniesServiceRequests(t *testing.T) {
 			},
 			wantMethod: http.MethodGet,
 			wantPath:   "/companies/scroll",
+		},
+		{
+			name:     "scroll companies with cursor",
+			response: companyScrollJSON,
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Companies.ScrollWithOptions(ctx, CompanyScrollOptions{ScrollParam: "token-1"})
+				return err
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/companies/scroll",
+			wantQuery: map[string]string{
+				"scroll_param": "token-1",
+			},
 		},
 		{
 			name:     "list company notes",
@@ -264,9 +323,11 @@ func TestCompaniesServiceRequests(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var gotMethod, gotPath string
+			var gotQuery map[string]string
 			transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
 				gotMethod = req.Method
 				gotPath = req.URL.Path
+				gotQuery = firstQueryValues(req)
 				if tt.wantBody != nil {
 					var body map[string]any
 					if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
@@ -286,6 +347,7 @@ func TestCompaniesServiceRequests(t *testing.T) {
 			if gotPath != tt.wantPath {
 				t.Fatalf("path = %q, want %q", gotPath, tt.wantPath)
 			}
+			assertQueryValues(t, gotQuery, tt.wantQuery)
 		})
 	}
 }
