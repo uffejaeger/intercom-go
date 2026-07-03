@@ -96,6 +96,12 @@ make coverage
 make generate-check
 ```
 
+Run fuzz targets manually with:
+
+```sh
+go test -run=Fuzz -fuzz=Fuzz -fuzztime=30s .
+```
+
 Before opening a PR, run:
 
 ```sh
