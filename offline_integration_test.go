@@ -28,6 +28,7 @@ type offlineHTTPResponse struct {
 	Header     http.Header
 	Body       []byte
 	Delay      time.Duration
+	OnRequest  func()
 }
 
 type offlineHTTPRequest struct {
@@ -70,6 +71,10 @@ func newOfflineHTTPIntegrationTestClient(t *testing.T, responses ...offlineHTTPR
 		response := fixture.responses[0]
 		fixture.responses = fixture.responses[1:]
 		fixture.mu.Unlock()
+
+		if response.OnRequest != nil {
+			response.OnRequest()
+		}
 
 		if response.Delay > 0 {
 			select {

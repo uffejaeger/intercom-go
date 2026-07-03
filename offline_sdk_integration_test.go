@@ -144,24 +144,44 @@ func TestOfflineSDKIntegrationRepresentativeFlows(t *testing.T) {
 }
 
 func TestOfflineSDKIntegrationContextCancellation(t *testing.T) {
+	requestCaptured := make(chan struct{})
 	fixture := newOfflineHTTPIntegrationTestClient(t, offlineHTTPResponse{
 		StatusCode: http.StatusOK,
 		Header: http.Header{
 			"Content-Type": []string{"application/json"},
 		},
-		Body:  []byte(`{"type":"contact","id":"slow-contact"}`),
-		Delay: 100 * time.Millisecond,
+		Body:      []byte(`{"type":"contact","id":"slow-contact"}`),
+		Delay:     time.Second,
+		OnRequest: func() { close(requestCaptured) },
 	})
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	_, err := fixture.Client.Contacts.Get(ctx, "slow-contact")
-	if err == nil {
-		t.Fatal("expected context deadline error")
+	errc := make(chan error, 1)
+	go func() {
+		_, err := fixture.Client.Contacts.Get(ctx, "slow-contact")
+		errc <- err
+	}()
+
+	select {
+	case <-requestCaptured:
+	case <-time.After(time.Second):
+		t.Fatal("server did not capture request before timeout")
 	}
-	if !errors.Is(err, context.DeadlineExceeded) && !strings.Contains(err.Error(), context.DeadlineExceeded.Error()) {
-		t.Fatalf("error = %v, want context deadline exceeded", err)
+	cancel()
+
+	var err error
+	select {
+	case err = <-errc:
+	case <-time.After(time.Second):
+		t.Fatal("SDK call did not return after context cancellation")
+	}
+	if err == nil {
+		t.Fatal("expected context cancellation error")
+	}
+	if !errors.Is(err, context.Canceled) && !strings.Contains(err.Error(), context.Canceled.Error()) {
+		t.Fatalf("error = %v, want context canceled", err)
 	}
 	if got := fixture.RequestCount(); got != 1 {
 		t.Fatalf("captured requests = %d, want 1", got)
