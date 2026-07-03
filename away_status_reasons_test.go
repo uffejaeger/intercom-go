@@ -26,7 +26,7 @@ func TestAwayStatusReasonsServiceRequests(t *testing.T) {
 		transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			gotMethod = req.Method
 			gotPath = req.URL.Path
-			return jsonResponse(req, http.StatusOK, `[{"id":"1","label":"Lunch"}]`), nil
+			return jsonResponse(req, http.StatusOK, `{"type":"list","data":[{"id":"1","label":"Lunch"}]}`), nil
 		})
 		client := newAwayStatusReasonsTestClient(t, transport)
 		reasons, err := client.AwayStatusReasons.List(context.Background())
@@ -44,6 +44,19 @@ func TestAwayStatusReasonsServiceRequests(t *testing.T) {
 		}
 		if gotPath != "/away_status_reasons" {
 			t.Fatalf("path = %q, want /away_status_reasons", gotPath)
+		}
+	})
+
+	t.Run("list away status reasons without data", func(t *testing.T) {
+		client := newAwayStatusReasonsTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return jsonResponse(req, http.StatusOK, `{"type":"list"}`), nil
+		}))
+		reasons, err := client.AwayStatusReasons.List(context.Background())
+		if err != nil {
+			t.Fatalf("List returned error: %v", err)
+		}
+		if reasons != nil {
+			t.Fatalf("reasons = %#v, want nil", reasons)
 		}
 	})
 }

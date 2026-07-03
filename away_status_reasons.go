@@ -24,5 +24,8 @@ func (s *AwayStatusReasonsService) List(ctx context.Context) ([]AwayStatusReason
 	if err != nil {
 		return nil, err
 	}
-	return *list, nil
+	if list.Data == nil {
+		return nil, nil
+	}
+	return *list.Data, nil
 }
