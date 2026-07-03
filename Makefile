@@ -1,4 +1,4 @@
-.PHONY: coverage fix format generate generate-check lint pre-push test
+.PHONY: coverage fix format generate generate-check lint pre-push spec-diff test update-spec
 
 OAPI_CODEGEN := go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.6.0
 GO_FILES := $(shell git ls-files --cached --others --exclude-standard '*.go')
@@ -32,6 +32,12 @@ generate:
 
 generate-check: generate
 	git diff --exit-code -- internal/generated/intercom/client.gen.go
+
+update-spec:
+	go run ./internal/tools/update-spec
+
+spec-diff:
+	go run ./internal/tools/spec-diff $(OLD_SPEC) $(NEW_SPEC)
 
 test:
 	go test ./...

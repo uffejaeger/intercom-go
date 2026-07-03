@@ -1,0 +1,105 @@
+name: update-spec
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  update-spec:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Save current pinned spec
+        run: cp spec/intercom.openapi.yaml "$RUNNER_TEMP/intercom.openapi.old.yaml"
+
+      - name: Update pinned Intercom OpenAPI spec
+        run: make update-spec
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Regenerate SDK
+        run: make generate
+
+      - name: Format generated Go files
+        run: make format
+
+      - name: Build OpenAPI diff summary
+        run: go run ./internal/tools/spec-diff "$RUNNER_TEMP/intercom.openapi.old.yaml" spec/intercom.openapi.yaml > "$RUNNER_TEMP/spec-update-summary.md"
+
+      - name: Lint
+        id: lint
+        continue-on-error: true
+        run: make lint
+
+      - name: Test with coverage
+        id: coverage
+        continue-on-error: true
+        run: make coverage
+
+      - name: Check generated code freshness
+        id: generated_freshness
+        continue-on-error: true
+        run: |
+          before="$(mktemp)"
+          after="$(mktemp)"
+          git diff -- spec/intercom.codegen.yaml internal/generated/intercom/client.gen.go > "$before"
+          make generate
+          git diff -- spec/intercom.codegen.yaml internal/generated/intercom/client.gen.go > "$after"
+          diff -u "$before" "$after"
+
+      - name: Build pull request body
+        run: |
+          {
+            echo "## Summary"
+            echo
+            echo "- Update the pinned Intercom OpenAPI spec from upstream."
+            echo "- Regenerate the internal OpenAPI client."
+            echo "- Run formatting, linting, coverage, and generated-code freshness checks."
+            echo
+            echo "## Check outcomes"
+            echo
+            echo "- Lint: ${{ steps.lint.outcome }}"
+            echo "- Coverage: ${{ steps.coverage.outcome }}"
+            echo "- Generated freshness: ${{ steps.generated_freshness.outcome }}"
+            echo
+            cat "$RUNNER_TEMP/spec-update-summary.md"
+          } > "$RUNNER_TEMP/spec-update-pr-body.md"
+
+      - name: Ensure PR labels exist
+        run: |
+          gh label create spec-update --description "Updates to the pinned upstream OpenAPI spec" --color "0E8A16" || true
+          gh label create generated --description "Contains generated code changes" --color "5319E7" || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/update-intercom-openapi-spec
+          delete-branch: true
+          title: Update pinned Intercom OpenAPI spec
+          commit-message: Update pinned Intercom OpenAPI spec
+          body-path: ${{ runner.temp }}/spec-update-pr-body.md
+          labels: |
+            spec-update
+            generated
+          add-paths: |
+            spec/intercom.openapi.yaml
+            spec/intercom.codegen.yaml
+            spec/metadata.json
+            internal/generated/intercom/client.gen.go

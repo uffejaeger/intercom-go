@@ -712,6 +712,21 @@ func (e AssignConversationRequestType) Valid() bool {
 	}
 }
 
+// Defines values for AwayStatusReasonListType.
+const (
+	AwayStatusReasonListTypeList AwayStatusReasonListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the AwayStatusReasonListType enum.
+func (e AwayStatusReasonListType) Valid() bool {
+	switch e {
+	case AwayStatusReasonListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CloseConversationRequestMessageType.
 const (
 	Close CloseConversationRequestMessageType = "close"
@@ -1506,25 +1521,25 @@ func (e CustomActionFinishedActionResult) Valid() bool {
 
 // Defines values for DataAttributeDataType.
 const (
-	Boolean DataAttributeDataType = "boolean"
-	Date    DataAttributeDataType = "date"
-	Float   DataAttributeDataType = "float"
-	Integer DataAttributeDataType = "integer"
-	String  DataAttributeDataType = "string"
+	DataAttributeDataTypeBoolean DataAttributeDataType = "boolean"
+	DataAttributeDataTypeDate    DataAttributeDataType = "date"
+	DataAttributeDataTypeFloat   DataAttributeDataType = "float"
+	DataAttributeDataTypeInteger DataAttributeDataType = "integer"
+	DataAttributeDataTypeString  DataAttributeDataType = "string"
 )
 
 // Valid indicates whether the value is a known member of the DataAttributeDataType enum.
 func (e DataAttributeDataType) Valid() bool {
 	switch e {
-	case Boolean:
+	case DataAttributeDataTypeBoolean:
 		return true
-	case Date:
+	case DataAttributeDataTypeDate:
 		return true
-	case Float:
+	case DataAttributeDataTypeFloat:
 		return true
-	case Integer:
+	case DataAttributeDataTypeInteger:
 		return true
-	case String:
+	case DataAttributeDataTypeString:
 		return true
 	default:
 		return false
@@ -4095,6 +4110,18 @@ type AwayStatusReasonSchema struct {
 	// UpdatedAt The Unix timestamp when the status reason was last updated
 	UpdatedAt *int `json:"updated_at,omitempty"`
 }
+
+// AwayStatusReasonListSchema A list of away status reasons.
+type AwayStatusReasonListSchema struct {
+	// Data A list of away status reason objects.
+	Data *[]AwayStatusReasonSchema `json:"data,omitempty"`
+
+	// Type The type of the object
+	Type *AwayStatusReasonListType `json:"type,omitempty"`
+}
+
+// AwayStatusReasonListType The type of the object
+type AwayStatusReasonListType string
 
 // BrandSchema Represents a branding configuration for the workspace
 type BrandSchema struct {
@@ -27033,7 +27060,7 @@ func (r UpdateArticleResponse) StatusCode() int {
 type ListAwayStatusReasonsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]AwayStatusReasonSchema
+	JSON200      *AwayStatusReasonListSchema
 	JSON401      *Unauthorized
 }
 
@@ -33124,7 +33151,7 @@ func ParseListAwayStatusReasonsResponse(rsp *http.Response) (*ListAwayStatusReas
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []AwayStatusReasonSchema
+		var dest AwayStatusReasonListSchema
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
