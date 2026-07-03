@@ -10,6 +10,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 )
 
 // offlineHTTPIntegrationTestClient exercises SDK calls through a real local HTTP server.
@@ -26,6 +27,8 @@ type offlineHTTPResponse struct {
 	StatusCode int
 	Header     http.Header
 	Body       []byte
+	Delay      time.Duration
+	OnRequest  func()
 }
 
 type offlineHTTPRequest struct {
@@ -68,6 +71,18 @@ func newOfflineHTTPIntegrationTestClient(t *testing.T, responses ...offlineHTTPR
 		response := fixture.responses[0]
 		fixture.responses = fixture.responses[1:]
 		fixture.mu.Unlock()
+
+		if response.OnRequest != nil {
+			response.OnRequest()
+		}
+
+		if response.Delay > 0 {
+			select {
+			case <-time.After(response.Delay):
+			case <-req.Context().Done():
+				return
+			}
+		}
 
 		for key, values := range response.Header {
 			for _, value := range values {
