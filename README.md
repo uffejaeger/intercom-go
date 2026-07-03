@@ -10,7 +10,7 @@ Active SDK development is in progress.
 
 - The Intercom API `2.15` OpenAPI spec is pinned in [`spec/intercom.openapi.yaml`](spec/intercom.openapi.yaml).
 - Spec source metadata is tracked in [`spec/metadata.json`](spec/metadata.json).
-- The root package contains a growing public SDK surface with service wrappers for core Intercom resources.
+- The root package contains public SDK service wrappers for the pinned spec.
 - OpenAPI-generated client stubs are committed under [`internal/generated/intercom`](internal/generated/intercom).
 - CI runs `go test ./...`.
 
@@ -18,6 +18,7 @@ Generated code is kept internal while the public SDK surface is designed. Commun
 
 See [`docs/generation.md`](docs/generation.md) for the generation workflow.
 See [`docs/coverage.md`](docs/coverage.md) for public SDK coverage status.
+See [`docs/releasing.md`](docs/releasing.md) for the release workflow.
 
 ## Install
 

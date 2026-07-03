@@ -1,0 +1,65 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+
+categories:
+  - title: "Breaking Changes"
+    labels:
+      - "breaking"
+      - "breaking-change"
+  - title: "Features"
+    labels:
+      - "feature"
+      - "enhancement"
+  - title: "Fixes"
+    labels:
+      - "bug"
+      - "fix"
+  - title: "Documentation"
+    labels:
+      - "documentation"
+      - "docs"
+  - title: "Maintenance"
+    labels:
+      - "chore"
+      - "dependencies"
+      - "maintenance"
+
+change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+change-title-escapes: '\<*_&'
+
+version-resolver:
+  major:
+    labels:
+      - "major"
+      - "breaking"
+      - "breaking-change"
+  minor:
+    labels:
+      - "minor"
+      - "feature"
+      - "enhancement"
+  patch:
+    labels:
+      - "patch"
+      - "bug"
+      - "fix"
+      - "documentation"
+      - "docs"
+      - "chore"
+      - "dependencies"
+      - "maintenance"
+  default: patch
+
+exclude-labels:
+  - "skip-changelog"
+
+template: |
+  ## Changes
+
+  $CHANGES
+
+  ## Installation
+
+  ```sh
+  go get github.com/uffejaeger/intercom-go@v$RESOLVED_VERSION
+  ```
