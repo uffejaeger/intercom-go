@@ -2,6 +2,7 @@ package intercom
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"testing"
 
@@ -16,6 +17,7 @@ func TestMoreServicesRequests(t *testing.T) {
 		call       func(context.Context, *Client) error
 		wantMethod string
 		wantPath   string
+		wantBody   func(t *testing.T, body map[string]any)
 	}{
 		{
 			name:       "list collections",
@@ -300,6 +302,39 @@ func TestMoreServicesRequests(t *testing.T) {
 			wantPath:   "/tickets/search",
 		},
 		{
+			name:       "search tickets with pagination",
+			statusCode: http.StatusOK,
+			response:   `{"type":"ticket.list","tickets":[],"total_count":0}`,
+			call: func(ctx context.Context, client *Client) error {
+				var query TicketSearchQuery
+				filter := gen.SingleFilterSearchRequestSchema{}
+				field := "state"
+				operator := gen.SingleFilterSearchRequestOperator("=")
+				var value gen.SingleFilterSearchRequest_Value
+				_ = value.FromSingleFilterSearchRequestValue0("open")
+				filter.Field = &field
+				filter.Operator = &operator
+				filter.Value = &value
+				_ = query.Query.FromSingleFilterSearchRequestSchema(filter)
+				_, err := client.Tickets.SearchWithOptions(ctx, query, CursorPageOptions{
+					PerPage:       50,
+					StartingAfter: "cursor-1",
+				})
+				return err
+			},
+			wantMethod: http.MethodPost,
+			wantPath:   "/tickets/search",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedFloat(body, "pagination", "per_page"); got != 50 {
+					t.Fatalf("pagination.per_page = %v, want 50", got)
+				}
+				if got := nestedString(body, "pagination", "starting_after"); got != "cursor-1" {
+					t.Fatalf("pagination.starting_after = %q, want cursor-1", got)
+				}
+			},
+		},
+		{
 			name:       "get ticket",
 			statusCode: http.StatusOK,
 			response:   `{"id":"20","type":"ticket"}`,
@@ -465,9 +500,15 @@ func TestMoreServicesRequests(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var gotMethod, gotPath string
+			var gotBody map[string]any
 			transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
 				gotMethod = req.Method
 				gotPath = req.URL.Path
+				if req.Body != nil {
+					if err := json.NewDecoder(req.Body).Decode(&gotBody); err != nil {
+						t.Fatalf("decode request body: %v", err)
+					}
+				}
 				return jsonResponse(req, tt.statusCode, tt.response), nil
 			})
 
@@ -480,6 +521,9 @@ func TestMoreServicesRequests(t *testing.T) {
 			}
 			if gotPath != tt.wantPath {
 				t.Fatalf("path = %q, want %q", gotPath, tt.wantPath)
+			}
+			if tt.wantBody != nil {
+				tt.wantBody(t, gotBody)
 			}
 		})
 	}

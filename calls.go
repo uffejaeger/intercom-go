@@ -69,7 +69,19 @@ type CallsService struct {
 
 // List returns a paginated list of calls.
 func (s *CallsService) List(ctx context.Context) (*CallList, error) {
-	res, err := s.client.generated.ListCallsWithResponse(ctx, nil)
+	return s.ListWithOptions(ctx, PageOptions{})
+}
+
+// ListWithOptions returns a paginated list of calls.
+func (s *CallsService) ListWithOptions(ctx context.Context, options PageOptions) (*CallList, error) {
+	params := &gen.ListCallsParams{}
+	if options.Page > 0 {
+		params.Page = &options.Page
+	}
+	if options.PerPage > 0 {
+		params.PerPage = &options.PerPage
+	}
+	res, err := s.client.generated.ListCallsWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}

@@ -32,6 +32,7 @@ func TestCallsServiceRequests(t *testing.T) {
 		call       func(context.Context, *Client) error
 		wantMethod string
 		wantPath   string
+		wantQuery  map[string]string
 		wantBody   func(*testing.T, map[string]any)
 	}{
 		{
@@ -49,6 +50,20 @@ func TestCallsServiceRequests(t *testing.T) {
 			},
 			wantMethod: http.MethodGet,
 			wantPath:   "/calls",
+		},
+		{
+			name:     "list calls with pagination",
+			response: `{"data":[{"id":"c1","type":"call"}],"pages":{}}`,
+			call: func(ctx context.Context, c *Client) error {
+				_, err := c.Calls.ListWithOptions(ctx, PageOptions{Page: 2, PerPage: 25})
+				return err
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/calls",
+			wantQuery: map[string]string{
+				"page":     "2",
+				"per_page": "25",
+			},
 		},
 		{
 			name:     "get call",
@@ -180,9 +195,11 @@ func TestCallsServiceRequests(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var gotMethod, gotPath string
+			var gotQuery map[string]string
 			transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
 				gotMethod = req.Method
 				gotPath = req.URL.Path
+				gotQuery = firstQueryValues(req)
 				if tt.wantBody != nil {
 					var body map[string]any
 					if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
@@ -202,6 +219,7 @@ func TestCallsServiceRequests(t *testing.T) {
 			if gotPath != tt.wantPath {
 				t.Fatalf("path = %q, want %q", gotPath, tt.wantPath)
 			}
+			assertQueryValues(t, gotQuery, tt.wantQuery)
 		})
 	}
 

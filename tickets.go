@@ -259,6 +259,14 @@ func (s *TicketsService) EnqueueCreate(ctx context.Context, ticket TicketCreate)
 
 // Search searches tickets using an Intercom search query.
 func (s *TicketsService) Search(ctx context.Context, query TicketSearchQuery) (*TicketList, error) {
+	return s.SearchWithOptions(ctx, query, CursorPageOptions{})
+}
+
+// SearchWithOptions searches tickets using cursor pagination options.
+func (s *TicketsService) SearchWithOptions(ctx context.Context, query TicketSearchQuery, options CursorPageOptions) (*TicketList, error) {
+	if pagination := NewSearchPagination(options); pagination != nil {
+		query.Pagination = pagination
+	}
 	res, err := s.client.generated.SearchTicketsWithResponse(ctx, nil, gen.SearchTicketsJSONRequestBody(query))
 	if err != nil {
 		return nil, err

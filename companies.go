@@ -34,6 +34,28 @@ type CompanyUpdate = gen.UpdateCompanyRequestSchema
 // ContactCompanies is the list of companies a contact belongs to.
 type ContactCompanies = gen.ContactAttachedCompaniesSchema
 
+// CompanyListOptions controls filters and pagination for the companies endpoint.
+type CompanyListOptions struct {
+	Name      string
+	CompanyID string
+	TagID     string
+	SegmentID string
+	Page      int
+	PerPage   int
+}
+
+// CompanyListAllOptions controls pagination and ordering for listing all companies.
+type CompanyListAllOptions struct {
+	Page    int
+	PerPage int
+	Order   string
+}
+
+// CompanyScrollOptions controls the company scroll cursor.
+type CompanyScrollOptions struct {
+	ScrollParam string
+}
+
 // CompaniesService exposes company-related Intercom API operations.
 type CompaniesService struct {
 	client *Client
@@ -65,11 +87,35 @@ func (s *CompaniesService) RetrieveByID(ctx context.Context, companyID string) (
 	if companyID == "" {
 		return nil, fmt.Errorf("intercom: company ID is required")
 	}
-	res, err := s.client.generated.RetrieveCompanyWithResponse(ctx, &gen.RetrieveCompanyParams{CompanyId: &companyID})
+	return s.List(ctx, CompanyListOptions{CompanyID: companyID})
+}
+
+// List returns companies matching the supplied filters and pagination options.
+func (s *CompaniesService) List(ctx context.Context, options CompanyListOptions) (*CompanyList, error) {
+	params := &gen.RetrieveCompanyParams{}
+	if options.Name != "" {
+		params.Name = &options.Name
+	}
+	if options.CompanyID != "" {
+		params.CompanyId = &options.CompanyID
+	}
+	if options.TagID != "" {
+		params.TagId = &options.TagID
+	}
+	if options.SegmentID != "" {
+		params.SegmentId = &options.SegmentID
+	}
+	if options.Page > 0 {
+		params.Page = &options.Page
+	}
+	if options.PerPage > 0 {
+		params.PerPage = &options.PerPage
+	}
+	res, err := s.client.generated.RetrieveCompanyWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve company by ID", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list companies", res.StatusCode(), res.Body, res.JSON200)
 }
 
 // Update updates a company by its Intercom-assigned ID.
@@ -98,7 +144,22 @@ func (s *CompaniesService) Delete(ctx context.Context, companyID string) (*Compa
 
 // ListAll returns all companies using cursor-based pagination.
 func (s *CompaniesService) ListAll(ctx context.Context) (*CompanyList, error) {
-	res, err := s.client.generated.ListAllCompaniesWithResponse(ctx, nil)
+	return s.ListAllWithOptions(ctx, CompanyListAllOptions{})
+}
+
+// ListAllWithOptions returns all companies using pagination and ordering options.
+func (s *CompaniesService) ListAllWithOptions(ctx context.Context, options CompanyListAllOptions) (*CompanyList, error) {
+	params := &gen.ListAllCompaniesParams{}
+	if options.Page > 0 {
+		params.Page = &options.Page
+	}
+	if options.PerPage > 0 {
+		params.PerPage = &options.PerPage
+	}
+	if options.Order != "" {
+		params.Order = &options.Order
+	}
+	res, err := s.client.generated.ListAllCompaniesWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +168,16 @@ func (s *CompaniesService) ListAll(ctx context.Context) (*CompanyList, error) {
 
 // Scroll returns companies using the scroll API for large datasets.
 func (s *CompaniesService) Scroll(ctx context.Context) (*CompanyScroll, error) {
-	res, err := s.client.generated.ScrollOverAllCompaniesWithResponse(ctx, nil)
+	return s.ScrollWithOptions(ctx, CompanyScrollOptions{})
+}
+
+// ScrollWithOptions returns companies using the scroll API for large datasets.
+func (s *CompaniesService) ScrollWithOptions(ctx context.Context, options CompanyScrollOptions) (*CompanyScroll, error) {
+	params := &gen.ScrollOverAllCompaniesParams{}
+	if options.ScrollParam != "" {
+		params.ScrollParam = &options.ScrollParam
+	}
+	res, err := s.client.generated.ScrollOverAllCompaniesWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}

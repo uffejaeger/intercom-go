@@ -80,7 +80,19 @@ type ConversationsService struct {
 
 // List returns all conversations.
 func (s *ConversationsService) List(ctx context.Context) (*ConversationList, error) {
-	res, err := s.client.generated.ListConversationsWithResponse(ctx, nil)
+	return s.ListWithOptions(ctx, CursorPageOptions{})
+}
+
+// ListWithOptions returns conversations using cursor pagination options.
+func (s *ConversationsService) ListWithOptions(ctx context.Context, options CursorPageOptions) (*ConversationList, error) {
+	params := &gen.ListConversationsParams{}
+	if options.PerPage > 0 {
+		params.PerPage = &options.PerPage
+	}
+	if options.StartingAfter != "" {
+		params.StartingAfter = &options.StartingAfter
+	}
+	res, err := s.client.generated.ListConversationsWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}
@@ -158,6 +170,14 @@ func (s *ConversationsService) Delete(ctx context.Context, conversationID string
 
 // Search searches conversations using an Intercom search query.
 func (s *ConversationsService) Search(ctx context.Context, query ConversationSearchQuery) (*ConversationList, error) {
+	return s.SearchWithOptions(ctx, query, CursorPageOptions{})
+}
+
+// SearchWithOptions searches conversations using cursor pagination options.
+func (s *ConversationsService) SearchWithOptions(ctx context.Context, query ConversationSearchQuery, options CursorPageOptions) (*ConversationList, error) {
+	if pagination := NewSearchPagination(options); pagination != nil {
+		query.Pagination = pagination
+	}
 	res, err := s.client.generated.SearchConversationsWithResponse(ctx, nil, gen.SearchConversationsJSONRequestBody(query))
 	if err != nil {
 		return nil, err

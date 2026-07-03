@@ -63,6 +63,20 @@ contacts, err := client.Contacts.Search(ctx, intercom.ContactSearch{
 })
 ```
 
+Paginate list and search results:
+
+```go
+calls, err := client.Calls.ListWithOptions(ctx, intercom.PageOptions{
+	Page:    2,
+	PerPage: 25,
+})
+
+conversations, err := client.Conversations.ListWithOptions(ctx, intercom.CursorPageOptions{
+	PerPage:       50,
+	StartingAfter: "cursor",
+})
+```
+
 Handle API errors:
 
 ```go
