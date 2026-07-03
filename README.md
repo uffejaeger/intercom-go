@@ -76,6 +76,28 @@ if err != nil {
 }
 ```
 
+Parse webhook notifications:
+
+```go
+payload, err := io.ReadAll(r.Body)
+if err != nil {
+	return err
+}
+
+if err := intercom.VerifyWebhookSignature(clientSecret, payload, r.Header); err != nil {
+	return err
+}
+
+event, err := intercom.ParseWebhookPayload(payload)
+if err != nil {
+	return err
+}
+
+log.Printf("intercom webhook topic=%s id=%s", event.Topic, event.ID)
+```
+
+`VerifyWebhookSignature` verifies `X-Hub-Signature` using the raw request body and your Intercom app client secret.
+
 Runnable examples:
 
 - [`examples/identify_admin`](examples/identify_admin)
