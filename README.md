@@ -1,23 +1,8 @@
 # intercom-go
 
-Idiomatic Go SDK for the Intercom API.
+Idiomatic Go SDK for the [Intercom API](https://developers.intercom.com/).
 
-This project is starting from Intercom's published OpenAPI description rather than hand-written endpoint coverage. The long-term goal is to provide a stable, community-friendly SDK while keeping generated code reproducible from the upstream API spec.
-
-## Status
-
-Active SDK development is in progress.
-
-- The Intercom API `2.15` OpenAPI spec is pinned in [`spec/intercom.openapi.yaml`](spec/intercom.openapi.yaml).
-- Spec source metadata is tracked in [`spec/metadata.json`](spec/metadata.json).
-- The root package contains public SDK service wrappers for the pinned spec.
-- OpenAPI-generated client stubs are committed under [`internal/generated/intercom`](internal/generated/intercom).
-- CI runs `go test ./...`.
-
-Generated code is kept internal while the public SDK surface is designed. Community-facing endpoint services will wrap the generated client instead of exposing generator-specific APIs directly.
-
-See [`docs/generation.md`](docs/generation.md) for the generation workflow.
-See [`docs/coverage.md`](docs/coverage.md) for public SDK coverage status.
+`intercom-go` wraps Intercom's published OpenAPI spec with a hand-shaped Go API. Generated OpenAPI code is kept internal, while callers use stable service wrappers such as `client.Admins.Me(ctx)`, `client.Contacts.Search(ctx, ...)`, and `client.Conversations.Reply(ctx, ...)`.
 
 ## Install
 
@@ -25,7 +10,11 @@ See [`docs/coverage.md`](docs/coverage.md) for public SDK coverage status.
 go get github.com/uffejaeger/intercom-go
 ```
 
-## Usage
+```go
+import intercom "github.com/uffejaeger/intercom-go"
+```
+
+## Quick Start
 
 ```go
 package main
@@ -34,13 +23,12 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
 	intercom "github.com/uffejaeger/intercom-go"
 )
 
 func main() {
-	client, err := intercom.NewClient(os.Getenv("INTERCOM_ACCESS_TOKEN"), intercom.WithRegion(intercom.EU))
+	client, err := intercom.NewClientFromEnv(intercom.WithRegion(intercom.EU))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,11 +42,19 @@ func main() {
 }
 ```
 
-Contacts:
+`NewClientFromEnv` reads `INTERCOM_ACCESS_TOKEN`. To pass a token directly:
+
+```go
+client, err := intercom.NewClient("access-token")
+```
+
+## Examples
+
+Retrieve and search contacts:
 
 ```go
 contact, err := client.Contacts.Get(ctx, "contact_id")
-contacts, err := client.Contacts.List(ctx)
+
 contacts, err := client.Contacts.Search(ctx, intercom.ContactSearch{
 	Field:    "email",
 	Operator: intercom.ContactSearchEquals,
@@ -67,14 +63,45 @@ contacts, err := client.Contacts.Search(ctx, intercom.ContactSearch{
 })
 ```
 
-## Examples
+Handle API errors:
+
+```go
+contact, err := client.Contacts.Get(ctx, "missing")
+if err != nil {
+	var apiErr *intercom.ErrorResponse
+	if errors.As(err, &apiErr) {
+		log.Printf("intercom status=%d request_id=%s", apiErr.StatusCode, apiErr.RequestID)
+	}
+	return err
+}
+```
+
+Runnable examples:
 
 - [`examples/identify_admin`](examples/identify_admin)
 - [`examples/search_contacts`](examples/search_contacts)
 
-## Design Principles
+## API Coverage
 
-- Keep the upstream OpenAPI spec pinned and reviewable.
-- Keep generated code internal until the public SDK shape is intentionally designed.
-- Prefer small, idiomatic public APIs over exposing generator-specific types everywhere.
-- Automate spec update detection, but require human review before generated changes are released.
+The SDK targets Intercom API version `2.15`, pinned in [`spec/intercom.openapi.yaml`](spec/intercom.openapi.yaml). Public root-package services cover the pinned spec while generated client code stays internal under [`internal/generated/intercom`](internal/generated/intercom).
+
+See [`docs/coverage.md`](docs/coverage.md) for the current public SDK coverage audit.
+See [`docs/generation.md`](docs/generation.md) for the generation workflow.
+
+## Development
+
+```sh
+go test ./...
+make coverage
+make generate-check
+```
+
+Before opening a PR, run:
+
+```sh
+make pre-push
+```
+
+## License
+
+MIT
