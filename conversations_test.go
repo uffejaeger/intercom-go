@@ -95,6 +95,25 @@ func TestConversationsServiceRequests(t *testing.T) {
 			wantPath:   "/conversations/123",
 		},
 		{
+			name:     "list handling events",
+			response: `{"handling_events":[{"type":"paused","timestamp":"2026-01-09T09:00:00Z","teammate":{"type":"admin","id":123,"name":"Jane Example"}}]}`,
+			call: func(ctx context.Context, client *Client) error {
+				events, err := client.Conversations.ListHandlingEvents(ctx, "conv-1")
+				if err != nil {
+					return err
+				}
+				if events.HandlingEvents == nil || len(*events.HandlingEvents) != 1 {
+					t.Fatalf("HandlingEvents = %#v", events.HandlingEvents)
+				}
+				if (*events.HandlingEvents)[0].Type != gen.HandlingEventTypePaused {
+					t.Fatalf("Type = %q", (*events.HandlingEvents)[0].Type)
+				}
+				return nil
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/conversations/conv-1/handling_events",
+		},
+		{
 			name:     "update conversation",
 			response: `{"type":"conversation","id":"123"}`,
 			call: func(ctx context.Context, client *Client) error {

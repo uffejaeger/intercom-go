@@ -22,6 +22,12 @@ type ConversationDeleted = gen.ConversationDeletedSchema
 // ConversationMessage is the result of creating a conversation.
 type ConversationMessage = gen.MessageSchema
 
+// ConversationHandlingEvent is a pause or resume event recorded for a conversation.
+type ConversationHandlingEvent = gen.HandlingEventSchema
+
+// ConversationHandlingEventList is a list of handling events for a conversation.
+type ConversationHandlingEventList = gen.HandlingEventListSchema
+
 // Ticket is an Intercom ticket.
 type Ticket = gen.TicketSchema
 
@@ -104,6 +110,18 @@ func (s *ConversationsService) Get(ctx context.Context, conversationID string) (
 		return nil, err
 	}
 	return requireOK("get conversation", res.StatusCode(), res.Body, res.JSON200)
+}
+
+// ListHandlingEvents returns pause and resume events for a conversation.
+func (s *ConversationsService) ListHandlingEvents(ctx context.Context, conversationID string) (*ConversationHandlingEventList, error) {
+	if conversationID == "" {
+		return nil, fmt.Errorf("intercom: conversation ID is required")
+	}
+	res, err := s.client.generated.ListHandlingEventsWithResponse(ctx, conversationID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list conversation handling events", res.StatusCode(), res.Body, res.JSON200)
 }
 
 // Update updates an existing conversation.

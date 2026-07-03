@@ -1960,6 +1960,24 @@ func (e GroupTranslatedContentType) Valid() bool {
 	}
 }
 
+// Defines values for HandlingEventType.
+const (
+	HandlingEventTypePaused  HandlingEventType = "paused"
+	HandlingEventTypeResumed HandlingEventType = "resumed"
+)
+
+// Valid indicates whether the value is a known member of the HandlingEventType enum.
+func (e HandlingEventType) Valid() bool {
+	switch e {
+	case HandlingEventTypePaused:
+		return true
+	case HandlingEventTypeResumed:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for HelpCenterListType.
 const (
 	HelpCenterListTypeList HelpCenterListType = "list"
@@ -1989,6 +2007,7 @@ const (
 	N212 IntercomVersion = "2.12"
 	N213 IntercomVersion = "2.13"
 	N214 IntercomVersion = "2.14"
+	N215 IntercomVersion = "2.15"
 	N22  IntercomVersion = "2.2"
 	N23  IntercomVersion = "2.3"
 	N24  IntercomVersion = "2.4"
@@ -2025,6 +2044,8 @@ func (e IntercomVersion) Valid() bool {
 	case N213:
 		return true
 	case N214:
+		return true
+	case N215:
 		return true
 	case N22:
 		return true
@@ -2671,6 +2692,27 @@ func (e TeamListType) Valid() bool {
 	}
 }
 
+// Defines values for TeammateReferenceType.
+const (
+	TeammateReferenceTypeAdmin TeammateReferenceType = "admin"
+	TeammateReferenceTypeBot   TeammateReferenceType = "bot"
+	TeammateReferenceTypeTeam  TeammateReferenceType = "team"
+)
+
+// Valid indicates whether the value is a known member of the TeammateReferenceType enum.
+func (e TeammateReferenceType) Valid() bool {
+	switch e {
+	case TeammateReferenceTypeAdmin:
+		return true
+	case TeammateReferenceTypeBot:
+		return true
+	case TeammateReferenceTypeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for TicketCategory.
 const (
 	TicketCategoryBackOffice TicketCategory = "Back-office"
@@ -2832,22 +2874,22 @@ func (e TicketPartUpdatedAttributeDataValueType) Valid() bool {
 
 // Defines values for TicketPartAuthorType.
 const (
-	TicketPartAuthorTypeAdmin TicketPartAuthorType = "admin"
-	TicketPartAuthorTypeBot   TicketPartAuthorType = "bot"
-	TicketPartAuthorTypeTeam  TicketPartAuthorType = "team"
-	TicketPartAuthorTypeUser  TicketPartAuthorType = "user"
+	Admin TicketPartAuthorType = "admin"
+	Bot   TicketPartAuthorType = "bot"
+	Team  TicketPartAuthorType = "team"
+	User  TicketPartAuthorType = "user"
 )
 
 // Valid indicates whether the value is a known member of the TicketPartAuthorType enum.
 func (e TicketPartAuthorType) Valid() bool {
 	switch e {
-	case TicketPartAuthorTypeAdmin:
+	case Admin:
 		return true
-	case TicketPartAuthorTypeBot:
+	case Bot:
 		return true
-	case TicketPartAuthorTypeTeam:
+	case Team:
 		return true
-	case TicketPartAuthorTypeUser:
+	case User:
 		return true
 	default:
 		return false
@@ -2976,16 +3018,16 @@ func (e TicketTypeCategory) Valid() bool {
 
 // Defines values for UpdateArticleRequestState.
 const (
-	UpdateArticleRequestStateDraft     UpdateArticleRequestState = "draft"
-	UpdateArticleRequestStatePublished UpdateArticleRequestState = "published"
+	Draft     UpdateArticleRequestState = "draft"
+	Published UpdateArticleRequestState = "published"
 )
 
 // Valid indicates whether the value is a known member of the UpdateArticleRequestState enum.
 func (e UpdateArticleRequestState) Valid() bool {
 	switch e {
-	case UpdateArticleRequestStateDraft:
+	case Draft:
 		return true
-	case UpdateArticleRequestStatePublished:
+	case Published:
 		return true
 	default:
 		return false
@@ -4426,7 +4468,7 @@ type ContactSchema struct {
 	// AndroidDevice The Android device which the contact is using.
 	AndroidDevice *string `json:"android_device,omitempty"`
 
-	// AndroidLastSeenAt (UNIX timestamp) The time when the contact was last seen on an Android device.
+	// AndroidLastSeenAt (Unix timestamp in seconds) The time when the contact was last seen on an Android device.
 	AndroidLastSeenAt *int `json:"android_last_seen_at,omitempty"`
 
 	// AndroidOsVersion The version of the Android OS which the contact is using.
@@ -4452,7 +4494,7 @@ type ContactSchema struct {
 	BrowserVersion *string                 `json:"browser_version,omitempty"`
 	Companies      *ContactCompaniesSchema `json:"companies,omitempty"`
 
-	// CreatedAt (UNIX timestamp) The time when the contact was created.
+	// CreatedAt (Unix timestamp in seconds) The time when the contact was created.
 	CreatedAt *int `json:"created_at,omitempty"`
 
 	// CustomAttributes The custom attributes which are set for the contact.
@@ -4482,7 +4524,7 @@ type ContactSchema struct {
 	// IosDevice The iOS device which the contact is using.
 	IosDevice *string `json:"ios_device,omitempty"`
 
-	// IosLastSeenAt (UNIX timestamp) The last time the contact used the iOS app.
+	// IosLastSeenAt (Unix timestamp in seconds) The last time the contact used the iOS app.
 	IosLastSeenAt *int `json:"ios_last_seen_at,omitempty"`
 
 	// IosOsVersion The version of iOS which the contact is using.
@@ -4494,19 +4536,19 @@ type ContactSchema struct {
 	// LanguageOverride A preferred language setting for the contact, used by the Intercom Messenger even if their browser settings change.
 	LanguageOverride *string `json:"language_override,omitempty"`
 
-	// LastContactedAt (UNIX timestamp) The time when the contact was last messaged.
+	// LastContactedAt (Unix timestamp in seconds) The time when the contact was last messaged.
 	LastContactedAt *int `json:"last_contacted_at,omitempty"`
 
-	// LastEmailClickedAt (UNIX timestamp) The time when the contact last clicked a link in an email.
+	// LastEmailClickedAt (Unix timestamp in seconds) The time when the contact last clicked a link in an email.
 	LastEmailClickedAt *int `json:"last_email_clicked_at,omitempty"`
 
-	// LastEmailOpenedAt (UNIX timestamp) The time when the contact last opened an email.
+	// LastEmailOpenedAt (Unix timestamp in seconds) The time when the contact last opened an email.
 	LastEmailOpenedAt *int `json:"last_email_opened_at,omitempty"`
 
-	// LastRepliedAt (UNIX timestamp) The time when the contact last messaged in.
+	// LastRepliedAt (Unix timestamp in seconds) The time when the contact last messaged in.
 	LastRepliedAt *int `json:"last_replied_at,omitempty"`
 
-	// LastSeenAt (UNIX timestamp) The time when the contact was last seen (either where the Intercom Messenger was installed or when specified manually).
+	// LastSeenAt (Unix timestamp in seconds) The time when the contact was last seen (either where the Intercom Messenger was installed or when specified manually).
 	LastSeenAt *int                   `json:"last_seen_at,omitempty"`
 	Location   *ContactLocationSchema `json:"location,omitempty"`
 
@@ -4529,7 +4571,7 @@ type ContactSchema struct {
 	// Role The role of the contact.
 	Role *string `json:"role,omitempty"`
 
-	// SignedUpAt (UNIX timestamp) The time specified for when a contact signed up.
+	// SignedUpAt (Unix timestamp in seconds) The time specified for when a contact signed up.
 	SignedUpAt     *int                         `json:"signed_up_at,omitempty"`
 	SocialProfiles *ContactSocialProfilesSchema `json:"social_profiles,omitempty"`
 	Tags           *ContactTagsSchema           `json:"tags,omitempty"`
@@ -4540,7 +4582,7 @@ type ContactSchema struct {
 	// UnsubscribedFromEmails Whether the contact is unsubscribed from emails.
 	UnsubscribedFromEmails *bool `json:"unsubscribed_from_emails,omitempty"`
 
-	// UpdatedAt (UNIX timestamp) The time when the contact was last updated.
+	// UpdatedAt (Unix timestamp in seconds) The time when the contact was last updated.
 	UpdatedAt *int `json:"updated_at,omitempty"`
 
 	// WorkspaceId The id of the workspace which the contact belongs to.
@@ -4758,6 +4800,9 @@ type ContactUnarchived = ContactReferenceSchema
 
 // ContentImportSourceSchema An external source for External Pages that you add to your Fin Content Library.
 type ContentImportSourceSchema struct {
+	// AudienceIds The unique identifiers for the audiences associated with this content import source.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
 	// CreatedAt The time when the content import source was created.
 	CreatedAt int `json:"created_at"`
 
@@ -5428,7 +5473,7 @@ type CreateContactRequestSchema struct {
 	// ExternalId A unique identifier for the contact which is given to Intercom
 	ExternalId *string `json:"external_id,omitempty"`
 
-	// LastSeenAt The time when the contact was last seen (either where the Intercom Messenger was installed or when specified manually)
+	// LastSeenAt (Unix timestamp in seconds) The time when the contact was last seen (either where the Intercom Messenger was installed or when specified manually).
 	LastSeenAt *int `json:"last_seen_at,omitempty"`
 
 	// Name The contacts name
@@ -5443,7 +5488,7 @@ type CreateContactRequestSchema struct {
 	// Role The role of the contact.
 	Role *string `json:"role,omitempty"`
 
-	// SignedUpAt The time specified for when a contact signed up
+	// SignedUpAt (Unix timestamp in seconds) The time specified for when a contact signed up.
 	SignedUpAt *int `json:"signed_up_at,omitempty"`
 
 	// UnsubscribedFromEmails Whether the contact is unsubscribed from emails
@@ -5462,6 +5507,9 @@ type CreateContactRequest2 = interface{}
 
 // CreateContentImportSourceRequestSchema You can add an Content Import Source to your Fin Content Library.
 type CreateContentImportSourceRequestSchema struct {
+	// AudienceIds The unique identifiers for the audiences to associate with this content import source. Can be a single integer or an array of integers.
+	AudienceIds *CreateContentImportSourceRequest_AudienceIds `json:"audience_ids,omitempty"`
+
 	// Status The status of the content import source.
 	Status *CreateContentImportSourceRequestStatus `json:"status,omitempty"`
 
@@ -5470,6 +5518,17 @@ type CreateContentImportSourceRequestSchema struct {
 
 	// Url The URL of the content import source.
 	Url string `json:"url"`
+}
+
+// CreateContentImportSourceRequestAudienceIds0 defines model for .
+type CreateContentImportSourceRequestAudienceIds0 = int
+
+// CreateContentImportSourceRequestAudienceIds1 defines model for .
+type CreateContentImportSourceRequestAudienceIds1 = []int
+
+// CreateContentImportSourceRequest_AudienceIds The unique identifiers for the audiences to associate with this content import source. Can be a single integer or an array of integers.
+type CreateContentImportSourceRequest_AudienceIds struct {
+	union json.RawMessage
 }
 
 // CreateContentImportSourceRequestStatus The status of the content import source.
@@ -6217,37 +6276,37 @@ type DataExportCsvSchema struct {
 	// Email The users email who was sent the message.
 	Email *string `json:"email,omitempty"`
 
-	// FirstClick The first time the series the user clicked on a link within this message.
+	// FirstClick The first time the series the user clicked on a link within this message. Only events within the export job's requested date range are counted.
 	FirstClick *int `json:"first_click,omitempty"`
 
-	// FirstCompletion The first time a user completed this message if the content was able to be completed e.g. Tours, Surveys.
+	// FirstCompletion The first time a user completed this message if the content was able to be completed e.g. Tours, Surveys. Only events within the export job's requested date range are counted.
 	FirstCompletion *int `json:"first_completion,omitempty"`
 
-	// FirstDismisall The first time the series the user dismissed this message.
+	// FirstDismisall The first time the series the user dismissed this message. Only events within the export job's requested date range are counted.
 	FirstDismisall *int `json:"first_dismisall,omitempty"`
 
-	// FirstGoalSuccess The first time the user met this messages associated goal if one exists.
+	// FirstGoalSuccess The first time the user met this messages associated goal if one exists. Only events within the export job's requested date range are counted.
 	FirstGoalSuccess *int `json:"first_goal_success,omitempty"`
 
-	// FirstHardBounce The first time this message hard bounced for this user
+	// FirstHardBounce The first time this message hard bounced for this user. Only events within the export job's requested date range are counted.
 	FirstHardBounce *int `json:"first_hard_bounce,omitempty"`
 
-	// FirstOpen The first time the user opened this message.
+	// FirstOpen The first time the user opened this message. Only events within the export job's requested date range are counted.
 	FirstOpen *int `json:"first_open,omitempty"`
 
-	// FirstReply The first time a user replied to this message if the content was able to receive replies.
+	// FirstReply The first time a user replied to this message if the content was able to receive replies. Only events within the export job's requested date range are counted.
 	FirstReply *int `json:"first_reply,omitempty"`
 
-	// FirstSeriesCompletion The first time the series this message was a part of was completed by the user.
+	// FirstSeriesCompletion The first time the series this message was a part of was completed by the user. Only events within the export job's requested date range are counted.
 	FirstSeriesCompletion *int `json:"first_series_completion,omitempty"`
 
-	// FirstSeriesDisengagement The first time the series this message was a part of was disengaged by the user.
+	// FirstSeriesDisengagement The first time the series this message was a part of was disengaged by the user. Only events within the export job's requested date range are counted.
 	FirstSeriesDisengagement *int `json:"first_series_disengagement,omitempty"`
 
-	// FirstSeriesExit The first time the series this message was a part of was exited by the user.
+	// FirstSeriesExit The first time the series this message was a part of was exited by the user. Only events within the export job's requested date range are counted.
 	FirstSeriesExit *int `json:"first_series_exit,omitempty"`
 
-	// FirstUnsubscribe The first time the user unsubscribed from this message.
+	// FirstUnsubscribe The first time the user unsubscribed from this message. Only events within the export job's requested date range are counted.
 	FirstUnsubscribe *int `json:"first_unsubscribe,omitempty"`
 
 	// Name The full name of the user receiving the message
@@ -6469,6 +6528,9 @@ type ExternalPageSchema struct {
 
 	// AiCopilotAvailability Whether the external page should be used to answer questions by AI Copilot.
 	AiCopilotAvailability bool `json:"ai_copilot_availability"`
+
+	// AiSalesAgentAvailability Whether the external page should be used to answer questions by AI Sales Agent.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
 
 	// CreatedAt The time when the external page was created.
 	CreatedAt int `json:"created_at"`
@@ -6902,6 +6964,28 @@ type GroupTranslatedContentSchema struct {
 
 // GroupTranslatedContentType The type of object - group_translated_content.
 type GroupTranslatedContentType string
+
+// HandlingEventSchema A pause or resume event for a conversation
+type HandlingEventSchema struct {
+	// Reason Optional reason for the event (e.g., "Paused", "Away")
+	Reason   *string                 `json:"reason,omitempty"`
+	Teammate TeammateReferenceSchema `json:"teammate"`
+
+	// Timestamp ISO8601 timestamp when the event occurred
+	Timestamp time.Time `json:"timestamp"`
+
+	// Type The type of handling event
+	Type HandlingEventType `json:"type"`
+}
+
+// HandlingEventType The type of handling event
+type HandlingEventType string
+
+// HandlingEventListSchema A list of handling events for a conversation
+type HandlingEventListSchema struct {
+	// HandlingEvents Array of handling events
+	HandlingEvents *[]HandlingEventSchema `json:"handling_events,omitempty"`
+}
 
 // HelpCenterSchema Help Centers contain collections
 type HelpCenterSchema struct {
@@ -7571,16 +7655,19 @@ type SingleFilterSearchRequestValue0 = string
 type SingleFilterSearchRequestValue1 = int
 
 // SingleFilterSearchRequestValue2 defines model for .
-type SingleFilterSearchRequestValue2 = []SingleFilterSearchRequest_Value_2_Item
+type SingleFilterSearchRequestValue2 = bool
 
-// SingleFilterSearchRequestValue20 defines model for .
-type SingleFilterSearchRequestValue20 = string
+// SingleFilterSearchRequestValue3 defines model for .
+type SingleFilterSearchRequestValue3 = []SingleFilterSearchRequest_Value_3_Item
 
-// SingleFilterSearchRequestValue21 defines model for .
-type SingleFilterSearchRequestValue21 = int
+// SingleFilterSearchRequestValue30 defines model for .
+type SingleFilterSearchRequestValue30 = string
 
-// SingleFilterSearchRequest_Value_2_Item defines model for SingleFilterSearchRequest.Value.2.Item.
-type SingleFilterSearchRequest_Value_2_Item struct {
+// SingleFilterSearchRequestValue31 defines model for .
+type SingleFilterSearchRequestValue31 = int
+
+// SingleFilterSearchRequest_Value_3_Item defines model for SingleFilterSearchRequest.Value.3.Item.
+type SingleFilterSearchRequest_Value_3_Item struct {
 	union json.RawMessage
 }
 
@@ -7809,6 +7896,24 @@ type TeamPriorityLevelSchema struct {
 	// SecondaryTeamIds The secondary team ids for the team
 	SecondaryTeamIds *[]int `json:"secondary_team_ids,omitempty"`
 }
+
+// TeammateReferenceSchema A reference to a teammate
+type TeammateReferenceSchema struct {
+	// Email The email address of the teammate (optional for teams/bots)
+	Email *openapi_types.Email `json:"email,omitempty"`
+
+	// Id The unique identifier of the teammate
+	Id int `json:"id"`
+
+	// Name The display name of the teammate
+	Name string `json:"name"`
+
+	// Type The type of teammate
+	Type TeammateReferenceType `json:"type"`
+}
+
+// TeammateReferenceType The type of teammate
+type TeammateReferenceType string
 
 // TicketSchema Tickets are how you track requests from your users.
 type TicketSchema struct {
@@ -8396,7 +8501,7 @@ type UpdateContactRequestSchema struct {
 	// ExternalId A unique identifier for the contact which is given to Intercom
 	ExternalId *string `json:"external_id,omitempty"`
 
-	// LastSeenAt The time when the contact was last seen (either where the Intercom Messenger was installed or when specified manually)
+	// LastSeenAt (Unix timestamp in seconds) The time when the contact was last seen (either where the Intercom Messenger was installed or when specified manually).
 	LastSeenAt *int `json:"last_seen_at,omitempty"`
 
 	// Name The contacts name
@@ -8411,7 +8516,7 @@ type UpdateContactRequestSchema struct {
 	// Role The role of the contact.
 	Role *string `json:"role,omitempty"`
 
-	// SignedUpAt The time specified for when a contact signed up
+	// SignedUpAt (Unix timestamp in seconds) The time specified for when a contact signed up.
 	SignedUpAt *int `json:"signed_up_at,omitempty"`
 
 	// UnsubscribedFromEmails Whether the contact is unsubscribed from emails
@@ -8420,6 +8525,12 @@ type UpdateContactRequestSchema struct {
 
 // UpdateContentImportSourceRequestSchema You can modify a Content Import Source of your Fin Content Library.
 type UpdateContentImportSourceRequestSchema struct {
+	// ApplyAudienceToExistingContent When true, the audience will be applied to all existing external pages belonging to this content import source.
+	ApplyAudienceToExistingContent *bool `json:"apply_audience_to_existing_content,omitempty"`
+
+	// AudienceIds The unique identifiers for the audiences to associate with this content import source. Can be a single integer or an array of integers. Set to null or an empty array to remove all audiences.
+	AudienceIds *UpdateContentImportSourceRequest_AudienceIds `json:"audience_ids,omitempty"`
+
 	// Status The status of the content import source.
 	Status *UpdateContentImportSourceRequestStatus `json:"status,omitempty"`
 
@@ -8428,6 +8539,17 @@ type UpdateContentImportSourceRequestSchema struct {
 
 	// Url The URL of the content import source. This may only be different from the existing value if the sync behavior is API.
 	Url string `json:"url"`
+}
+
+// UpdateContentImportSourceRequestAudienceIds0 defines model for .
+type UpdateContentImportSourceRequestAudienceIds0 = int
+
+// UpdateContentImportSourceRequestAudienceIds1 defines model for .
+type UpdateContentImportSourceRequestAudienceIds1 = []int
+
+// UpdateContentImportSourceRequest_AudienceIds The unique identifiers for the audiences to associate with this content import source. Can be a single integer or an array of integers. Set to null or an empty array to remove all audiences.
+type UpdateContentImportSourceRequest_AudienceIds struct {
+	union json.RawMessage
 }
 
 // UpdateContentImportSourceRequestStatus The status of the content import source.
@@ -9442,6 +9564,11 @@ type DetachTagFromConversationJSONBody struct {
 
 // DetachTagFromConversationParams defines parameters for DetachTagFromConversation.
 type DetachTagFromConversationParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListHandlingEventsParams defines parameters for ListHandlingEvents.
+type ListHandlingEventsParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
@@ -10955,6 +11082,68 @@ func (t *CreateContactRequestSchema) UnmarshalJSON(b []byte) error {
 		}
 	}
 
+	return err
+}
+
+// AsCreateContentImportSourceRequestAudienceIds0 returns the union data inside the CreateContentImportSourceRequest_AudienceIds as a CreateContentImportSourceRequestAudienceIds0
+func (t CreateContentImportSourceRequest_AudienceIds) AsCreateContentImportSourceRequestAudienceIds0() (CreateContentImportSourceRequestAudienceIds0, error) {
+	var body CreateContentImportSourceRequestAudienceIds0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateContentImportSourceRequestAudienceIds0 overwrites any union data inside the CreateContentImportSourceRequest_AudienceIds as the provided CreateContentImportSourceRequestAudienceIds0
+func (t *CreateContentImportSourceRequest_AudienceIds) FromCreateContentImportSourceRequestAudienceIds0(v CreateContentImportSourceRequestAudienceIds0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateContentImportSourceRequestAudienceIds0 performs a merge with any union data inside the CreateContentImportSourceRequest_AudienceIds, using the provided CreateContentImportSourceRequestAudienceIds0
+func (t *CreateContentImportSourceRequest_AudienceIds) MergeCreateContentImportSourceRequestAudienceIds0(v CreateContentImportSourceRequestAudienceIds0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateContentImportSourceRequestAudienceIds1 returns the union data inside the CreateContentImportSourceRequest_AudienceIds as a CreateContentImportSourceRequestAudienceIds1
+func (t CreateContentImportSourceRequest_AudienceIds) AsCreateContentImportSourceRequestAudienceIds1() (CreateContentImportSourceRequestAudienceIds1, error) {
+	var body CreateContentImportSourceRequestAudienceIds1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateContentImportSourceRequestAudienceIds1 overwrites any union data inside the CreateContentImportSourceRequest_AudienceIds as the provided CreateContentImportSourceRequestAudienceIds1
+func (t *CreateContentImportSourceRequest_AudienceIds) FromCreateContentImportSourceRequestAudienceIds1(v CreateContentImportSourceRequestAudienceIds1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateContentImportSourceRequestAudienceIds1 performs a merge with any union data inside the CreateContentImportSourceRequest_AudienceIds, using the provided CreateContentImportSourceRequestAudienceIds1
+func (t *CreateContentImportSourceRequest_AudienceIds) MergeCreateContentImportSourceRequestAudienceIds1(v CreateContentImportSourceRequestAudienceIds1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CreateContentImportSourceRequest_AudienceIds) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CreateContentImportSourceRequest_AudienceIds) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
 	return err
 }
 
@@ -12583,22 +12772,22 @@ func (t *SearchRequest_Query) UnmarshalJSON(b []byte) error {
 	return err
 }
 
-// AsSingleFilterSearchRequestValue20 returns the union data inside the SingleFilterSearchRequest_Value_2_Item as a SingleFilterSearchRequestValue20
-func (t SingleFilterSearchRequest_Value_2_Item) AsSingleFilterSearchRequestValue20() (SingleFilterSearchRequestValue20, error) {
-	var body SingleFilterSearchRequestValue20
+// AsSingleFilterSearchRequestValue30 returns the union data inside the SingleFilterSearchRequest_Value_3_Item as a SingleFilterSearchRequestValue30
+func (t SingleFilterSearchRequest_Value_3_Item) AsSingleFilterSearchRequestValue30() (SingleFilterSearchRequestValue30, error) {
+	var body SingleFilterSearchRequestValue30
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromSingleFilterSearchRequestValue20 overwrites any union data inside the SingleFilterSearchRequest_Value_2_Item as the provided SingleFilterSearchRequestValue20
-func (t *SingleFilterSearchRequest_Value_2_Item) FromSingleFilterSearchRequestValue20(v SingleFilterSearchRequestValue20) error {
+// FromSingleFilterSearchRequestValue30 overwrites any union data inside the SingleFilterSearchRequest_Value_3_Item as the provided SingleFilterSearchRequestValue30
+func (t *SingleFilterSearchRequest_Value_3_Item) FromSingleFilterSearchRequestValue30(v SingleFilterSearchRequestValue30) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeSingleFilterSearchRequestValue20 performs a merge with any union data inside the SingleFilterSearchRequest_Value_2_Item, using the provided SingleFilterSearchRequestValue20
-func (t *SingleFilterSearchRequest_Value_2_Item) MergeSingleFilterSearchRequestValue20(v SingleFilterSearchRequestValue20) error {
+// MergeSingleFilterSearchRequestValue30 performs a merge with any union data inside the SingleFilterSearchRequest_Value_3_Item, using the provided SingleFilterSearchRequestValue30
+func (t *SingleFilterSearchRequest_Value_3_Item) MergeSingleFilterSearchRequestValue30(v SingleFilterSearchRequestValue30) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -12609,22 +12798,22 @@ func (t *SingleFilterSearchRequest_Value_2_Item) MergeSingleFilterSearchRequestV
 	return err
 }
 
-// AsSingleFilterSearchRequestValue21 returns the union data inside the SingleFilterSearchRequest_Value_2_Item as a SingleFilterSearchRequestValue21
-func (t SingleFilterSearchRequest_Value_2_Item) AsSingleFilterSearchRequestValue21() (SingleFilterSearchRequestValue21, error) {
-	var body SingleFilterSearchRequestValue21
+// AsSingleFilterSearchRequestValue31 returns the union data inside the SingleFilterSearchRequest_Value_3_Item as a SingleFilterSearchRequestValue31
+func (t SingleFilterSearchRequest_Value_3_Item) AsSingleFilterSearchRequestValue31() (SingleFilterSearchRequestValue31, error) {
+	var body SingleFilterSearchRequestValue31
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromSingleFilterSearchRequestValue21 overwrites any union data inside the SingleFilterSearchRequest_Value_2_Item as the provided SingleFilterSearchRequestValue21
-func (t *SingleFilterSearchRequest_Value_2_Item) FromSingleFilterSearchRequestValue21(v SingleFilterSearchRequestValue21) error {
+// FromSingleFilterSearchRequestValue31 overwrites any union data inside the SingleFilterSearchRequest_Value_3_Item as the provided SingleFilterSearchRequestValue31
+func (t *SingleFilterSearchRequest_Value_3_Item) FromSingleFilterSearchRequestValue31(v SingleFilterSearchRequestValue31) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeSingleFilterSearchRequestValue21 performs a merge with any union data inside the SingleFilterSearchRequest_Value_2_Item, using the provided SingleFilterSearchRequestValue21
-func (t *SingleFilterSearchRequest_Value_2_Item) MergeSingleFilterSearchRequestValue21(v SingleFilterSearchRequestValue21) error {
+// MergeSingleFilterSearchRequestValue31 performs a merge with any union data inside the SingleFilterSearchRequest_Value_3_Item, using the provided SingleFilterSearchRequestValue31
+func (t *SingleFilterSearchRequest_Value_3_Item) MergeSingleFilterSearchRequestValue31(v SingleFilterSearchRequestValue31) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -12635,12 +12824,12 @@ func (t *SingleFilterSearchRequest_Value_2_Item) MergeSingleFilterSearchRequestV
 	return err
 }
 
-func (t SingleFilterSearchRequest_Value_2_Item) MarshalJSON() ([]byte, error) {
+func (t SingleFilterSearchRequest_Value_3_Item) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *SingleFilterSearchRequest_Value_2_Item) UnmarshalJSON(b []byte) error {
+func (t *SingleFilterSearchRequest_Value_3_Item) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -12713,6 +12902,32 @@ func (t *SingleFilterSearchRequest_Value) FromSingleFilterSearchRequestValue2(v 
 
 // MergeSingleFilterSearchRequestValue2 performs a merge with any union data inside the SingleFilterSearchRequest_Value, using the provided SingleFilterSearchRequestValue2
 func (t *SingleFilterSearchRequest_Value) MergeSingleFilterSearchRequestValue2(v SingleFilterSearchRequestValue2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsSingleFilterSearchRequestValue3 returns the union data inside the SingleFilterSearchRequest_Value as a SingleFilterSearchRequestValue3
+func (t SingleFilterSearchRequest_Value) AsSingleFilterSearchRequestValue3() (SingleFilterSearchRequestValue3, error) {
+	var body SingleFilterSearchRequestValue3
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSingleFilterSearchRequestValue3 overwrites any union data inside the SingleFilterSearchRequest_Value as the provided SingleFilterSearchRequestValue3
+func (t *SingleFilterSearchRequest_Value) FromSingleFilterSearchRequestValue3(v SingleFilterSearchRequestValue3) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSingleFilterSearchRequestValue3 performs a merge with any union data inside the SingleFilterSearchRequest_Value, using the provided SingleFilterSearchRequestValue3
+func (t *SingleFilterSearchRequest_Value) MergeSingleFilterSearchRequestValue3(v SingleFilterSearchRequestValue3) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -13107,6 +13322,68 @@ func (t TicketRequestCustomAttributes_AdditionalProperties) MarshalJSON() ([]byt
 }
 
 func (t *TicketRequestCustomAttributes_AdditionalProperties) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsUpdateContentImportSourceRequestAudienceIds0 returns the union data inside the UpdateContentImportSourceRequest_AudienceIds as a UpdateContentImportSourceRequestAudienceIds0
+func (t UpdateContentImportSourceRequest_AudienceIds) AsUpdateContentImportSourceRequestAudienceIds0() (UpdateContentImportSourceRequestAudienceIds0, error) {
+	var body UpdateContentImportSourceRequestAudienceIds0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUpdateContentImportSourceRequestAudienceIds0 overwrites any union data inside the UpdateContentImportSourceRequest_AudienceIds as the provided UpdateContentImportSourceRequestAudienceIds0
+func (t *UpdateContentImportSourceRequest_AudienceIds) FromUpdateContentImportSourceRequestAudienceIds0(v UpdateContentImportSourceRequestAudienceIds0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUpdateContentImportSourceRequestAudienceIds0 performs a merge with any union data inside the UpdateContentImportSourceRequest_AudienceIds, using the provided UpdateContentImportSourceRequestAudienceIds0
+func (t *UpdateContentImportSourceRequest_AudienceIds) MergeUpdateContentImportSourceRequestAudienceIds0(v UpdateContentImportSourceRequestAudienceIds0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUpdateContentImportSourceRequestAudienceIds1 returns the union data inside the UpdateContentImportSourceRequest_AudienceIds as a UpdateContentImportSourceRequestAudienceIds1
+func (t UpdateContentImportSourceRequest_AudienceIds) AsUpdateContentImportSourceRequestAudienceIds1() (UpdateContentImportSourceRequestAudienceIds1, error) {
+	var body UpdateContentImportSourceRequestAudienceIds1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUpdateContentImportSourceRequestAudienceIds1 overwrites any union data inside the UpdateContentImportSourceRequest_AudienceIds as the provided UpdateContentImportSourceRequestAudienceIds1
+func (t *UpdateContentImportSourceRequest_AudienceIds) FromUpdateContentImportSourceRequestAudienceIds1(v UpdateContentImportSourceRequestAudienceIds1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUpdateContentImportSourceRequestAudienceIds1 performs a merge with any union data inside the UpdateContentImportSourceRequest_AudienceIds, using the provided UpdateContentImportSourceRequestAudienceIds1
+func (t *UpdateContentImportSourceRequest_AudienceIds) MergeUpdateContentImportSourceRequestAudienceIds1(v UpdateContentImportSourceRequestAudienceIds1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t UpdateContentImportSourceRequest_AudienceIds) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *UpdateContentImportSourceRequest_AudienceIds) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -13728,6 +14005,9 @@ type ClientInterface interface {
 	DetachTagFromConversationWithBody(ctx context.Context, conversationId string, tagId string, params *DetachTagFromConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	DetachTagFromConversation(ctx context.Context, conversationId string, tagId string, params *DetachTagFromConversationParams, body DetachTagFromConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListHandlingEvents request
+	ListHandlingEvents(ctx context.Context, id string, params *ListHandlingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteCustomObjectInstancesById request
 	DeleteCustomObjectInstancesById(ctx context.Context, customObjectTypeIdentifier string, params *DeleteCustomObjectInstancesByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -15289,6 +15569,18 @@ func (c *Client) DetachTagFromConversationWithBody(ctx context.Context, conversa
 
 func (c *Client) DetachTagFromConversation(ctx context.Context, conversationId string, tagId string, params *DetachTagFromConversationParams, body DetachTagFromConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDetachTagFromConversationRequest(c.Server, conversationId, tagId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListHandlingEvents(ctx context.Context, id string, params *ListHandlingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListHandlingEventsRequest(c.Server, id, params)
 	if err != nil {
 		return nil, err
 	}
@@ -21067,6 +21359,55 @@ func NewDetachTagFromConversationRequestWithBody(server string, conversationId s
 	return req, nil
 }
 
+// NewListHandlingEventsRequest generates requests for ListHandlingEvents
+func NewListHandlingEventsRequest(server string, id string, params *ListHandlingEventsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/%s/handling_events", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewDeleteCustomObjectInstancesByIdRequest generates requests for DeleteCustomObjectInstancesById
 func NewDeleteCustomObjectInstancesByIdRequest(server string, customObjectTypeIdentifier string, params *DeleteCustomObjectInstancesByIdParams) (*http.Request, error) {
 	var err error
@@ -25899,6 +26240,9 @@ type ClientWithResponsesInterface interface {
 
 	DetachTagFromConversationWithResponse(ctx context.Context, conversationId string, tagId string, params *DetachTagFromConversationParams, body DetachTagFromConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*DetachTagFromConversationResponse, error)
 
+	// ListHandlingEventsWithResponse request
+	ListHandlingEventsWithResponse(ctx context.Context, id string, params *ListHandlingEventsParams, reqEditors ...RequestEditorFn) (*ListHandlingEventsResponse, error)
+
 	// DeleteCustomObjectInstancesByIdWithResponse request
 	DeleteCustomObjectInstancesByIdWithResponse(ctx context.Context, customObjectTypeIdentifier string, params *DeleteCustomObjectInstancesByIdParams, reqEditors ...RequestEditorFn) (*DeleteCustomObjectInstancesByIdResponse, error)
 
@@ -28037,6 +28381,30 @@ func (r DetachTagFromConversationResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r DetachTagFromConversationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListHandlingEventsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *HandlingEventListSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListHandlingEventsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListHandlingEventsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -31006,6 +31374,15 @@ func (c *ClientWithResponses) DetachTagFromConversationWithResponse(ctx context.
 		return nil, err
 	}
 	return ParseDetachTagFromConversationResponse(rsp)
+}
+
+// ListHandlingEventsWithResponse request returning *ListHandlingEventsResponse
+func (c *ClientWithResponses) ListHandlingEventsWithResponse(ctx context.Context, id string, params *ListHandlingEventsParams, reqEditors ...RequestEditorFn) (*ListHandlingEventsResponse, error) {
+	rsp, err := c.ListHandlingEvents(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListHandlingEventsResponse(rsp)
 }
 
 // DeleteCustomObjectInstancesByIdWithResponse request returning *DeleteCustomObjectInstancesByIdResponse
@@ -34831,6 +35208,46 @@ func ParseDetachTagFromConversationResponse(rsp *http.Response) (*DetachTagFromC
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest TagSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListHandlingEventsResponse parses an HTTP response from a ListHandlingEventsWithResponse call
+func ParseListHandlingEventsResponse(rsp *http.Response) (*ListHandlingEventsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListHandlingEventsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest HandlingEventListSchema
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

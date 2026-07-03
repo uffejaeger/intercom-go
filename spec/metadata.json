@@ -2,6 +2,6 @@
   "source": "https://github.com/intercom/Intercom-OpenAPI/blob/main/descriptions/2.15/api.intercom.io.yaml",
   "upstreamRepository": "intercom/Intercom-OpenAPI",
   "upstreamPath": "descriptions/2.15/api.intercom.io.yaml",
-  "upstreamCommit": "7685c4c124aca6ffc46bfd6c5f568b18cef43ba1",
+  "upstreamCommit": "a7d107aedc14395c8d752f243a6e3b96719c3a90",
   "apiVersion": "2.15"
 }

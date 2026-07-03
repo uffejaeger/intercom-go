@@ -421,6 +421,7 @@ paths:
                       sync_behavior: automatic
                       created_at: 1734537259
                       updated_at: 1734537259
+                      audience_ids: []
                     - id: 34
                       type: content_import_source
                       last_synced_at: 1734537259
@@ -429,6 +430,7 @@ paths:
                       sync_behavior: automatic
                       created_at: 1734537259
                       updated_at: 1734537259
+                      audience_ids: []
                     - id: 35
                       type: content_import_source
                       last_synced_at: 1734537259
@@ -437,6 +439,7 @@ paths:
                       sync_behavior: automatic
                       created_at: 1734537259
                       updated_at: 1734537259
+                      audience_ids: []
                     pages:
                       type: pages
                       page: 1
@@ -488,6 +491,7 @@ paths:
                     sync_behavior: api
                     created_at: 1734537261
                     updated_at: 1734537261
+                    audience_ids: []
               schema:
                 "$ref": "#/components/schemas/content_import_source"
         '401':
@@ -580,6 +584,7 @@ paths:
                     sync_behavior: api
                     created_at: 1734537265
                     updated_at: 1734537265
+                    audience_ids: []
               schema:
                 "$ref": "#/components/schemas/content_import_source"
         '401':
@@ -623,6 +628,7 @@ paths:
                     sync_behavior: api
                     created_at: 1734537267
                     updated_at: 1734537267
+                    audience_ids: []
               schema:
                 "$ref": "#/components/schemas/content_import_source"
         '401':
@@ -678,6 +684,7 @@ paths:
                       url: https://support.example.com/us/3
                       ai_agent_availability: true
                       ai_copilot_availability: true
+                      ai_sales_agent_availability: true
                       fin_availability: true
                       locale: en
                       source_id: 42
@@ -692,6 +699,7 @@ paths:
                       url: https://support.example.com/us/2
                       ai_agent_availability: true
                       ai_copilot_availability: true
+                      ai_sales_agent_availability: true
                       fin_availability: true
                       locale: en
                       source_id: 41
@@ -706,6 +714,7 @@ paths:
                       url: https://support.example.com/us/1
                       ai_agent_availability: true
                       ai_copilot_availability: true
+                      ai_sales_agent_availability: true
                       fin_availability: true
                       locale: en
                       source_id: 40
@@ -764,6 +773,7 @@ paths:
                     url: https://www.example.com
                     ai_agent_availability: true
                     ai_copilot_availability: true
+                    ai_sales_agent_availability: true
                     fin_availability: true
                     locale: en
                     source_id: 44
@@ -837,6 +847,7 @@ paths:
                     url: https://support.example.com/us/5
                     ai_agent_availability: true
                     ai_copilot_availability: true
+                    ai_sales_agent_availability: true
                     fin_availability: true
                     locale: en
                     source_id: 45
@@ -886,6 +897,7 @@ paths:
                     url: https://support.example.com/us/6
                     ai_agent_availability: true
                     ai_copilot_availability: true
+                    ai_sales_agent_availability: true
                     fin_availability: true
                     locale: en
                     source_id: 46
@@ -936,6 +948,7 @@ paths:
                     url: https://www.example.com
                     ai_agent_availability: true
                     ai_copilot_availability: true
+                    ai_sales_agent_availability: true
                     fin_availability: true
                     locale: en
                     source_id: 47
@@ -4529,6 +4542,8 @@ paths:
 
           1.Opt-out subscription types that the user has opted-out from.
           2.Opt-in subscription types that the user has opted-in to receiving.
+
+        **Note:** This endpoint only returns subscriptions where the contact has explicitly configured their preference. Subscriptions that are in the default state — where the contact has not made an explicit opt-in or opt-out choice — are not included in the response.
       responses:
         '200':
           description: Successful
@@ -6939,6 +6954,10 @@ paths:
           See _`update a conversation with an association to a custom object instance`_ in the request/response examples to see the custom object association format.
         {% /admonition %}
 
+        {% admonition type="danger" name="Breaking change: duplicate custom attribute names" %}
+        The `PUT /conversations/{id}` endpoint now returns a `400 INVALID_PARAMETER` error when the request includes `custom_attributes` and your workspace contains multiple non-archived conversation custom attributes with the same name. Previously, the update would silently apply to a non-deterministic attribute. To resolve, rename or archive the duplicate attribute in your workspace settings, then retry the request.
+        {% /admonition %}
+
       responses:
         '200':
           description: update a conversation with an association to a custom object
@@ -7463,8 +7482,14 @@ paths:
       tags:
       - Conversations
       operationId: replyConversation
-      description: You can reply to a conversation with a message from an admin or
-        on behalf of a contact, or with a note for admins.
+      description: |-
+        You can reply to a conversation with a message from an admin or on behalf of a contact, or with a note for admins.
+
+        {% admonition type="warning" name="Bot replies to inbound email" %}
+        By default, bot or Operator replies to an inbound email conversation aren't sent to your customer. The reply is stored as an unnotifiable bot comment, and no `seen` receipt is generated until an email is actually delivered.
+
+        To send these replies as outbound emails, reach out to your accounts team to enable the email-reply feature flag for your workspace.
+        {% /admonition %}
       responses:
         '200':
           description: User last conversation reply
@@ -8433,10 +8458,10 @@ paths:
       - Conversations
       operationId: detachContactFromConversation
       description: |+
-        You can add participants who are contacts to a conversation, on behalf of either another contact or an admin.
+        You can remove participants who are contacts from a group conversation, on behalf of an admin.
 
-        {% admonition type="warning" name="Contacts without an email" %}
-        If you add a contact via the email parameter and there is no user/lead found on that workspace with he given email, then we will create a new contact with `role` set to `lead`.
+        {% admonition type="warning" name="Removing the last participant" %}
+        You cannot remove the last remaining contact from a conversation.
         {% /admonition %}
 
       responses:
@@ -8545,6 +8570,66 @@ paths:
                   admin_id: 991267748
                   customer:
                     intercom_user_id: 6762f1d11bb69f9f2193bbf1
+  "/conversations/{id}/handling_events":
+    get:
+      summary: List handling events
+      parameters:
+      - name: Intercom-Version
+        in: header
+        schema:
+          "$ref": "#/components/schemas/intercom_version"
+      - name: id
+        in: path
+        required: true
+        description: The identifier for the conversation as given by Intercom.
+        example: '123'
+        schema:
+          type: string
+      tags:
+      - Conversations
+      operationId: listHandlingEvents
+      description: |
+        List all pause/resume events for a conversation. These events track when teammates paused or resumed handling a conversation.
+
+        Requires the `read_conversations` OAuth scope.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/handling_event_list"
+              examples:
+                Successful response:
+                  value:
+                    handling_events:
+                    - teammate:
+                        type: admin
+                        id: 123
+                        name: Jane Example
+                        email: jane@example.com
+                      type: paused
+                      timestamp: "2026-01-09T09:00:00Z"
+                      reason: Paused
+                    - teammate:
+                        type: admin
+                        id: 123
+                        name: Jane Example
+                        email: jane@example.com
+                      type: resumed
+                      timestamp: "2026-01-09T09:10:00Z"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
+        '404':
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/error"
   "/conversations/redact":
     post:
       summary: Redact a conversation part
@@ -16877,51 +16962,51 @@ components:
         created_at:
           type: integer
           format: date-time
-          description: "(UNIX timestamp) The time when the contact was created."
+          description: "(Unix timestamp in seconds) The time when the contact was created."
           example: 1571672154
         updated_at:
           type: integer
           format: date-time
-          description: "(UNIX timestamp) The time when the contact was last updated."
+          description: "(Unix timestamp in seconds) The time when the contact was last updated."
           example: 1571672154
         signed_up_at:
           type: integer
           format: date-time
           nullable: true
-          description: "(UNIX timestamp) The time specified for when a contact signed
+          description: "(Unix timestamp in seconds) The time specified for when a contact signed
             up."
           example: 1571672154
         last_seen_at:
           type: integer
           format: date-time
           nullable: true
-          description: "(UNIX timestamp) The time when the contact was last seen (either
+          description: "(Unix timestamp in seconds) The time when the contact was last seen (either
             where the Intercom Messenger was installed or when specified manually)."
           example: 1571672154
         last_replied_at:
           type: integer
           format: date-time
           nullable: true
-          description: "(UNIX timestamp) The time when the contact last messaged in."
+          description: "(Unix timestamp in seconds) The time when the contact last messaged in."
           example: 1571672154
         last_contacted_at:
           type: integer
           format: date-time
           nullable: true
-          description: "(UNIX timestamp) The time when the contact was last messaged."
+          description: "(Unix timestamp in seconds) The time when the contact was last messaged."
           example: 1571672154
         last_email_opened_at:
           type: integer
           format: date-time
           nullable: true
-          description: "(UNIX timestamp) The time when the contact last opened an
+          description: "(Unix timestamp in seconds) The time when the contact last opened an
             email."
           example: 1571672154
         last_email_clicked_at:
           type: integer
           format: date-time
           nullable: true
-          description: "(UNIX timestamp) The time when the contact last clicked a
+          description: "(Unix timestamp in seconds) The time when the contact last clicked a
             link in an email."
           example: 1571672154
         language_override:
@@ -16979,7 +17064,7 @@ components:
           type: integer
           nullable: true
           format: date-time
-          description: "(UNIX timestamp) The time when the contact was last seen on
+          description: "(Unix timestamp in seconds) The time when the contact was last seen on
             an Android device."
           example: 1571672154
         ios_app_name:
@@ -17011,7 +17096,7 @@ components:
           type: integer
           nullable: true
           format: date-time
-          description: "(UNIX timestamp) The last time the contact used the iOS app."
+          description: "(Unix timestamp in seconds) The last time the contact used the iOS app."
           example: 1571672154
         custom_attributes:
           type: object
@@ -17542,6 +17627,14 @@ components:
           format: date-time
           description: The time when the content import source was last updated.
           example: 1672928610
+        audience_ids:
+          type: array
+          nullable: true
+          items:
+            type: integer
+          description: The unique identifiers for the audiences associated with this content import source.
+          example:
+          - 5678
       required:
       - id
       - type
@@ -18590,14 +18683,14 @@ components:
           type: integer
           format: date-time
           nullable: true
-          description: The time specified for when a contact signed up
+          description: (Unix timestamp in seconds) The time specified for when a contact signed up.
           example: 1571672154
         last_seen_at:
           type: integer
           format: date-time
           nullable: true
-          description: The time when the contact was last seen (either where the Intercom
-            Messenger was installed or when specified manually)
+          description: (Unix timestamp in seconds) The time when the contact was last seen
+            (either where the Intercom Messenger was installed or when specified manually).
           example: 1571672154
         owner_id:
           type: integer
@@ -18653,6 +18746,16 @@ components:
           type: string
           description: The URL of the content import source.
           example: https://help.example.com
+        audience_ids:
+          nullable: true
+          description: The unique identifiers for the audiences to associate with this content import source. Can be a single integer or an array of integers.
+          example:
+          - 5678
+          oneOf:
+          - type: integer
+          - type: array
+            items:
+              type: integer
       required:
       - sync_behavior
       - url
@@ -20016,43 +20119,44 @@ components:
         first_reply:
           type: integer
           description: The first time a user replied to this message if the content
-            was able to receive replies.
+            was able to receive replies. Only events within the export job's requested date range are counted.
         first_completion:
           type: integer
           description: The first time a user completed this message if the content
-            was able to be completed e.g. Tours, Surveys.
+            was able to be completed e.g. Tours, Surveys. Only events within the export job's requested date range are counted.
         first_series_completion:
           type: integer
           description: The first time the series this message was a part of was completed
-            by the user.
+            by the user. Only events within the export job's requested date range are counted.
         first_series_disengagement:
           type: integer
           description: The first time the series this message was a part of was disengaged
-            by the user.
+            by the user. Only events within the export job's requested date range are counted.
         first_series_exit:
           type: integer
           description: The first time the series this message was a part of was exited
-            by the user.
+            by the user. Only events within the export job's requested date range are counted.
         first_goal_success:
           type: integer
           description: The first time the user met this messages associated goal if
-            one exists.
+            one exists. Only events within the export job's requested date range are counted.
         first_open:
           type: integer
-          description: The first time the user opened this message.
+          description: The first time the user opened this message. Only events within
+            the export job's requested date range are counted.
         first_click:
           type: integer
           description: The first time the series the user clicked on a link within
-            this message.
+            this message. Only events within the export job's requested date range are counted.
         first_dismisall:
           type: integer
-          description: The first time the series the user dismissed this message.
+          description: The first time the series the user dismissed this message. Only events within the export job's requested date range are counted.
         first_unsubscribe:
           type: integer
-          description: The first time the user unsubscribed from this message.
+          description: The first time the user unsubscribed from this message. Only events within the export job's requested date range are counted.
         first_hard_bounce:
           type: integer
-          description: The first time this message hard bounced for this user
+          description: The first time this message hard bounced for this user. Only events within the export job's requested date range are counted.
     deleted_article_object:
       title: Deleted Article Object
       type: object
@@ -20489,6 +20593,11 @@ components:
           type: boolean
           description: Whether the external page should be used to answer questions
             by AI Copilot.
+          example: true
+        ai_sales_agent_availability:
+          type: boolean
+          description: Whether the external page should be used to answer questions
+            by AI Sales Agent.
           example: true
         fin_availability:
           type: boolean
@@ -21107,6 +21216,42 @@ components:
         zh-TW:
           description: The content of the group in Chinese (Taiwan)
           "$ref": "#/components/schemas/group_content"
+    handling_event:
+      title: Handling Event
+      type: object
+      description: A pause or resume event for a conversation
+      required:
+        - teammate
+        - type
+        - timestamp
+      properties:
+        teammate:
+          "$ref": "#/components/schemas/teammate_reference"
+        type:
+          type: string
+          enum: [paused, resumed]
+          description: The type of handling event
+          example: paused
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO8601 timestamp when the event occurred
+          example: "2026-01-09T09:00:00Z"
+        reason:
+          type: string
+          description: Optional reason for the event (e.g., "Paused", "Away")
+          example: Paused
+          nullable: true
+    handling_event_list:
+      title: Handling Event List
+      type: object
+      description: A list of handling events for a conversation
+      properties:
+        handling_events:
+          type: array
+          description: Array of handling events
+          items:
+            "$ref": "#/components/schemas/handling_event"
     help_center:
       title: Help Center
       type: object
@@ -21246,8 +21391,8 @@ components:
       description: Intercom API version.</br>By default, it's equal to the version
         set in the app package.
       type: string
-      example: '2.14'
-      default: '2.14'
+      example: '2.15'
+      default: '2.15'
       enum:
       - '1.0'
       - '1.1'
@@ -21269,6 +21414,7 @@ components:
       - '2.12'
       - '2.13'
       - '2.14'
+      - '2.15'
     linked_object:
       title: Linked Object
       type: object
@@ -22095,6 +22241,7 @@ components:
           oneOf:
           - type: string
           - type: integer
+          - type: boolean
           - type: array
             items:
               oneOf:
@@ -22462,6 +22609,34 @@ components:
           - 493881
           items:
             type: integer
+    teammate_reference:
+      title: Teammate Reference
+      type: object
+      description: A reference to a teammate
+      required:
+        - type
+        - id
+        - name
+      properties:
+        type:
+          type: string
+          enum: [admin, team, bot]
+          description: The type of teammate
+          example: admin
+        id:
+          type: integer
+          description: The unique identifier of the teammate
+          example: 123
+        name:
+          type: string
+          description: The display name of the teammate
+          example: Jane Example
+        email:
+          type: string
+          format: email
+          description: The email address of the teammate (optional for teams/bots)
+          example: jane@example.com
+          nullable: true
     ticket:
       title: Ticket
       type: object
@@ -23349,14 +23524,14 @@ components:
           type: integer
           format: date-time
           nullable: true
-          description: The time specified for when a contact signed up
+          description: (Unix timestamp in seconds) The time specified for when a contact signed up.
           example: 1571672154
         last_seen_at:
           type: integer
           format: date-time
           nullable: true
-          description: The time when the contact was last seen (either where the Intercom
-            Messenger was installed or when specified manually)
+          description: (Unix timestamp in seconds) The time when the contact was last seen
+            (either where the Intercom Messenger was installed or when specified manually).
           example: 1571672154
         owner_id:
           type: integer
@@ -23401,6 +23576,21 @@ components:
           description: The URL of the content import source. This may only be different
             from the existing value if the sync behavior is API.
           example: https://help.example.com
+        audience_ids:
+          nullable: true
+          description: The unique identifiers for the audiences to associate with this content import source. Can be a single integer or an array of integers. Set to null or an empty array to remove all audiences.
+          example:
+          - 5678
+          oneOf:
+          - type: integer
+          - type: array
+            items:
+              type: integer
+        apply_audience_to_existing_content:
+          type: boolean
+          description: When true, the audience will be applied to all existing external pages belonging to this content import source.
+          default: false
+          example: false
       required:
       - sync_behavior
       - url
