@@ -93,21 +93,27 @@ func wrappedGeneratedOperations(t *testing.T) map[string]bool {
 		}
 
 		file := parseGoFile(t, path)
-		ast.Inspect(file, func(node ast.Node) bool {
-			selector, ok := node.(*ast.SelectorExpr)
-			if !ok {
-				return true
+		for _, decl := range file.Decls {
+			fn, ok := decl.(*ast.FuncDecl)
+			if !ok || !isExportedServiceMethod(fn) || fn.Body == nil {
+				continue
 			}
-			if !isGeneratedClientSelector(selector.X) {
+			ast.Inspect(fn.Body, func(node ast.Node) bool {
+				selector, ok := node.(*ast.SelectorExpr)
+				if !ok {
+					return true
+				}
+				if !isGeneratedClientSelector(selector.X) {
+					return true
+				}
+				operation, ok := canonicalGeneratedOperation(selector.Sel.Name)
+				if !ok {
+					return true
+				}
+				operations[operation] = true
 				return true
-			}
-			operation, ok := canonicalGeneratedOperation(selector.Sel.Name)
-			if !ok {
-				return true
-			}
-			operations[operation] = true
-			return true
-		})
+			})
+		}
 	}
 
 	if len(operations) == 0 {
@@ -128,6 +134,26 @@ func parseGoFile(t *testing.T, path string) *ast.File {
 		t.Fatalf("parse %s: %v", path, err)
 	}
 	return file
+}
+
+func isExportedServiceMethod(fn *ast.FuncDecl) bool {
+	if fn.Recv == nil || !fn.Name.IsExported() || len(fn.Recv.List) != 1 {
+		return false
+	}
+
+	receiver := receiverTypeName(fn.Recv.List[0].Type)
+	return ast.IsExported(receiver) && strings.HasSuffix(receiver, "Service")
+}
+
+func receiverTypeName(expr ast.Expr) string {
+	switch typed := expr.(type) {
+	case *ast.Ident:
+		return typed.Name
+	case *ast.StarExpr:
+		return receiverTypeName(typed.X)
+	default:
+		return ""
+	}
 }
 
 func isGeneratedClientSelector(expr ast.Expr) bool {
