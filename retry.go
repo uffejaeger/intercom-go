@@ -17,6 +17,7 @@ const (
 	defaultRetryInitialBackoff = 100 * time.Millisecond
 	defaultRetryMaxBackoff     = 2 * time.Second
 	defaultRetryJitter         = 0.2
+	rateLimitResetHeader       = "X-RateLimit-Reset"
 )
 
 // RetryConfig controls opt-in retry behavior for transient failures and rate limits.
@@ -161,6 +162,9 @@ func (t *retryTransport) retryDelay(attempt int, res *http.Response) time.Durati
 	if retryAfter, ok := retryAfterDelay(res); ok {
 		return retryAfter
 	}
+	if rateLimitReset, ok := rateLimitResetDelay(res); ok {
+		return rateLimitReset
+	}
 
 	exponent := min(max(attempt-1, 0), 30)
 
@@ -192,7 +196,7 @@ func retryAfterDelay(res *http.Response) (time.Duration, bool) {
 	if res == nil {
 		return 0, false
 	}
-	value := strings.TrimSpace(res.Header.Get("Retry-After"))
+	value := strings.TrimSpace(headerValue(res.Header, "Retry-After"))
 	if value == "" {
 		return 0, false
 	}
@@ -207,6 +211,25 @@ func retryAfterDelay(res *http.Response) (time.Duration, bool) {
 		return 0, false
 	}
 	delay := time.Until(when)
+	if delay < 0 {
+		return 0, true
+	}
+	return delay, true
+}
+
+func rateLimitResetDelay(res *http.Response) (time.Duration, bool) {
+	if res == nil || res.StatusCode != http.StatusTooManyRequests {
+		return 0, false
+	}
+	value := strings.TrimSpace(headerValue(res.Header, rateLimitResetHeader))
+	if value == "" {
+		return 0, false
+	}
+	resetAt, err := strconv.ParseInt(value, 10, 64)
+	if err != nil {
+		return 0, false
+	}
+	delay := time.Until(time.Unix(resetAt, 0))
 	if delay < 0 {
 		return 0, true
 	}
@@ -249,4 +272,16 @@ func isRetryableNetworkError(err error) bool {
 		return true
 	}
 	return errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF)
+}
+
+func headerValue(header http.Header, name string) string {
+	if value := header.Get(name); value != "" {
+		return value
+	}
+	for key, values := range header {
+		if strings.EqualFold(key, name) && len(values) > 0 {
+			return values[0]
+		}
+	}
+	return ""
 }

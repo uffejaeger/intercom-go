@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -28,6 +29,22 @@ func TestRetryTransportBehavior(t *testing.T) {
 			withRetry: true,
 			responses: []retryTestResult{
 				{status: http.StatusTooManyRequests, headers: http.Header{"Retry-After": []string{"0"}}},
+				{status: http.StatusOK, body: `{"ok":true}`},
+			},
+			wantAttempts: 2,
+		},
+		{
+			name:      "retries 429 with x-ratelimit-reset",
+			method:    http.MethodGet,
+			config:    RetryConfig{MaxAttempts: 2},
+			withRetry: true,
+			responses: []retryTestResult{
+				{
+					status: http.StatusTooManyRequests,
+					headers: http.Header{
+						rateLimitResetHeader: []string{strconv.FormatInt(time.Now().Add(-time.Second).Unix(), 10)},
+					},
+				},
 				{status: http.StatusOK, body: `{"ok":true}`},
 			},
 			wantAttempts: 2,
@@ -503,6 +520,80 @@ func TestRetryAfterDelayMoreBranches(t *testing.T) {
 	}
 }
 
+func TestRateLimitResetDelay(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "https://example.test", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+
+	tests := []struct {
+		name      string
+		response  *http.Response
+		wantOK    bool
+		wantDelay func(time.Duration) bool
+	}{
+		{
+			name:   "nil response",
+			wantOK: false,
+		},
+		{
+			name: "non rate limit response",
+			response: retryTestResponse(req, retryTestResult{
+				status:  http.StatusServiceUnavailable,
+				headers: http.Header{rateLimitResetHeader: []string{strconv.FormatInt(time.Now().Unix(), 10)}},
+			}),
+			wantOK: false,
+		},
+		{
+			name:     "missing header",
+			response: retryTestResponse(req, retryTestResult{status: http.StatusTooManyRequests}),
+			wantOK:   false,
+		},
+		{
+			name: "invalid header",
+			response: retryTestResponse(req, retryTestResult{
+				status:  http.StatusTooManyRequests,
+				headers: http.Header{rateLimitResetHeader: []string{"soon"}},
+			}),
+			wantOK: false,
+		},
+		{
+			name: "past reset timestamp",
+			response: retryTestResponse(req, retryTestResult{
+				status:  http.StatusTooManyRequests,
+				headers: http.Header{rateLimitResetHeader: []string{strconv.FormatInt(time.Now().Add(-time.Second).Unix(), 10)}},
+			}),
+			wantOK: true,
+			wantDelay: func(delay time.Duration) bool {
+				return delay == 0
+			},
+		},
+		{
+			name: "future reset timestamp",
+			response: retryTestResponse(req, retryTestResult{
+				status:  http.StatusTooManyRequests,
+				headers: http.Header{rateLimitResetHeader: []string{strconv.FormatInt(time.Now().Add(time.Minute).Unix(), 10)}},
+			}),
+			wantOK: true,
+			wantDelay: func(delay time.Duration) bool {
+				return delay > 0
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			delay, ok := rateLimitResetDelay(tt.response)
+			if ok != tt.wantOK {
+				t.Fatalf("rateLimitResetDelay ok = %v, want %v", ok, tt.wantOK)
+			}
+			if tt.wantDelay != nil && !tt.wantDelay(delay) {
+				t.Fatalf("rateLimitResetDelay delay = %s", delay)
+			}
+		})
+	}
+}
+
 func TestSleepWithContextImmediateCanceled(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -525,6 +616,47 @@ func TestIsRetryableNetworkError(t *testing.T) {
 	}
 	if isRetryableNetworkError(errors.New("permanent")) {
 		t.Fatal("permanent error was retryable")
+	}
+}
+
+func TestHeaderValue(t *testing.T) {
+	tests := []struct {
+		name   string
+		header http.Header
+		key    string
+		want   string
+	}{
+		{
+			name: "canonical header",
+			header: http.Header{
+				"Retry-After": []string{"1"},
+			},
+			key:  "Retry-After",
+			want: "1",
+		},
+		{
+			name: "non canonical intercom header",
+			header: http.Header{
+				rateLimitResetHeader: []string{"123"},
+			},
+			key:  rateLimitResetHeader,
+			want: "123",
+		},
+		{
+			name: "missing header",
+			header: http.Header{
+				"Other": []string{"value"},
+			},
+			key: rateLimitResetHeader,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := headerValue(tt.header, tt.key); got != tt.want {
+				t.Fatalf("headerValue = %q, want %q", got, tt.want)
+			}
+		})
 	}
 }
 

@@ -56,7 +56,7 @@ client, err := intercom.NewClient("access-token", intercom.WithRetry(intercom.Re
 }))
 ```
 
-Retries honor `Retry-After` for rate limits and retry selected transient failures. Mutating requests are not retried unless `AllowUnsafeMethods` is set.
+Retries honor Intercom's `X-RateLimit-Reset` header for rate limits, fall back to `Retry-After` when present, and retry selected transient failures. Mutating requests are not retried unless `AllowUnsafeMethods` is set.
 
 ## Examples
 
