@@ -36,6 +36,7 @@ type Client struct {
 	apiVersion string
 	userAgent  string
 	httpClient *http.Client
+	retry      *RetryConfig
 	generated  *gen.ClientWithResponses
 
 	Admins            *AdminsService
@@ -90,6 +91,10 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 		if err := opt(client); err != nil {
 			return nil, err
 		}
+	}
+
+	if client.retry != nil {
+		client.httpClient = retryHTTPClient(client.httpClient, *client.retry)
 	}
 
 	// The options we pass never fail, so the error is always nil.

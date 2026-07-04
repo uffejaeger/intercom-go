@@ -48,6 +48,16 @@ func main() {
 client, err := intercom.NewClient("access-token")
 ```
 
+Enable conservative opt-in retries:
+
+```go
+client, err := intercom.NewClient("access-token", intercom.WithRetry(intercom.RetryConfig{
+	MaxAttempts: 3,
+}))
+```
+
+Retries honor Intercom's `X-RateLimit-Reset` header for rate limits, fall back to `Retry-After` when present, and retry selected transient failures. Mutating requests are not retried unless `AllowUnsafeMethods` is set.
+
 ## Examples
 
 Retrieve and search contacts:
