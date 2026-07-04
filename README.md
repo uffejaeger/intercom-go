@@ -77,6 +77,19 @@ conversations, err := client.Conversations.ListWithOptions(ctx, intercom.CursorP
 })
 ```
 
+Iterate through cursor-paginated results lazily:
+
+```go
+iter := client.Conversations.ListIter(ctx, intercom.CursorPageOptions{PerPage: 50})
+for iter.Next() {
+	conversation := iter.Conversation()
+	log.Printf("conversation id=%s", *conversation.Id)
+}
+if err := iter.Err(); err != nil {
+	return err
+}
+```
+
 Handle API errors:
 
 ```go
