@@ -16,6 +16,9 @@ type Conversation = gen.ConversationSchema
 // ConversationList is a page of Intercom conversations.
 type ConversationList = gen.ConversationListSchema
 
+// ConversationListItem is a conversation item returned by list and search endpoints.
+type ConversationListItem = gen.ConversationListItemSchema
+
 // ConversationDeleted is the result of deleting a conversation.
 type ConversationDeleted = gen.ConversationDeletedSchema
 
