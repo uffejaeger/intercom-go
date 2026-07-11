@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestNewClientRequiresToken(t *testing.T) {
@@ -65,6 +66,7 @@ func TestNewClientOptionErrors(t *testing.T) {
 		opt  Option
 	}{
 		{name: "nil http client", opt: WithHTTPClient(nil)},
+		{name: "nil response hook", opt: WithResponseHook(nil)},
 		{name: "empty base URL", opt: WithBaseURL(" ")},
 		{name: "empty API version", opt: WithAPIVersion(" ")},
 		{name: "empty user agent", opt: WithUserAgent(" ")},
@@ -78,6 +80,185 @@ func TestNewClientOptionErrors(t *testing.T) {
 				t.Fatal("expected error")
 			}
 		})
+	}
+}
+
+func TestResponseHookObservesGeneratedServiceResponse(t *testing.T) {
+	var infos []ResponseInfo
+	headers := make(http.Header)
+	headers.Set(requestIDHeader, "req-123")
+	headers.Set(rateLimitLimitHeader, "10000")
+	headers.Set(rateLimitRemainingHeader, "9999")
+	headers.Set(rateLimitResetHeader, "1735689600")
+	headers.Set("Retry-After", "1")
+	headers.Set("Content-Type", "application/json")
+	transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Header:     headers,
+			Body:       io.NopCloser(strings.NewReader(`{"type":"admin","id":"1","email":"admin@example.com"}`)),
+			Request:    req,
+		}, nil
+	})
+	client, err := NewClient(
+		"token",
+		WithBaseURL("https://example.test"),
+		WithHTTPClient(&http.Client{Transport: transport}),
+		WithResponseHook(func(info ResponseInfo) {
+			infos = append(infos, info)
+		}),
+	)
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
+
+	if _, err := client.Admins.Me(context.Background()); err != nil {
+		t.Fatalf("Admins.Me returned error: %v", err)
+	}
+
+	if len(infos) != 1 {
+		t.Fatalf("hook calls = %d, want 1", len(infos))
+	}
+	info := infos[0]
+	if info.StatusCode != http.StatusOK || info.RequestID != "req-123" {
+		t.Fatalf("response info = %#v", info)
+	}
+	if info.RateLimitLimit != "10000" || info.RateLimitRemaining != "9999" || info.RateLimitReset != "1735689600" || info.RetryAfter != "1" {
+		t.Fatalf("rate limit info = %#v", info)
+	}
+	if info.Duration < 0 {
+		t.Fatalf("Duration = %s, want non-negative", info.Duration)
+	}
+
+	headers.Set(requestIDHeader, "changed")
+	if got := info.Headers.Get(requestIDHeader); got != "req-123" {
+		t.Fatalf("Headers = %q, want req-123", got)
+	}
+}
+
+func TestResponseHookObservesClientDoErrorResponse(t *testing.T) {
+	var info ResponseInfo
+	headers := make(http.Header)
+	headers.Set(requestIDHeader, "req-rate-limit")
+	headers.Set(rateLimitResetHeader, "1735689600")
+	transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusTooManyRequests,
+			Header:     headers,
+			Body:       io.NopCloser(strings.NewReader(`{"type":"error.list","errors":[{"code":"rate_limit_exceeded"}]}`)),
+			Request:    req,
+		}, nil
+	})
+	client, err := NewClient(
+		"token",
+		WithBaseURL("https://example.test"),
+		WithHTTPClient(&http.Client{Transport: transport}),
+		WithResponseHook(func(got ResponseInfo) {
+			info = got
+		}),
+	)
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
+
+	req, err := client.NewRequest(context.Background(), http.MethodGet, "/me", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	if _, err := client.Do(req); err == nil {
+		t.Fatal("expected API error")
+	}
+
+	if info.StatusCode != http.StatusTooManyRequests || info.RequestID != "req-rate-limit" || info.RateLimitReset != "1735689600" {
+		t.Fatalf("response info = %#v", info)
+	}
+}
+
+func TestResponseHookObservesTransportError(t *testing.T) {
+	wantErr := errors.New("network down")
+	var info ResponseInfo
+	client, err := NewClient(
+		"token",
+		WithBaseURL("https://example.test"),
+		WithHTTPClient(&http.Client{Transport: roundTripFunc(func(*http.Request) (*http.Response, error) {
+			return nil, wantErr
+		})}),
+		WithResponseHook(func(got ResponseInfo) {
+			info = got
+		}),
+	)
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
+
+	req, err := client.NewRequest(context.Background(), http.MethodGet, "/me", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	if _, err := client.Do(req); !errors.Is(err, wantErr) {
+		t.Fatalf("Do error = %v, want %v", err, wantErr)
+	}
+
+	if !errors.Is(info.Err, wantErr) || info.StatusCode != 0 || info.Headers != nil {
+		t.Fatalf("response info = %#v", info)
+	}
+}
+
+func TestResponseHookObservesEachRetryResponse(t *testing.T) {
+	responses := []*http.Response{
+		{
+			StatusCode: http.StatusServiceUnavailable,
+			Header:     make(http.Header),
+			Body:       io.NopCloser(strings.NewReader("unavailable")),
+		},
+		{
+			StatusCode: http.StatusNoContent,
+			Header:     make(http.Header),
+			Body:       io.NopCloser(strings.NewReader("")),
+		},
+	}
+	var infos []ResponseInfo
+	client, err := NewClient(
+		"token",
+		WithBaseURL("https://example.test"),
+		WithHTTPClient(&http.Client{Transport: roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			res := responses[0]
+			responses = responses[1:]
+			res.Request = req
+			return res, nil
+		})}),
+		WithRetry(RetryConfig{MaxAttempts: 2, InitialBackoff: time.Nanosecond, MaxBackoff: time.Nanosecond, Jitter: 0}),
+		WithResponseHook(func(info ResponseInfo) {
+			infos = append(infos, info)
+		}),
+	)
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
+
+	req, err := client.NewRequest(context.Background(), http.MethodGet, "/me", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		t.Fatalf("Do returned error: %v", err)
+	}
+	res.Body.Close()
+
+	if len(infos) != 2 || infos[0].StatusCode != http.StatusServiceUnavailable || infos[1].StatusCode != http.StatusNoContent {
+		t.Fatalf("response infos = %#v, want retry and final responses", infos)
+	}
+}
+
+func TestResponseHookHTTPClientDefaultsTransport(t *testing.T) {
+	client := responseHookHTTPClient(&http.Client{}, func(ResponseInfo) {})
+	transport, ok := client.Transport.(*responseHookTransport)
+	if !ok {
+		t.Fatalf("Transport = %T, want *responseHookTransport", client.Transport)
+	}
+	if transport.base != http.DefaultTransport {
+		t.Fatalf("base transport = %T, want http.DefaultTransport", transport.base)
 	}
 }
 

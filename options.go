@@ -43,6 +43,17 @@ func WithRetry(config RetryConfig) Option {
 	}
 }
 
+// WithResponseHook calls hook after the client receives an HTTP response or transport error.
+func WithResponseHook(hook ResponseHook) Option {
+	return func(client *Client) error {
+		if hook == nil {
+			return errors.New("intercom: response hook is nil")
+		}
+		client.responseHook = hook
+		return nil
+	}
+}
+
 // WithBaseURL configures a custom API base URL.
 func WithBaseURL(baseURL string) Option {
 	return func(client *Client) error {
