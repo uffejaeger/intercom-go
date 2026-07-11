@@ -172,8 +172,8 @@ func (s *ContactsService) Merge(ctx context.Context, from, into string) (*Contac
 	}
 
 	res, err := s.client.generated.MergeContactWithResponse(ctx, nil, gen.MergeContactJSONRequestBody{
-		From: &from,
-		Into: &into,
+		From: from,
+		Into: into,
 	})
 	if err != nil {
 		return nil, err
