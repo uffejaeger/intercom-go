@@ -26,5 +26,11 @@ jobs:
       - name: Check generated client
         run: make generate-check
 
+      - name: Lint
+        run: make lint
+
       - name: Test with coverage
         run: make coverage
+
+      - name: Test with race detector
+        run: go test -race ./...
