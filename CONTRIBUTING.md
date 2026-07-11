@@ -14,6 +14,12 @@ make pre-push
 
 That runs formatting, linting, coverage, and generated-code freshness checks.
 
+## CI And Branch Protection
+
+The `test` GitHub Actions check runs for every pull request and push to `main`. It verifies generated-code freshness, `go vet`, coverage, and race-enabled tests.
+
+Repository administrators should require the `test` check before merging into `main`. Configure this in **Settings** > **Branches** > the `main` branch rule or ruleset.
+
 ## Local Checks
 
 Useful individual commands:
