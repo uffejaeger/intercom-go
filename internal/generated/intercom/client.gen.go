@@ -7214,10 +7214,10 @@ type LinkedObjectListType string
 // MergeContactsRequestSchema Merge contact data.
 type MergeContactsRequestSchema struct {
 	// From The unique identifier for the contact to merge away from. Must be a lead.
-	From *string `json:"from,omitempty"`
+	From string `json:"from"`
 
 	// Into The unique identifier for the contact to merge into. Must be a user.
-	Into *string `json:"into,omitempty"`
+	Into string `json:"into"`
 }
 
 // MessageSchema Message are how you reach out to contacts in Intercom. They are created when an admin sends an outbound message to a contact.

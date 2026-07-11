@@ -42,17 +42,14 @@ jobs:
 
       - name: Lint
         id: lint
-        continue-on-error: true
         run: make lint
 
       - name: Test with coverage
         id: coverage
-        continue-on-error: true
         run: make coverage
 
       - name: Check generated code freshness
         id: generated_freshness
-        continue-on-error: true
         run: |
           before="$(mktemp)"
           after="$(mktemp)"
