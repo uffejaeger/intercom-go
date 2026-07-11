@@ -31,13 +31,14 @@ const (
 
 // Client is the root Intercom API client.
 type Client struct {
-	baseURL    string
-	token      string
-	apiVersion string
-	userAgent  string
-	httpClient *http.Client
-	retry      *RetryConfig
-	generated  *gen.ClientWithResponses
+	baseURL      string
+	token        string
+	apiVersion   string
+	userAgent    string
+	httpClient   *http.Client
+	retry        *RetryConfig
+	responseHook ResponseHook
+	generated    *gen.ClientWithResponses
 
 	Admins            *AdminsService
 	AIContent         *AIContentService
@@ -93,6 +94,9 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 		}
 	}
 
+	if client.responseHook != nil {
+		client.httpClient = responseHookHTTPClient(client.httpClient, client.responseHook)
+	}
 	if client.retry != nil {
 		client.httpClient = retryHTTPClient(client.httpClient, *client.retry)
 	}

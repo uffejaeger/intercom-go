@@ -58,6 +58,14 @@ client, err := intercom.NewClient("access-token", intercom.WithRetry(intercom.Re
 
 Retries honor Intercom's `X-RateLimit-Reset` header for rate limits, fall back to `Retry-After` when present, and retry selected transient failures. Mutating requests are not retried unless `AllowUnsafeMethods` is set.
 
+Observe response metadata without changing service method signatures:
+
+```go
+client, err := intercom.NewClient("access-token", intercom.WithResponseHook(func(info intercom.ResponseInfo) {
+	log.Printf("intercom status=%d request_id=%s remaining=%s", info.StatusCode, info.RequestID, info.RateLimitRemaining)
+}))
+```
+
 ## Examples
 
 Retrieve and search contacts:
