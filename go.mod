@@ -3,7 +3,7 @@ module github.com/uffejaeger/intercom-go
 go 1.26.3
 
 require (
-	github.com/oapi-codegen/runtime v1.4.2
+	github.com/oapi-codegen/runtime v1.5.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
