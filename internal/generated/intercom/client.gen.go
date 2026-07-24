@@ -24,6 +24,7 @@ const (
 
 // Defines values for ActivityLogActivityType.
 const (
+	AdminAvatarChange                        ActivityLogActivityType = "admin_avatar_change"
 	AdminAwayModeChange                      ActivityLogActivityType = "admin_away_mode_change"
 	AdminConversationAssignmentLimitChange   ActivityLogActivityType = "admin_conversation_assignment_limit_change"
 	AdminDeletion                            ActivityLogActivityType = "admin_deletion"
@@ -78,6 +79,7 @@ const (
 	ConversationDeletionScheduleStateChange  ActivityLogActivityType = "conversation_deletion_schedule_state_change"
 	ConversationDeletionScheduleUpdate       ActivityLogActivityType = "conversation_deletion_schedule_update"
 	ConversationPartDeletion                 ActivityLogActivityType = "conversation_part_deletion"
+	ConversationPdfExport                    ActivityLogActivityType = "conversation_pdf_export"
 	ConversationTopicChange                  ActivityLogActivityType = "conversation_topic_change"
 	ConversationTopicCreation                ActivityLogActivityType = "conversation_topic_creation"
 	ConversationTopicDeletion                ActivityLogActivityType = "conversation_topic_deletion"
@@ -91,6 +93,7 @@ const (
 	MacroCreation                            ActivityLogActivityType = "macro_creation"
 	MacroDeletion                            ActivityLogActivityType = "macro_deletion"
 	MacroUpdate                              ActivityLogActivityType = "macro_update"
+	MacroUsageExport                         ActivityLogActivityType = "macro_usage_export"
 	MaliciousDomainsSettingChange            ActivityLogActivityType = "malicious_domains_setting_change"
 	MessageDeletion                          ActivityLogActivityType = "message_deletion"
 	MessageStateChange                       ActivityLogActivityType = "message_state_change"
@@ -138,6 +141,8 @@ const (
 // Valid indicates whether the value is a known member of the ActivityLogActivityType enum.
 func (e ActivityLogActivityType) Valid() bool {
 	switch e {
+	case AdminAvatarChange:
+		return true
 	case AdminAwayModeChange:
 		return true
 	case AdminConversationAssignmentLimitChange:
@@ -246,6 +251,8 @@ func (e ActivityLogActivityType) Valid() bool {
 		return true
 	case ConversationPartDeletion:
 		return true
+	case ConversationPdfExport:
+		return true
 	case ConversationTopicChange:
 		return true
 	case ConversationTopicCreation:
@@ -271,6 +278,8 @@ func (e ActivityLogActivityType) Valid() bool {
 	case MacroDeletion:
 		return true
 	case MacroUpdate:
+		return true
+	case MacroUsageExport:
 		return true
 	case MaliciousDomainsSettingChange:
 		return true
