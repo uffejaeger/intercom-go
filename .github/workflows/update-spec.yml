@@ -86,7 +86,9 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # A dedicated token causes GitHub to run pull-request workflows on
+          # the generated branch. Events created with GITHUB_TOKEN do not.
+          token: ${{ secrets.INTERCOM_AUTOMATION_TOKEN }}
           branch: automation/update-intercom-openapi-spec
           delete-branch: true
           title: Update pinned Intercom OpenAPI spec
