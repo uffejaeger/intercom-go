@@ -62,7 +62,11 @@ client, err := intercom.NewClient("access-token", intercom.WithRetry(intercom.Re
 }))
 ```
 
-By default, the retry policy retries `429`, `500`, `502`, `503`, and `504`, plus transient network errors. It uses exponential backoff with jitter: 100 ms initial backoff, 2 s maximum backoff, 20% jitter, and three total attempts. Configure `RetryConfig` if your workload needs different status codes or timing. `MaxAttempts: 1` disables retrying while retaining a single attempt.
+By default, the retry policy retries `429`, `500`, `502`, `503`, and `504`,
+plus network timeouts and unexpected EOFs. It uses exponential backoff with
+jitter: 100 ms initial backoff, 2 s maximum backoff, 20% jitter, and three total
+attempts. Configure `RetryConfig` if your workload needs different status codes
+or timing. `MaxAttempts: 1` disables retrying while retaining a single attempt.
 
 Only safe HTTP methods (`GET`, `HEAD`, `OPTIONS`, and `TRACE`) are retried by default. This protects operations that can create, update, or delete Intercom data from being replayed after an ambiguous failure.
 
