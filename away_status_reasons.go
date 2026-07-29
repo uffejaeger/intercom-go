@@ -20,7 +20,7 @@ func (s *AwayStatusReasonsService) List(ctx context.Context) ([]AwayStatusReason
 	if err != nil {
 		return nil, err
 	}
-	list, err := requireOK("list away status reasons", res.StatusCode(), res.Body, res.JSON200)
+	list, err := requireOK("list away status reasons", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 	if err != nil {
 		return nil, err
 	}

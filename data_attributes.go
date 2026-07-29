@@ -87,7 +87,7 @@ func (s *DataAttributesService) List(ctx context.Context, params DataAttributeLi
 		return nil, err
 	}
 
-	return requireOK("list data attributes", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list data attributes", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates a new contact or company data attribute.
@@ -132,7 +132,7 @@ func (s *DataAttributesService) Create(ctx context.Context, attribute DataAttrib
 		return nil, err
 	}
 
-	return requireOK("create data attribute", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create data attribute", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates or archives a data attribute.
@@ -169,7 +169,7 @@ func (s *DataAttributesService) Update(ctx context.Context, dataAttributeID stri
 		return nil, err
 	}
 
-	return requireOK("update data attribute", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update data attribute", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 type dataAttributeOption struct {

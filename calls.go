@@ -85,7 +85,7 @@ func (s *CallsService) ListWithOptions(ctx context.Context, options PageOptions)
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list calls", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list calls", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Get returns a single call by ID.
@@ -97,7 +97,7 @@ func (s *CallsService) Get(ctx context.Context, callID string) (*Call, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get call", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get call", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // GetRecording downloads the recording for a call.
@@ -136,7 +136,7 @@ func (s *CallsService) GetRecording(ctx context.Context, callID string) ([]byte,
 		}
 		return data, nil
 	default:
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
+		return nil, parseErrorResponse(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 	}
 }
 
@@ -155,7 +155,7 @@ func (s *CallsService) GetTranscript(ctx context.Context, callID string) ([]byte
 		return nil, err
 	}
 	if res.StatusCode() != http.StatusOK {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
+		return nil, parseErrorResponse(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 	}
 	return res.Body, nil
 }
@@ -179,7 +179,7 @@ func (s *CallsService) ListWithTranscripts(ctx context.Context, conversationIDs 
 		return nil, err
 	}
 	if res.StatusCode() != http.StatusOK {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
+		return nil, parseErrorResponse(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 	}
 	var result CallWithTranscriptList
 	if err := json.Unmarshal(res.Body, &result); err != nil {
@@ -194,7 +194,7 @@ func (s *CallsService) RegisterFinVoiceCall(ctx context.Context, req RegisterFin
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("register fin voice call", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("register fin voice call", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CollectFinVoiceCallByID returns a registered Fin Voice call by its Intercom ID.
@@ -203,7 +203,7 @@ func (s *CallsService) CollectFinVoiceCallByID(ctx context.Context, id int) (*Fi
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("collect fin voice call by ID", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("collect fin voice call by ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CollectFinVoiceCallByExternalID returns a registered Fin Voice call by external call ID.
@@ -215,7 +215,7 @@ func (s *CallsService) CollectFinVoiceCallByExternalID(ctx context.Context, exte
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("collect fin voice call by external ID", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("collect fin voice call by external ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CollectFinVoiceCallByPhoneNumber returns a registered Fin Voice call by phone number.
@@ -228,7 +228,7 @@ func (s *CallsService) CollectFinVoiceCallByPhoneNumber(ctx context.Context, pho
 		return nil, err
 	}
 	if res.StatusCode() != http.StatusOK {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
+		return nil, parseErrorResponse(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 	}
 	var result FinVoiceCall
 	if err := json.Unmarshal(res.Body, &result); err != nil {
@@ -246,7 +246,7 @@ func (s *CallsService) CollectFinVoiceCallsByConversationID(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	list, err := requireOK("collect fin voice calls by conversation ID", res.StatusCode(), res.Body, res.JSON200)
+	list, err := requireOK("collect fin voice calls by conversation ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 	if err != nil {
 		return nil, err
 	}

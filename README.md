@@ -65,8 +65,20 @@ Observe response metadata without changing service method signatures:
 
 ```go
 client, err := intercom.NewClient("access-token", intercom.WithResponseHook(func(info intercom.ResponseInfo) {
-	log.Printf("intercom status=%d request_id=%s remaining=%s", info.StatusCode, info.RequestID, info.RateLimitRemaining)
+	log.Printf("intercom attempt=%d/%d status=%d request_id=%s remaining=%s",
+		info.Attempt, info.MaxAttempts, info.StatusCode, info.RequestID, info.RateLimitRemaining)
 }))
+```
+
+Override headers, query parameters, or retry behavior for one call:
+
+```go
+ctx, err = intercom.WithRequestOptions(ctx, intercom.RequestOptions{
+	Headers: http.Header{"X-Correlation-Id": []string{correlationID}},
+	Query:   url.Values{"custom": []string{"value"}},
+	Retry:   &intercom.RetryConfig{MaxAttempts: 1}, // Disable retries for this call.
+})
+contact, err := client.Contacts.Get(ctx, "contact_id")
 ```
 
 ## Examples
@@ -107,6 +119,9 @@ for iter.Next() {
 	log.Printf("conversation id=%s", *conversation.Id)
 }
 if err := iter.Err(); err != nil {
+	if errors.Is(err, intercom.ErrPaginationStalled) {
+		// Intercom returned a cursor that was already requested.
+	}
 	return err
 }
 ```
@@ -116,9 +131,13 @@ Handle API errors:
 ```go
 contact, err := client.Contacts.Get(ctx, "missing")
 if err != nil {
+	if intercom.IsNotFound(err) {
+		return nil
+	}
 	var apiErr *intercom.ErrorResponse
 	if errors.As(err, &apiErr) {
-		log.Printf("intercom status=%d request_id=%s", apiErr.StatusCode, apiErr.RequestID)
+		log.Printf("intercom status=%d request_id=%s retry_after=%s",
+			apiErr.StatusCode, apiErr.RequestID, apiErr.Headers.Get("Retry-After"))
 	}
 	return err
 }
@@ -127,16 +146,7 @@ if err != nil {
 Parse webhook notifications:
 
 ```go
-payload, err := io.ReadAll(r.Body)
-if err != nil {
-	return err
-}
-
-if err := intercom.VerifyWebhookSignature(clientSecret, payload, r.Header); err != nil {
-	return err
-}
-
-event, err := intercom.ParseWebhookPayload(payload)
+event, err := intercom.ParseAndVerifyWebhook(r, clientSecret, 0)
 if err != nil {
 	return err
 }
@@ -144,7 +154,10 @@ if err != nil {
 log.Printf("intercom webhook topic=%s id=%s", event.Topic, event.ID)
 ```
 
-`VerifyWebhookSignature` verifies `X-Hub-Signature` using the raw request body and your Intercom app client secret.
+`ParseAndVerifyWebhook` limits the body to 1 MiB by default, verifies
+`X-Hub-Signature` over the exact bytes received, and then parses the event.
+Use `VerifyWebhookSignature` and `ParseWebhookPayload` separately when the
+application already owns the raw payload bytes.
 
 Runnable examples:
 

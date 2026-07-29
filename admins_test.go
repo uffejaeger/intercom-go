@@ -90,9 +90,11 @@ func TestAdminsMeError(t *testing.T) {
 		return &http.Response{
 			StatusCode: http.StatusUnauthorized,
 			Header: http.Header{
-				"Content-Type": []string{"application/json"},
+				"Content-Type":  []string{"application/json"},
+				requestIDHeader: []string{"req-header"},
+				"Retry-After":   []string{"10"},
 			},
-			Body:    io.NopCloser(strings.NewReader(`{"type":"error.list","request_id":"req-1","errors":[{"code":"unauthorized","message":"Access Token Invalid"}]}`)),
+			Body:    io.NopCloser(strings.NewReader(`{"type":"error.list","errors":[{"code":"unauthorized","message":"Access Token Invalid"}]}`)),
 			Request: req,
 		}, nil
 	})
@@ -118,8 +120,14 @@ func TestAdminsMeError(t *testing.T) {
 	if apiErr.StatusCode != http.StatusUnauthorized {
 		t.Fatalf("StatusCode = %d", apiErr.StatusCode)
 	}
-	if apiErr.RequestID != "req-1" {
+	if apiErr.RequestID != "req-header" {
 		t.Fatalf("RequestID = %q", apiErr.RequestID)
+	}
+	if apiErr.Headers.Get("Retry-After") != "10" {
+		t.Fatalf("Retry-After = %q", apiErr.Headers.Get("Retry-After"))
+	}
+	if !IsUnauthorized(apiErr) {
+		t.Fatal("IsUnauthorized returned false")
 	}
 }
 

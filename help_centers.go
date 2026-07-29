@@ -23,7 +23,7 @@ func (s *HelpCentersService) List(ctx context.Context) (*HelpCenterList, error) 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list help centers", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list help centers", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve returns a help center by ID.
@@ -36,5 +36,5 @@ func (s *HelpCentersService) Retrieve(ctx context.Context, helpCenterID string) 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve help center", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve help center", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

@@ -24,7 +24,7 @@ func (s *BrandsService) List(ctx context.Context) (*BrandList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list brands", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list brands", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve returns a brand by ID.
@@ -36,5 +36,5 @@ func (s *BrandsService) Retrieve(ctx context.Context, brandID string) (*Brand, e
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve brand", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve brand", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

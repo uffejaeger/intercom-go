@@ -88,7 +88,7 @@ func (s *VisitorsService) GetByUserID(ctx context.Context, userID string) (*Visi
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve visitor", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve visitor", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates a visitor.
@@ -97,7 +97,7 @@ func (s *VisitorsService) Update(ctx context.Context, update VisitorUpdate) (*Vi
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update visitor", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update visitor", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Convert converts a visitor into a contact.
@@ -106,5 +106,5 @@ func (s *VisitorsService) Convert(ctx context.Context, req VisitorConvert) (*Vis
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("convert visitor", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("convert visitor", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

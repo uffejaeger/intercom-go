@@ -45,7 +45,7 @@ func (s *ArticlesService) List(ctx context.Context) (*ArticleList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list articles", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list articles", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates a new article.
@@ -54,7 +54,7 @@ func (s *ArticlesService) Create(ctx context.Context, article ArticleCreate) (*A
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create article", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve retrieves an article by ID.
@@ -70,7 +70,7 @@ func (s *ArticlesService) Retrieve(ctx context.Context, articleID string) (*Arti
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve article", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates an article.
@@ -86,7 +86,7 @@ func (s *ArticlesService) Update(ctx context.Context, articleID string, article 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update article", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes an article.
@@ -102,7 +102,7 @@ func (s *ArticlesService) Delete(ctx context.Context, articleID string) (*Articl
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("delete article", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("delete article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Search searches articles by phrase, state, help center, or highlight options.
@@ -124,5 +124,5 @@ func (s *ArticlesService) Search(ctx context.Context, search ArticleSearch) (*Ar
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("search articles", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("search articles", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

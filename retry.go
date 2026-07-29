@@ -1,6 +1,7 @@
 package intercom
 
 import (
+	"context"
 	"errors"
 	"io"
 	"math"
@@ -31,7 +32,7 @@ type RetryConfig struct {
 	Jitter float64
 	// AllowUnsafeMethods allows retries for mutating methods such as POST, PUT, PATCH, and DELETE.
 	AllowUnsafeMethods bool
-	// StatusCodes overrides the HTTP status codes retried by the policy. Defaults to 429, 500, 502, 503, and 504.
+	// StatusCodes overrides the HTTP status codes retried by the policy. Defaults to 408, 429, 500, 502, 503, and 504.
 	StatusCodes []int
 }
 
@@ -90,6 +91,7 @@ func normalizeRetryConfig(config RetryConfig) retryConfig {
 	codes := config.StatusCodes
 	if len(codes) == 0 {
 		codes = []int{
+			http.StatusRequestTimeout,
 			http.StatusTooManyRequests,
 			http.StatusInternalServerError,
 			http.StatusBadGateway,
@@ -112,18 +114,20 @@ func normalizeRetryConfig(config RetryConfig) retryConfig {
 }
 
 func (t *retryTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	if t.config.maxAttempts <= 1 || !t.canRetryRequest(req) {
-		return t.base.RoundTrip(req)
+	config := t.configForRequest(req)
+	if config.maxAttempts <= 1 || !canRetryRequest(req, config) {
+		return t.base.RoundTrip(withRetryAttempt(req, 1, config.maxAttempts))
 	}
 
 	attemptReq := req
 	for attempt := 1; ; attempt++ {
+		attemptReq = withRetryAttempt(attemptReq, attempt, config.maxAttempts)
 		res, err := t.base.RoundTrip(attemptReq)
-		if !t.shouldRetry(req, res, err) || attempt == t.config.maxAttempts {
+		if !shouldRetry(req, res, err, config) || attempt == config.maxAttempts {
 			return res, err
 		}
 
-		delay := t.retryDelay(attempt, res)
+		delay := retryDelay(config, attempt, res)
 		closeResponseBody(res)
 		if err := sleepWithContext(req, delay); err != nil {
 			return nil, err
@@ -137,27 +141,36 @@ func (t *retryTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 }
 
-func (t *retryTransport) canRetryRequest(req *http.Request) bool {
+func (t *retryTransport) configForRequest(req *http.Request) retryConfig {
+	if req != nil {
+		if options, ok := requestOptionsFromContext(req.Context()); ok && options.Retry != nil {
+			return normalizeRetryConfig(*options.Retry)
+		}
+	}
+	return t.config
+}
+
+func canRetryRequest(req *http.Request, config retryConfig) bool {
 	if req == nil {
 		return false
 	}
-	if !t.config.allowUnsafeMethod && !isSafeMethod(req.Method) {
+	if !config.allowUnsafeMethod && !isSafeMethod(req.Method) {
 		return false
 	}
 	return req.Body == nil || req.Body == http.NoBody || req.GetBody != nil
 }
 
-func (t *retryTransport) shouldRetry(req *http.Request, res *http.Response, err error) bool {
+func shouldRetry(req *http.Request, res *http.Response, err error, config retryConfig) bool {
 	if req.Context().Err() != nil {
 		return false
 	}
 	if err != nil {
 		return isRetryableNetworkError(err)
 	}
-	return res != nil && t.config.statusCodes[res.StatusCode]
+	return res != nil && config.statusCodes[res.StatusCode]
 }
 
-func (t *retryTransport) retryDelay(attempt int, res *http.Response) time.Duration {
+func retryDelay(config retryConfig, attempt int, res *http.Response) time.Duration {
 	if retryAfter, ok := retryAfterDelay(res); ok {
 		return retryAfter
 	}
@@ -168,13 +181,57 @@ func (t *retryTransport) retryDelay(attempt int, res *http.Response) time.Durati
 	exponent := min(max(attempt-1, 0), 30)
 
 	multiplier := math.Pow(2, float64(exponent))
-	delay := min(time.Duration(float64(t.config.initialBackoff)*multiplier), t.config.maxBackoff)
-	if t.config.jitter > 0 && delay > 0 {
-		factor := 1 - t.config.jitter + rand.Float64()*2*t.config.jitter
+	delay := min(time.Duration(float64(config.initialBackoff)*multiplier), config.maxBackoff)
+	if config.jitter > 0 && delay > 0 {
+		factor := 1 - config.jitter + rand.Float64()*2*config.jitter
 		delay = time.Duration(float64(delay) * factor)
-		return min(delay, t.config.maxBackoff)
+		return min(delay, config.maxBackoff)
 	}
 	return delay
+}
+
+func validateRetryConfig(config RetryConfig) error {
+	if config.MaxAttempts < 0 {
+		return errors.New("intercom: retry max attempts cannot be negative")
+	}
+	if config.InitialBackoff < 0 {
+		return errors.New("intercom: retry initial backoff cannot be negative")
+	}
+	if config.MaxBackoff < 0 {
+		return errors.New("intercom: retry max backoff cannot be negative")
+	}
+	if config.Jitter < 0 {
+		return errors.New("intercom: retry jitter cannot be negative")
+	}
+	if config.Jitter > 1 {
+		return errors.New("intercom: retry jitter cannot be greater than 1")
+	}
+	return nil
+}
+
+type retryAttemptContextKey struct{}
+
+type retryAttemptInfo struct {
+	attempt     int
+	maxAttempts int
+}
+
+func withRetryAttempt(req *http.Request, attempt, maxAttempts int) *http.Request {
+	if req == nil {
+		return nil
+	}
+	info := retryAttemptInfo{attempt: attempt, maxAttempts: max(maxAttempts, 1)}
+	return req.WithContext(context.WithValue(req.Context(), retryAttemptContextKey{}, info))
+}
+
+func retryAttemptFromContext(ctx context.Context) retryAttemptInfo {
+	if ctx == nil {
+		return retryAttemptInfo{attempt: 1, maxAttempts: 1}
+	}
+	if info, ok := ctx.Value(retryAttemptContextKey{}).(retryAttemptInfo); ok {
+		return info
+	}
+	return retryAttemptInfo{attempt: 1, maxAttempts: 1}
 }
 
 func cloneRequestForRetry(req *http.Request) (*http.Request, error) {

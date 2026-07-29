@@ -51,7 +51,7 @@ func (s *NewsService) ListItems(ctx context.Context) (*NewsItemList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireJSON[NewsItemList]("list news items", res.StatusCode(), res.Body)
+	return requireJSON[NewsItemList]("list news items", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // CreateItem creates a news item.
@@ -60,7 +60,7 @@ func (s *NewsService) CreateItem(ctx context.Context, item NewsItemCreate) (*New
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create news item", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create news item", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // RetrieveItem returns a news item by ID.
@@ -73,7 +73,7 @@ func (s *NewsService) RetrieveItem(ctx context.Context, newsItemID string) (*New
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve news item", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve news item", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // UpdateItem updates a news item by ID.
@@ -86,7 +86,7 @@ func (s *NewsService) UpdateItem(ctx context.Context, newsItemID string, item Ne
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update news item", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update news item", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DeleteItem deletes a news item by ID.
@@ -99,7 +99,7 @@ func (s *NewsService) DeleteItem(ctx context.Context, newsItemID string) error {
 	if err != nil {
 		return err
 	}
-	return requireEmpty(res.StatusCode(), res.Body)
+	return requireEmpty(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // ListFeeds returns all newsfeeds.
@@ -108,7 +108,7 @@ func (s *NewsService) ListFeeds(ctx context.Context) (*NewsfeedList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireJSON[NewsfeedList]("list newsfeeds", res.StatusCode(), res.Body)
+	return requireJSON[NewsfeedList]("list newsfeeds", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // RetrieveFeed returns a newsfeed by ID.
@@ -120,7 +120,7 @@ func (s *NewsService) RetrieveFeed(ctx context.Context, newsfeedID string) (*New
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve newsfeed", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve newsfeed", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListFeedItems returns live items for a newsfeed.
@@ -132,5 +132,5 @@ func (s *NewsService) ListFeedItems(ctx context.Context, newsfeedID string) (*Ne
 	if err != nil {
 		return nil, err
 	}
-	return requireJSON[NewsItemList]("list newsfeed items", res.StatusCode(), res.Body)
+	return requireJSON[NewsItemList]("list newsfeed items", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }

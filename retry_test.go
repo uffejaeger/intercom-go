@@ -368,6 +368,9 @@ func TestNormalizeRetryConfigDefaultsAndBounds(t *testing.T) {
 	if !config.statusCodes[http.StatusTooManyRequests] || !config.statusCodes[http.StatusGatewayTimeout] {
 		t.Fatalf("default status codes = %#v", config.statusCodes)
 	}
+	if !config.statusCodes[http.StatusRequestTimeout] {
+		t.Fatalf("default status codes do not include 408: %#v", config.statusCodes)
+	}
 }
 
 func TestRetryTransportEdgeBranches(t *testing.T) {
@@ -394,8 +397,8 @@ func TestRetryTransportEdgeBranches(t *testing.T) {
 	})
 
 	t.Run("nil request cannot retry", func(t *testing.T) {
-		transport := &retryTransport{config: normalizeRetryConfig(RetryConfig{})}
-		if transport.canRetryRequest(nil) {
+		config := normalizeRetryConfig(RetryConfig{})
+		if canRetryRequest(nil, config) {
 			t.Fatal("canRetryRequest(nil) = true, want false")
 		}
 	})
@@ -405,8 +408,8 @@ func TestRetryTransportEdgeBranches(t *testing.T) {
 		if err != nil {
 			t.Fatalf("NewRequest returned error: %v", err)
 		}
-		transport := &retryTransport{config: normalizeRetryConfig(RetryConfig{AllowUnsafeMethods: true})}
-		if transport.canRetryRequest(req) {
+		config := normalizeRetryConfig(RetryConfig{AllowUnsafeMethods: true})
+		if canRetryRequest(req, config) {
 			t.Fatal("canRetryRequest = true, want false")
 		}
 	})
@@ -418,15 +421,15 @@ func TestRetryTransportEdgeBranches(t *testing.T) {
 		if err != nil {
 			t.Fatalf("NewRequest returned error: %v", err)
 		}
-		transport := &retryTransport{config: normalizeRetryConfig(RetryConfig{})}
-		if transport.shouldRetry(req, retryTestResponse(req, retryTestResult{status: http.StatusServiceUnavailable}), nil) {
+		config := normalizeRetryConfig(RetryConfig{})
+		if shouldRetry(req, retryTestResponse(req, retryTestResult{status: http.StatusServiceUnavailable}), nil, config) {
 			t.Fatal("shouldRetry = true, want false")
 		}
 	})
 
 	t.Run("nil response does not retry", func(t *testing.T) {
-		transport := &retryTransport{config: normalizeRetryConfig(RetryConfig{})}
-		if transport.shouldRetry(req, nil, nil) {
+		config := normalizeRetryConfig(RetryConfig{})
+		if shouldRetry(req, nil, nil, config) {
 			t.Fatal("shouldRetry = true, want false")
 		}
 	})
@@ -467,13 +470,28 @@ func TestRetryDelayBounds(t *testing.T) {
 		Jitter:         1,
 	})}
 
-	if delay := transport.retryDelay(40, nil); delay > time.Nanosecond {
+	if delay := retryDelay(transport.config, 40, nil); delay > time.Nanosecond {
 		t.Fatalf("retryDelay = %s, want capped at %s", delay, time.Nanosecond)
 	}
 
 	transport.config.jitter = 0
-	if delay := transport.retryDelay(1, nil); delay != time.Nanosecond {
+	if delay := retryDelay(transport.config, 1, nil); delay != time.Nanosecond {
 		t.Fatalf("retryDelay without jitter = %s, want %s", delay, time.Nanosecond)
+	}
+}
+
+func TestRetryAttemptContextDefaultsAndNilRequest(t *testing.T) {
+	if got := withRetryAttempt(nil, 1, 1); got != nil {
+		t.Fatalf("withRetryAttempt(nil) = %#v", got)
+	}
+	var nilContext context.Context
+	info := retryAttemptFromContext(nilContext)
+	if info.attempt != 1 || info.maxAttempts != 1 {
+		t.Fatalf("retry attempt info = %#v", info)
+	}
+	info = retryAttemptFromContext(context.Background())
+	if info.attempt != 1 || info.maxAttempts != 1 {
+		t.Fatalf("retry attempt info = %#v", info)
 	}
 }
 

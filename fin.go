@@ -103,7 +103,7 @@ func (s *FinService) Reply(ctx context.Context, req FinReply) (*FinConversationR
 	if err != nil {
 		return nil, err
 	}
-	return requireJSON[FinConversationResponse]("reply to fin", res.StatusCode(), res.Body)
+	return requireJSON[FinConversationResponse]("reply to fin", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // StartConversation starts a Fin conversation.
@@ -112,7 +112,7 @@ func (s *FinService) StartConversation(ctx context.Context, req FinStartConversa
 	if err != nil {
 		return nil, err
 	}
-	return requireJSON[FinConversationResponse]("start fin conversation", res.StatusCode(), res.Body)
+	return requireJSON[FinConversationResponse]("start fin conversation", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // GetVoiceCallByID retrieves a Fin voice call by ID.

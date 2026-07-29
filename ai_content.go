@@ -42,7 +42,7 @@ func (s *AIContentService) ListContentImportSources(ctx context.Context) (*Conte
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list content import sources", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list content import sources", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CreateContentImportSource creates a new content import source.
@@ -51,7 +51,7 @@ func (s *AIContentService) CreateContentImportSource(ctx context.Context, req Co
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create content import source", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create content import source", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // GetContentImportSource retrieves a content import source by ID.
@@ -63,7 +63,7 @@ func (s *AIContentService) GetContentImportSource(ctx context.Context, sourceID 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get content import source", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get content import source", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // UpdateContentImportSource updates a content import source.
@@ -75,7 +75,7 @@ func (s *AIContentService) UpdateContentImportSource(ctx context.Context, source
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update content import source", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update content import source", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DeleteContentImportSource deletes a content import source.
@@ -87,7 +87,7 @@ func (s *AIContentService) DeleteContentImportSource(ctx context.Context, source
 	if err != nil {
 		return err
 	}
-	return requireEmpty(res.StatusCode(), res.Body)
+	return requireEmpty(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // ListExternalPages returns all external pages.
@@ -96,7 +96,7 @@ func (s *AIContentService) ListExternalPages(ctx context.Context) (*ExternalPage
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list external pages", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list external pages", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CreateExternalPage creates a new external page.
@@ -105,7 +105,7 @@ func (s *AIContentService) CreateExternalPage(ctx context.Context, req ExternalP
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create external page", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create external page", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // GetExternalPage retrieves an external page by ID.
@@ -117,7 +117,7 @@ func (s *AIContentService) GetExternalPage(ctx context.Context, pageID string) (
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get external page", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get external page", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // UpdateExternalPage updates an external page.
@@ -129,7 +129,7 @@ func (s *AIContentService) UpdateExternalPage(ctx context.Context, pageID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update external page", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update external page", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DeleteExternalPage deletes an external page.
@@ -141,5 +141,5 @@ func (s *AIContentService) DeleteExternalPage(ctx context.Context, pageID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("delete external page", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("delete external page", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

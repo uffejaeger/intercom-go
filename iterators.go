@@ -2,9 +2,33 @@ package intercom
 
 import (
 	"context"
+	"errors"
+	"fmt"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
+
+// ErrPaginationStalled identifies an iterator that received a cursor it has
+// already requested. Intercom occasionally returns repeated cursors, and
+// continuing would otherwise loop forever.
+var ErrPaginationStalled = errors.New("intercom: pagination stalled")
+
+// PaginationStalledError reports the repeated cursor that stopped an iterator.
+type PaginationStalledError struct {
+	Cursor string
+}
+
+func (e *PaginationStalledError) Error() string {
+	if e == nil || e.Cursor == "" {
+		return ErrPaginationStalled.Error()
+	}
+	return fmt.Sprintf("%s at cursor %q", ErrPaginationStalled, e.Cursor)
+}
+
+// Unwrap allows errors.Is(err, ErrPaginationStalled).
+func (e *PaginationStalledError) Unwrap() error {
+	return ErrPaginationStalled
+}
 
 type cursorIterator[T any] struct {
 	fetch      func(startingAfter string) ([]T, string, error)
@@ -13,7 +37,9 @@ type cursorIterator[T any] struct {
 	current    T
 	started    bool
 	exhausted  bool
+	initial    string
 	nextCursor string
+	seen       map[string]struct{}
 	err        error
 }
 
@@ -32,9 +58,19 @@ func (i *cursorIterator[T]) next() bool {
 			return false
 		}
 
-		startingAfter := ""
+		startingAfter := i.initial
 		if i.started {
 			startingAfter = i.nextCursor
+		}
+		if startingAfter != "" {
+			if _, seen := i.seen[startingAfter]; seen {
+				i.err = &PaginationStalledError{Cursor: startingAfter}
+				return false
+			}
+			if i.seen == nil {
+				i.seen = make(map[string]struct{})
+			}
+			i.seen[startingAfter] = struct{}{}
 		}
 		i.items, i.nextCursor, i.err = i.fetch(startingAfter)
 		i.index = 0
@@ -61,6 +97,7 @@ type ContactIterator struct {
 // SearchIter returns a lazy iterator for contact search results.
 func (s *ContactsService) SearchIter(ctx context.Context, search ContactSearch) *ContactIterator {
 	return &ContactIterator{iter: &cursorIterator[*Contact]{
+		initial: search.StartingAfter,
 		fetch: func(startingAfter string) ([]*Contact, string, error) {
 			pageSearch := search
 			if startingAfter != "" {
@@ -98,6 +135,7 @@ type ConversationIterator struct {
 // ListIter returns a lazy iterator for conversations.
 func (s *ConversationsService) ListIter(ctx context.Context, options CursorPageOptions) *ConversationIterator {
 	return &ConversationIterator{iter: &cursorIterator[*ConversationListItem]{
+		initial: options.StartingAfter,
 		fetch: func(startingAfter string) ([]*ConversationListItem, string, error) {
 			pageOptions := options
 			if startingAfter != "" {
@@ -115,6 +153,7 @@ func (s *ConversationsService) ListIter(ctx context.Context, options CursorPageO
 // SearchIter returns a lazy iterator for conversation search results.
 func (s *ConversationsService) SearchIter(ctx context.Context, query ConversationSearchQuery, options CursorPageOptions) *ConversationIterator {
 	return &ConversationIterator{iter: &cursorIterator[*ConversationListItem]{
+		initial: options.StartingAfter,
 		fetch: func(startingAfter string) ([]*ConversationListItem, string, error) {
 			pageOptions := options
 			if startingAfter != "" {
@@ -152,6 +191,7 @@ type TicketIterator struct {
 // SearchIter returns a lazy iterator for ticket search results.
 func (s *TicketsService) SearchIter(ctx context.Context, query TicketSearchQuery, options CursorPageOptions) *TicketIterator {
 	return &TicketIterator{iter: &cursorIterator[*Ticket]{
+		initial: options.StartingAfter,
 		fetch: func(startingAfter string) ([]*Ticket, string, error) {
 			pageOptions := options
 			if startingAfter != "" {

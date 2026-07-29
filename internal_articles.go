@@ -35,7 +35,7 @@ func (s *InternalArticlesService) List(ctx context.Context) (*InternalArticleLis
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list internal articles", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list internal articles", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates an internal article.
@@ -44,7 +44,7 @@ func (s *InternalArticlesService) Create(ctx context.Context, article InternalAr
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create internal article", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create internal article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Search searches internal articles.
@@ -53,7 +53,7 @@ func (s *InternalArticlesService) Search(ctx context.Context, folderID *string) 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("search internal articles", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("search internal articles", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve returns an internal article by ID.
@@ -66,7 +66,7 @@ func (s *InternalArticlesService) Retrieve(ctx context.Context, articleID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve internal article", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve internal article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates an internal article by ID.
@@ -79,7 +79,7 @@ func (s *InternalArticlesService) Update(ctx context.Context, articleID string, 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update internal article", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update internal article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes an internal article by ID.
@@ -92,5 +92,5 @@ func (s *InternalArticlesService) Delete(ctx context.Context, articleID string) 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("delete internal article", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("delete internal article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

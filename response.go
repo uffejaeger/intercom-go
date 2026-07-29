@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-func requireOK[T any](operation string, statusCode int, body []byte, value *T) (*T, error) {
+func requireOK[T any](operation string, statusCode int, body []byte, value *T, headers ...http.Header) (*T, error) {
 	if statusCode != http.StatusOK {
-		return nil, parseErrorResponse(statusCode, body)
+		return nil, parseErrorResponse(statusCode, body, headers...)
 	}
 	if value == nil {
 		return nil, fmt.Errorf("intercom: %s returned status %d without a response body", operation, statusCode)
@@ -16,16 +16,16 @@ func requireOK[T any](operation string, statusCode int, body []byte, value *T) (
 	return value, nil
 }
 
-func requireEmpty(statusCode int, body []byte) error {
+func requireEmpty(statusCode int, body []byte, headers ...http.Header) error {
 	if statusCode >= 200 && statusCode < 300 {
 		return nil
 	}
-	return parseErrorResponse(statusCode, body)
+	return parseErrorResponse(statusCode, body, headers...)
 }
 
-func requireJSON[T any](operation string, statusCode int, body []byte) (*T, error) {
+func requireJSON[T any](operation string, statusCode int, body []byte, headers ...http.Header) (*T, error) {
 	if statusCode != http.StatusOK {
-		return nil, parseErrorResponse(statusCode, body)
+		return nil, parseErrorResponse(statusCode, body, headers...)
 	}
 
 	var value T
@@ -34,4 +34,11 @@ func requireJSON[T any](operation string, statusCode int, body []byte) (*T, erro
 	}
 
 	return &value, nil
+}
+
+func responseHeaders(response *http.Response) http.Header {
+	if response == nil {
+		return nil
+	}
+	return response.Header
 }

@@ -13,5 +13,5 @@ func (s *SubscriptionTypesService) List(ctx context.Context) (*SubscriptionTypeL
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list subscription types", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list subscription types", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

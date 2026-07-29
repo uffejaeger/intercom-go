@@ -23,20 +23,8 @@ func WithHTTPClient(httpClient *http.Client) Option {
 // WithRetry enables opt-in retry handling for transient failures and rate limits.
 func WithRetry(config RetryConfig) Option {
 	return func(client *Client) error {
-		if config.MaxAttempts < 0 {
-			return errors.New("intercom: retry max attempts cannot be negative")
-		}
-		if config.InitialBackoff < 0 {
-			return errors.New("intercom: retry initial backoff cannot be negative")
-		}
-		if config.MaxBackoff < 0 {
-			return errors.New("intercom: retry max backoff cannot be negative")
-		}
-		if config.Jitter < 0 {
-			return errors.New("intercom: retry jitter cannot be negative")
-		}
-		if config.Jitter > 1 {
-			return errors.New("intercom: retry jitter cannot be greater than 1")
+		if err := validateRetryConfig(config); err != nil {
+			return err
 		}
 		client.retry = &config
 		return nil

@@ -102,7 +102,7 @@ func (s *TagsService) List(ctx context.Context) (*TagList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list tags", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list tags", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates or updates a tag, or applies tag operations supported by the endpoint.
@@ -115,7 +115,7 @@ func (s *TagsService) Create(ctx context.Context, req TagCreateRequest) (*TagDet
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create tag", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create tag", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve returns a tag by ID.
@@ -127,7 +127,7 @@ func (s *TagsService) Retrieve(ctx context.Context, tagID string) (*TagDetail, e
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve tag", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve tag", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes a tag by ID.
@@ -139,5 +139,5 @@ func (s *TagsService) Delete(ctx context.Context, tagID string) error {
 	if err != nil {
 		return err
 	}
-	return requireEmpty(res.StatusCode(), res.Body)
+	return requireEmpty(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }

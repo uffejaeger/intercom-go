@@ -13,6 +13,10 @@ const (
 
 // ResponseInfo describes an HTTP response or transport error observed by a ResponseHook.
 type ResponseInfo struct {
+	// Attempt is the one-based request attempt observed by the hook.
+	Attempt int
+	// MaxAttempts is the maximum attempts allowed by the effective retry policy.
+	MaxAttempts int
 	// StatusCode is the HTTP response status code. It is zero when no response was received.
 	StatusCode int
 	// RequestID is Intercom's X-Request-Id response header.
@@ -55,10 +59,13 @@ func responseHookHTTPClient(httpClient *http.Client, hook ResponseHook) *http.Cl
 func (t *responseHookTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	started := time.Now()
 	res, err := t.base.RoundTrip(req)
+	attempt := retryAttemptFromContext(req.Context())
 
 	info := ResponseInfo{
-		Duration: time.Since(started),
-		Err:      err,
+		Attempt:     attempt.attempt,
+		MaxAttempts: attempt.maxAttempts,
+		Duration:    time.Since(started),
+		Err:         err,
 	}
 	if res != nil {
 		info.StatusCode = res.StatusCode

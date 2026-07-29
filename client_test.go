@@ -249,6 +249,9 @@ func TestResponseHookObservesEachRetryResponse(t *testing.T) {
 	if len(infos) != 2 || infos[0].StatusCode != http.StatusServiceUnavailable || infos[1].StatusCode != http.StatusNoContent {
 		t.Fatalf("response infos = %#v, want retry and final responses", infos)
 	}
+	if infos[0].Attempt != 1 || infos[1].Attempt != 2 || infos[0].MaxAttempts != 2 || infos[1].MaxAttempts != 2 {
+		t.Fatalf("retry attempt metadata = %#v", infos)
+	}
 }
 
 func TestResponseHookHTTPClientDefaultsTransport(t *testing.T) {

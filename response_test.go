@@ -17,6 +17,12 @@ func TestRequireOK(t *testing.T) {
 	}
 }
 
+func TestResponseHeadersNil(t *testing.T) {
+	if headers := responseHeaders(nil); headers != nil {
+		t.Fatalf("responseHeaders(nil) = %#v", headers)
+	}
+}
+
 func TestRequireOKErrors(t *testing.T) {
 	tests := []struct {
 		name       string

@@ -13,8 +13,8 @@ client, err := intercom.NewClient("access-token",
 	intercom.WithHTTPClient(httpClient),
 	intercom.WithRetry(intercom.RetryConfig{MaxAttempts: 3}),
 	intercom.WithResponseHook(func(info intercom.ResponseInfo) {
-		log.Printf("intercom status=%d request_id=%s duration=%s remaining=%s",
-			info.StatusCode, info.RequestID, info.Duration, info.RateLimitRemaining)
+		log.Printf("intercom attempt=%d/%d status=%d request_id=%s duration=%s remaining=%s",
+			info.Attempt, info.MaxAttempts, info.StatusCode, info.RequestID, info.Duration, info.RateLimitRemaining)
 	}),
 )
 if err != nil {
@@ -62,7 +62,7 @@ client, err := intercom.NewClient("access-token", intercom.WithRetry(intercom.Re
 }))
 ```
 
-By default, the retry policy retries `429`, `500`, `502`, `503`, and `504`,
+By default, the retry policy retries `408`, `429`, `500`, `502`, `503`, and `504`,
 plus network timeouts and unexpected EOFs. It uses exponential backoff with
 jitter: 100 ms initial backoff, 2 s maximum backoff, 20% jitter, and three total
 attempts. Configure `RetryConfig` if your workload needs different status codes
@@ -83,11 +83,38 @@ Enable it only when the operation is idempotent, or your application can safely 
 
 The retry configuration does not override a context deadline. Budget for all attempts and their waits inside the operation deadline; otherwise a retry may be cancelled before it can run.
 
+### Per-request retry policy
+
+Use `WithRequestOptions` to override the retry policy for one call. This works
+with every service method because the options travel with the request context:
+
+```go
+ctx, err = intercom.WithRequestOptions(ctx, intercom.RequestOptions{
+	Retry: &intercom.RetryConfig{
+		MaxAttempts:    4,
+		InitialBackoff: 200 * time.Millisecond,
+	},
+})
+if err != nil {
+	return err
+}
+contacts, err := client.Contacts.Search(ctx, search)
+```
+
+This can enable retries for one call even when the client has no global retry
+policy. Use `MaxAttempts: 1` to disable a global retry policy for a sensitive
+request.
+
+`RequestOptions.Headers` and `RequestOptions.Query` also override generated
+request values for advanced API features without dropping down to
+`Client.NewRequest`. Treat authentication and version-header overrides with the
+same care as client-wide options.
+
 ## Rate limits and server retry hints
 
 For a retried response, the SDK uses `Retry-After` first. It supports both seconds and HTTP-date values. For `429 Too Many Requests` responses without `Retry-After`, it waits until the Unix timestamp in `X-RateLimit-Reset`. Otherwise it uses the configured exponential backoff.
 
-The SDK exposes rate-limit metadata through `ResponseHook`, including `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`, and `Retry-After`. Use the remaining count and reset time to reduce concurrency or defer non-urgent work before requests begin failing. Do not try to parse these headers from a service method's return value; the hook makes them available for both successful and unsuccessful HTTP responses.
+The SDK exposes rate-limit metadata through `ResponseHook`, including `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`, and `Retry-After`. Use the remaining count and reset time to reduce concurrency or defer non-urgent work before requests begin failing. For failed service calls, `ErrorResponse.Headers` contains a cloned copy of all response headers. The hook remains the right tool for successful responses and proactive rate-limit monitoring.
 
 For high-volume workloads, use a shared limiter or queue ahead of the SDK. On a low remaining count, reduce concurrency; when a reset time is available, defer non-urgent work until after it. Retries help an individual request recover, but they do not replace admission control across concurrent workers.
 
@@ -97,11 +124,16 @@ Use `WithResponseHook` to record status, duration, request ID, and rate-limit in
 
 ```go
 client, err := intercom.NewClient("access-token", intercom.WithResponseHook(func(info intercom.ResponseInfo) {
-	log.Printf("intercom status=%d request_id=%s duration=%s remaining=%s reset=%s",
-		info.StatusCode, info.RequestID, info.Duration, info.RateLimitRemaining, info.RateLimitReset)
+	log.Printf("intercom attempt=%d/%d status=%d request_id=%s duration=%s remaining=%s reset=%s",
+		info.Attempt, info.MaxAttempts, info.StatusCode, info.RequestID, info.Duration,
+		info.RateLimitRemaining, info.RateLimitReset)
 }))
 ```
 
 Include Intercom's `X-Request-Id` in logs and support requests; it helps Intercom correlate a failing request. For API error responses, the same value is available as `ErrorResponse.RequestID`. A transport error has no HTTP response, so `ResponseInfo.StatusCode` is zero, `RequestID` is empty, and `ResponseInfo.Err` contains the transport error.
+
+Use `IsStatus` for arbitrary response codes or the common helpers
+`IsBadRequest`, `IsUnauthorized`, `IsForbidden`, `IsNotFound`, `IsConflict`,
+`IsRateLimited`, and `IsServerError`. They support wrapped errors.
 
 Never log the access token, `Authorization` header, request body, or raw customer data unless your logging policy and retention controls explicitly permit it. Prefer structured metadata such as status, request ID, duration, and aggregate rate-limit values. If you log identifiers for troubleshooting, treat them as customer data and apply the same access and retention controls.

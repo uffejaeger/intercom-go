@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"reflect"
+	"strings"
 	"testing"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
@@ -52,6 +54,65 @@ func TestConversationIteratorEmptyPage(t *testing.T) {
 	}
 	if err := iter.Err(); err != nil {
 		t.Fatalf("Err() = %v", err)
+	}
+}
+
+func TestConversationIteratorStopsOnRepeatedCursor(t *testing.T) {
+	requests := 0
+	client := newIteratorTestClient(t, func(req *http.Request) (*http.Response, error) {
+		requests++
+		return jsonResponse(req, http.StatusOK, `{"type":"conversation.list","conversations":[],"pages":{"next":{"starting_after":"cursor-1"}}}`), nil
+	})
+
+	iter := client.Conversations.ListIter(context.Background(), CursorPageOptions{StartingAfter: "cursor-1"})
+	if iter.Next() {
+		t.Fatal("Next() = true, want false")
+	}
+	if !errors.Is(iter.Err(), ErrPaginationStalled) {
+		t.Fatalf("Err() = %v, want ErrPaginationStalled", iter.Err())
+	}
+	var stalled *PaginationStalledError
+	if !errors.As(iter.Err(), &stalled) || stalled.Cursor != "cursor-1" {
+		t.Fatalf("Err() = %#v, want cursor-1", iter.Err())
+	}
+	if requests != 1 {
+		t.Fatalf("requests = %d, want 1", requests)
+	}
+}
+
+func TestConversationIteratorStopsOnCursorCycle(t *testing.T) {
+	responses := []string{
+		`{"type":"conversation.list","conversations":[{"id":"conv-1"}],"pages":{"next":{"starting_after":"cursor-2"}}}`,
+		`{"type":"conversation.list","conversations":[{"id":"conv-2"}],"pages":{"next":{"starting_after":"cursor-1"}}}`,
+	}
+	client := newIteratorTestClient(t, func(req *http.Request) (*http.Response, error) {
+		response := responses[0]
+		responses = responses[1:]
+		return jsonResponse(req, http.StatusOK, response), nil
+	})
+
+	iter := client.Conversations.ListIter(context.Background(), CursorPageOptions{StartingAfter: "cursor-1"})
+	ids := collectConversationIDs(t, iter)
+	if want := []string{"conv-1", "conv-2"}; !reflect.DeepEqual(ids, want) {
+		t.Fatalf("conversation IDs = %#v, want %#v", ids, want)
+	}
+	if !errors.Is(iter.Err(), ErrPaginationStalled) {
+		t.Fatalf("Err() = %v, want ErrPaginationStalled", iter.Err())
+	}
+}
+
+func TestPaginationStalledErrorWithoutCursor(t *testing.T) {
+	var stalled *PaginationStalledError
+	if got := stalled.Error(); got != ErrPaginationStalled.Error() {
+		t.Fatalf("Error() = %q", got)
+	}
+	stalled = &PaginationStalledError{}
+	if got := stalled.Error(); got != ErrPaginationStalled.Error() {
+		t.Fatalf("Error() = %q", got)
+	}
+	stalled.Cursor = "cursor-1"
+	if got := stalled.Error(); !strings.Contains(got, `"cursor-1"`) {
+		t.Fatalf("Error() = %q", got)
 	}
 }
 
