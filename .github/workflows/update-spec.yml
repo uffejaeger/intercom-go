@@ -2,7 +2,8 @@ name: update-spec
 
 on:
   schedule:
-    - cron: "23 * * * *"
+    - cron: "23 9 * * 1-5"
+      timezone: "Europe/Copenhagen"
   workflow_dispatch:
 
 permissions:
