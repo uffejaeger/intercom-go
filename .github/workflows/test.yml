@@ -11,7 +11,34 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  compatibility:
+    name: compatibility (Go ${{ matrix.go-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go-version:
+          - "1.24.x"
+          - "1.25.x"
+          - "1.26.x"
+    env:
+      # Prevent the toolchain directive from replacing the matrix toolchain.
+      GOTOOLCHAIN: local
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: ${{ matrix.go-version }}
+          cache: true
+
+      - name: Test
+        run: go test ./...
+
+  quality:
+    name: quality (Go 1.26.5)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,7 +47,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v7
         with:
-          go-version-file: go.mod
+          go-version: "1.26.5"
           cache: true
 
       - name: Check generated client
@@ -34,3 +61,22 @@ jobs:
 
       - name: Test with race detector
         run: go test -race ./...
+
+      - name: Check known vulnerabilities
+        run: make vuln
+
+  test:
+    name: test
+    if: always()
+    needs:
+      - compatibility
+      - quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all test jobs
+        env:
+          COMPATIBILITY_RESULT: ${{ needs.compatibility.result }}
+          QUALITY_RESULT: ${{ needs.quality.result }}
+        run: |
+          test "$COMPATIBILITY_RESULT" = "success"
+          test "$QUALITY_RESULT" = "success"

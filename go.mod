@@ -1,6 +1,8 @@
 module github.com/uffejaeger/intercom-go
 
-go 1.26.3
+go 1.24.0
+
+toolchain go1.26.5
 
 require (
 	github.com/oapi-codegen/runtime v1.6.0

@@ -1,4 +1,4 @@
-.PHONY: coverage fix format generate generate-check lint pre-push spec-diff test update-spec
+.PHONY: coverage fix format generate generate-check lint pre-push spec-diff test update-spec vuln
 
 OAPI_CODEGEN := go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.6.0
 GO_FILES := $(shell git ls-files --cached --others --exclude-standard '*.go')
@@ -12,6 +12,7 @@ format:
 
 lint:
 	go vet ./...
+	go run honnef.co/go/tools/cmd/staticcheck@v0.7.0 ./...
 
 coverage:
 	go build ./...
@@ -42,4 +43,7 @@ spec-diff:
 test:
 	go test ./...
 
-pre-push: fix format lint coverage generate-check
+vuln:
+	go run golang.org/x/vuln/cmd/govulncheck@v1.6.0 ./...
+
+pre-push: fix format lint coverage generate-check vuln

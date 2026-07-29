@@ -7,12 +7,15 @@ Idiomatic Go SDK for the [Intercom API](https://developers.intercom.com/).
 ## Install
 
 ```sh
-go get github.com/uffejaeger/intercom-go
+go get github.com/uffejaeger/intercom-go@latest
 ```
 
 ```go
 import intercom "github.com/uffejaeger/intercom-go"
 ```
+
+Go records the selected release in your module files. Review SDK upgrades like
+other production dependency changes rather than tracking an unreviewed branch.
 
 ## Quick Start
 
@@ -155,6 +158,10 @@ The SDK targets Intercom API version `2.15`, pinned in [`spec/intercom.openapi.y
 See [`docs/coverage.md`](docs/coverage.md) for the current public SDK coverage audit.
 See [`docs/generation.md`](docs/generation.md) for the generation workflow.
 See [`docs/production.md`](docs/production.md) for production HTTP, deadline, retry, rate-limit, and observability guidance.
+See [`docs/compatibility.md`](docs/compatibility.md) for Go support, semantic versioning, deprecation, and v1 criteria.
+
+Security reports belong in [GitHub's private vulnerability reporting flow](SECURITY.md).
+For usage questions and maintenance expectations, see [support guidance](SUPPORT.md).
 
 ## License
 

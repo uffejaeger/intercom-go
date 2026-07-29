@@ -5,7 +5,6 @@ import (
 	"io"
 	"math"
 	"math/rand"
-	"net"
 	"net/http"
 	"strconv"
 	"strings"
@@ -267,8 +266,8 @@ func isSafeMethod(method string) bool {
 }
 
 func isRetryableNetworkError(err error) bool {
-	var netErr net.Error
-	if errors.As(err, &netErr) && (netErr.Timeout() || netErr.Temporary()) {
+	var timeoutErr interface{ Timeout() bool }
+	if errors.As(err, &timeoutErr) && timeoutErr.Timeout() {
 		return true
 	}
 	return errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF)

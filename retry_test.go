@@ -61,12 +61,12 @@ func TestRetryTransportBehavior(t *testing.T) {
 			wantAttempts: 2,
 		},
 		{
-			name:      "retries transient network error",
+			name:      "retries network timeout",
 			method:    http.MethodGet,
 			config:    RetryConfig{MaxAttempts: 2, InitialBackoff: time.Nanosecond, MaxBackoff: time.Nanosecond},
 			withRetry: true,
 			responses: []retryTestResult{
-				{err: temporaryNetError{}},
+				{err: timeoutNetError{}},
 				{status: http.StatusOK, body: `{"ok":true}`},
 			},
 			wantAttempts: 2,
@@ -685,16 +685,12 @@ func retryTestResponse(req *http.Request, result retryTestResult) *http.Response
 	}
 }
 
-type temporaryNetError struct{}
+type timeoutNetError struct{}
 
-func (temporaryNetError) Error() string {
-	return "temporary network error"
+func (timeoutNetError) Error() string {
+	return "network timeout"
 }
 
-func (temporaryNetError) Timeout() bool {
-	return false
-}
-
-func (temporaryNetError) Temporary() bool {
+func (timeoutNetError) Timeout() bool {
 	return true
 }
