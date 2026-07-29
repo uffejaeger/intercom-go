@@ -31,7 +31,7 @@ func (s *CollectionsService) List(ctx context.Context) (*CollectionList, error) 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list collections", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list collections", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates a collection.
@@ -40,7 +40,7 @@ func (s *CollectionsService) Create(ctx context.Context, collection CollectionCr
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create collection", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create collection", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve returns a collection by ID.
@@ -53,7 +53,7 @@ func (s *CollectionsService) Retrieve(ctx context.Context, collectionID string) 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve collection", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve collection", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates a collection by ID.
@@ -66,7 +66,7 @@ func (s *CollectionsService) Update(ctx context.Context, collectionID string, co
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update collection", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update collection", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes a collection by ID.
@@ -79,7 +79,7 @@ func (s *CollectionsService) Delete(ctx context.Context, collectionID string) er
 	if err != nil {
 		return err
 	}
-	return requireEmpty(res.StatusCode(), res.Body)
+	return requireEmpty(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 func requireIntID(resource, id string) (int, error) {

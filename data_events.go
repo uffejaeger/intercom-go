@@ -75,7 +75,7 @@ func (s *DataEventsService) List(ctx context.Context, filter DataEventListFilter
 		return nil, err
 	}
 
-	return requireJSON[DataEventSummary]("list data events", res.StatusCode, body)
+	return requireJSON[DataEventSummary]("list data events", res.StatusCode, body, res.Header)
 }
 
 // Create submits a data event.
@@ -111,7 +111,7 @@ func (s *DataEventsService) Create(ctx context.Context, event DataEventCreate) e
 		return err
 	}
 
-	return requireEmpty(res.StatusCode(), res.Body)
+	return requireEmpty(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // CreateSummaries submits summarized data events for a user.
@@ -159,7 +159,7 @@ func (s *DataEventsService) CreateSummaries(ctx context.Context, summaries DataE
 		return err
 	}
 
-	return requireEmpty(res.StatusCode(), res.Body)
+	return requireEmpty(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 func dataEventListQuery(filter DataEventListFilter) (url.Values, error) {

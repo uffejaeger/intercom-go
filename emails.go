@@ -25,7 +25,7 @@ func (s *EmailsService) List(ctx context.Context) (*EmailList, error) {
 		return nil, err
 	}
 
-	return requireOK("list emails", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list emails", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve fetches a sender email setting by ID.
@@ -39,5 +39,5 @@ func (s *EmailsService) Retrieve(ctx context.Context, emailID string) (*EmailSet
 		return nil, err
 	}
 
-	return requireOK("retrieve email", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve email", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

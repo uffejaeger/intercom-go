@@ -34,7 +34,7 @@ func (s *AdminsService) Me(ctx context.Context) (*Admin, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("identify admin", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("identify admin", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // List returns all admins for the workspace.
@@ -43,7 +43,7 @@ func (s *AdminsService) List(ctx context.Context) (*AdminList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list admins", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list admins", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve retrieves an admin by ID.
@@ -59,7 +59,7 @@ func (s *AdminsService) Retrieve(ctx context.Context, adminID string) (*AdminDet
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve admin", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve admin", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // SetAway sets the away status of an admin.
@@ -75,7 +75,7 @@ func (s *AdminsService) SetAway(ctx context.Context, adminID string, req AdminSe
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("set away admin", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("set away admin", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListActivityLogs returns activity logs for admins, starting from createdAtAfter (UNIX timestamp string).
@@ -87,5 +87,5 @@ func (s *AdminsService) ListActivityLogs(ctx context.Context, createdAtAfter str
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list activity logs", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list activity logs", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

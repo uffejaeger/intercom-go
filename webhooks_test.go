@@ -1,7 +1,10 @@
 package intercom
 
 import (
+	"bytes"
 	"errors"
+	"io"
+	"math"
 	"net/http"
 	"strings"
 	"testing"
@@ -86,6 +89,104 @@ func TestParseWebhook(t *testing.T) {
 	}
 	if event.Topic != "contact.created" {
 		t.Fatalf("Topic = %q, want contact.created", event.Topic)
+	}
+}
+
+func TestParseAndVerifyWebhook(t *testing.T) {
+	const secret = "client-secret"
+	payload := []byte(`{"type":"notification_event","topic":"contact.created"}`)
+	req, err := http.NewRequest(http.MethodPost, "https://example.test/webhooks", bytes.NewReader(payload))
+	if err != nil {
+		t.Fatalf("NewRequest returned error: %v", err)
+	}
+	req.Header.Set(WebhookSignatureHeader, WebhookSignature(secret, payload))
+
+	event, err := ParseAndVerifyWebhook(req, secret, int64(len(payload)))
+	if err != nil {
+		t.Fatalf("ParseAndVerifyWebhook returned error: %v", err)
+	}
+	if event.Topic != "contact.created" {
+		t.Fatalf("Topic = %q", event.Topic)
+	}
+}
+
+func TestParseAndVerifyWebhookErrors(t *testing.T) {
+	const secret = "client-secret"
+	payload := []byte(`{"type":"notification_event"}`)
+
+	tests := []struct {
+		name    string
+		request func() *http.Request
+		limit   int64
+		want    string
+		is      error
+	}{
+		{
+			name: "nil request",
+			want: "intercom: webhook request is nil",
+		},
+		{
+			name: "nil body",
+			request: func() *http.Request {
+				return &http.Request{Header: make(http.Header)}
+			},
+			want: "intercom: webhook request body is nil",
+		},
+		{
+			name: "negative limit",
+			request: func() *http.Request {
+				return &http.Request{Body: io.NopCloser(bytes.NewReader(payload)), Header: make(http.Header)}
+			},
+			limit: -1,
+			want:  "intercom: webhook body limit cannot be negative",
+		},
+		{
+			name: "read error",
+			request: func() *http.Request {
+				return &http.Request{Body: io.NopCloser(errReader{}), Header: make(http.Header)}
+			},
+			limit: 10,
+			want:  "intercom: read webhook body:",
+		},
+		{
+			name: "too large",
+			request: func() *http.Request {
+				return &http.Request{Body: io.NopCloser(bytes.NewReader(payload)), Header: make(http.Header)}
+			},
+			limit: 1,
+			is:    ErrWebhookPayloadTooLarge,
+		},
+		{
+			name: "default limit and missing signature",
+			request: func() *http.Request {
+				return &http.Request{Body: io.NopCloser(bytes.NewReader(payload)), Header: make(http.Header)}
+			},
+			is: ErrWebhookSignatureMissing,
+		},
+		{
+			name: "maximum limit and missing signature",
+			request: func() *http.Request {
+				return &http.Request{Body: io.NopCloser(bytes.NewReader(payload)), Header: make(http.Header)}
+			},
+			limit: math.MaxInt64,
+			is:    ErrWebhookSignatureMissing,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var req *http.Request
+			if tt.request != nil {
+				req = tt.request()
+			}
+			_, err := ParseAndVerifyWebhook(req, secret, tt.limit)
+			if tt.is != nil && !errors.Is(err, tt.is) {
+				t.Fatalf("error = %v, want %v", err, tt.is)
+			}
+			if tt.want != "" && !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %q, want substring %q", err, tt.want)
+			}
+		})
 	}
 }
 

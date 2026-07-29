@@ -24,7 +24,7 @@ func (s *TeamsService) List(ctx context.Context) (*TeamList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list teams", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list teams", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve returns a team by ID.
@@ -36,5 +36,5 @@ func (s *TeamsService) Retrieve(ctx context.Context, teamID string) (*Team, erro
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve team", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve team", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

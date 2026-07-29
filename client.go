@@ -97,9 +97,11 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 	if client.responseHook != nil {
 		client.httpClient = responseHookHTTPClient(client.httpClient, client.responseHook)
 	}
+	retryConfig := RetryConfig{MaxAttempts: 1}
 	if client.retry != nil {
-		client.httpClient = retryHTTPClient(client.httpClient, *client.retry)
+		retryConfig = *client.retry
 	}
+	client.httpClient = retryHTTPClient(client.httpClient, retryConfig)
 
 	// The options we pass never fail, so the error is always nil.
 	generated, _ := gen.NewClientWithResponses(
@@ -169,6 +171,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 
 	req = req.Clone(req.Context())
 	c.applyDefaultHeaders(req)
+	applyRequestOptions(req.Context(), req)
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -184,7 +187,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 		return nil, readErr
 	}
 
-	return nil, parseErrorResponse(res.StatusCode, body)
+	return nil, parseErrorResponse(res.StatusCode, body, res.Header)
 }
 
 // NewRequest creates a request relative to the Intercom API base URL.
@@ -205,8 +208,9 @@ func (c *Client) NewRequest(ctx context.Context, method, path string, body io.Re
 	return req, nil
 }
 
-func (c *Client) editGeneratedRequest(_ context.Context, req *http.Request) error {
+func (c *Client) editGeneratedRequest(ctx context.Context, req *http.Request) error {
 	c.applyDefaultHeaders(req)
+	applyRequestOptions(ctx, req)
 	return nil
 }
 

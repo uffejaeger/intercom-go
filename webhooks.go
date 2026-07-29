@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"hash"
 	"io"
+	"math"
 	"net/http"
 	"strings"
 )
@@ -18,6 +19,8 @@ const (
 	// WebhookSignatureHeader is the documented Intercom webhook signature header.
 	WebhookSignatureHeader = "X-Hub-Signature"
 	webhookSignaturePrefix = "sha1="
+	// DefaultWebhookMaxBodyBytes is the default body limit used by ParseAndVerifyWebhook.
+	DefaultWebhookMaxBodyBytes int64 = 1 << 20
 
 	// FinAgentWebhookSignatureHeader is the documented Fin Agent API webhook signature header.
 	FinAgentWebhookSignatureHeader = "X-Fin-Agent-API-Webhook-Signature"
@@ -33,6 +36,8 @@ var (
 	ErrWebhookSignatureInvalid = errors.New("intercom: webhook signature is invalid")
 	// ErrWebhookSignatureUnsupported is returned when the signature uses an unsupported scheme.
 	ErrWebhookSignatureUnsupported = errors.New("intercom: webhook signature scheme is unsupported")
+	// ErrWebhookPayloadTooLarge is returned when a webhook exceeds the configured body limit.
+	ErrWebhookPayloadTooLarge = errors.New("intercom: webhook payload is too large")
 )
 
 // WebhookEvent is the common Intercom webhook notification envelope.
@@ -94,6 +99,42 @@ func ParseWebhook(r io.Reader) (*WebhookEvent, error) {
 	payload, err := io.ReadAll(r)
 	if err != nil {
 		return nil, fmt.Errorf("intercom: read webhook body: %w", err)
+	}
+	return ParseWebhookPayload(payload)
+}
+
+// ParseAndVerifyWebhook reads a bounded HTTP request body, verifies its
+// signature over the exact bytes received, and parses the webhook event.
+//
+// A maxBodyBytes value of zero uses DefaultWebhookMaxBodyBytes.
+func ParseAndVerifyWebhook(r *http.Request, clientSecret string, maxBodyBytes int64) (*WebhookEvent, error) {
+	if r == nil {
+		return nil, errors.New("intercom: webhook request is nil")
+	}
+	if r.Body == nil {
+		return nil, errors.New("intercom: webhook request body is nil")
+	}
+	if maxBodyBytes < 0 {
+		return nil, errors.New("intercom: webhook body limit cannot be negative")
+	}
+	if maxBodyBytes == 0 {
+		maxBodyBytes = DefaultWebhookMaxBodyBytes
+	}
+
+	readLimit := maxBodyBytes
+	if readLimit < math.MaxInt64 {
+		readLimit++
+	}
+	limited := &io.LimitedReader{R: r.Body, N: readLimit}
+	payload, err := io.ReadAll(limited)
+	if err != nil {
+		return nil, fmt.Errorf("intercom: read webhook body: %w", err)
+	}
+	if int64(len(payload)) > maxBodyBytes {
+		return nil, ErrWebhookPayloadTooLarge
+	}
+	if err := VerifyWebhookSignature(clientSecret, payload, r.Header); err != nil {
+		return nil, err
 	}
 	return ParseWebhookPayload(payload)
 }

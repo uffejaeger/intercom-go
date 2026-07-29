@@ -245,7 +245,7 @@ func (s *TicketsService) Create(ctx context.Context, ticket TicketCreate) (*Tick
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create ticket", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // EnqueueCreate enqueues asynchronous ticket creation.
@@ -254,7 +254,7 @@ func (s *TicketsService) EnqueueCreate(ctx context.Context, ticket TicketCreate)
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("enqueue create ticket", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("enqueue create ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Search searches tickets using an Intercom search query.
@@ -271,7 +271,7 @@ func (s *TicketsService) SearchWithOptions(ctx context.Context, query TicketSear
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("search tickets", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("search tickets", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Get retrieves a ticket by ID.
@@ -283,7 +283,7 @@ func (s *TicketsService) Get(ctx context.Context, ticketID string) (*Ticket, err
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get ticket", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates a ticket by ID.
@@ -295,7 +295,7 @@ func (s *TicketsService) Update(ctx context.Context, ticketID string, ticket Tic
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update ticket", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes a ticket by ID.
@@ -307,7 +307,7 @@ func (s *TicketsService) Delete(ctx context.Context, ticketID string) error {
 	if err != nil {
 		return err
 	}
-	return requireEmpty(res.StatusCode(), res.Body)
+	return requireEmpty(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // Reply replies to a ticket.
@@ -327,7 +327,7 @@ func (s *TicketsService) Reply(ctx context.Context, ticketID string, req TicketR
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("reply ticket", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("reply ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListStates returns all ticket states for the workspace.
@@ -336,7 +336,7 @@ func (s *TicketsService) ListStates(ctx context.Context) (*TicketStateList, erro
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list ticket states", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list ticket states", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListTypes returns all ticket types for the workspace.
@@ -345,7 +345,7 @@ func (s *TicketsService) ListTypes(ctx context.Context) (*TicketTypeList, error)
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list ticket types", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list ticket types", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // GetType retrieves a ticket type by ID.
@@ -357,7 +357,7 @@ func (s *TicketsService) GetType(ctx context.Context, ticketTypeID string) (*Tic
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get ticket type", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get ticket type", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CreateType creates a ticket type.
@@ -366,7 +366,7 @@ func (s *TicketsService) CreateType(ctx context.Context, ticketType TicketTypeCr
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create ticket type", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create ticket type", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // UpdateType updates a ticket type by ID.
@@ -378,7 +378,7 @@ func (s *TicketsService) UpdateType(ctx context.Context, ticketTypeID string, ti
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update ticket type", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update ticket type", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CreateTypeAttribute creates an attribute for a ticket type.
@@ -390,7 +390,7 @@ func (s *TicketsService) CreateTypeAttribute(ctx context.Context, ticketTypeID s
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create ticket type attribute", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create ticket type attribute", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // UpdateTypeAttribute updates an attribute for a ticket type.
@@ -405,7 +405,7 @@ func (s *TicketsService) UpdateTypeAttribute(ctx context.Context, ticketTypeID, 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update ticket type attribute", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update ticket type attribute", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // AttachTag attaches a tag to a ticket.
@@ -417,7 +417,7 @@ func (s *TicketsService) AttachTag(ctx context.Context, ticketID string, req Tic
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("attach tag to ticket", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("attach tag to ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DetachTag detaches a tag from a ticket.
@@ -432,7 +432,7 @@ func (s *TicketsService) DetachTag(ctx context.Context, ticketID, tagID string, 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("detach tag from ticket", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("detach tag from ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 func errRequiredID(resource string) error {

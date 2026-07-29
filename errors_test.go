@@ -1,6 +1,9 @@
 package intercom
 
 import (
+	"errors"
+	"fmt"
+	"net/http"
 	"strings"
 	"testing"
 )
@@ -80,7 +83,11 @@ func TestErrorResponseError(t *testing.T) {
 }
 
 func TestParseInvalidErrorResponse(t *testing.T) {
-	err := parseErrorResponse(500, []byte(`not json`))
+	headers := http.Header{
+		requestIDHeader:     []string{"req-header"},
+		"X-Custom-Response": []string{"original"},
+	}
+	err := parseErrorResponse(500, []byte(`not json`), headers)
 
 	apiErr, ok := err.(*ErrorResponse)
 	if !ok {
@@ -92,10 +99,53 @@ func TestParseInvalidErrorResponse(t *testing.T) {
 	if apiErr.Body != "not json" {
 		t.Fatalf("Body = %q", apiErr.Body)
 	}
+	if apiErr.RequestID != "req-header" {
+		t.Fatalf("RequestID = %q", apiErr.RequestID)
+	}
+	headers.Set("X-Custom-Response", "changed")
+	if got := apiErr.Headers.Get("X-Custom-Response"); got != "original" {
+		t.Fatalf("Headers = %q, want original", got)
+	}
 	if len(apiErr.Errors) != 1 {
 		t.Fatalf("Errors length = %d", len(apiErr.Errors))
 	}
 	if apiErr.Errors[0].Code != "invalid_error_response" {
 		t.Fatalf("Error code = %q", apiErr.Errors[0].Code)
+	}
+}
+
+func TestErrorStatusHelpers(t *testing.T) {
+	tests := []struct {
+		name string
+		err  error
+		test func(error) bool
+		want bool
+	}{
+		{name: "bad request", err: &ErrorResponse{StatusCode: http.StatusBadRequest}, test: IsBadRequest, want: true},
+		{name: "unauthorized", err: &ErrorResponse{StatusCode: http.StatusUnauthorized}, test: IsUnauthorized, want: true},
+		{name: "forbidden", err: &ErrorResponse{StatusCode: http.StatusForbidden}, test: IsForbidden, want: true},
+		{name: "not found wrapped", err: fmt.Errorf("lookup: %w", &ErrorResponse{StatusCode: http.StatusNotFound}), test: IsNotFound, want: true},
+		{name: "conflict", err: &ErrorResponse{StatusCode: http.StatusConflict}, test: IsConflict, want: true},
+		{name: "rate limited", err: &ErrorResponse{StatusCode: http.StatusTooManyRequests}, test: IsRateLimited, want: true},
+		{name: "server error lower bound", err: &ErrorResponse{StatusCode: 500}, test: IsServerError, want: true},
+		{name: "server error upper bound", err: &ErrorResponse{StatusCode: 599}, test: IsServerError, want: true},
+		{name: "not server error", err: &ErrorResponse{StatusCode: 499}, test: IsServerError},
+		{name: "non API error", err: errors.New("boom"), test: IsNotFound},
+		{name: "nil error", test: IsServerError},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.test(tt.err); got != tt.want {
+				t.Fatalf("helper returned %v, want %v", got, tt.want)
+			}
+		})
+	}
+
+	if !IsStatus(&ErrorResponse{StatusCode: http.StatusConflict}, http.StatusNotFound, http.StatusConflict) {
+		t.Fatal("IsStatus did not match one of multiple statuses")
+	}
+	if IsStatus(&ErrorResponse{StatusCode: http.StatusConflict}) {
+		t.Fatal("IsStatus matched an empty status list")
 	}
 }

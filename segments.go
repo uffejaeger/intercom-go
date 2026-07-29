@@ -24,7 +24,7 @@ func (s *SegmentsService) List(ctx context.Context) (*SegmentList, error) {
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list segments", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list segments", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve returns a segment by ID.
@@ -36,5 +36,5 @@ func (s *SegmentsService) Retrieve(ctx context.Context, segmentID string) (*Segm
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve segment", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve segment", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

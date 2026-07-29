@@ -91,7 +91,7 @@ func (s *ContactsService) Get(ctx context.Context, contactID string) (*Contact, 
 		return nil, err
 	}
 
-	return requireOK("get contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // GetByExternalID retrieves a contact by external ID.
@@ -105,7 +105,7 @@ func (s *ContactsService) GetByExternalID(ctx context.Context, externalID string
 		return nil, err
 	}
 
-	return requireOK("get contact by external ID", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get contact by external ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // List returns contacts.
@@ -115,7 +115,7 @@ func (s *ContactsService) List(ctx context.Context) (*ContactList, error) {
 		return nil, err
 	}
 
-	return requireOK("list contacts", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Search searches contacts using one Intercom search filter.
@@ -130,7 +130,7 @@ func (s *ContactsService) Search(ctx context.Context, search ContactSearch) (*Co
 		return nil, err
 	}
 
-	return requireOK("search contacts", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("search contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates a new contact.
@@ -143,7 +143,7 @@ func (s *ContactsService) Create(ctx context.Context, contact ContactCreate) (*C
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates an existing contact.
@@ -159,7 +159,7 @@ func (s *ContactsService) Update(ctx context.Context, contactID string, contact 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Merge merges a lead (from) into a user (into).
@@ -179,7 +179,7 @@ func (s *ContactsService) Merge(ctx context.Context, from, into string) (*Contac
 		return nil, err
 	}
 
-	return requireOK("merge contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("merge contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Archive archives a contact.
@@ -193,7 +193,7 @@ func (s *ContactsService) Archive(ctx context.Context, contactID string) (*Conta
 		return nil, err
 	}
 
-	return requireOK("archive contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("archive contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Unarchive unarchives a contact.
@@ -207,7 +207,7 @@ func (s *ContactsService) Unarchive(ctx context.Context, contactID string) (*Con
 		return nil, err
 	}
 
-	return requireOK("unarchive contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("unarchive contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Block blocks a contact.
@@ -221,7 +221,7 @@ func (s *ContactsService) Block(ctx context.Context, contactID string) (*Contact
 		return nil, err
 	}
 
-	return requireOK("block contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("block contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes a contact.
@@ -235,7 +235,7 @@ func (s *ContactsService) Delete(ctx context.Context, contactID string) (*Contac
 		return nil, err
 	}
 
-	return requireOK("delete contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("delete contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListNotes returns notes for a contact.
@@ -249,7 +249,7 @@ func (s *ContactsService) ListNotes(ctx context.Context, contactID string) (*Not
 		return nil, err
 	}
 
-	return requireOK("list notes", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list notes", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CreateNote creates a note on a contact.
@@ -276,7 +276,7 @@ func (s *ContactsService) CreateNote(ctx context.Context, contactID string, body
 		return nil, err
 	}
 
-	return requireOK("create note", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create note", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListSegments returns segments a contact belongs to.
@@ -290,7 +290,7 @@ func (s *ContactsService) ListSegments(ctx context.Context, contactID string) (*
 		return nil, err
 	}
 
-	return requireOK("list segments for contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list segments for contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListSubscriptions returns subscription types for a contact.
@@ -304,7 +304,7 @@ func (s *ContactsService) ListSubscriptions(ctx context.Context, contactID strin
 		return nil, err
 	}
 
-	return requireOK("list subscriptions for contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list subscriptions for contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // AttachSubscription attaches a subscription type to a contact.
@@ -327,7 +327,7 @@ func (s *ContactsService) AttachSubscription(ctx context.Context, contactID, sub
 		return nil, err
 	}
 
-	return requireOK("attach subscription to contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("attach subscription to contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DetachSubscription detaches a subscription type from a contact.
@@ -344,7 +344,7 @@ func (s *ContactsService) DetachSubscription(ctx context.Context, contactID, sub
 		return nil, err
 	}
 
-	return requireOK("detach subscription from contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("detach subscription from contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListTags returns tags attached to a contact.
@@ -358,7 +358,7 @@ func (s *ContactsService) ListTags(ctx context.Context, contactID string) (*TagL
 		return nil, err
 	}
 
-	return requireOK("list tags for contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list tags for contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // AttachTag attaches a tag to a contact.
@@ -377,7 +377,7 @@ func (s *ContactsService) AttachTag(ctx context.Context, contactID, tagID string
 		return nil, err
 	}
 
-	return requireOK("attach tag to contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("attach tag to contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DetachTag detaches a tag from a contact.
@@ -394,7 +394,7 @@ func (s *ContactsService) DetachTag(ctx context.Context, contactID, tagID string
 		return nil, err
 	}
 
-	return requireOK("detach tag from contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("detach tag from contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 func (s ContactSearch) toGenerated() (gen.SearchContactsJSONRequestBody, error) {

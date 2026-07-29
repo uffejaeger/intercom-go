@@ -24,5 +24,5 @@ func (s *NotesService) Retrieve(ctx context.Context, noteID string) (*Note, erro
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve note", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve note", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

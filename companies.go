@@ -67,7 +67,7 @@ func (s *CompaniesService) CreateOrUpdate(ctx context.Context, company CompanyCr
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create or update company", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create or update company", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Retrieve retrieves a company by its Intercom-assigned ID.
@@ -79,7 +79,7 @@ func (s *CompaniesService) Retrieve(ctx context.Context, companyID string) (*Com
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("retrieve company", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("retrieve company", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // RetrieveByID retrieves companies matching the given company_id (external ID set by the caller).
@@ -115,7 +115,7 @@ func (s *CompaniesService) List(ctx context.Context, options CompanyListOptions)
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list companies", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list companies", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates a company by its Intercom-assigned ID.
@@ -127,7 +127,7 @@ func (s *CompaniesService) Update(ctx context.Context, companyID string, update 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update company", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update company", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes a company by its Intercom-assigned ID.
@@ -139,7 +139,7 @@ func (s *CompaniesService) Delete(ctx context.Context, companyID string) (*Compa
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("delete company", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("delete company", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListAll returns all companies using cursor-based pagination.
@@ -163,7 +163,7 @@ func (s *CompaniesService) ListAllWithOptions(ctx context.Context, options Compa
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list all companies", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list all companies", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Scroll returns companies using the scroll API for large datasets.
@@ -181,7 +181,7 @@ func (s *CompaniesService) ScrollWithOptions(ctx context.Context, options Compan
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("scroll companies", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("scroll companies", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListNotes returns notes for a company.
@@ -193,7 +193,7 @@ func (s *CompaniesService) ListNotes(ctx context.Context, companyID string) (*No
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list company notes", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list company notes", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListContacts returns contacts attached to a company.
@@ -205,7 +205,7 @@ func (s *CompaniesService) ListContacts(ctx context.Context, companyID string) (
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list company contacts", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list company contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListSegments returns segments a company belongs to.
@@ -217,7 +217,7 @@ func (s *CompaniesService) ListSegments(ctx context.Context, companyID string) (
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list company segments", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list company segments", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // AttachContact attaches a contact to a company.
@@ -232,7 +232,7 @@ func (s *CompaniesService) AttachContact(ctx context.Context, contactID, company
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("attach contact to company", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("attach contact to company", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DetachContact detaches a contact from a company.
@@ -247,7 +247,7 @@ func (s *CompaniesService) DetachContact(ctx context.Context, contactID, company
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("detach contact from company", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("detach contact from company", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListForContact returns companies a contact belongs to.
@@ -259,5 +259,5 @@ func (s *CompaniesService) ListForContact(ctx context.Context, contactID string)
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list companies for contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list companies for contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

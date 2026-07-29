@@ -23,5 +23,5 @@ func (s *MessagesService) Create(ctx context.Context, message MessageCreate) (*M
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create message", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create message", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

@@ -70,7 +70,7 @@ func (s *WorkspaceService) GetIPAllowlist(ctx context.Context) (*IPAllowlist, er
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get IP allowlist", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get IP allowlist", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // UpdateIPAllowlist updates the workspace IP allowlist configuration.
@@ -79,7 +79,7 @@ func (s *WorkspaceService) UpdateIPAllowlist(ctx context.Context, allowlist IPAl
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update IP allowlist", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update IP allowlist", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // JobStatus retrieves the status of an async job.
@@ -91,7 +91,7 @@ func (s *WorkspaceService) JobStatus(ctx context.Context, jobID string) (*Job, e
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("job status", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("job status", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CreateDataExport creates a content data export job.
@@ -100,7 +100,7 @@ func (s *WorkspaceService) CreateDataExport(ctx context.Context, req DataExportC
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create data export", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create data export", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DownloadDataExport downloads the raw content data export payload.
@@ -113,7 +113,7 @@ func (s *WorkspaceService) DownloadDataExport(ctx context.Context, jobIdentifier
 		return nil, err
 	}
 	if res.StatusCode() != 200 {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
+		return nil, parseErrorResponse(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 	}
 	return res.Body, nil
 }
@@ -127,7 +127,7 @@ func (s *WorkspaceService) GetDataExport(ctx context.Context, jobIdentifier stri
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get data export", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get data export", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // CancelDataExport cancels a content data export job.
@@ -139,7 +139,7 @@ func (s *WorkspaceService) CancelDataExport(ctx context.Context, jobIdentifier s
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("cancel data export", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("cancel data export", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListReportingDatasets returns reporting datasets available for export.
@@ -148,7 +148,7 @@ func (s *WorkspaceService) ListReportingDatasets(ctx context.Context) (*Reportin
 	if err != nil {
 		return nil, err
 	}
-	return requireJSON[ReportingDatasetList]("list reporting datasets", res.StatusCode(), res.Body)
+	return requireJSON[ReportingDatasetList]("list reporting datasets", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // CreateReportingExport creates a reporting export job.
@@ -157,7 +157,7 @@ func (s *WorkspaceService) CreateReportingExport(ctx context.Context, req Report
 	if err != nil {
 		return nil, err
 	}
-	return requireJSON[ReportingExportJob]("create reporting export", res.StatusCode(), res.Body)
+	return requireJSON[ReportingExportJob]("create reporting export", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // GetReportingExportJob retrieves a reporting export job by identifier.
@@ -178,7 +178,7 @@ func (s *WorkspaceService) GetReportingExportJob(ctx context.Context, jobIdentif
 	if err != nil {
 		return nil, err
 	}
-	return requireJSON[ReportingExportJob]("get reporting export job", res.StatusCode(), res.Body)
+	return requireJSON[ReportingExportJob]("get reporting export job", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // DownloadReportingExport downloads the raw reporting export payload.
@@ -199,7 +199,7 @@ func (s *WorkspaceService) DownloadReportingExport(ctx context.Context, jobIdent
 		return nil, err
 	}
 	if res.StatusCode() != 200 {
-		return nil, parseErrorResponse(res.StatusCode(), res.Body)
+		return nil, parseErrorResponse(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 	}
 	return res.Body, nil
 }
@@ -213,5 +213,5 @@ func (s *WorkspaceService) ExportWorkflow(ctx context.Context, workflowID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("export workflow", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("export workflow", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

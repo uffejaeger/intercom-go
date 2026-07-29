@@ -99,7 +99,7 @@ func (s *ConversationsService) ListWithOptions(ctx context.Context, options Curs
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list conversations", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list conversations", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates a new conversation initiated from a contact.
@@ -108,7 +108,7 @@ func (s *ConversationsService) Create(ctx context.Context, conversation Conversa
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Get retrieves a conversation by Intercom conversation ID.
@@ -124,7 +124,7 @@ func (s *ConversationsService) Get(ctx context.Context, conversationID string) (
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListHandlingEvents returns pause and resume events for a conversation.
@@ -136,7 +136,7 @@ func (s *ConversationsService) ListHandlingEvents(ctx context.Context, conversat
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list conversation handling events", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("list conversation handling events", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Update updates an existing conversation.
@@ -152,7 +152,7 @@ func (s *ConversationsService) Update(ctx context.Context, conversationID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("update conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes a conversation.
@@ -168,7 +168,7 @@ func (s *ConversationsService) Delete(ctx context.Context, conversationID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("delete conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("delete conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Search searches conversations using an Intercom search query.
@@ -185,7 +185,7 @@ func (s *ConversationsService) SearchWithOptions(ctx context.Context, query Conv
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("search conversations", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("search conversations", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Reply sends an admin reply to a conversation.
@@ -198,7 +198,7 @@ func (s *ConversationsService) Reply(ctx context.Context, conversationID string,
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("reply to conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("reply to conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ReplyAsContact sends a contact reply to a conversation.
@@ -211,7 +211,7 @@ func (s *ConversationsService) ReplyAsContact(ctx context.Context, conversationI
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("reply to conversation as contact", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("reply to conversation as contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Assign assigns a conversation to an admin or team.
@@ -224,7 +224,7 @@ func (s *ConversationsService) Assign(ctx context.Context, conversationID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("assign conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("assign conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Close closes a conversation.
@@ -237,7 +237,7 @@ func (s *ConversationsService) Close(ctx context.Context, conversationID string,
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("close conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("close conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Open re-opens a snoozed or closed conversation.
@@ -250,7 +250,7 @@ func (s *ConversationsService) Open(ctx context.Context, conversationID string, 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("open conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("open conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Snooze snoozes a conversation until the given time.
@@ -263,7 +263,7 @@ func (s *ConversationsService) Snooze(ctx context.Context, conversationID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("snooze conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("snooze conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // AttachContact attaches a contact to a conversation.
@@ -275,7 +275,7 @@ func (s *ConversationsService) AttachContact(ctx context.Context, conversationID
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("attach contact to conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("attach contact to conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DetachContact detaches a contact from a conversation.
@@ -290,7 +290,7 @@ func (s *ConversationsService) DetachContact(ctx context.Context, conversationID
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("detach contact from conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("detach contact from conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // RedactPart redacts a message part from a conversation.
@@ -300,7 +300,7 @@ func (s *ConversationsService) RedactPart(ctx context.Context, req ConversationR
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("redact conversation part", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("redact conversation part", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // RedactSource redacts a source message from a conversation.
@@ -310,7 +310,7 @@ func (s *ConversationsService) RedactSource(ctx context.Context, req Conversatio
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("redact conversation source", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("redact conversation source", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ConvertToTicket converts a conversation to a ticket.
@@ -326,7 +326,7 @@ func (s *ConversationsService) ConvertToTicket(ctx context.Context, conversation
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("convert conversation to ticket", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("convert conversation to ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // AttachTag attaches a tag to a conversation.
@@ -347,7 +347,7 @@ func (s *ConversationsService) AttachTag(ctx context.Context, conversationID, ta
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("attach tag to conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("attach tag to conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DetachTag detaches a tag from a conversation.
@@ -367,7 +367,7 @@ func (s *ConversationsService) DetachTag(ctx context.Context, conversationID, ta
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("detach tag from conversation", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("detach tag from conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 func conversationIDToInt(conversationID string) (int, error) {

@@ -30,7 +30,7 @@ func (s *CustomObjectsService) CreateOrUpdate(ctx context.Context, customObjectT
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create or update custom object instance", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create or update custom object instance", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Get returns a custom object instance by Intercom ID.
@@ -45,7 +45,7 @@ func (s *CustomObjectsService) Get(ctx context.Context, customObjectType, instan
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get custom object instance", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get custom object instance", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // GetByExternalID returns a custom object instance by external ID.
@@ -61,7 +61,7 @@ func (s *CustomObjectsService) GetByExternalID(ctx context.Context, customObject
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get custom object instance by external ID", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("get custom object instance by external ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes a custom object instance by Intercom ID.
@@ -76,7 +76,7 @@ func (s *CustomObjectsService) Delete(ctx context.Context, customObjectType, ins
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("delete custom object instance", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("delete custom object instance", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // DeleteByExternalID deletes a custom object instance by external ID.
@@ -92,7 +92,7 @@ func (s *CustomObjectsService) DeleteByExternalID(ctx context.Context, customObj
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("delete custom object instance by external ID", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("delete custom object instance by external ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 func requireCustomObjectType(customObjectType string) error {

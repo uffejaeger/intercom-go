@@ -23,5 +23,5 @@ func (s *PhoneSwitchesService) Create(ctx context.Context, req PhoneSwitchCreate
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create phone switch", res.StatusCode(), res.Body, res.JSON200)
+	return requireOK("create phone switch", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
