@@ -5,6 +5,8 @@
 
   <p><strong>An idiomatic, production-ready Go SDK for the Intercom API.</strong></p>
 
+  <p><em>Unofficial and community-maintained. Not affiliated with, sponsored by, or endorsed by Intercom, Inc.</em></p>
+
   <p>
     Generated from Intercom's pinned OpenAPI specification.<br />
     Hand-shaped for Go applications.
@@ -242,6 +244,13 @@ internal under [`internal/generated/intercom`](internal/generated/intercom).
 - Use the [support guidance](SUPPORT.md) for usage questions and maintenance expectations.
 - Report security issues through [GitHub's private vulnerability reporting flow](SECURITY.md).
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change.
+
+## Trademark Notice
+
+The Intercom name and logos are the trademarks or service marks of Intercom,
+Inc. or its affiliates in the U.S. and other countries. The `intercom-go`
+project mark is original artwork and does not incorporate the official Intercom
+or Go logos.
 
 ## License
 
