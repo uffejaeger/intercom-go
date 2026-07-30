@@ -11,11 +11,11 @@
   </p>
 
   <p>
-    <a href="https://github.com/uffejaeger/intercom-go/actions/workflows/test.yml"><img alt="Test status" src="https://github.com/uffejaeger/intercom-go/actions/workflows/test.yml/badge.svg?branch=main" /></a>
-    <a href="https://pkg.go.dev/github.com/uffejaeger/intercom-go"><img alt="Go Reference" src="https://pkg.go.dev/badge/github.com/uffejaeger/intercom-go.svg" /></a>
-    <a href="https://github.com/uffejaeger/intercom-go/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/uffejaeger/intercom-go" /></a>
-    <img alt="Go 1.24 or newer" src="https://img.shields.io/badge/Go-1.24%2B-00ADD8?logo=go&amp;logoColor=white" />
-    <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/uffejaeger/intercom-go" /></a>
+    <a href="https://github.com/uffejaeger/intercom-go/actions/workflows/test.yml"><img alt="Test status" src="https://github.com/uffejaeger/intercom-go/actions/workflows/test.yml/badge.svg?branch=main" style="display: inline-block;" /></a>
+    <a href="https://pkg.go.dev/github.com/uffejaeger/intercom-go"><img alt="Go Reference" src="https://pkg.go.dev/badge/github.com/uffejaeger/intercom-go.svg" style="display: inline-block;" /></a>
+    <a href="https://github.com/uffejaeger/intercom-go/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/uffejaeger/intercom-go" style="display: inline-block;" /></a>
+    <img alt="Go 1.24 or newer" src="https://img.shields.io/badge/Go-1.24%2B-00ADD8?logo=go&amp;logoColor=white" style="display: inline-block;" />
+    <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/uffejaeger/intercom-go" style="display: inline-block;" /></a>
   </p>
 
   <p>
