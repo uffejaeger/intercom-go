@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./docs/assets/intercom-go-mark.svg" width="144" height="144" alt="intercom-go project mark" />
+  <img src="./docs/assets/intercom-go-mark.svg" width="144" height="144" alt="Fin and Go logos in twin cards" />
 
   <h1>intercom-go</h1>
 
@@ -247,10 +247,10 @@ internal under [`internal/generated/intercom`](internal/generated/intercom).
 
 ## Trademark Notice
 
-The Intercom name and logos are the trademarks or service marks of Intercom,
-Inc. or its affiliates in the U.S. and other countries. The `intercom-go`
-project mark is original artwork and does not incorporate the official Intercom
-or Go logos.
+The Fin and Intercom names and logos are trademarks or service marks of
+Intercom, Inc. or its affiliates in the U.S. and other countries. The Go
+trademark and Go logo are trademarks of Google LLC. Their inclusion does not
+imply affiliation, sponsorship, or endorsement.
 
 ## License
 
