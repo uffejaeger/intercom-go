@@ -5,7 +5,7 @@
 
   <p><strong>An idiomatic, production-ready Go SDK compatible with the Intercom API.</strong></p>
 
-  <p><em>Unofficial and community-maintained. Not affiliated with, sponsored by, or endorsed by Intercom, Inc.</em></p>
+  <p><em>Unofficial and community-maintained. Not affiliated with, sponsored by, or endorsed by Fin or Intercom.</em></p>
 
   <p>
     Generated from Intercom's pinned OpenAPI specification.<br />
@@ -31,6 +31,14 @@
     <a href="./docs/production.md">Production</a>
   </p>
 </div>
+
+> [!NOTE]
+> **About the name:** In May 2026, the company formerly known as Intercom
+> [became Fin](https://www.intercom.com/blog/today-intercom-becomes-fin/).
+> Intercom remains the name of its helpdesk and
+> [versioned API](https://developers.intercom.com/docs/build-an-integration/learn-more/rest-apis/api-changelog),
+> so this module remains `intercom-go`. It also supports Fin endpoints exposed
+> through the Intercom API.
 
 ## Why intercom-go?
 
