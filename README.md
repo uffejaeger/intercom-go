@@ -26,7 +26,7 @@
     <a href="#why-intercom-go">Why intercom-go?</a> •
     <a href="#everyday-api">Examples</a> •
     <a href="#api-coverage">API coverage</a> •
-    <a href="./docs/production.md">Production guide</a>
+    <a href="./docs/production.md">Production</a>
   </p>
 </div>
 
