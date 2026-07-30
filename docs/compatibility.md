@@ -38,6 +38,11 @@ major release. Changes required by Intercom API behavior may still affect
 runtime results without changing Go signatures; those changes are documented
 in release notes when known.
 
+The v1 candidate API review is recorded in
+[`api-compatibility.md`](api-compatibility.md). `make api-compatibility` checks
+the current public API against the pinned released baseline, and CI rejects
+unreviewed backward-incompatible changes.
+
 ## Deprecation
 
 When practical, an API scheduled for removal is marked with a Go `Deprecated:`
@@ -88,3 +93,6 @@ The project is ready for v1.0.0 when all of the following are true:
 
 Meeting these criteria establishes the v1 compatibility promise; it does not
 mean every possible Intercom workflow has a high-level convenience API.
+
+As of 2026-07-29, the public API compatibility review is complete. The live
+canary remains a separate exit criterion.

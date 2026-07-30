@@ -13,11 +13,13 @@ make pre-push
 ```
 
 That runs formatting, vet, Staticcheck, coverage, generated-code freshness,
-and known-vulnerability checks.
+public API compatibility, and known-vulnerability checks.
 
 ## CI And Branch Protection
 
-The `test` GitHub Actions check runs for every pull request and push to `main`. It verifies generated-code freshness, `go vet`, coverage, and race-enabled tests.
+The `test` GitHub Actions check runs for every pull request and push to `main`.
+It verifies generated-code freshness, public API compatibility, `go vet`,
+Staticcheck, coverage, race-enabled tests, and known-vulnerability scanning.
 The compatibility matrix runs the complete package tests on Go 1.24, 1.25, and
 1.26 with toolchain auto-switching disabled.
 
@@ -33,6 +35,7 @@ Useful individual commands:
 go test ./...
 make coverage
 make generate-check
+make api-compatibility
 make vuln
 ```
 

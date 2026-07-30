@@ -172,6 +172,7 @@ See [`docs/coverage.md`](docs/coverage.md) for the current public SDK coverage a
 See [`docs/generation.md`](docs/generation.md) for the generation workflow.
 See [`docs/production.md`](docs/production.md) for production HTTP, deadline, retry, rate-limit, and observability guidance.
 See [`docs/compatibility.md`](docs/compatibility.md) for Go support, semantic versioning, deprecation, and v1 criteria.
+See [`docs/api-compatibility.md`](docs/api-compatibility.md) for the audited public API surface and compatibility gate.
 
 Security reports belong in [GitHub's private vulnerability reporting flow](SECURITY.md).
 For usage questions and maintenance expectations, see [support guidance](SUPPORT.md).
