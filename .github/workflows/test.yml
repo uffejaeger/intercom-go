@@ -43,6 +43,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup Go
         uses: actions/setup-go@v7
@@ -52,6 +54,9 @@ jobs:
 
       - name: Check generated client
         run: make generate-check
+
+      - name: Check public API compatibility
+        run: make api-compatibility
 
       - name: Lint
         run: make lint

@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly module_path="github.com/uffejaeger/intercom-go"
+readonly generated_package="${module_path}/internal/generated/intercom"
+readonly baseline="${API_BASELINE:-v0.2.0}"
+readonly apidiff_version="${APIDIFF_VERSION:-v0.0.0-20260727155853-b88d891fe743}"
+readonly apidiff="golang.org/x/exp/cmd/apidiff@${apidiff_version}"
+readonly repository_root="$(git rev-parse --show-toplevel)"
+readonly work_dir="$(mktemp -d)"
+
+cleanup() {
+	rm -rf "${work_dir}"
+}
+trap cleanup EXIT
+
+compare_api() {
+	local label="$1"
+	local old_export="$2"
+	local new_export="$3"
+	local comparison_errors="${work_dir}/${label}.stderr"
+	local report
+	shift 3
+
+	if ! report="$(go run "${apidiff}" "$@" -incompatible \
+		"${old_export}" "${new_export}" 2>"${comparison_errors}")"; then
+		cat "${comparison_errors}" >&2
+		echo "apidiff could not compare the ${label} APIs." >&2
+		exit 1
+	fi
+
+	sed '/^Ignoring internal package /d' "${comparison_errors}" >&2
+
+	if [[ -n "${report}" ]]; then
+		echo "Backward-incompatible ${label} API changes detected against ${baseline}:" >&2
+		echo "${report}" >&2
+		exit 1
+	fi
+}
+
+if ! git -C "${repository_root}" cat-file -e "${baseline}^{commit}" 2>/dev/null; then
+	echo "API baseline ${baseline} is unavailable." >&2
+	echo "Fetch release tags with: git fetch --tags origin" >&2
+	exit 1
+fi
+
+mkdir -p "${work_dir}/baseline"
+git -C "${repository_root}" archive "${baseline}" | tar -x -C "${work_dir}/baseline"
+
+echo "Exporting public API from ${baseline}..."
+(
+	cd "${work_dir}/baseline"
+	go run "${apidiff}" -m -w "${work_dir}/baseline.api" "${module_path}"
+	go run "${apidiff}" -w "${work_dir}/baseline-generated.api" "${generated_package}"
+)
+
+echo "Exporting public API from the working tree..."
+(
+	cd "${repository_root}"
+	go run "${apidiff}" -m -w "${work_dir}/current.api" "${module_path}"
+	go run "${apidiff}" -w "${work_dir}/current-generated.api" "${generated_package}"
+)
+
+compare_api "public" "${work_dir}/baseline.api" "${work_dir}/current.api" -m
+compare_api "generated-model" \
+	"${work_dir}/baseline-generated.api" "${work_dir}/current-generated.api" \
+	-allow-internal
+
+echo "Public API is backward compatible with ${baseline}."

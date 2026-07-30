@@ -1,8 +1,13 @@
-.PHONY: coverage fix format generate generate-check lint pre-push spec-diff test update-spec vuln
+.PHONY: api-compatibility coverage fix format generate generate-check lint pre-push spec-diff test update-spec vuln
 
 OAPI_CODEGEN := go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.6.0
 GO_FILES := $(shell git ls-files --cached --others --exclude-standard '*.go')
 COVERAGE_THRESHOLD ?= 99.9
+API_BASELINE ?= v0.2.0
+APIDIFF_VERSION ?= v0.0.0-20260727155853-b88d891fe743
+
+api-compatibility:
+	API_BASELINE="$(API_BASELINE)" APIDIFF_VERSION="$(APIDIFF_VERSION)" ./scripts/check-api-compatibility.sh
 
 fix:
 	go fix ./...
@@ -46,4 +51,4 @@ test:
 vuln:
 	go run golang.org/x/vuln/cmd/govulncheck@v1.6.0 ./...
 
-pre-push: fix format lint coverage generate-check vuln
+pre-push: fix format lint coverage generate-check api-compatibility vuln
