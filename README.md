@@ -3,7 +3,7 @@
 
   <h1>intercom-go</h1>
 
-  <p><strong>An idiomatic, production-ready Go SDK for the Intercom API.</strong></p>
+  <p><strong>An idiomatic, production-ready Go SDK compatible with the Intercom API.</strong></p>
 
   <p><em>Unofficial and community-maintained. Not affiliated with, sponsored by, or endorsed by Intercom, Inc.</em></p>
 
