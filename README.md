@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./docs/assets/intercom-go-mark.svg" width="144" height="144" alt="Fin and Go logos in twin cards" />
+  <img src="./docs/assets/intercom-go-mark.svg" width="184" height="104" alt="Fin and Go logos in twin cards" />
 
   <h1>intercom-go</h1>
 
@@ -32,19 +32,13 @@
   </p>
 </div>
 
-> [!NOTE]
-> **About the name:** In May 2026, the company formerly known as Intercom
-> [became Fin](https://www.intercom.com/blog/today-intercom-becomes-fin/).
-> Intercom remains the name of its helpdesk and
-> [versioned API](https://developers.intercom.com/docs/build-an-integration/learn-more/rest-apis/api-changelog),
-> so this module remains `intercom-go`. It also supports Fin endpoints exposed
-> through the Intercom API.
+<p align="center"><sub><strong>About the name:</strong> The company formerly known as Intercom <a href="https://www.intercom.com/blog/today-intercom-becomes-fin/">became Fin</a> in May 2026. Intercom remains the helpdesk and <a href="https://developers.intercom.com/docs/build-an-integration/learn-more/rest-apis/api-changelog">versioned API</a>, so this module remains <code>intercom-go</code>.</sub></p>
 
 ## Why intercom-go?
 
 Generated where it should be. Hand-shaped where it matters.
 
-| | |
+| Capability | What you get |
 | --- | --- |
 | **Idiomatic Go API** | Use focused services such as `client.Admins.Me(ctx)`, `client.Contacts.Search(ctx, ...)`, and `client.Conversations.Reply(ctx, ...)` instead of generated operation names and unions. |
 | **Production-minded** | Opt into conservative retries, inspect request IDs and rate limits, customize individual requests, and verify webhook signatures. |
