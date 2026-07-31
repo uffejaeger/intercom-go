@@ -1,8 +1,50 @@
-# intercom-go
+<div align="center">
+  <img src="./docs/assets/intercom-go-mark.svg" width="184" height="104" alt="Fin and Go logos in twin cards" />
 
-Idiomatic Go SDK for the [Intercom API](https://developers.intercom.com/).
+  <h1>intercom-go</h1>
 
-`intercom-go` wraps Intercom's published OpenAPI spec with a hand-shaped Go API. Generated OpenAPI code is kept internal, while callers use stable service wrappers such as `client.Admins.Me(ctx)`, `client.Contacts.Search(ctx, ...)`, and `client.Conversations.Reply(ctx, ...)`.
+  <p><strong>An idiomatic, production-ready Go SDK compatible with the Intercom API.</strong></p>
+
+  <p><em>Unofficial and community-maintained. Not affiliated with, sponsored by, or endorsed by Fin or Intercom.</em></p>
+
+  <p>
+    Generated from Intercom's pinned OpenAPI specification.<br />
+    Hand-shaped for Go applications.
+  </p>
+
+  <p>
+    <a href="https://github.com/uffejaeger/intercom-go/actions/workflows/test.yml"><img alt="Test status" src="https://github.com/uffejaeger/intercom-go/actions/workflows/test.yml/badge.svg?branch=main" /></a>
+  </p>
+
+  <p>
+    <a href="https://pkg.go.dev/github.com/uffejaeger/intercom-go">Go Reference</a> •
+    <a href="https://github.com/uffejaeger/intercom-go/releases/latest">Releases</a> •
+    Go 1.24+ •
+    <a href="./LICENSE">MIT License</a>
+  </p>
+
+  <p>
+    <a href="#quick-start">Quick start</a> •
+    <a href="#why-intercom-go">Why intercom-go?</a> •
+    <a href="#everyday-api">Examples</a> •
+    <a href="#api-coverage">API coverage</a> •
+    <a href="./docs/production.md">Production</a>
+  </p>
+</div>
+
+<p align="center"><sub><strong>About the name:</strong> The company formerly known as Intercom <a href="https://www.intercom.com/blog/today-intercom-becomes-fin/">became Fin</a> in May 2026. Intercom remains the helpdesk and <a href="https://developers.intercom.com/docs/build-an-integration/learn-more/rest-apis/api-changelog">versioned API</a>, so this module remains <code>intercom-go</code>.</sub></p>
+
+## Why intercom-go?
+
+Generated where it should be. Hand-shaped where it matters.
+
+| Capability | What you get |
+| --- | --- |
+| **Idiomatic Go API** | Use focused services such as `client.Admins.Me(ctx)`, `client.Contacts.Search(ctx, ...)`, and `client.Conversations.Reply(ctx, ...)` instead of generated operation names and unions. |
+| **Production-minded** | Opt into conservative retries, inspect request IDs and rate limits, customize individual requests, and verify webhook signatures. |
+| **Complete and current** | Public services account for every operation in the pinned Intercom API `2.15` specification, with an automated coverage audit. |
+| **Stable public surface** | Generated OpenAPI code stays internal while compatibility checks protect the SDK API your application imports. |
+| **Easy to test** | The public [`intercomtest`](https://pkg.go.dev/github.com/uffejaeger/intercom-go/intercomtest) package scripts local Intercom responses and captures outgoing requests without calling Intercom. |
 
 ## Install
 
@@ -19,6 +61,8 @@ other production dependency changes rather than tracking an unreviewed branch.
 
 ## Quick Start
 
+Set `INTERCOM_ACCESS_TOKEN`, then create a client and call a service:
+
 ```go
 package main
 
@@ -31,7 +75,7 @@ import (
 )
 
 func main() {
-	client, err := intercom.NewClientFromEnv(intercom.WithRegion(intercom.EU))
+	client, err := intercom.NewClientFromEnv()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,45 +89,16 @@ func main() {
 }
 ```
 
-`NewClientFromEnv` reads `INTERCOM_ACCESS_TOKEN`. To pass a token directly:
+Pass a token directly or select the EU or Australian Intercom region with
+client options:
 
 ```go
-client, err := intercom.NewClient("access-token")
+client, err := intercom.NewClient("access-token", intercom.WithRegion(intercom.EU))
 ```
 
-Enable conservative opt-in retries:
+## Everyday API
 
-```go
-client, err := intercom.NewClient("access-token", intercom.WithRetry(intercom.RetryConfig{
-	MaxAttempts: 3,
-}))
-```
-
-Retries honor Intercom's `X-RateLimit-Reset` header for rate limits, fall back to `Retry-After` when present, and retry selected transient failures. Mutating requests are not retried unless `AllowUnsafeMethods` is set.
-
-Observe response metadata without changing service method signatures:
-
-```go
-client, err := intercom.NewClient("access-token", intercom.WithResponseHook(func(info intercom.ResponseInfo) {
-	log.Printf("intercom attempt=%d/%d status=%d request_id=%s remaining=%s",
-		info.Attempt, info.MaxAttempts, info.StatusCode, info.RequestID, info.RateLimitRemaining)
-}))
-```
-
-Override headers, query parameters, or retry behavior for one call:
-
-```go
-ctx, err = intercom.WithRequestOptions(ctx, intercom.RequestOptions{
-	Headers: http.Header{"X-Correlation-Id": []string{correlationID}},
-	Query:   url.Values{"custom": []string{"value"}},
-	Retry:   &intercom.RetryConfig{MaxAttempts: 1}, // Disable retries for this call.
-})
-contact, err := client.Contacts.Get(ctx, "contact_id")
-```
-
-## Examples
-
-Retrieve and search contacts:
+### Retrieve and search contacts
 
 ```go
 contact, err := client.Contacts.Get(ctx, "contact_id")
@@ -96,7 +111,9 @@ contacts, err := client.Contacts.Search(ctx, intercom.ContactSearch{
 })
 ```
 
-Paginate list and search results:
+### Paginate results
+
+Use explicit page options:
 
 ```go
 calls, err := client.Calls.ListWithOptions(ctx, intercom.PageOptions{
@@ -110,7 +127,7 @@ conversations, err := client.Conversations.ListWithOptions(ctx, intercom.CursorP
 })
 ```
 
-Iterate through cursor-paginated results lazily:
+Or iterate through cursor-paginated results lazily:
 
 ```go
 iter := client.Conversations.ListIter(ctx, intercom.CursorPageOptions{PerPage: 50})
@@ -126,7 +143,7 @@ if err := iter.Err(); err != nil {
 }
 ```
 
-Handle API errors:
+### Handle API errors
 
 ```go
 contact, err := client.Contacts.Get(ctx, "missing")
@@ -134,6 +151,7 @@ if err != nil {
 	if intercom.IsNotFound(err) {
 		return nil
 	}
+
 	var apiErr *intercom.ErrorResponse
 	if errors.As(err, &apiErr) {
 		log.Printf("intercom status=%d request_id=%s retry_after=%s",
@@ -143,7 +161,53 @@ if err != nil {
 }
 ```
 
-Parse webhook notifications:
+## Production-ready HTTP
+
+### Conservative retries
+
+Retries are opt-in:
+
+```go
+client, err := intercom.NewClient("access-token", intercom.WithRetry(intercom.RetryConfig{
+	MaxAttempts: 3,
+}))
+```
+
+The retry policy honors Intercom's `X-RateLimit-Reset` header for rate limits,
+falls back to `Retry-After`, and retries selected transient failures. Mutating
+requests are not retried unless `AllowUnsafeMethods` is set.
+
+### Response metadata
+
+Observe attempts, request IDs, and rate-limit information without changing
+service method signatures:
+
+```go
+client, err := intercom.NewClient("access-token", intercom.WithResponseHook(func(info intercom.ResponseInfo) {
+	log.Printf("intercom attempt=%d/%d status=%d request_id=%s remaining=%s",
+		info.Attempt, info.MaxAttempts, info.StatusCode, info.RequestID, info.RateLimitRemaining)
+}))
+```
+
+### Per-request options
+
+Override headers, query parameters, or retry behavior for one call:
+
+```go
+ctx, err = intercom.WithRequestOptions(ctx, intercom.RequestOptions{
+	Headers: http.Header{"X-Correlation-Id": []string{correlationID}},
+	Query:   url.Values{"custom": []string{"value"}},
+	Retry:   &intercom.RetryConfig{MaxAttempts: 1}, // Disable retries for this call.
+})
+contact, err := client.Contacts.Get(ctx, "contact_id")
+```
+
+See the [production guide](docs/production.md) for HTTP client configuration,
+deadlines, retry safety, rate limits, and observability.
+
+## Webhooks
+
+Parse and verify webhook notifications in one step:
 
 ```go
 event, err := intercom.ParseAndVerifyWebhook(r, clientSecret, 0)
@@ -159,24 +223,37 @@ log.Printf("intercom webhook topic=%s id=%s", event.Topic, event.ID)
 Use `VerifyWebhookSignature` and `ParseWebhookPayload` separately when the
 application already owns the raw payload bytes.
 
-Runnable examples:
+## API Coverage
+
+The SDK targets Intercom API version `2.15`, pinned in
+[`spec/intercom.openapi.yaml`](spec/intercom.openapi.yaml). Public root-package
+services cover the pinned specification while generated client code stays
+internal under [`internal/generated/intercom`](internal/generated/intercom).
+
+- [Public SDK coverage audit](docs/coverage.md)
+- [Production usage](docs/production.md)
+- [Go compatibility, releases, and v1 criteria](docs/compatibility.md)
+- [Public API compatibility audit](docs/api-compatibility.md)
+- [Spec normalization and client generation](docs/generation.md)
+
+## Runnable Examples
 
 - [`examples/identify_admin`](examples/identify_admin)
 - [`examples/search_contacts`](examples/search_contacts)
 
-## API Coverage
+## Support and Security
 
-The SDK targets Intercom API version `2.15`, pinned in [`spec/intercom.openapi.yaml`](spec/intercom.openapi.yaml). Public root-package services cover the pinned spec while generated client code stays internal under [`internal/generated/intercom`](internal/generated/intercom).
+- Use the [support guidance](SUPPORT.md) for usage questions and maintenance expectations.
+- Report security issues through [GitHub's private vulnerability reporting flow](SECURITY.md).
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change.
 
-See [`docs/coverage.md`](docs/coverage.md) for the current public SDK coverage audit.
-See [`docs/generation.md`](docs/generation.md) for the generation workflow.
-See [`docs/production.md`](docs/production.md) for production HTTP, deadline, retry, rate-limit, and observability guidance.
-See [`docs/compatibility.md`](docs/compatibility.md) for Go support, semantic versioning, deprecation, and v1 criteria.
-See [`docs/api-compatibility.md`](docs/api-compatibility.md) for the audited public API surface and compatibility gate.
+## Trademark Notice
 
-Security reports belong in [GitHub's private vulnerability reporting flow](SECURITY.md).
-For usage questions and maintenance expectations, see [support guidance](SUPPORT.md).
+The Fin and Intercom names and logos are trademarks or service marks of
+Intercom, Inc. or its affiliates in the U.S. and other countries. The Go
+trademark and Go logo are trademarks of Google LLC. Their inclusion does not
+imply affiliation, sponsorship, or endorsement.
 
 ## License
 
-MIT
+[MIT](LICENSE)
