@@ -1,16 +1,5 @@
 <div align="center">
-  <img src="./docs/assets/intercom-go-mark.svg" width="184" height="104" alt="Fin and Go logos in twin cards" />
-
-  <h1>intercom-go</h1>
-
-  <p><strong>An idiomatic, production-ready Go SDK compatible with the Intercom API.</strong></p>
-
-  <p><em>Unofficial and community-maintained. Not affiliated with, sponsored by, or endorsed by Fin or Intercom.</em></p>
-
-  <p>
-    Generated from Intercom's pinned OpenAPI specification.<br />
-    Hand-shaped for Go applications.
-  </p>
+  <img src="./docs/assets/intercom-go-header.svg" alt="intercom-go — an unofficial, community-maintained Go SDK compatible with the Intercom API" />
 
   <p>
     <a href="https://github.com/uffejaeger/intercom-go/actions/workflows/test.yml"><img alt="Test status" src="https://github.com/uffejaeger/intercom-go/actions/workflows/test.yml/badge.svg?branch=main" /></a>
