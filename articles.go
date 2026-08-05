@@ -19,6 +19,11 @@ type ArticleSearchResult = gen.ArticleSearchResponseSchema
 
 // ArticleDeleted is the result of deleting an article.
 type ArticleDeleted = gen.DeletedArticleObjectSchema
+type ArticleVersion = gen.ArticleVersionSchema
+type ArticleVersionList = gen.ArticleVersionListSchema
+type ArticleTag = gen.AttachTagToArticleJSONRequestBody
+type ArticleDraftUpdate = gen.UpdateArticleRequestSchema
+type ArticleDraftPublish = gen.PublishArticleDraftRequestSchema
 
 // ArticleCreate holds the fields for creating an article.
 type ArticleCreate = gen.CreateArticleRequestSchema
@@ -125,4 +130,95 @@ func (s *ArticlesService) Search(ctx context.Context, search ArticleSearch) (*Ar
 		return nil, err
 	}
 	return requireOK("search articles", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// AttachTag attaches a tag to an article.
+func (s *ArticlesService) AttachTag(ctx context.Context, articleID string, tag ArticleTag) (*Tag, error) {
+	id, err := requireIntID("article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.AttachTagToArticleWithResponse(ctx, id, nil, tag)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("attach tag to article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// DetachTag removes a tag from an article.
+func (s *ArticlesService) DetachTag(ctx context.Context, articleID, tagID string) (*Tag, error) {
+	id, err := requireIntID("article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.DetachTagFromArticleWithResponse(ctx, id, tagID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("detach tag from article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// ListVersions returns versions of an article.
+func (s *ArticlesService) ListVersions(ctx context.Context, articleID string, params *gen.ListArticleVersionsParams) (*ArticleVersionList, error) {
+	id, err := requireIntID("article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.ListArticleVersionsWithResponse(ctx, id, params)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list article versions", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// GetVersion returns an article version.
+func (s *ArticlesService) GetVersion(ctx context.Context, articleID, versionID string) (*ArticleVersion, error) {
+	id, err := requireIntID("article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.RetrieveArticleVersionWithResponse(ctx, id, versionID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("get article version", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// GetDraft returns an article draft.
+func (s *ArticlesService) GetDraft(ctx context.Context, articleID string) (*Article, error) {
+	id, err := requireIntID("article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.RetrieveArticleDraftWithResponse(ctx, id, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("get article draft", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// StageDraft updates an article draft without publishing it.
+func (s *ArticlesService) StageDraft(ctx context.Context, articleID string, draft ArticleDraftUpdate) (*Article, error) {
+	id, err := requireIntID("article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.StageArticleDraftWithResponse(ctx, id, nil, draft)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("stage article draft", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// PublishDraft publishes an article draft.
+func (s *ArticlesService) PublishDraft(ctx context.Context, articleID string, draft ArticleDraftPublish) (*Article, error) {
+	id, err := requireIntID("article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.PublishArticleDraftWithResponse(ctx, id, nil, draft)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("publish article draft", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

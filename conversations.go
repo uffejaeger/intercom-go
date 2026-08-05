@@ -81,6 +81,21 @@ type ConversationsService struct {
 	client *Client
 }
 
+// ListDeletedIDs returns recently deleted conversation IDs.
+func (s *ConversationsService) ListDeletedIDs(ctx context.Context, params *gen.ListDeletedConversationIdsParams) (*gen.ListDeletedConversationIdsResponse, error) {
+	return s.client.generated.ListDeletedConversationIdsWithResponse(ctx, params)
+}
+
+// Merge merges another conversation into a conversation.
+func (s *ConversationsService) Merge(ctx context.Context, conversationID string, request gen.MergeConversationJSONRequestBody) (*gen.MergeConversationResponse, error) {
+	return s.client.generated.MergeConversationWithResponse(ctx, conversationID, nil, request)
+}
+
+// ListSideConversations returns side conversations for a conversation.
+func (s *ConversationsService) ListSideConversations(ctx context.Context, conversationID string, params *gen.ListSideConversationsParams) (*gen.ListSideConversationsResponse, error) {
+	return s.client.generated.ListSideConversationsWithResponse(ctx, conversationID, params)
+}
+
 // List returns all conversations.
 func (s *ConversationsService) List(ctx context.Context) (*ConversationList, error) {
 	return s.ListWithOptions(ctx, CursorPageOptions{})

@@ -30,6 +30,7 @@ type CompanyCreate = gen.CreateOrUpdateCompanyRequestSchema
 
 // CompanyUpdate holds the fields for updating a company.
 type CompanyUpdate = gen.UpdateCompanyRequestSchema
+type CompanyNoteCreate = gen.CreateCompanyNoteJSONRequestBody
 
 // ContactCompanies is the list of companies a contact belongs to.
 type ContactCompanies = gen.ContactAttachedCompaniesSchema
@@ -128,6 +129,18 @@ func (s *CompaniesService) Update(ctx context.Context, companyID string, update 
 		return nil, err
 	}
 	return requireOK("update company", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// CreateNote adds a note to a company.
+func (s *CompaniesService) CreateNote(ctx context.Context, companyID string, note CompanyNoteCreate) (*Note, error) {
+	if companyID == "" {
+		return nil, fmt.Errorf("intercom: company ID is required")
+	}
+	res, err := s.client.generated.CreateCompanyNoteWithResponse(ctx, companyID, nil, note)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("create company note", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Delete deletes a company by its Intercom-assigned ID.

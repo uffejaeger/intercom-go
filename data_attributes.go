@@ -183,7 +183,7 @@ func listDataAttributeModel(model DataAttributeModel) (gen.LisDataAttributesPara
 	case DataAttributeModelCompany:
 		return gen.LisDataAttributesParamsModelCompany, nil
 	case DataAttributeModelConversation:
-		return gen.LisDataAttributesParamsModelConversation, nil
+		return gen.LisDataAttributesParamsModel(model), nil
 	case "":
 		return "", nil
 	default:

@@ -3,7 +3,6 @@
 set -euo pipefail
 
 readonly module_path="github.com/uffejaeger/intercom-go"
-readonly generated_package="${module_path}/internal/generated/intercom"
 readonly baseline="${API_BASELINE:-v0.2.0}"
 readonly apidiff_version="${APIDIFF_VERSION:-v0.0.0-20260727155853-b88d891fe743}"
 readonly apidiff="golang.org/x/exp/cmd/apidiff@${apidiff_version}"
@@ -52,19 +51,14 @@ echo "Exporting public API from ${baseline}..."
 (
 	cd "${work_dir}/baseline"
 	go run "${apidiff}" -m -w "${work_dir}/baseline.api" "${module_path}"
-	go run "${apidiff}" -w "${work_dir}/baseline-generated.api" "${generated_package}"
 )
 
 echo "Exporting public API from the working tree..."
 (
 	cd "${repository_root}"
 	go run "${apidiff}" -m -w "${work_dir}/current.api" "${module_path}"
-	go run "${apidiff}" -w "${work_dir}/current-generated.api" "${generated_package}"
 )
 
 compare_api "public" "${work_dir}/baseline.api" "${work_dir}/current.api" -m
-compare_api "generated-model" \
-	"${work_dir}/baseline-generated.api" "${work_dir}/current-generated.api" \
-	-allow-internal
 
 echo "Public API is backward compatible with ${baseline}."

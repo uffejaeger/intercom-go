@@ -38,3 +38,8 @@ func (s *TeamsService) Retrieve(ctx context.Context, teamID string) (*Team, erro
 	}
 	return requireOK("retrieve team", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
+
+// Metrics returns performance metrics for a team.
+func (s *TeamsService) Metrics(ctx context.Context, teamID string, params *gen.GetTeamMetricsParams) (*gen.GetTeamMetricsResponse, error) {
+	return s.client.generated.GetTeamMetricsWithResponse(ctx, teamID, params)
+}

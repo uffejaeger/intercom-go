@@ -171,7 +171,7 @@ func TestDataAttributeModelHelpers(t *testing.T) {
 		}{
 			{name: "contact", model: DataAttributeModelContact, want: gen.LisDataAttributesParamsModelContact},
 			{name: "company", model: DataAttributeModelCompany, want: gen.LisDataAttributesParamsModelCompany},
-			{name: "conversation", model: DataAttributeModelConversation, want: gen.LisDataAttributesParamsModelConversation},
+			{name: "conversation", model: DataAttributeModelConversation, want: gen.LisDataAttributesParamsModel(DataAttributeModelConversation)},
 			{name: "empty", model: ""},
 			{name: "unsupported", model: DataAttributeModel("workspace"), wantErr: true},
 		}

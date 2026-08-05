@@ -60,6 +60,33 @@ type ContactsService struct {
 	client *Client
 }
 
+// ListBanners returns banners shown to a contact.
+func (s *ContactsService) ListBanners(ctx context.Context, contactID string) (*gen.BannerListSchema, error) {
+	res, err := s.client.generated.ListContactBannersWithResponse(ctx, contactID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list contact banners", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// DismissBanner dismisses one banner for a contact.
+func (s *ContactsService) DismissBanner(ctx context.Context, contactID, viewID string) (*gen.BannerDismissSchema, error) {
+	res, err := s.client.generated.DismissContactBannerWithResponse(ctx, contactID, viewID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("dismiss contact banner", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// ListMergeHistory returns a contact's merge history.
+func (s *ContactsService) ListMergeHistory(ctx context.Context, contactID string) (*gen.MergeHistoryListSchema, error) {
+	res, err := s.client.generated.ListContactMergeHistoryWithResponse(ctx, contactID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list contact merge history", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
 // ContactSearchOperator is an Intercom contact search operator.
 type ContactSearchOperator string
 
@@ -417,7 +444,7 @@ func (s ContactSearch) toGenerated() (gen.SearchContactsJSONRequestBody, error) 
 		Value:    &value,
 	}
 
-	var query gen.SearchRequest_Query
+	var query gen.ContactSearchRequest_Query
 	_ = query.FromSingleFilterSearchRequestSchema(filter) // json.Marshal on a simple struct, never fails
 
 	body := gen.SearchContactsJSONRequestBody{

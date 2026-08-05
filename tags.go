@@ -115,7 +115,11 @@ func (s *TagsService) Create(ctx context.Context, req TagCreateRequest) (*TagDet
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create tag", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	created, err := requireOK("create tag", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	if err != nil {
+		return nil, err
+	}
+	return &TagDetail{Id: created.Id, Name: created.Name, Type: created.Type}, nil
 }
 
 // Retrieve returns a tag by ID.

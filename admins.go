@@ -28,6 +28,16 @@ type AdminsService struct {
 	client *Client
 }
 
+// ListActivityLogEventTypes returns available admin activity-log event types.
+func (s *AdminsService) ListActivityLogEventTypes(ctx context.Context, params *gen.ListActivityLogEventTypesParams) (*gen.ListActivityLogEventTypesResponse, error) {
+	return s.client.generated.ListActivityLogEventTypesWithResponse(ctx, params)
+}
+
+// SearchActivityLogs searches admin activity logs.
+func (s *AdminsService) SearchActivityLogs(ctx context.Context, params *gen.SearchActivityLogsParams, request gen.SearchActivityLogsJSONRequestBody) (*gen.SearchActivityLogsResponse, error) {
+	return s.client.generated.SearchActivityLogsWithResponse(ctx, params, request)
+}
+
 // Me identifies the currently authenticated admin.
 func (s *AdminsService) Me(ctx context.Context) (*Admin, error) {
 	res, err := s.client.generated.IdentifyAdminWithResponse(ctx, nil)

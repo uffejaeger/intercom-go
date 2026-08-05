@@ -21,6 +21,14 @@ type CustomObjectsService struct {
 	client *Client
 }
 
+// List returns instances for a custom object type.
+func (s *CustomObjectsService) List(ctx context.Context, customObjectType string, params *gen.ListCustomObjectInstancesParams) (*gen.ListCustomObjectInstancesResponse, error) {
+	if err := requireCustomObjectType(customObjectType); err != nil {
+		return nil, err
+	}
+	return s.client.generated.ListCustomObjectInstancesWithResponse(ctx, customObjectType, params)
+}
+
 // CreateOrUpdate creates or updates a custom object instance for a custom object type.
 func (s *CustomObjectsService) CreateOrUpdate(ctx context.Context, customObjectType string, instance CustomObjectInstanceCreateOrUpdate) (*CustomObjectInstance, error) {
 	if err := requireCustomObjectType(customObjectType); err != nil {
@@ -56,8 +64,7 @@ func (s *CustomObjectsService) GetByExternalID(ctx context.Context, customObject
 	if externalID == "" {
 		return nil, fmt.Errorf("intercom: custom object instance external ID is required")
 	}
-	params := &gen.GetCustomObjectInstancesByExternalIdParams{ExternalId: externalID}
-	res, err := s.client.generated.GetCustomObjectInstancesByExternalIdWithResponse(ctx, customObjectType, params)
+	res, err := s.client.generated.GetCustomObjectInstancesByIdWithResponse(ctx, customObjectType, externalID, nil)
 	if err != nil {
 		return nil, err
 	}

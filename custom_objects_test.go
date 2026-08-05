@@ -66,8 +66,7 @@ func TestCustomObjectsServiceRequests(t *testing.T) {
 				return nil
 			},
 			wantMethod: http.MethodGet,
-			wantPath:   "/custom_object_instances/Order",
-			wantQuery:  "external_id=external-1",
+			wantPath:   "/custom_object_instances/Order/external-1",
 		},
 		{
 			name:     "delete by id",

@@ -97,6 +97,11 @@ type FinService struct {
 	client *Client
 }
 
+// SubmitCSAT submits customer-satisfaction feedback for Fin.
+func (s *FinService) SubmitCSAT(ctx context.Context, request gen.SubmitFinCsatJSONRequestBody) (*gen.SubmitFinCsatResponse, error) {
+	return s.client.generated.SubmitFinCsatWithResponse(ctx, nil, request)
+}
+
 // Reply continues a Fin conversation.
 func (s *FinService) Reply(ctx context.Context, req FinReply) (*FinConversationResponse, error) {
 	res, err := s.client.generated.ReplyToFinWithResponse(ctx, nil, gen.ReplyToFinJSONRequestBody(req.toGenerated()))

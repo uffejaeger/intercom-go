@@ -239,6 +239,21 @@ type TicketsService struct {
 	client *Client
 }
 
+// ChangeType changes a ticket's type.
+func (s *TicketsService) ChangeType(ctx context.Context, ticketID string, request gen.ChangeTicketTypeJSONRequestBody) (*gen.ChangeTicketTypeResponse, error) {
+	return s.client.generated.ChangeTicketTypeWithResponse(ctx, ticketID, nil, request)
+}
+
+// LinkConversation links a conversation to a ticket.
+func (s *TicketsService) LinkConversation(ctx context.Context, ticketID string, request gen.LinkConversationToTicketJSONRequestBody) (*gen.LinkConversationToTicketResponse, error) {
+	return s.client.generated.LinkConversationToTicketWithResponse(ctx, ticketID, nil, request)
+}
+
+// UnlinkConversation removes a conversation link from a ticket.
+func (s *TicketsService) UnlinkConversation(ctx context.Context, ticketID, conversationID string) (*gen.UnlinkConversationFromTicketResponse, error) {
+	return s.client.generated.UnlinkConversationFromTicketWithResponse(ctx, ticketID, conversationID, nil)
+}
+
 // Create creates a ticket.
 func (s *TicketsService) Create(ctx context.Context, ticket TicketCreate) (*Ticket, error) {
 	res, err := s.client.generated.CreateTicketWithResponse(ctx, nil, gen.CreateTicketJSONRequestBody(ticket))

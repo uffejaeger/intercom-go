@@ -87,11 +87,14 @@ coverage evolve without forcing consumers to wait for an SDK release.
 
 ## Automated compatibility gate
 
-`make api-compatibility` exports the public module API and generated model API
-from the current working tree and compares both with the pinned released
-baseline using Go's `apidiff` tool. The command fails when an incompatible
-compile-time change is reported. CI runs it in the quality job, and
-`make pre-push` runs it locally.
+`make api-compatibility` exports the public module API from the current working
+tree and compares it with the pinned released baseline using Go's `apidiff`
+tool. The command fails when an incompatible compile-time change is reported.
+CI runs it in the quality job, and `make pre-push` runs it locally.
+
+The generated OpenAPI client is under Go's `internal/` boundary, so downstream
+SDK consumers cannot import it. It is verified for reproducibility by `make
+generate-check`, rather than treated as a second public API surface.
 
 The current baseline is `v0.2.0`. After publishing a release that expands the
 public API, maintainers advance `API_BASELINE` in `Makefile` to that release so
