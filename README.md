@@ -14,6 +14,7 @@
 
   <p>
     <a href="#quick-start">Quick start</a> •
+    <a href="#migrating-from-the-legacy-v2-client">Migrate from v2</a> •
     <a href="#why-intercom-go">Why intercom-go?</a> •
     <a href="#everyday-api">Examples</a> •
     <a href="#api-coverage">API coverage</a> •
@@ -84,6 +85,14 @@ client options:
 ```go
 client, err := intercom.NewClient("access-token", intercom.WithRegion(intercom.EU))
 ```
+
+## Migrating from the legacy v2 client
+
+`intercom-go` is an independent, community-maintained SDK rather than a drop-in
+replacement for `gopkg.in/intercom/intercom-go.v2`. It uses the current Intercom
+API model and requires a `context.Context` on each service call. The
+[migration guide](docs/migrating-from-intercom-go-v2.md) maps common workflows
+and calls out the deliberate API differences.
 
 ## Everyday API
 
@@ -229,6 +238,9 @@ internal under [`internal/generated/intercom`](internal/generated/intercom).
 
 - [`examples/identify_admin`](examples/identify_admin)
 - [`examples/search_contacts`](examples/search_contacts)
+- [`examples/list_conversations`](examples/list_conversations)
+- [`examples/observe_rate_limits`](examples/observe_rate_limits)
+- [`examples/verify_webhook`](examples/verify_webhook)
 
 ## Support and Security
 
