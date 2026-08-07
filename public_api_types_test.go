@@ -49,6 +49,31 @@ func TestContentAndAudienceRequestItemsAreImportable(t *testing.T) {
 	}
 }
 
+func TestDataConnectorConfigurationTypesAreImportable(t *testing.T) {
+	method := intercom.DataConnectorCreateHTTPMethod("POST")
+	inputType := intercom.DataConnectorCreateDataInputType("string")
+	createAudience := intercom.DataConnectorCreateAudience("users")
+	_ = intercom.DataConnectorCreate{
+		Name:       "lookup",
+		Audiences:  &[]intercom.DataConnectorCreateAudience{createAudience},
+		HttpMethod: &method,
+		DataInputs: &[]intercom.DataConnectorCreateDataInput{{Name: stringPtr("query"), Type: &inputType}},
+		Headers:    &[]intercom.DataConnectorHeader{{Name: stringPtr("X-API-Key"), Value: stringPtr("token")}},
+	}
+
+	updateMethod := intercom.DataConnectorUpdateHTTPMethod("GET")
+	updateInputType := intercom.DataConnectorUpdateDataInputType("string")
+	updateAudience := intercom.DataConnectorUpdateAudience("leads")
+	state := intercom.DataConnectorUpdateState("live")
+	_ = intercom.DataConnectorUpdate{
+		Audiences:  &[]intercom.DataConnectorUpdateAudience{updateAudience},
+		HttpMethod: &updateMethod,
+		DataInputs: &[]intercom.DataConnectorUpdateDataInput{{Name: stringPtr("query"), Type: &updateInputType}},
+		Headers:    &[]intercom.DataConnectorHeader{{Name: stringPtr("Accept"), Value: stringPtr("application/json")}},
+		State:      &state,
+	}
+}
+
 func TestContactOwnerIDCompatibility(t *testing.T) {
 	ownerID := 42
 	email := "contact@example.com"
