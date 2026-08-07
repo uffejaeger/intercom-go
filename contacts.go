@@ -31,7 +31,7 @@ type Contact struct {
 	BrowserVersion         *string                          `json:"browser_version,omitempty"`
 	Companies              *gen.ContactCompaniesSchema      `json:"companies,omitempty"`
 	CreatedAt              *int                             `json:"created_at,omitempty"`
-	CustomAttributes       *map[string]interface{}          `json:"custom_attributes,omitempty"`
+	CustomAttributes       *map[string]any                  `json:"custom_attributes,omitempty"`
 	Email                  *string                          `json:"email,omitempty"`
 	EmailDomain            *string                          `json:"email_domain,omitempty"`
 	ExternalId             *string                          `json:"external_id,omitempty"`
