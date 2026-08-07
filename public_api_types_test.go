@@ -161,6 +161,39 @@ func TestRelationshipUpdateAndFinCSATSubmissionTypesAreImportable(t *testing.T) 
 	_ = intercom.FinCSATSubmission{ConversationId: "conversation-1", Rating: rating}
 }
 
+func TestContentAndSupportingFilterTypesAreImportable(t *testing.T) {
+	state := intercom.ContentSearchState("published")
+	tagOperator := intercom.ContentSearchTagOperator("IN")
+	folderEntityType := intercom.ContentSearchFolderEntityType("article")
+	contentType := intercom.ContentSearchType("article")
+	copilotState := intercom.ContentSearchCopilotState("enabled")
+	finServiceState := intercom.ContentSearchFinServiceState("enabled")
+	finSalesState := intercom.ContentSearchFinSalesState("enabled")
+	_ = intercom.ContentSearchParams{
+		States:           &[]intercom.ContentSearchState{state},
+		TagOperator:      &tagOperator,
+		FolderEntityType: &folderEntityType,
+		ContentTypes:     &[]intercom.ContentSearchType{contentType},
+		CopilotState:     &copilotState,
+		FinServiceState:  &finServiceState,
+		FinSalesState:    &finSalesState,
+	}
+
+	action := intercom.ContentBulkActionOperation("publish")
+	_ = intercom.ContentBulkActionRequest{Action: action}
+
+	success := intercom.DataConnectorExecutionSuccess("true")
+	errorType := intercom.DataConnectorExecutionErrorType("timeout")
+	includeBodies := intercom.DataConnectorExecutionIncludeBodies("true")
+	_ = intercom.DataConnectorExecutionListParams{Success: &success, ErrorType: &errorType, IncludeBodies: &includeBodies}
+
+	targetType := intercom.HelpCenterRedirectTargetType("article")
+	_ = intercom.HelpCenterRedirectCreate{FromUrl: "https://example.test/from", Locale: "en", TargetId: "article-1", TargetType: targetType}
+
+	exceptionType := intercom.OfficeHoursExceptionCreateType("closed")
+	_ = intercom.OfficeHoursExceptionCreate{ExceptionType: exceptionType}
+}
+
 func stringPtr(value string) *string { return &value }
 
 func boolPtr(value bool) *bool { return &value }

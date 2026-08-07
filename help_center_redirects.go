@@ -12,6 +12,9 @@ type HelpCenterRedirectDeleted = gen.DeletedHelpCenterRedirectObjectSchema
 type HelpCenterRedirectCreate = gen.CreateHelpCenterRedirectRequestSchema
 type HelpCenterRedirectListParams = gen.ListHelpCenterRedirectsParams
 
+// HelpCenterRedirectTargetType identifies the target of a help-center redirect.
+type HelpCenterRedirectTargetType = gen.CreateHelpCenterRedirectRequestTargetType
+
 // HelpCenterRedirectsService exposes redirects within an Intercom help center.
 type HelpCenterRedirectsService struct{ client *Client }
 

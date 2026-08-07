@@ -17,6 +17,15 @@ type DataConnectorUpdate = gen.UpdateDataConnectorRequestSchema
 type DataConnectorListParams = gen.ListDataConnectorsParams
 type DataConnectorExecutionListParams = gen.ListDataConnectorExecutionResultsParams
 
+// DataConnectorExecutionSuccess filters execution results by success status.
+type DataConnectorExecutionSuccess = gen.ListDataConnectorExecutionResultsParamsSuccess
+
+// DataConnectorExecutionErrorType filters execution results by error type.
+type DataConnectorExecutionErrorType = gen.ListDataConnectorExecutionResultsParamsErrorType
+
+// DataConnectorExecutionIncludeBodies controls whether execution bodies are returned.
+type DataConnectorExecutionIncludeBodies = gen.ListDataConnectorExecutionResultsParamsIncludeBodies
+
 // DataConnectorCreateAudience identifies a user type that can use a new connector.
 type DataConnectorCreateAudience = gen.CreateDataConnectorRequestAudiences
 

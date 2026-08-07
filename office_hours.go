@@ -30,6 +30,9 @@ type OfficeHoursScheduleUpdate = gen.UpdateOfficeHoursScheduleRequestSchema
 // OfficeHoursExceptionCreate configures an exception.
 type OfficeHoursExceptionCreate = gen.CreateOfficeHoursExceptionRequestSchema
 
+// OfficeHoursExceptionCreateType identifies the exception behavior for creation.
+type OfficeHoursExceptionCreateType = gen.CreateOfficeHoursExceptionRequestExceptionType
+
 // OfficeHoursExceptionUpdate configures an exception update.
 type OfficeHoursExceptionUpdate = gen.UpdateOfficeHoursExceptionRequestSchema
 

@@ -19,6 +19,30 @@ type ContentSnippetListParams = gen.ListContentSnippetsParams
 type ContentSearchParams = gen.SearchContentParams
 type ContentSnippetTag = gen.AttachTagToContentSnippetJSONRequestBody
 
+// ContentSearchState identifies a content publication state filter.
+type ContentSearchState = gen.SearchContentParamsStates
+
+// ContentSearchTagOperator identifies how tag filters are combined.
+type ContentSearchTagOperator = gen.SearchContentParamsTagOperator
+
+// ContentSearchFolderEntityType identifies the entity type used by a folder filter.
+type ContentSearchFolderEntityType = gen.SearchContentParamsFolderEntityType
+
+// ContentSearchType identifies a content type filter.
+type ContentSearchType = gen.SearchContentParamsContentTypes
+
+// ContentSearchCopilotState identifies the Copilot availability filter.
+type ContentSearchCopilotState = gen.SearchContentParamsCopilotState
+
+// ContentSearchFinServiceState identifies the Fin AI Agent availability filter.
+type ContentSearchFinServiceState = gen.SearchContentParamsFinServiceState
+
+// ContentSearchFinSalesState identifies the Fin Sales Agent availability filter.
+type ContentSearchFinSalesState = gen.SearchContentParamsFinSalesState
+
+// ContentBulkActionOperation identifies the operation performed by a bulk action.
+type ContentBulkActionOperation = gen.ContentBulkActionRequestAction
+
 // ContentBulkActionContentType identifies the kind of content selected by a bulk action.
 type ContentBulkActionContentType = gen.ContentBulkActionRequestContentIdsType
 
