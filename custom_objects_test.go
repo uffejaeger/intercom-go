@@ -17,6 +17,24 @@ func TestCustomObjectsServiceRequests(t *testing.T) {
 		wantQuery  string
 	}{
 		{
+			name:     "list",
+			response: `{"data":[]}`,
+			call: func(ctx context.Context, client *Client) error {
+				contactID := "contact-1"
+				page := 2
+				perPage := 50
+				_, err := client.CustomObjects.List(ctx, "Order", &CustomObjectInstanceListParams{
+					ReferencesContactId: &contactID,
+					Page:                &page,
+					PerPage:             &perPage,
+				})
+				return err
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/custom_object_instances/Order",
+			wantQuery:  "page=2&per_page=50&references_contact_id=contact-1",
+		},
+		{
 			name:     "create or update",
 			response: `{"id":"22","type":"Order","external_id":"external-1","custom_attributes":{"order_number":"ORDER-12345"}}`,
 			call: func(ctx context.Context, client *Client) error {

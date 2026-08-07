@@ -18,6 +18,9 @@ type OfficeHoursException = gen.OfficeHoursExceptionSchema
 // OfficeHoursExceptionList is a list of office-hours exceptions.
 type OfficeHoursExceptionList = gen.OfficeHoursExceptionListSchema
 
+// OfficeHoursTimeInterval is an open interval in an office-hours schedule or exception.
+type OfficeHoursTimeInterval = gen.OfficeHoursTimeIntervalSchema
+
 // OfficeHoursScheduleCreate configures a schedule.
 type OfficeHoursScheduleCreate = gen.CreateOfficeHoursScheduleRequestSchema
 

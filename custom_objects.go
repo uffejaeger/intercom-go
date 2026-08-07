@@ -23,7 +23,28 @@ type CustomObjectInstanceCreateOrUpdate = gen.CreateOrUpdateCustomObjectInstance
 type CustomObjectInstanceList = gen.CustomObjectInstancesPaginatedListSchema
 
 // CustomObjectInstanceListParams configures a custom object instance list request.
-type CustomObjectInstanceListParams = gen.ListCustomObjectInstancesParams
+//
+// External-ID lookup is intentionally not part of this type. The API returns a
+// single instance, rather than a list, when external_id is supplied; use
+// GetByExternalID for that response shape.
+type CustomObjectInstanceListParams struct {
+	ReferencesContactId      *string
+	ReferencesConversationId *string
+	Page                     *int
+	PerPage                  *int
+}
+
+func (p *CustomObjectInstanceListParams) toGenerated() *gen.ListCustomObjectInstancesParams {
+	if p == nil {
+		return nil
+	}
+	return &gen.ListCustomObjectInstancesParams{
+		ReferencesContactId:      p.ReferencesContactId,
+		ReferencesConversationId: p.ReferencesConversationId,
+		Page:                     p.Page,
+		PerPage:                  p.PerPage,
+	}
+}
 
 // CustomObjectsService exposes custom-object instance Intercom API operations.
 type CustomObjectsService struct {
@@ -35,7 +56,7 @@ func (s *CustomObjectsService) List(ctx context.Context, customObjectType string
 	if err := requireCustomObjectType(customObjectType); err != nil {
 		return nil, err
 	}
-	res, err := s.client.generated.ListCustomObjectInstancesWithResponse(ctx, customObjectType, params)
+	res, err := s.client.generated.ListCustomObjectInstancesWithResponse(ctx, customObjectType, params.toGenerated())
 	if err != nil {
 		return nil, err
 	}

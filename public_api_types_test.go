@@ -19,6 +19,12 @@ func TestAPI216WrapperTypesAreImportable(t *testing.T) {
 	_ = intercom.ConversationSideListParams{}
 	_ = intercom.CustomObjectInstanceListParams{}
 	_ = intercom.FinCSATSubmission{}
+	_ = intercom.OfficeHoursTimeInterval{}
+	_ = intercom.OfficeHoursScheduleCreate{
+		Name:          "Weekdays",
+		TimeIntervals: []intercom.OfficeHoursTimeInterval{},
+		TimeZoneName:  "UTC",
+	}
 	_ = intercom.OfficeHoursScheduleListParams{}
 	_ = intercom.OfficeHoursExceptionListParams{}
 	_ = intercom.TeamMetricsParams{}
