@@ -33,3 +33,45 @@ func TestContactOwnerIDCompatibility(t *testing.T) {
 	_ = intercom.ContactCreate{OwnerId: &ownerID}
 	_ = intercom.ContactUpdate{OwnerId: &ownerID}
 }
+
+func TestConversationAttributeConstructorsAreImportable(t *testing.T) {
+	constructors := []func() error{
+		func() error {
+			_, err := intercom.NewConversationAttributeString(intercom.ConversationAttributeStringCreate{Name: "summary"})
+			return err
+		},
+		func() error {
+			_, err := intercom.NewConversationAttributeInteger(intercom.ConversationAttributeIntegerCreate{Name: "count"})
+			return err
+		},
+		func() error {
+			_, err := intercom.NewConversationAttributeList(intercom.ConversationAttributeListCreate{Name: "status"})
+			return err
+		},
+		func() error {
+			_, err := intercom.NewConversationAttributeDecimal(intercom.ConversationAttributeDecimalCreate{Name: "amount"})
+			return err
+		},
+		func() error {
+			_, err := intercom.NewConversationAttributeBoolean(intercom.ConversationAttributeBooleanCreate{Name: "enabled"})
+			return err
+		},
+		func() error {
+			_, err := intercom.NewConversationAttributeDatetime(intercom.ConversationAttributeDatetimeCreate{Name: "occurred_at"})
+			return err
+		},
+		func() error {
+			_, err := intercom.NewConversationAttributeRelationship(intercom.ConversationAttributeRelationshipCreate{Name: "account"})
+			return err
+		},
+		func() error {
+			_, err := intercom.NewConversationAttributeFiles(intercom.ConversationAttributeFilesCreate{Name: "attachments"})
+			return err
+		},
+	}
+	for _, constructor := range constructors {
+		if err := constructor(); err != nil {
+			t.Fatalf("constructor returned error: %v", err)
+		}
+	}
+}

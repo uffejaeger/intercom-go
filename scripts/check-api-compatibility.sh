@@ -14,6 +14,21 @@ cleanup() {
 }
 trap cleanup EXIT
 
+filter_source_compatible_contact_request_changes() {
+	while IFS= read -r line; do
+		case "${line}" in
+			"- (*ContactsService).Create: changed from func(context.Context, ContactCreate) (*Contact, error) to func(context.Context, ContactCreate) (*Contact, error)" | \
+			"- (*ContactsService).Update: changed from func(context.Context, string, ContactUpdate) (*Contact, error) to func(context.Context, string, ContactUpdate) (*Contact, error)" | \
+			"- ContactCreate: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.CreateContactRequestSchema to ContactCreate" | \
+			"- ContactUpdate: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.UpdateContactRequestSchema to ContactUpdate")
+				;;
+			*)
+				printf '%s\n' "${line}"
+				;;
+		esac
+	done
+}
+
 compare_api() {
 	local label="$1"
 	local old_export="$2"
@@ -36,8 +51,7 @@ compare_api() {
 	# change as incompatible, so accept only these exact entries; the external
 	# consumer regression test verifies the preserved source contract.
 	if [[ "${label}" == "public" ]]; then
-		report="$(printf '%s\n' "${report}" | grep -Ev \
-			'^- (\(\*ContactsService\)\.(Create|Update)|Contact(Create|Update):)' || true)"
+		report="$(printf '%s\n' "${report}" | filter_source_compatible_contact_request_changes)"
 	fi
 
 	sed '/^Ignoring internal package /d' "${comparison_errors}" >&2

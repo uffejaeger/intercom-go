@@ -9,10 +9,79 @@ import (
 type ConversationAttribute = gen.ConversationAttribute
 type ConversationAttributeList = gen.ConversationAttributeListSchema
 type ConversationAttributeCreate = gen.CreateConversationAttributeRequest
+type ConversationAttributeStringCreate = gen.CreateConversationAttributeStringRequest
+type ConversationAttributeIntegerCreate = gen.CreateConversationAttributeIntegerRequest
+type ConversationAttributeListCreate = gen.CreateConversationAttributeListRequest
+type ConversationAttributeDecimalCreate = gen.CreateConversationAttributeDecimalRequest
+type ConversationAttributeBooleanCreate = gen.CreateConversationAttributeBooleanRequest
+type ConversationAttributeDatetimeCreate = gen.CreateConversationAttributeDatetimeRequest
+type ConversationAttributeRelationshipCreate = gen.CreateConversationAttributeRelationshipRequest
+type ConversationAttributeFilesCreate = gen.CreateConversationAttributeFilesRequest
 type ConversationAttributeUpdate = gen.UpdateConversationAttributeRequestSchema
 type ConversationAttributeOptionCreate = gen.CreateConversationAttributeOptionRequestSchema
 type ConversationAttributeOptionUpdate = gen.UpdateConversationAttributeOptionRequestSchema
 type ConversationAttributeListParams = gen.ListConversationAttributesParams
+
+func NewConversationAttributeString(attribute ConversationAttributeStringCreate) (ConversationAttributeCreate, error) {
+	attribute.DataType = "string"
+	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {
+		return result.FromCreateConversationAttributeStringRequest(attribute)
+	})
+}
+
+func NewConversationAttributeInteger(attribute ConversationAttributeIntegerCreate) (ConversationAttributeCreate, error) {
+	attribute.DataType = "integer"
+	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {
+		return result.FromCreateConversationAttributeIntegerRequest(attribute)
+	})
+}
+
+func NewConversationAttributeList(attribute ConversationAttributeListCreate) (ConversationAttributeCreate, error) {
+	attribute.DataType = "list"
+	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {
+		return result.FromCreateConversationAttributeListRequest(attribute)
+	})
+}
+
+func NewConversationAttributeDecimal(attribute ConversationAttributeDecimalCreate) (ConversationAttributeCreate, error) {
+	attribute.DataType = "decimal"
+	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {
+		return result.FromCreateConversationAttributeDecimalRequest(attribute)
+	})
+}
+
+func NewConversationAttributeBoolean(attribute ConversationAttributeBooleanCreate) (ConversationAttributeCreate, error) {
+	attribute.DataType = "boolean"
+	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {
+		return result.FromCreateConversationAttributeBooleanRequest(attribute)
+	})
+}
+
+func NewConversationAttributeDatetime(attribute ConversationAttributeDatetimeCreate) (ConversationAttributeCreate, error) {
+	attribute.DataType = "datetime"
+	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {
+		return result.FromCreateConversationAttributeDatetimeRequest(attribute)
+	})
+}
+
+func NewConversationAttributeRelationship(attribute ConversationAttributeRelationshipCreate) (ConversationAttributeCreate, error) {
+	attribute.DataType = "relationship"
+	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {
+		return result.FromCreateConversationAttributeRelationshipRequest(attribute)
+	})
+}
+
+func NewConversationAttributeFiles(attribute ConversationAttributeFilesCreate) (ConversationAttributeCreate, error) {
+	attribute.DataType = "files"
+	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {
+		return result.FromCreateConversationAttributeFilesRequest(attribute)
+	})
+}
+
+func conversationAttributeCreate(set func(*ConversationAttributeCreate) error) (ConversationAttributeCreate, error) {
+	var result ConversationAttributeCreate
+	return result, set(&result)
+}
 
 // ConversationAttributesService exposes custom attributes for conversations.
 type ConversationAttributesService struct{ client *Client }
