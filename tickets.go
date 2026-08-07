@@ -10,7 +10,29 @@ import (
 )
 
 // TicketList is a list of Intercom tickets.
-type TicketList = gen.TicketListSchema
+type TicketList struct {
+	Pages      *gen.CursorPagesSchema `json:"pages,omitempty"`
+	Tickets    *[]*Ticket             `json:"tickets,omitempty"`
+	TotalCount *int                   `json:"total_count,omitempty"`
+	Type       *gen.TicketListType    `json:"type,omitempty"`
+}
+
+func ticketListFromGenerated(list *gen.TicketListSchema) *TicketList {
+	if list == nil {
+		return nil
+	}
+
+	result := &TicketList{Pages: list.Pages, TotalCount: list.TotalCount, Type: list.Type}
+	if list.Tickets == nil {
+		return result
+	}
+	tickets := make([]*Ticket, 0, len(*list.Tickets))
+	for _, ticket := range *list.Tickets {
+		tickets = append(tickets, ticketFromGenerated(ticket))
+	}
+	result.Tickets = &tickets
+	return result
+}
 
 // TicketContact is a contact selector included in a ticket create request.
 type TicketContact = gen.CreateTicketRequest_Contacts_Item
@@ -234,9 +256,43 @@ type TicketTagAttachRequest = gen.AttachTagToTicketJSONBody
 // TicketTagDetachRequest holds the fields for detaching a tag from a ticket.
 type TicketTagDetachRequest = gen.DetachTagFromTicketJSONBody
 
+// TicketTypeChange holds the fields for changing a ticket's type.
+type TicketTypeChange = gen.ChangeTicketTypeJSONRequestBody
+
+// TicketConversationLink holds the fields for linking a conversation to a ticket.
+type TicketConversationLink = gen.LinkConversationToTicketJSONRequestBody
+
 // TicketsService exposes ticket-related Intercom API operations.
 type TicketsService struct {
 	client *Client
+}
+
+// ChangeType changes a ticket's type.
+func (s *TicketsService) ChangeType(ctx context.Context, ticketID string, request TicketTypeChange) (*Ticket, error) {
+	res, err := s.client.generated.ChangeTicketTypeWithResponse(ctx, ticketID, nil, request)
+	if err != nil {
+		return nil, err
+	}
+	ticket, err := requireOK("change ticket type", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return ticketFromGenerated(ticket), err
+}
+
+// LinkConversation links a conversation to a ticket.
+func (s *TicketsService) LinkConversation(ctx context.Context, ticketID string, request TicketConversationLink) (*Conversation, error) {
+	res, err := s.client.generated.LinkConversationToTicketWithResponse(ctx, ticketID, nil, request)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("link conversation to ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// UnlinkConversation removes a conversation link from a ticket.
+func (s *TicketsService) UnlinkConversation(ctx context.Context, ticketID, conversationID string) (*Conversation, error) {
+	res, err := s.client.generated.UnlinkConversationFromTicketWithResponse(ctx, ticketID, conversationID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("unlink conversation from ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates a ticket.
@@ -245,7 +301,8 @@ func (s *TicketsService) Create(ctx context.Context, ticket TicketCreate) (*Tick
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	created, err := requireOK("create ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return ticketFromGenerated(created), err
 }
 
 // EnqueueCreate enqueues asynchronous ticket creation.
@@ -271,7 +328,8 @@ func (s *TicketsService) SearchWithOptions(ctx context.Context, query TicketSear
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("search tickets", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	tickets, err := requireOK("search tickets", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return ticketListFromGenerated(tickets), err
 }
 
 // Get retrieves a ticket by ID.
@@ -283,7 +341,8 @@ func (s *TicketsService) Get(ctx context.Context, ticketID string) (*Ticket, err
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("get ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	ticket, err := requireOK("get ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return ticketFromGenerated(ticket), err
 }
 
 // Update updates a ticket by ID.
@@ -295,7 +354,8 @@ func (s *TicketsService) Update(ctx context.Context, ticketID string, ticket Tic
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	updated, err := requireOK("update ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return ticketFromGenerated(updated), err
 }
 
 // Delete deletes a ticket by ID.

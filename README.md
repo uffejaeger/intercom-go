@@ -32,7 +32,7 @@ Generated where it should be. Hand-shaped where it matters.
 | --- | --- |
 | **Idiomatic Go API** | Use focused services such as `client.Admins.Me(ctx)`, `client.Contacts.Search(ctx, ...)`, and `client.Conversations.Reply(ctx, ...)` instead of generated operation names and unions. |
 | **Production-minded** | Opt into conservative retries, inspect request IDs and rate limits, customize individual requests, and verify webhook signatures. |
-| **Complete and current** | Public services account for every operation in the pinned Intercom API `2.15` specification, with an automated coverage audit. |
+| **Complete and current** | Public services account for every operation in the pinned Intercom API `2.16` specification, with an automated coverage audit. |
 | **Stable public surface** | Generated OpenAPI code stays internal while compatibility checks protect the SDK API your application imports. |
 | **Easy to test** | The public [`intercomtest`](https://pkg.go.dev/github.com/uffejaeger/intercom-go/intercomtest) package scripts local Intercom responses and captures outgoing requests without calling Intercom. |
 
@@ -223,7 +223,7 @@ application already owns the raw payload bytes.
 
 ## API Coverage
 
-The SDK targets Intercom API version `2.15`, pinned in
+The SDK targets Intercom API version `2.16`, pinned in
 [`spec/intercom.openapi.yaml`](spec/intercom.openapi.yaml). Public root-package
 services cover the pinned specification while generated client code stays
 internal under [`internal/generated/intercom`](internal/generated/intercom).

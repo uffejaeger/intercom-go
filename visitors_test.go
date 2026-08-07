@@ -70,9 +70,9 @@ func TestVisitorsServiceRequests(t *testing.T) {
 		},
 		{
 			name:     "convert visitor",
-			response: `{"type":"contact","id":"c1","external_id":"contact-1"}`,
+			response: `{"type":"contact","id":"c1","external_id":"contact-1","owner_id":"42"}`,
 			call: func(ctx context.Context, client *Client) error {
-				_, err := client.Visitors.Convert(ctx, VisitorConvert{
+				contact, err := client.Visitors.Convert(ctx, VisitorConvert{
 					Type: "user",
 					User: VisitorConvertContact{
 						ID:    &contactID,
@@ -83,7 +83,13 @@ func TestVisitorsServiceRequests(t *testing.T) {
 						Email:  &visitorEmail,
 					},
 				})
-				return err
+				if err != nil {
+					return err
+				}
+				if contact.OwnerId == nil || *contact.OwnerId != 42 {
+					t.Fatalf("contact.OwnerId = %v", contact.OwnerId)
+				}
+				return nil
 			},
 			wantMethod: http.MethodPost,
 			wantPath:   "/visitors/convert",

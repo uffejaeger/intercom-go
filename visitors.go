@@ -10,7 +10,7 @@ import (
 type Visitor = gen.VisitorSchema
 
 // VisitorConverted is the contact returned after converting a visitor.
-type VisitorConverted = gen.ContactSchema
+type VisitorConverted = Contact
 
 // VisitorUpdate holds the fields for updating a visitor.
 type VisitorUpdate struct {
@@ -106,5 +106,6 @@ func (s *VisitorsService) Convert(ctx context.Context, req VisitorConvert) (*Vis
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("convert visitor", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contact, err := requireOK("convert visitor", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(contact), err
 }

@@ -227,6 +227,23 @@ func TestContactsServiceRequests(t *testing.T) {
 			},
 		},
 		{
+			name:     "update contact owner ID",
+			response: `{"type":"contact","id":"contact-1"}`,
+			call: func(ctx context.Context, client *Client) error {
+				ownerID := 42
+				_, err := client.Contacts.Update(ctx, "contact-1", ContactUpdate{OwnerId: &ownerID})
+				return err
+			},
+			wantMethod: http.MethodPut,
+			wantPath:   "/contacts/contact-1",
+			wantBody: func(t *testing.T, body map[string]any) {
+				t.Helper()
+				if got := nestedString(body, "owner_id"); got != "42" {
+					t.Fatalf("owner_id = %q", got)
+				}
+			},
+		},
+		{
 			name:     "merge contacts",
 			response: `{"type":"contact","id":"contact-2"}`,
 			call: func(ctx context.Context, client *Client) error {

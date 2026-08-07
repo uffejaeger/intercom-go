@@ -14,7 +14,7 @@ import (
 
 const (
 	defaultBaseURL    = "https://api.intercom.io"
-	defaultAPIVersion = "2.15"
+	defaultAPIVersion = "2.16"
 	// DefaultAccessTokenEnv is the environment variable read by NewClientFromEnv.
 	DefaultAccessTokenEnv = "INTERCOM_ACCESS_TOKEN"
 	defaultUserAgent      = "intercom-go"
@@ -40,34 +40,42 @@ type Client struct {
 	responseHook ResponseHook
 	generated    *gen.ClientWithResponses
 
-	Admins            *AdminsService
-	AIContent         *AIContentService
-	Articles          *ArticlesService
-	AwayStatusReasons *AwayStatusReasonsService
-	Brands            *BrandsService
-	Calls             *CallsService
-	Collections       *CollectionsService
-	Companies         *CompaniesService
-	Contacts          *ContactsService
-	Conversations     *ConversationsService
-	CustomObjects     *CustomObjectsService
-	DataAttributes    *DataAttributesService
-	DataEvents        *DataEventsService
-	Emails            *EmailsService
-	Fin               *FinService
-	HelpCenters       *HelpCentersService
-	InternalArticles  *InternalArticlesService
-	Messages          *MessagesService
-	News              *NewsService
-	Notes             *NotesService
-	PhoneSwitches     *PhoneSwitchesService
-	Segments          *SegmentsService
-	SubscriptionTypes *SubscriptionTypesService
-	Tags              *TagsService
-	Teams             *TeamsService
-	Tickets           *TicketsService
-	Visitors          *VisitorsService
-	Workspace         *WorkspaceService
+	Admins                 *AdminsService
+	AIContent              *AIContentService
+	Articles               *ArticlesService
+	Audiences              *AudiencesService
+	AwayStatusReasons      *AwayStatusReasonsService
+	Brands                 *BrandsService
+	Calls                  *CallsService
+	Collections            *CollectionsService
+	Companies              *CompaniesService
+	Content                *ContentService
+	Contacts               *ContactsService
+	Conversations          *ConversationsService
+	ConversationAttributes *ConversationAttributesService
+	CustomObjects          *CustomObjectsService
+	DataAttributes         *DataAttributesService
+	DataConnectors         *DataConnectorsService
+	DataEvents             *DataEventsService
+	Emails                 *EmailsService
+	Fin                    *FinService
+	HelpCenters            *HelpCentersService
+	HelpCenterRedirects    *HelpCenterRedirectsService
+	InternalArticles       *InternalArticlesService
+	Messages               *MessagesService
+	Macros                 *MacrosService
+	News                   *NewsService
+	Notes                  *NotesService
+	OfficeHours            *OfficeHoursService
+	PhoneSwitches          *PhoneSwitchesService
+	Segments               *SegmentsService
+	SubscriptionTypes      *SubscriptionTypesService
+	Tags                   *TagsService
+	Teams                  *TeamsService
+	Tickets                *TicketsService
+	Visitors               *VisitorsService
+	Workspace              *WorkspaceService
+	WhatsApp               *WhatsAppService
 }
 
 // NewClient creates an Intercom API client using bearer-token authentication.
@@ -114,23 +122,30 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 	client.Admins = &AdminsService{client: client}
 	client.AIContent = &AIContentService{client: client}
 	client.Articles = &ArticlesService{client: client}
+	client.Audiences = &AudiencesService{client: client}
 	client.AwayStatusReasons = &AwayStatusReasonsService{client: client}
 	client.Brands = &BrandsService{client: client}
 	client.Calls = &CallsService{client: client}
 	client.Collections = &CollectionsService{client: client}
 	client.Companies = &CompaniesService{client: client}
+	client.Content = &ContentService{client: client}
 	client.Contacts = &ContactsService{client: client}
 	client.Conversations = &ConversationsService{client: client}
+	client.ConversationAttributes = &ConversationAttributesService{client: client}
 	client.CustomObjects = &CustomObjectsService{client: client}
 	client.DataAttributes = &DataAttributesService{client: client}
+	client.DataConnectors = &DataConnectorsService{client: client}
 	client.DataEvents = &DataEventsService{client: client}
 	client.Emails = &EmailsService{client: client}
 	client.Fin = &FinService{client: client}
 	client.HelpCenters = &HelpCentersService{client: client}
+	client.HelpCenterRedirects = &HelpCenterRedirectsService{client: client}
 	client.InternalArticles = &InternalArticlesService{client: client}
 	client.Messages = &MessagesService{client: client}
+	client.Macros = &MacrosService{client: client}
 	client.News = &NewsService{client: client}
 	client.Notes = &NotesService{client: client}
+	client.OfficeHours = &OfficeHoursService{client: client}
 	client.PhoneSwitches = &PhoneSwitchesService{client: client}
 	client.Segments = &SegmentsService{client: client}
 	client.SubscriptionTypes = &SubscriptionTypesService{client: client}
@@ -139,6 +154,7 @@ func NewClient(token string, opts ...Option) (*Client, error) {
 	client.Tickets = &TicketsService{client: client}
 	client.Visitors = &VisitorsService{client: client}
 	client.Workspace = &WorkspaceService{client: client}
+	client.WhatsApp = &WhatsAppService{client: client}
 
 	return client, nil
 }

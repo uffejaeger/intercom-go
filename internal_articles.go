@@ -23,6 +23,7 @@ type InternalArticleCreate = gen.CreateInternalArticleRequestSchema
 
 // InternalArticleUpdate holds the fields for updating an internal article.
 type InternalArticleUpdate = gen.UpdateInternalArticleRequestSchema
+type InternalArticleTag = gen.AttachTagToInternalArticleJSONRequestBody
 
 // InternalArticlesService exposes internal-article-related Intercom API operations.
 type InternalArticlesService struct {
@@ -93,4 +94,28 @@ func (s *InternalArticlesService) Delete(ctx context.Context, articleID string) 
 		return nil, err
 	}
 	return requireOK("delete internal article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+func (s *InternalArticlesService) AttachTag(ctx context.Context, articleID string, tag InternalArticleTag) (*Tag, error) {
+	id, err := requireIntID("internal article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.AttachTagToInternalArticleWithResponse(ctx, id, nil, tag)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("attach tag to internal article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+func (s *InternalArticlesService) DetachTag(ctx context.Context, articleID, tagID string) (*Tag, error) {
+	id, err := requireIntID("internal article", articleID)
+	if err != nil {
+		return nil, err
+	}
+	res, err := s.client.generated.DetachTagFromInternalArticleWithResponse(ctx, id, tagID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("detach tag from internal article", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }

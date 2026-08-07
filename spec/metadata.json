@@ -1,7 +1,7 @@
 {
-  "source": "https://github.com/intercom/Intercom-OpenAPI/blob/090b035cade3ee114205b5012fbd1e866d98956e/descriptions/2.15/api.intercom.io.yaml",
+  "source": "https://github.com/intercom/Intercom-OpenAPI/blob/2e6172f2928d05db0371eef9f25bcdde4f10a768/descriptions/2.16/api.intercom.io.yaml",
   "upstreamRepository": "intercom/Intercom-OpenAPI",
-  "upstreamPath": "descriptions/2.15/api.intercom.io.yaml",
-  "upstreamCommit": "090b035cade3ee114205b5012fbd1e866d98956e",
-  "apiVersion": "2.15"
+  "upstreamPath": "descriptions/2.16/api.intercom.io.yaml",
+  "upstreamCommit": "2e6172f2928d05db0371eef9f25bcdde4f10a768",
+  "apiVersion": "2.16"
 }

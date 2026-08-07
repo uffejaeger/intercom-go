@@ -13,6 +13,12 @@ type Team = gen.TeamSchema
 // TeamList is a list of Intercom teams.
 type TeamList = gen.TeamListSchema
 
+// TeamMetrics is a list of performance metrics for a team.
+type TeamMetrics = gen.TeamMetricListSchema
+
+// TeamMetricsParams configures a team metrics request.
+type TeamMetricsParams = gen.GetTeamMetricsParams
+
 // TeamsService exposes team-related Intercom API operations.
 type TeamsService struct {
 	client *Client
@@ -37,4 +43,13 @@ func (s *TeamsService) Retrieve(ctx context.Context, teamID string) (*Team, erro
 		return nil, err
 	}
 	return requireOK("retrieve team", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// Metrics returns performance metrics for a team.
+func (s *TeamsService) Metrics(ctx context.Context, teamID string, params *TeamMetricsParams) (*TeamMetrics, error) {
+	res, err := s.client.generated.GetTeamMetricsWithResponse(ctx, teamID, params)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("get team metrics", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
