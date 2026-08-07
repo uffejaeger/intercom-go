@@ -34,6 +34,21 @@ func TestAPI216WrapperTypesAreImportable(t *testing.T) {
 	_ = intercom.WhatsAppMessageStatusRetrieveParams{}
 }
 
+func TestContentAndAudienceRequestItemsAreImportable(t *testing.T) {
+	predicate := intercom.AudiencePredicate{Attribute: stringPtr("email"), Comparison: stringPtr("equals"), Value: stringPtr("contact@example.com")}
+	_ = intercom.AudienceCreate{Predicates: &[]intercom.AudiencePredicate{predicate}}
+	_ = intercom.AudienceUpdate{RolePredicates: &[]intercom.AudiencePredicate{predicate}}
+
+	_ = intercom.ContentBulkActionRequest{
+		ContentIds: []intercom.ContentBulkActionContentID{{Id: "content-1", Type: "content_snippet"}},
+		Audience:   &intercom.ContentBulkActionAudience{},
+		Availability: &intercom.ContentBulkActionAvailability{
+			AiAgent: boolPtr(true),
+		},
+		Tags: &intercom.ContentBulkActionTags{},
+	}
+}
+
 func TestContactOwnerIDCompatibility(t *testing.T) {
 	ownerID := 42
 	email := "contact@example.com"
@@ -100,3 +115,7 @@ func TestConversationAttributeConstructorsAreImportable(t *testing.T) {
 		}
 	}
 }
+
+func stringPtr(value string) *string { return &value }
+
+func boolPtr(value bool) *bool { return &value }

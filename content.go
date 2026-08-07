@@ -19,6 +19,35 @@ type ContentSnippetListParams = gen.ListContentSnippetsParams
 type ContentSearchParams = gen.SearchContentParams
 type ContentSnippetTag = gen.AttachTagToContentSnippetJSONRequestBody
 
+// ContentBulkActionContentType identifies the kind of content selected by a bulk action.
+type ContentBulkActionContentType = gen.ContentBulkActionRequestContentIdsType
+
+// ContentBulkActionContentID identifies one item selected by a bulk action.
+type ContentBulkActionContentID = struct {
+	Id   string                       `json:"id"`
+	Type ContentBulkActionContentType `json:"type"`
+}
+
+// ContentBulkActionAudience configures segments for a set-audience bulk action.
+type ContentBulkActionAudience = struct {
+	AddSegmentIds    *[]int `json:"add_segment_ids,omitempty"`
+	RemoveAll        *bool  `json:"remove_all,omitempty"`
+	RemoveSegmentIds *[]int `json:"remove_segment_ids,omitempty"`
+}
+
+// ContentBulkActionAvailability configures availability for a set-availability bulk action.
+type ContentBulkActionAvailability = struct {
+	AiAgent    *bool `json:"ai_agent,omitempty"`
+	Copilot    *bool `json:"copilot,omitempty"`
+	SalesAgent *bool `json:"sales_agent,omitempty"`
+}
+
+// ContentBulkActionTags configures tags for an update-tags bulk action.
+type ContentBulkActionTags = struct {
+	AddTagIds    *[]int `json:"add_tag_ids,omitempty"`
+	RemoveTagIds *[]int `json:"remove_tag_ids,omitempty"`
+}
+
 // ContentService exposes Knowledge Hub content and content-snippet operations.
 type ContentService struct{ client *Client }
 

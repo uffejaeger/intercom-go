@@ -15,6 +15,9 @@ type AudienceList = gen.AudienceListSchema
 // AudienceListParams configures audience listing.
 type AudienceListParams = gen.ListAudiencesParams
 
+// AudiencePredicate is a condition used to select contacts for an audience.
+type AudiencePredicate = gen.PredicateSchema
+
 // AudienceCreate configures a new audience.
 type AudienceCreate = gen.CreateAudienceRequestSchema
 
