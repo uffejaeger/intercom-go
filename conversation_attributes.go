@@ -22,6 +22,15 @@ type ConversationAttributeOptionCreate = gen.CreateConversationAttributeOptionRe
 type ConversationAttributeOptionUpdate = gen.UpdateConversationAttributeOptionRequestSchema
 type ConversationAttributeListParams = gen.ListConversationAttributesParams
 
+// ConversationAttributeRelationshipReferenceType identifies relationship cardinality.
+type ConversationAttributeRelationshipReferenceType = gen.CreateConversationAttributeRelationshipRequestReferenceType
+
+// ConversationAttributeRelationshipReference configures the target object type and cardinality.
+type ConversationAttributeRelationshipReference = struct {
+	ObjectTypeId *string                                        `json:"object_type_id,omitempty"`
+	Type         ConversationAttributeRelationshipReferenceType `json:"type"`
+}
+
 func NewConversationAttributeString(attribute ConversationAttributeStringCreate) (ConversationAttributeCreate, error) {
 	attribute.DataType = "string"
 	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {

@@ -126,7 +126,11 @@ func TestConversationAttributeConstructorsAreImportable(t *testing.T) {
 			return err
 		},
 		func() error {
-			_, err := intercom.NewConversationAttributeRelationship(intercom.ConversationAttributeRelationshipCreate{Name: "account"})
+			referenceType := intercom.ConversationAttributeRelationshipReferenceType("one")
+			_, err := intercom.NewConversationAttributeRelationship(intercom.ConversationAttributeRelationshipCreate{
+				Name:      "account",
+				Reference: &intercom.ConversationAttributeRelationshipReference{Type: referenceType},
+			})
 			return err
 		},
 		func() error {
@@ -139,6 +143,11 @@ func TestConversationAttributeConstructorsAreImportable(t *testing.T) {
 			t.Fatalf("constructor returned error: %v", err)
 		}
 	}
+}
+
+func TestOfficeHoursExceptionUpdateTypeIsImportable(t *testing.T) {
+	exceptionType := intercom.OfficeHoursExceptionUpdateType("closed")
+	_ = intercom.OfficeHoursExceptionUpdate{ExceptionType: &exceptionType}
 }
 
 func stringPtr(value string) *string { return &value }
