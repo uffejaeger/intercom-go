@@ -52,6 +52,13 @@ func TestTicketAssigneeIDCompatibility(t *testing.T) {
 	var _ *string = ticket.TeamAssigneeId
 }
 
+func TestArticleParentCompatibility(t *testing.T) {
+	parentID := 42
+	parentType := "collection"
+	article := intercom.Article{ParentId: &parentID, ParentType: &parentType}
+	_ = intercom.ArticleList{Data: &[]intercom.Article{article}}
+}
+
 func TestConversationAttributeConstructorsAreImportable(t *testing.T) {
 	constructors := []func() error{
 		func() error {

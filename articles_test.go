@@ -21,9 +21,9 @@ func newArticlesTestClient(t *testing.T, transport http.RoundTripper) *Client {
 }
 
 const (
-	articleJSON        = `{"id":"1","title":"Hello World","type":"article"}`
-	articleListJSON    = `{"type":"list","data":[],"total_count":0}`
-	articleSearchJSON  = `{"type":"list","data":{"articles":[],"highlights":[]},"total_count":0}`
+	articleJSON        = `{"id":"1","title":"Hello World","type":"article","parent_ids":[42]}`
+	articleListJSON    = `{"type":"list","data":[{"id":"1","parent_ids":[42]}],"total_count":1}`
+	articleSearchJSON  = `{"type":"list","data":{"articles":[{"id":"1","parent_ids":[42]}],"highlights":[]},"total_count":1}`
 	articleDeletedJSON = `{"id":"1","object":"article","deleted":true}`
 )
 
@@ -43,8 +43,11 @@ func TestArticlesServiceRequests(t *testing.T) {
 				if err != nil {
 					return err
 				}
-				if list.TotalCount == nil || *list.TotalCount != 0 {
+				if list.TotalCount == nil || *list.TotalCount != 1 {
 					t.Fatalf("TotalCount = %v", list.TotalCount)
+				}
+				if list.Data == nil || len(*list.Data) != 1 || (*list.Data)[0].ParentId == nil || *(*list.Data)[0].ParentId != 42 {
+					t.Fatalf("Data = %#v", list.Data)
 				}
 				return nil
 			},
@@ -61,6 +64,9 @@ func TestArticlesServiceRequests(t *testing.T) {
 				}
 				if a.Title == nil || *a.Title != "Hello World" {
 					t.Fatalf("Title = %v", a.Title)
+				}
+				if a.ParentId == nil || *a.ParentId != 42 {
+					t.Fatalf("ParentId = %v", a.ParentId)
 				}
 				return nil
 			},
@@ -117,8 +123,11 @@ func TestArticlesServiceRequests(t *testing.T) {
 				if err != nil {
 					return err
 				}
-				if res.TotalCount == nil || *res.TotalCount != 0 {
+				if res.TotalCount == nil || *res.TotalCount != 1 {
 					t.Fatalf("TotalCount = %v", res.TotalCount)
+				}
+				if res.Data == nil || res.Data.Articles == nil || len(*res.Data.Articles) != 1 || (*res.Data.Articles)[0].ParentId == nil || *(*res.Data.Articles)[0].ParentId != 42 {
+					t.Fatalf("Data = %#v", res.Data)
 				}
 				return nil
 			},

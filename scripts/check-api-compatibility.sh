@@ -26,6 +26,11 @@ filter_reviewed_source_compatible_changes() {
 			"- (*ContactsService).Merge: changed from func(context.Context, string, string) (*Contact, error) to func(context.Context, string, string) (*Contact, error)" | \
 			"- (*ContactsService).Search: changed from func(context.Context, ContactSearch) (*ContactList, error) to func(context.Context, ContactSearch) (*ContactList, error)" | \
 			"- (*CompaniesService).ListContacts: changed from func(context.Context, string) (*CompanyContacts, error) to func(context.Context, string) (*CompanyContacts, error)" | \
+			"- (*ArticlesService).Create: changed from func(context.Context, ArticleCreate) (*Article, error) to func(context.Context, ArticleCreate) (*Article, error)" | \
+			"- (*ArticlesService).List: changed from func(context.Context) (*ArticleList, error) to func(context.Context) (*ArticleList, error)" | \
+			"- (*ArticlesService).Retrieve: changed from func(context.Context, string) (*Article, error) to func(context.Context, string) (*Article, error)" | \
+			"- (*ArticlesService).Search: changed from func(context.Context, ArticleSearch) (*ArticleSearchResult, error) to func(context.Context, ArticleSearch) (*ArticleSearchResult, error)" | \
+			"- (*ArticlesService).Update: changed from func(context.Context, string, ArticleUpdate) (*Article, error) to func(context.Context, string, ArticleUpdate) (*Article, error)" | \
 			"- (*ConversationsService).ConvertToTicket: changed from func(context.Context, string, ConversationToTicket) (*Ticket, error) to func(context.Context, string, ConversationToTicket) (*Ticket, error)" | \
 			"- (*TicketIterator).Ticket: changed from func() *Ticket to func() *Ticket" | \
 			"- (*TicketsService).Create: changed from func(context.Context, TicketCreate) (*Ticket, error) to func(context.Context, TicketCreate) (*Ticket, error)" | \
@@ -38,6 +43,9 @@ filter_reviewed_source_compatible_changes() {
 			"- ContactUpdate: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.UpdateContactRequestSchema to ContactUpdate" | \
 			"- Contact: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.ContactSchema to Contact" | \
 			"- ContactList: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.ContactListSchema to ContactList" | \
+			"- Article: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.ArticleListItemSchema to Article" | \
+			"- ArticleList: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.ArticleListSchema to ArticleList" | \
+			"- ArticleSearchResult: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.ArticleSearchResponseSchema to ArticleSearchResult" | \
 			"- CompanyContacts: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.CompanyAttachedContactsSchema to CompanyContacts" | \
 			"- Ticket: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.TicketSchema to Ticket" | \
 			"- TicketList: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.TicketListSchema to TicketList" | \
@@ -65,10 +73,11 @@ compare_api() {
 		exit 1
 	fi
 
-	# API 2.16 changed the wire representation of Contact.OwnerId and Ticket
-	# assignee IDs. The SDK uses hand-shaped boundary models, including contact
-	# values nested under companies and visitor conversion responses, to preserve
-	# the historical public field types while converting the changed wire values.
+	# API 2.16 changed the wire representation of Contact.OwnerId, Ticket
+	# assignee IDs, and Article parent fields. The SDK uses hand-shaped boundary
+	# models, including contact values nested under companies and visitor
+	# conversion responses, to preserve the historical public field types while
+	# converting the changed wire values.
 	# apidiff reports each dependent method and iterator as a type-identity
 	# change, so accept only these exact reviewed entries. External-consumer and
 	# response-conversion regression tests verify the preserved source contract.

@@ -230,6 +230,15 @@ func TestAPI216ResponseIdentifierCompatibilityDefensivePaths(t *testing.T) {
 	if list := companyContactsFromGenerated(&gen.CompanyAttachedContactsSchema{}); list == nil || list.Data != nil {
 		t.Fatalf("empty generated company contacts = %#v", list)
 	}
+	if articleFromGenerated(nil) != nil || articleListFromGenerated(nil) != nil || articleSearchResultFromGenerated(nil) != nil {
+		t.Fatal("nil generated article responses should remain nil")
+	}
+	if list := articleListFromGenerated(&gen.ArticleListSchema{}); list == nil || list.Data != nil {
+		t.Fatalf("empty generated article list = %#v", list)
+	}
+	if result := articleSearchResultFromGenerated(&gen.ArticleSearchResponseSchema{}); result == nil || result.Data != nil {
+		t.Fatalf("empty generated article search result = %#v", result)
+	}
 }
 
 func newAPI216TestClient(t *testing.T, transport http.RoundTripper) *Client {
