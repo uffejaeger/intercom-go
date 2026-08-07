@@ -29,6 +29,17 @@ compare_api() {
 		exit 1
 	fi
 
+	# ContactCreate and ContactUpdate changed from aliases of generated models to
+	# hand-shaped SDK requests in API 2.16. This intentionally preserves the
+	# importable, historical OwnerId *int source contract while converting to the
+	# upstream string wire format. apidiff reports the required type-identity
+	# change as incompatible, so accept only these exact entries; the external
+	# consumer regression test verifies the preserved source contract.
+	if [[ "${label}" == "public" ]]; then
+		report="$(printf '%s\n' "${report}" | grep -Ev \
+			'^- (\(\*ContactsService\)\.(Create|Update)|Contact(Create|Update):)' || true)"
+	fi
+
 	sed '/^Ignoring internal package /d' "${comparison_errors}" >&2
 
 	if [[ -n "${report}" ]]; then

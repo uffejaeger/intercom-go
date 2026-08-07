@@ -29,10 +29,86 @@ type ContactUnarchived = gen.ContactUnarchived
 type ContactBlocked = gen.ContactBlockedSchema
 
 // ContactCreate holds the fields for creating a contact.
-type ContactCreate = gen.CreateContactRequestSchema
+//
+// OwnerID remains an integer for source compatibility with earlier SDK
+// releases. Intercom API 2.16 represents the same identifier as a string;
+// Create converts it before sending the request.
+type ContactCreate struct {
+	Avatar                 *string         `json:"avatar,omitempty"`
+	CustomAttributes       *map[string]any `json:"custom_attributes,omitempty"`
+	Email                  *string         `json:"email,omitempty"`
+	EmailVerified          *bool           `json:"email_verified,omitempty"`
+	ExternalId             *string         `json:"external_id,omitempty"`
+	LastSeenAt             *int            `json:"last_seen_at,omitempty"`
+	Name                   *string         `json:"name,omitempty"`
+	OwnerId                *int            `json:"owner_id,omitempty"`
+	Phone                  *string         `json:"phone,omitempty"`
+	Role                   *string         `json:"role,omitempty"`
+	SignedUpAt             *int            `json:"signed_up_at,omitempty"`
+	UnsubscribedFromEmails *bool           `json:"unsubscribed_from_emails,omitempty"`
+}
 
 // ContactUpdate holds the fields for updating a contact.
-type ContactUpdate = gen.UpdateContactRequestSchema
+//
+// OwnerID remains an integer for source compatibility with earlier SDK
+// releases. Intercom API 2.16 represents the same identifier as a string;
+// Update converts it before sending the request.
+type ContactUpdate struct {
+	Avatar                 *string         `json:"avatar,omitempty"`
+	CustomAttributes       *map[string]any `json:"custom_attributes,omitempty"`
+	Email                  *string         `json:"email,omitempty"`
+	EmailVerified          *bool           `json:"email_verified,omitempty"`
+	ExternalId             *string         `json:"external_id,omitempty"`
+	LastSeenAt             *int            `json:"last_seen_at,omitempty"`
+	Name                   *string         `json:"name,omitempty"`
+	OwnerId                *int            `json:"owner_id,omitempty"`
+	Phone                  *string         `json:"phone,omitempty"`
+	Role                   *string         `json:"role,omitempty"`
+	SignedUpAt             *int            `json:"signed_up_at,omitempty"`
+	UnsubscribedFromEmails *bool           `json:"unsubscribed_from_emails,omitempty"`
+}
+
+func (c ContactCreate) toGenerated() gen.CreateContactRequestSchema {
+	return gen.CreateContactRequestSchema{
+		Avatar:                 c.Avatar,
+		CustomAttributes:       c.CustomAttributes,
+		Email:                  c.Email,
+		EmailVerified:          c.EmailVerified,
+		ExternalId:             c.ExternalId,
+		LastSeenAt:             c.LastSeenAt,
+		Name:                   c.Name,
+		OwnerId:                contactOwnerID(c.OwnerId),
+		Phone:                  c.Phone,
+		Role:                   c.Role,
+		SignedUpAt:             c.SignedUpAt,
+		UnsubscribedFromEmails: c.UnsubscribedFromEmails,
+	}
+}
+
+func (c ContactUpdate) toGenerated() gen.UpdateContactRequestSchema {
+	return gen.UpdateContactRequestSchema{
+		Avatar:                 c.Avatar,
+		CustomAttributes:       c.CustomAttributes,
+		Email:                  c.Email,
+		EmailVerified:          c.EmailVerified,
+		ExternalId:             c.ExternalId,
+		LastSeenAt:             c.LastSeenAt,
+		Name:                   c.Name,
+		OwnerId:                contactOwnerID(c.OwnerId),
+		Phone:                  c.Phone,
+		Role:                   c.Role,
+		SignedUpAt:             c.SignedUpAt,
+		UnsubscribedFromEmails: c.UnsubscribedFromEmails,
+	}
+}
+
+func contactOwnerID(ownerID *int) *string {
+	if ownerID == nil {
+		return nil
+	}
+	value := strconv.Itoa(*ownerID)
+	return &value
+}
 
 // Note is an Intercom note on a contact.
 type Note = gen.NoteSchema
@@ -171,7 +247,7 @@ func (s *ContactsService) Search(ctx context.Context, search ContactSearch) (*Co
 
 // Create creates a new contact.
 func (s *ContactsService) Create(ctx context.Context, contact ContactCreate) (*Contact, error) {
-	body, err := marshalBody(contact)
+	body, err := marshalBody(contact.toGenerated())
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +263,7 @@ func (s *ContactsService) Update(ctx context.Context, contactID string, contact 
 	if contactID == "" {
 		return nil, fmt.Errorf("intercom: contact ID is required")
 	}
-	body, err := marshalBody(contact)
+	body, err := marshalBody(contact.toGenerated())
 	if err != nil {
 		return nil, err
 	}

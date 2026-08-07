@@ -27,3 +27,9 @@ func TestAPI216WrapperTypesAreImportable(t *testing.T) {
 	_ = intercom.WhatsAppMessageStatusParams{}
 	_ = intercom.WhatsAppMessageStatusRetrieveParams{}
 }
+
+func TestContactOwnerIDCompatibility(t *testing.T) {
+	ownerID := 42
+	_ = intercom.ContactCreate{OwnerId: &ownerID}
+	_ = intercom.ContactUpdate{OwnerId: &ownerID}
+}
