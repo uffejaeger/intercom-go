@@ -150,6 +150,17 @@ func TestOfficeHoursExceptionUpdateTypeIsImportable(t *testing.T) {
 	_ = intercom.OfficeHoursExceptionUpdate{ExceptionType: &exceptionType}
 }
 
+func TestRelationshipUpdateAndFinCSATSubmissionTypesAreImportable(t *testing.T) {
+	referenceType := intercom.ConversationAttributeRelationshipUpdateReferenceType("many")
+	_ = intercom.ConversationAttributeUpdate{
+		Reference: &intercom.ConversationAttributeRelationshipUpdateReference{Type: referenceType},
+	}
+
+	runtimeRating := "satisfied"
+	rating := intercom.FinCSATSubmissionRating(runtimeRating)
+	_ = intercom.FinCSATSubmission{ConversationId: "conversation-1", Rating: rating}
+}
+
 func stringPtr(value string) *string { return &value }
 
 func boolPtr(value bool) *bool { return &value }

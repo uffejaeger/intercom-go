@@ -31,6 +31,15 @@ type ConversationAttributeRelationshipReference = struct {
 	Type         ConversationAttributeRelationshipReferenceType `json:"type"`
 }
 
+// ConversationAttributeRelationshipUpdateReferenceType identifies relationship cardinality on update.
+type ConversationAttributeRelationshipUpdateReferenceType = gen.UpdateConversationAttributeRequestReferenceType
+
+// ConversationAttributeRelationshipUpdateReference configures the target object type and cardinality on update.
+type ConversationAttributeRelationshipUpdateReference = struct {
+	ObjectTypeId *string                                              `json:"object_type_id,omitempty"`
+	Type         ConversationAttributeRelationshipUpdateReferenceType `json:"type"`
+}
+
 func NewConversationAttributeString(attribute ConversationAttributeStringCreate) (ConversationAttributeCreate, error) {
 	attribute.DataType = "string"
 	return conversationAttributeCreate(func(result *ConversationAttributeCreate) error {

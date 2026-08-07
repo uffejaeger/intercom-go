@@ -41,6 +41,9 @@ type FinCSATSubmission = gen.SubmitFinCsatJSONRequestBody
 // FinCSATRating is a submitted Fin customer-satisfaction rating.
 type FinCSATRating = gen.SubmitFinCsat200Rating
 
+// FinCSATSubmissionRating is a rating key accepted when submitting Fin feedback.
+type FinCSATSubmissionRating = gen.SubmitFinCsatJSONBodyRating
+
 // FinCSATStatus is the result status of a Fin customer-satisfaction submission.
 type FinCSATStatus = gen.SubmitFinCsat200Status
 
