@@ -16,14 +16,63 @@ import (
 // releases. Intercom API 2.16 represents the same identifier as a string;
 // contactFromGenerated converts it at the API boundary.
 type Contact struct {
-	gen.ContactSchema
-	OwnerId *int `json:"owner_id,omitempty"`
+	AndroidAppName    *string `json:"android_app_name,omitempty"`
+	AndroidAppVersion *string `json:"android_app_version,omitempty"`
+	AndroidDevice     *string `json:"android_device,omitempty"`
+	AndroidLastSeenAt *int    `json:"android_last_seen_at,omitempty"`
+	AndroidOsVersion  *string `json:"android_os_version,omitempty"`
+	AndroidSdkVersion *string `json:"android_sdk_version,omitempty"`
+	Avatar            *struct {
+		ImageUrl *string `json:"image_url,omitempty"`
+		Type     *string `json:"type,omitempty"`
+	} `json:"avatar,omitempty"`
+	Browser                *string                          `json:"browser,omitempty"`
+	BrowserLanguage        *string                          `json:"browser_language,omitempty"`
+	BrowserVersion         *string                          `json:"browser_version,omitempty"`
+	Companies              *gen.ContactCompaniesSchema      `json:"companies,omitempty"`
+	CreatedAt              *int                             `json:"created_at,omitempty"`
+	CustomAttributes       *map[string]interface{}          `json:"custom_attributes,omitempty"`
+	Email                  *string                          `json:"email,omitempty"`
+	EmailDomain            *string                          `json:"email_domain,omitempty"`
+	ExternalId             *string                          `json:"external_id,omitempty"`
+	HasHardBounced         *bool                            `json:"has_hard_bounced,omitempty"`
+	Id                     *string                          `json:"id,omitempty"`
+	IosAppName             *string                          `json:"ios_app_name,omitempty"`
+	IosAppVersion          *string                          `json:"ios_app_version,omitempty"`
+	IosDevice              *string                          `json:"ios_device,omitempty"`
+	IosLastSeenAt          *int                             `json:"ios_last_seen_at,omitempty"`
+	IosOsVersion           *string                          `json:"ios_os_version,omitempty"`
+	IosSdkVersion          *string                          `json:"ios_sdk_version,omitempty"`
+	LanguageOverride       *string                          `json:"language_override,omitempty"`
+	LastContactedAt        *int                             `json:"last_contacted_at,omitempty"`
+	LastEmailClickedAt     *int                             `json:"last_email_clicked_at,omitempty"`
+	LastEmailOpenedAt      *int                             `json:"last_email_opened_at,omitempty"`
+	LastRepliedAt          *int                             `json:"last_replied_at,omitempty"`
+	LastSeenAt             *int                             `json:"last_seen_at,omitempty"`
+	Location               *gen.ContactLocationSchema       `json:"location,omitempty"`
+	MarkedEmailAsSpam      *bool                            `json:"marked_email_as_spam,omitempty"`
+	MergeHistory           *[]gen.MergeHistoryItemSchema    `json:"merge_history,omitempty"`
+	Name                   *string                          `json:"name,omitempty"`
+	Notes                  *gen.ContactNotesSchema          `json:"notes,omitempty"`
+	Os                     *string                          `json:"os,omitempty"`
+	OwnerId                *int                             `json:"owner_id,omitempty"`
+	Phone                  *string                          `json:"phone,omitempty"`
+	Role                   *string                          `json:"role,omitempty"`
+	SignedUpAt             *int                             `json:"signed_up_at,omitempty"`
+	SocialProfiles         *gen.ContactSocialProfilesSchema `json:"social_profiles,omitempty"`
+	Tags                   *gen.ContactTagsSchema           `json:"tags,omitempty"`
+	Type                   *string                          `json:"type,omitempty"`
+	UnsubscribedFromEmails *bool                            `json:"unsubscribed_from_emails,omitempty"`
+	UpdatedAt              *int                             `json:"updated_at,omitempty"`
+	WorkspaceId            *string                          `json:"workspace_id,omitempty"`
 }
 
 // ContactList is a page of Intercom contacts.
 type ContactList struct {
-	gen.ContactListSchema
-	Data *[]Contact `json:"data,omitempty"`
+	Data       *[]Contact             `json:"data,omitempty"`
+	Pages      *gen.CursorPagesSchema `json:"pages,omitempty"`
+	TotalCount *int                   `json:"total_count,omitempty"`
+	Type       *gen.ContactListType   `json:"type,omitempty"`
 }
 
 // ContactDeleted is the result of deleting a contact.
@@ -125,7 +174,53 @@ func contactFromGenerated(contact *gen.ContactSchema) *Contact {
 		return nil
 	}
 
-	result := &Contact{ContactSchema: *contact}
+	result := &Contact{
+		AndroidAppName:         contact.AndroidAppName,
+		AndroidAppVersion:      contact.AndroidAppVersion,
+		AndroidDevice:          contact.AndroidDevice,
+		AndroidLastSeenAt:      contact.AndroidLastSeenAt,
+		AndroidOsVersion:       contact.AndroidOsVersion,
+		AndroidSdkVersion:      contact.AndroidSdkVersion,
+		Avatar:                 contact.Avatar,
+		Browser:                contact.Browser,
+		BrowserLanguage:        contact.BrowserLanguage,
+		BrowserVersion:         contact.BrowserVersion,
+		Companies:              contact.Companies,
+		CreatedAt:              contact.CreatedAt,
+		CustomAttributes:       contact.CustomAttributes,
+		Email:                  contact.Email,
+		EmailDomain:            contact.EmailDomain,
+		ExternalId:             contact.ExternalId,
+		HasHardBounced:         contact.HasHardBounced,
+		Id:                     contact.Id,
+		IosAppName:             contact.IosAppName,
+		IosAppVersion:          contact.IosAppVersion,
+		IosDevice:              contact.IosDevice,
+		IosLastSeenAt:          contact.IosLastSeenAt,
+		IosOsVersion:           contact.IosOsVersion,
+		IosSdkVersion:          contact.IosSdkVersion,
+		LanguageOverride:       contact.LanguageOverride,
+		LastContactedAt:        contact.LastContactedAt,
+		LastEmailClickedAt:     contact.LastEmailClickedAt,
+		LastEmailOpenedAt:      contact.LastEmailOpenedAt,
+		LastRepliedAt:          contact.LastRepliedAt,
+		LastSeenAt:             contact.LastSeenAt,
+		Location:               contact.Location,
+		MarkedEmailAsSpam:      contact.MarkedEmailAsSpam,
+		MergeHistory:           contact.MergeHistory,
+		Name:                   contact.Name,
+		Notes:                  contact.Notes,
+		Os:                     contact.Os,
+		Phone:                  contact.Phone,
+		Role:                   contact.Role,
+		SignedUpAt:             contact.SignedUpAt,
+		SocialProfiles:         contact.SocialProfiles,
+		Tags:                   contact.Tags,
+		Type:                   contact.Type,
+		UnsubscribedFromEmails: contact.UnsubscribedFromEmails,
+		UpdatedAt:              contact.UpdatedAt,
+		WorkspaceId:            contact.WorkspaceId,
+	}
 	if contact.OwnerId == nil {
 		return result
 	}
@@ -141,7 +236,7 @@ func contactListFromGenerated(list *gen.ContactListSchema) *ContactList {
 		return nil
 	}
 
-	result := &ContactList{ContactListSchema: *list}
+	result := &ContactList{Pages: list.Pages, TotalCount: list.TotalCount, Type: list.Type}
 	if list.Data == nil {
 		return result
 	}

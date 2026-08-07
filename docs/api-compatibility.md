@@ -100,8 +100,9 @@ The checker has a narrow source-compatibility allowance for the reviewed
 Contact and Ticket boundary models: API 2.16 changed Intercom's wire
 representation of `Contact.owner_id` from an integer to a string and Ticket
 assignee IDs from strings to integers. The SDK preserves the historical public
-field types and converts the wire values at the boundary. `apidiff` reports
-the required alias-to-struct change and its dependent methods and iterators as
+field types and converts the wire values at the boundary, including contact
+values returned by company and visitor operations. `apidiff` reports the
+required alias-to-struct change and its dependent methods and iterators as
 incompatible, so the checker permits only those exact entries. External
 consumer compile and response-conversion regression tests cover the preserved
 contracts. No other `apidiff` finding is suppressed.

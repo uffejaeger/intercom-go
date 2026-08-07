@@ -37,9 +37,24 @@ type ConversationHandlingEventList = gen.HandlingEventListSchema
 // SDK releases. Intercom API 2.16 represents the same identifiers as
 // integers; ticketFromGenerated converts them at the API boundary.
 type Ticket struct {
-	gen.TicketSchema
-	AdminAssigneeId *string `json:"admin_assignee_id,omitempty"`
-	TeamAssigneeId  *string `json:"team_assignee_id,omitempty"`
+	AdminAssigneeId       *string                           `json:"admin_assignee_id,omitempty"`
+	Category              *gen.TicketCategory               `json:"category,omitempty"`
+	Contacts              *gen.TicketContactsSchema         `json:"contacts,omitempty"`
+	CreatedAt             *int                              `json:"created_at,omitempty"`
+	Id                    *string                           `json:"id,omitempty"`
+	IsShared              *bool                             `json:"is_shared,omitempty"`
+	LinkedObjects         *gen.LinkedObjectListSchema       `json:"linked_objects,omitempty"`
+	Open                  *bool                             `json:"open,omitempty"`
+	PreviousTicketStateId *string                           `json:"previous_ticket_state_id,omitempty"`
+	SnoozedUntil          *int                              `json:"snoozed_until,omitempty"`
+	TeamAssigneeId        *string                           `json:"team_assignee_id,omitempty"`
+	TicketAttributes      *gen.TicketCustomAttributesSchema `json:"ticket_attributes,omitempty"`
+	TicketId              *string                           `json:"ticket_id,omitempty"`
+	TicketParts           *gen.TicketPartsSchema            `json:"ticket_parts,omitempty"`
+	TicketState           *gen.TicketStateSchema            `json:"ticket_state,omitempty"`
+	TicketType            *gen.TicketTypeSchema             `json:"ticket_type,omitempty"`
+	Type                  *gen.TicketType                   `json:"type,omitempty"`
+	UpdatedAt             *int                              `json:"updated_at,omitempty"`
 }
 
 func ticketFromGenerated(ticket *gen.TicketSchema) *Ticket {
@@ -47,7 +62,24 @@ func ticketFromGenerated(ticket *gen.TicketSchema) *Ticket {
 		return nil
 	}
 
-	result := &Ticket{TicketSchema: *ticket}
+	result := &Ticket{
+		Category:              ticket.Category,
+		Contacts:              ticket.Contacts,
+		CreatedAt:             ticket.CreatedAt,
+		Id:                    ticket.Id,
+		IsShared:              ticket.IsShared,
+		LinkedObjects:         ticket.LinkedObjects,
+		Open:                  ticket.Open,
+		PreviousTicketStateId: ticket.PreviousTicketStateId,
+		SnoozedUntil:          ticket.SnoozedUntil,
+		TicketAttributes:      ticket.TicketAttributes,
+		TicketId:              ticket.TicketId,
+		TicketParts:           ticket.TicketParts,
+		TicketState:           ticket.TicketState,
+		TicketType:            ticket.TicketType,
+		Type:                  ticket.Type,
+		UpdatedAt:             ticket.UpdatedAt,
+	}
 	if ticket.AdminAssigneeId != nil {
 		adminID := strconv.Itoa(*ticket.AdminAssigneeId)
 		result.AdminAssigneeId = &adminID

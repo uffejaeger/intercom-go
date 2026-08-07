@@ -36,14 +36,18 @@ func TestAPI216WrapperTypesAreImportable(t *testing.T) {
 
 func TestContactOwnerIDCompatibility(t *testing.T) {
 	ownerID := 42
+	email := "contact@example.com"
 	_ = intercom.ContactCreate{OwnerId: &ownerID}
 	_ = intercom.ContactUpdate{OwnerId: &ownerID}
-	var contact intercom.Contact
+	contact := intercom.Contact{Email: &email, OwnerId: &ownerID}
 	var _ *int = contact.OwnerId
+	_ = intercom.VisitorConverted{Email: &email, OwnerId: &ownerID}
+	_ = intercom.CompanyContacts{Data: &[]intercom.Contact{contact}}
 }
 
 func TestTicketAssigneeIDCompatibility(t *testing.T) {
-	var ticket intercom.Ticket
+	ticketID := "ticket-1"
+	ticket := intercom.Ticket{Id: &ticketID}
 	var _ *string = ticket.AdminAssigneeId
 	var _ *string = ticket.TeamAssigneeId
 }

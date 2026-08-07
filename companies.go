@@ -20,7 +20,36 @@ type CompanyScroll = gen.CompanyScrollSchema
 type CompanyDeleted = gen.DeletedCompanyObjectSchema
 
 // CompanyContacts is a list of contacts attached to a company.
-type CompanyContacts = gen.CompanyAttachedContactsSchema
+type CompanyContacts struct {
+	Data       *[]Contact                       `json:"data,omitempty"`
+	Pages      *gen.CursorPagesSchema           `json:"pages,omitempty"`
+	TotalCount *int                             `json:"total_count,omitempty"`
+	Type       *gen.CompanyAttachedContactsType `json:"type,omitempty"`
+}
+
+func companyContactsFromGenerated(contacts *gen.CompanyAttachedContactsSchema) *CompanyContacts {
+	if contacts == nil {
+		return nil
+	}
+
+	result := &CompanyContacts{
+		Pages:      contacts.Pages,
+		TotalCount: contacts.TotalCount,
+		Type:       contacts.Type,
+	}
+	if contacts.Data == nil {
+		return result
+	}
+	data := make([]Contact, 0, len(*contacts.Data))
+	for i := range *contacts.Data {
+		contact := contactFromGenerated(&(*contacts.Data)[i])
+		if contact != nil {
+			data = append(data, *contact)
+		}
+	}
+	result.Data = &data
+	return result
+}
 
 // CompanySegmentsAttached is a list of segments a company belongs to.
 type CompanySegmentsAttached = gen.CompanyAttachedSegmentsSchema
@@ -218,7 +247,8 @@ func (s *CompaniesService) ListContacts(ctx context.Context, companyID string) (
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list company contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contacts, err := requireOK("list company contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return companyContactsFromGenerated(contacts), err
 }
 
 // ListSegments returns segments a company belongs to.

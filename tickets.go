@@ -11,8 +11,10 @@ import (
 
 // TicketList is a list of Intercom tickets.
 type TicketList struct {
-	gen.TicketListSchema
-	Tickets *[]*Ticket `json:"tickets,omitempty"`
+	Pages      *gen.CursorPagesSchema `json:"pages,omitempty"`
+	Tickets    *[]*Ticket             `json:"tickets,omitempty"`
+	TotalCount *int                   `json:"total_count,omitempty"`
+	Type       *gen.TicketListType    `json:"type,omitempty"`
 }
 
 func ticketListFromGenerated(list *gen.TicketListSchema) *TicketList {
@@ -20,7 +22,7 @@ func ticketListFromGenerated(list *gen.TicketListSchema) *TicketList {
 		return nil
 	}
 
-	result := &TicketList{TicketListSchema: *list}
+	result := &TicketList{Pages: list.Pages, TotalCount: list.TotalCount, Type: list.Type}
 	if list.Tickets == nil {
 		return result
 	}

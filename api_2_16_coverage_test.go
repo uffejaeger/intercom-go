@@ -223,6 +223,13 @@ func TestAPI216ResponseIdentifierCompatibilityDefensivePaths(t *testing.T) {
 	if list == nil || list.Tickets == nil || len(*list.Tickets) != 1 || (*list.Tickets)[0] != nil {
 		t.Fatalf("ticket list with nil entry = %#v", list)
 	}
+
+	if companyContactsFromGenerated(nil) != nil {
+		t.Fatal("nil generated company contacts should remain nil")
+	}
+	if list := companyContactsFromGenerated(&gen.CompanyAttachedContactsSchema{}); list == nil || list.Data != nil {
+		t.Fatalf("empty generated company contacts = %#v", list)
+	}
 }
 
 func newAPI216TestClient(t *testing.T, transport http.RoundTripper) *Client {

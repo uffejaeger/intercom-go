@@ -26,7 +26,7 @@ const (
 	companyListJSON      = `{"type":"list","data":[],"total_count":0}`
 	companyScrollJSON    = `{"type":"list","data":[],"total_count":0,"scroll_param":"token-1"}`
 	companyDeletedJSON   = `{"id":"comp-1","object":"company","deleted":true}`
-	companyContactsJSON  = `{"type":"list","data":[],"total_count":0}`
+	companyContactsJSON  = `{"type":"list","data":[{"id":"contact-1","owner_id":"42"}],"total_count":1}`
 	companySegmentsJSON  = `{"type":"list","data":[]}`
 	noteListJSON         = `{"type":"list","notes":[]}`
 	contactCompaniesJSON = `{"type":"company.list","companies":[],"total_count":0}`
@@ -242,8 +242,11 @@ func TestCompaniesServiceRequests(t *testing.T) {
 				if err != nil {
 					return err
 				}
-				if list.TotalCount == nil || *list.TotalCount != 0 {
+				if list.TotalCount == nil || *list.TotalCount != 1 {
 					t.Fatalf("TotalCount = %v", list.TotalCount)
+				}
+				if list.Data == nil || len(*list.Data) != 1 || (*list.Data)[0].OwnerId == nil || *(*list.Data)[0].OwnerId != 42 {
+					t.Fatalf("Data = %#v", list.Data)
 				}
 				return nil
 			},
