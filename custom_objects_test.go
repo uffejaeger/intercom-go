@@ -66,7 +66,8 @@ func TestCustomObjectsServiceRequests(t *testing.T) {
 				return nil
 			},
 			wantMethod: http.MethodGet,
-			wantPath:   "/custom_object_instances/Order/external-1",
+			wantPath:   "/custom_object_instances/Order",
+			wantQuery:  "external_id=external-1",
 		},
 		{
 			name:     "delete by id",
@@ -197,6 +198,34 @@ func TestCustomObjectsServiceErrors(t *testing.T) {
 			if err := call(ctx, client); err == nil {
 				t.Fatal("expected transport error")
 			}
+		}
+	})
+
+	t.Run("external ID request creation failure", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(*http.Request) (*http.Response, error) {
+			t.Fatal("request creation failure should not send a request")
+			return nil, nil
+		}))
+		client.baseURL = "://invalid"
+
+		if _, err := client.CustomObjects.GetByExternalID(ctx, "Order", "external-1"); err == nil {
+			t.Fatal("expected request creation error")
+		}
+	})
+
+	t.Run("external ID response read failure", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Status:     http.StatusText(http.StatusOK),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				Body:       errorReadCloser{},
+				Request:    req,
+			}, nil
+		}))
+
+		if _, err := client.CustomObjects.GetByExternalID(ctx, "Order", "external-1"); err == nil {
+			t.Fatal("expected response read error")
 		}
 	})
 }

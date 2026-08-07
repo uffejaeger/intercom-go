@@ -12,7 +12,7 @@
   <rect width="1280" height="640" fill="url(#shade)"/>
   <g font-family="Arial, Helvetica, sans-serif" filter="url(#shadow)">
     <text x="104" y="230" fill="#F8FAFC" font-size="76" font-weight="700" letter-spacing="-2">intercom-go</text>
-    <text x="108" y="298" fill="#C7D2FE" font-size="31" font-weight="500">Modern Go SDK for Intercom API 2.15</text>
+    <text x="108" y="298" fill="#C7D2FE" font-size="31" font-weight="500">Modern Go SDK for Intercom API 2.16</text>
     <line x1="108" y1="342" x2="459" y2="342" stroke="#22D3EE" stroke-width="4" stroke-linecap="round"/>
     <text x="108" y="402" fill="#E2E8F0" font-size="25" font-weight="500">Typed services  ·  Safe retries  ·  Verified webhooks</text>
     <text x="108" y="462" fill="#94A3B8" font-size="20">Unofficial and community-maintained</text>

@@ -234,24 +234,42 @@ type TicketTagAttachRequest = gen.AttachTagToTicketJSONBody
 // TicketTagDetachRequest holds the fields for detaching a tag from a ticket.
 type TicketTagDetachRequest = gen.DetachTagFromTicketJSONBody
 
+// TicketTypeChange holds the fields for changing a ticket's type.
+type TicketTypeChange = gen.ChangeTicketTypeJSONRequestBody
+
+// TicketConversationLink holds the fields for linking a conversation to a ticket.
+type TicketConversationLink = gen.LinkConversationToTicketJSONRequestBody
+
 // TicketsService exposes ticket-related Intercom API operations.
 type TicketsService struct {
 	client *Client
 }
 
 // ChangeType changes a ticket's type.
-func (s *TicketsService) ChangeType(ctx context.Context, ticketID string, request gen.ChangeTicketTypeJSONRequestBody) (*gen.ChangeTicketTypeResponse, error) {
-	return s.client.generated.ChangeTicketTypeWithResponse(ctx, ticketID, nil, request)
+func (s *TicketsService) ChangeType(ctx context.Context, ticketID string, request TicketTypeChange) (*Ticket, error) {
+	res, err := s.client.generated.ChangeTicketTypeWithResponse(ctx, ticketID, nil, request)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("change ticket type", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // LinkConversation links a conversation to a ticket.
-func (s *TicketsService) LinkConversation(ctx context.Context, ticketID string, request gen.LinkConversationToTicketJSONRequestBody) (*gen.LinkConversationToTicketResponse, error) {
-	return s.client.generated.LinkConversationToTicketWithResponse(ctx, ticketID, nil, request)
+func (s *TicketsService) LinkConversation(ctx context.Context, ticketID string, request TicketConversationLink) (*Conversation, error) {
+	res, err := s.client.generated.LinkConversationToTicketWithResponse(ctx, ticketID, nil, request)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("link conversation to ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // UnlinkConversation removes a conversation link from a ticket.
-func (s *TicketsService) UnlinkConversation(ctx context.Context, ticketID, conversationID string) (*gen.UnlinkConversationFromTicketResponse, error) {
-	return s.client.generated.UnlinkConversationFromTicketWithResponse(ctx, ticketID, conversationID, nil)
+func (s *TicketsService) UnlinkConversation(ctx context.Context, ticketID, conversationID string) (*Conversation, error) {
+	res, err := s.client.generated.UnlinkConversationFromTicketWithResponse(ctx, ticketID, conversationID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("unlink conversation from ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Create creates a ticket.

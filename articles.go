@@ -24,6 +24,7 @@ type ArticleVersionList = gen.ArticleVersionListSchema
 type ArticleTag = gen.AttachTagToArticleJSONRequestBody
 type ArticleDraftUpdate = gen.UpdateArticleRequestSchema
 type ArticleDraftPublish = gen.PublishArticleDraftRequestSchema
+type ArticleVersionListParams = gen.ListArticleVersionsParams
 
 // ArticleCreate holds the fields for creating an article.
 type ArticleCreate = gen.CreateArticleRequestSchema
@@ -159,7 +160,7 @@ func (s *ArticlesService) DetachTag(ctx context.Context, articleID, tagID string
 }
 
 // ListVersions returns versions of an article.
-func (s *ArticlesService) ListVersions(ctx context.Context, articleID string, params *gen.ListArticleVersionsParams) (*ArticleVersionList, error) {
+func (s *ArticlesService) ListVersions(ctx context.Context, articleID string, params *ArticleVersionListParams) (*ArticleVersionList, error) {
 	id, err := requireIntID("article", articleID)
 	if err != nil {
 		return nil, err

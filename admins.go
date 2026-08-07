@@ -20,6 +20,18 @@ type AdminList = gen.AdminListSchema
 // AdminActivityLogs is a page of admin activity log entries.
 type AdminActivityLogs = gen.ActivityLogListSchema
 
+// AdminActivityLogEventTypes is the list of supported admin activity-log event types.
+type AdminActivityLogEventTypes = gen.ActivityLogEventTypeListSchema
+
+// AdminActivityLogEventTypesParams configures an activity-log event-type request.
+type AdminActivityLogEventTypesParams = gen.ListActivityLogEventTypesParams
+
+// AdminActivityLogSearchParams configures an activity-log search request.
+type AdminActivityLogSearchParams = gen.SearchActivityLogsParams
+
+// AdminActivityLogSearch is the body for an activity-log search request.
+type AdminActivityLogSearch = gen.SearchActivityLogsJSONRequestBody
+
 // AdminSetAway holds the fields for setting an admin's away status.
 type AdminSetAway = gen.SetAwayAdminJSONRequestBody
 
@@ -29,13 +41,21 @@ type AdminsService struct {
 }
 
 // ListActivityLogEventTypes returns available admin activity-log event types.
-func (s *AdminsService) ListActivityLogEventTypes(ctx context.Context, params *gen.ListActivityLogEventTypesParams) (*gen.ListActivityLogEventTypesResponse, error) {
-	return s.client.generated.ListActivityLogEventTypesWithResponse(ctx, params)
+func (s *AdminsService) ListActivityLogEventTypes(ctx context.Context, params *AdminActivityLogEventTypesParams) (*AdminActivityLogEventTypes, error) {
+	res, err := s.client.generated.ListActivityLogEventTypesWithResponse(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list activity-log event types", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // SearchActivityLogs searches admin activity logs.
-func (s *AdminsService) SearchActivityLogs(ctx context.Context, params *gen.SearchActivityLogsParams, request gen.SearchActivityLogsJSONRequestBody) (*gen.SearchActivityLogsResponse, error) {
-	return s.client.generated.SearchActivityLogsWithResponse(ctx, params, request)
+func (s *AdminsService) SearchActivityLogs(ctx context.Context, params *AdminActivityLogSearchParams, request AdminActivityLogSearch) (*AdminActivityLogs, error) {
+	res, err := s.client.generated.SearchActivityLogsWithResponse(ctx, params, request)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("search activity logs", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Me identifies the currently authenticated admin.

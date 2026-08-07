@@ -55,13 +55,22 @@ type Tag = gen.TagSchema
 // TagList is a list of tags.
 type TagList = gen.TagListSchema
 
+// ContactBannerList is the list of banners shown to a contact.
+type ContactBannerList = gen.BannerListSchema
+
+// ContactBannerDismissal is the result of dismissing a contact banner.
+type ContactBannerDismissal = gen.BannerDismissSchema
+
+// ContactMergeHistory is the merge history for a contact.
+type ContactMergeHistory = gen.MergeHistoryListSchema
+
 // ContactsService exposes contact-related Intercom API operations.
 type ContactsService struct {
 	client *Client
 }
 
 // ListBanners returns banners shown to a contact.
-func (s *ContactsService) ListBanners(ctx context.Context, contactID string) (*gen.BannerListSchema, error) {
+func (s *ContactsService) ListBanners(ctx context.Context, contactID string) (*ContactBannerList, error) {
 	res, err := s.client.generated.ListContactBannersWithResponse(ctx, contactID, nil)
 	if err != nil {
 		return nil, err
@@ -70,7 +79,7 @@ func (s *ContactsService) ListBanners(ctx context.Context, contactID string) (*g
 }
 
 // DismissBanner dismisses one banner for a contact.
-func (s *ContactsService) DismissBanner(ctx context.Context, contactID, viewID string) (*gen.BannerDismissSchema, error) {
+func (s *ContactsService) DismissBanner(ctx context.Context, contactID, viewID string) (*ContactBannerDismissal, error) {
 	res, err := s.client.generated.DismissContactBannerWithResponse(ctx, contactID, viewID, nil)
 	if err != nil {
 		return nil, err
@@ -79,7 +88,7 @@ func (s *ContactsService) DismissBanner(ctx context.Context, contactID, viewID s
 }
 
 // ListMergeHistory returns a contact's merge history.
-func (s *ContactsService) ListMergeHistory(ctx context.Context, contactID string) (*gen.MergeHistoryListSchema, error) {
+func (s *ContactsService) ListMergeHistory(ctx context.Context, contactID string) (*ContactMergeHistory, error) {
 	res, err := s.client.generated.ListContactMergeHistoryWithResponse(ctx, contactID, nil)
 	if err != nil {
 		return nil, err

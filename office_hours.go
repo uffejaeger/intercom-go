@@ -30,11 +30,17 @@ type OfficeHoursExceptionCreate = gen.CreateOfficeHoursExceptionRequestSchema
 // OfficeHoursExceptionUpdate configures an exception update.
 type OfficeHoursExceptionUpdate = gen.UpdateOfficeHoursExceptionRequestSchema
 
+// OfficeHoursScheduleListParams configures an office-hours schedule list request.
+type OfficeHoursScheduleListParams = gen.ListOfficeHoursSchedulesParams
+
+// OfficeHoursExceptionListParams configures an office-hours exception list request.
+type OfficeHoursExceptionListParams = gen.ListOfficeHoursExceptionsParams
+
 // OfficeHoursService exposes workspace office-hours schedules and exceptions.
 type OfficeHoursService struct{ client *Client }
 
 // ListSchedules returns workspace office-hours schedules.
-func (s *OfficeHoursService) ListSchedules(ctx context.Context, params *gen.ListOfficeHoursSchedulesParams) (*OfficeHoursScheduleList, error) {
+func (s *OfficeHoursService) ListSchedules(ctx context.Context, params *OfficeHoursScheduleListParams) (*OfficeHoursScheduleList, error) {
 	res, err := s.client.generated.ListOfficeHoursSchedulesWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
@@ -79,7 +85,7 @@ func (s *OfficeHoursService) DeleteSchedule(ctx context.Context, id string) erro
 }
 
 // ListExceptions returns exceptions for a schedule.
-func (s *OfficeHoursService) ListExceptions(ctx context.Context, scheduleID string, params *gen.ListOfficeHoursExceptionsParams) (*OfficeHoursExceptionList, error) {
+func (s *OfficeHoursService) ListExceptions(ctx context.Context, scheduleID string, params *OfficeHoursExceptionListParams) (*OfficeHoursExceptionList, error) {
 	res, err := s.client.generated.ListOfficeHoursExceptionsWithResponse(ctx, scheduleID, params)
 	if err != nil {
 		return nil, err

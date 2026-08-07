@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"strings"
 	"testing"
-
-	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
 
 func TestAPI216ServicesCoverSuccessAndTransportFailures(t *testing.T) {
@@ -45,6 +43,26 @@ func TestAPI216ServicesCoverSuccessAndTransportFailures(t *testing.T) {
 			t.Run(name, func(t *testing.T) {
 				if err := call(client); err == nil {
 					t.Fatal("expected transport error")
+				}
+			})
+		}
+	})
+
+	t.Run("HTTP failure", func(t *testing.T) {
+		client := newAPI216TestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return &http.Response{
+				StatusCode: http.StatusUnauthorized,
+				Status:     http.StatusText(http.StatusUnauthorized),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				Body:       io.NopCloser(bytes.NewBufferString(`{"type":"error.list","errors":[{"code":"unauthorized","message":"unauthorized"}]}`)),
+				Request:    req,
+			}, nil
+		}))
+
+		for name, call := range calls {
+			t.Run(name, func(t *testing.T) {
+				if err := call(client); err == nil {
+					t.Fatal("expected HTTP error")
 				}
 			})
 		}
@@ -237,12 +255,12 @@ func api216Calls(ctx context.Context) map[string]func(*Client) error {
 		"contacts merge history":  func(c *Client) error { _, err := c.Contacts.ListMergeHistory(ctx, "contact"); return err },
 		"admins event types":      func(c *Client) error { _, err := c.Admins.ListActivityLogEventTypes(ctx, nil); return err },
 		"admins search logs": func(c *Client) error {
-			_, err := c.Admins.SearchActivityLogs(ctx, nil, gen.SearchActivityLogsJSONRequestBody{})
+			_, err := c.Admins.SearchActivityLogs(ctx, nil, AdminActivityLogSearch{})
 			return err
 		},
 		"conversations deleted": func(c *Client) error { _, err := c.Conversations.ListDeletedIDs(ctx, nil); return err },
 		"conversations merge": func(c *Client) error {
-			_, err := c.Conversations.Merge(ctx, "conversation", gen.MergeConversationJSONRequestBody{})
+			_, err := c.Conversations.Merge(ctx, "conversation", ConversationMerge{})
 			return err
 		},
 		"conversations side": func(c *Client) error {
@@ -252,18 +270,18 @@ func api216Calls(ctx context.Context) map[string]func(*Client) error {
 		"custom objects list": func(c *Client) error { _, err := c.CustomObjects.List(ctx, "Order", nil); return err },
 		"teams metrics":       func(c *Client) error { _, err := c.Teams.Metrics(ctx, "team", nil); return err },
 		"tickets change type": func(c *Client) error {
-			_, err := c.Tickets.ChangeType(ctx, "ticket", gen.ChangeTicketTypeJSONRequestBody{})
+			_, err := c.Tickets.ChangeType(ctx, "ticket", TicketTypeChange{})
 			return err
 		},
 		"tickets link conversation": func(c *Client) error {
-			_, err := c.Tickets.LinkConversation(ctx, "ticket", gen.LinkConversationToTicketJSONRequestBody{})
+			_, err := c.Tickets.LinkConversation(ctx, "ticket", TicketConversationLink{})
 			return err
 		},
 		"tickets unlink conversation": func(c *Client) error {
 			_, err := c.Tickets.UnlinkConversation(ctx, "ticket", "conversation")
 			return err
 		},
-		"fin submit csat":          func(c *Client) error { _, err := c.Fin.SubmitCSAT(ctx, gen.SubmitFinCsatJSONRequestBody{}); return err },
+		"fin submit csat":          func(c *Client) error { _, err := c.Fin.SubmitCSAT(ctx, FinCSATSubmission{}); return err },
 		"whatsapp get status":      func(c *Client) error { _, err := c.WhatsApp.GetMessageStatus(ctx, nil); return err },
 		"whatsapp retrieve status": func(c *Client) error { _, err := c.WhatsApp.RetrieveMessageStatus(ctx, nil); return err },
 	}

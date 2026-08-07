@@ -76,24 +76,51 @@ type ConversationToTicket = gen.ConvertConversationToTicketRequestSchema
 // ConversationSearchQuery holds the query for searching conversations.
 type ConversationSearchQuery = gen.SearchRequestSchema
 
+// ConversationDeletedList is a list of deleted conversation IDs.
+type ConversationDeletedList = gen.DeletedConversationListSchema
+
+// ConversationDeletedListParams configures a deleted-conversation list request.
+type ConversationDeletedListParams = gen.ListDeletedConversationIdsParams
+
+// ConversationMerge holds the fields for merging conversations.
+type ConversationMerge = gen.MergeConversationJSONRequestBody
+
+// ConversationSideList is a list of side conversations.
+type ConversationSideList = gen.SideConversationListSchema
+
+// ConversationSideListParams configures a side-conversation list request.
+type ConversationSideListParams = gen.ListSideConversationsParams
+
 // ConversationsService exposes conversation-related Intercom API operations.
 type ConversationsService struct {
 	client *Client
 }
 
 // ListDeletedIDs returns recently deleted conversation IDs.
-func (s *ConversationsService) ListDeletedIDs(ctx context.Context, params *gen.ListDeletedConversationIdsParams) (*gen.ListDeletedConversationIdsResponse, error) {
-	return s.client.generated.ListDeletedConversationIdsWithResponse(ctx, params)
+func (s *ConversationsService) ListDeletedIDs(ctx context.Context, params *ConversationDeletedListParams) (*ConversationDeletedList, error) {
+	res, err := s.client.generated.ListDeletedConversationIdsWithResponse(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list deleted conversation IDs", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // Merge merges another conversation into a conversation.
-func (s *ConversationsService) Merge(ctx context.Context, conversationID string, request gen.MergeConversationJSONRequestBody) (*gen.MergeConversationResponse, error) {
-	return s.client.generated.MergeConversationWithResponse(ctx, conversationID, nil, request)
+func (s *ConversationsService) Merge(ctx context.Context, conversationID string, request ConversationMerge) (*Conversation, error) {
+	res, err := s.client.generated.MergeConversationWithResponse(ctx, conversationID, nil, request)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("merge conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ListSideConversations returns side conversations for a conversation.
-func (s *ConversationsService) ListSideConversations(ctx context.Context, conversationID string, params *gen.ListSideConversationsParams) (*gen.ListSideConversationsResponse, error) {
-	return s.client.generated.ListSideConversationsWithResponse(ctx, conversationID, params)
+func (s *ConversationsService) ListSideConversations(ctx context.Context, conversationID string, params *ConversationSideListParams) (*ConversationSideList, error) {
+	res, err := s.client.generated.ListSideConversationsWithResponse(ctx, conversationID, params)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list side conversations", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // List returns all conversations.
