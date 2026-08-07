@@ -32,6 +32,14 @@ func TestContactOwnerIDCompatibility(t *testing.T) {
 	ownerID := 42
 	_ = intercom.ContactCreate{OwnerId: &ownerID}
 	_ = intercom.ContactUpdate{OwnerId: &ownerID}
+	var contact intercom.Contact
+	var _ *int = contact.OwnerId
+}
+
+func TestTicketAssigneeIDCompatibility(t *testing.T) {
+	var ticket intercom.Ticket
+	var _ *string = ticket.AdminAssigneeId
+	var _ *string = ticket.TeamAssigneeId
 }
 
 func TestConversationAttributeConstructorsAreImportable(t *testing.T) {

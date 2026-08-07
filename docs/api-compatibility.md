@@ -96,13 +96,15 @@ The generated OpenAPI client is under Go's `internal/` boundary, so downstream
 SDK consumers cannot import it. It is verified for reproducibility by `make
 generate-check`, rather than treated as a second public API surface.
 
-The checker has one narrow source-compatibility allowance for `ContactCreate`
-and `ContactUpdate`: API 2.16 changed Intercom's wire representation of
-`owner_id` from an integer to a string. The SDK keeps the public `*int` field
-and converts it at the boundary, so the required alias-to-struct change is
-covered by an external-consumer compile regression test instead of being
-reported as a breaking public API change. No other `apidiff` finding is
-suppressed.
+The checker has a narrow source-compatibility allowance for the reviewed
+Contact and Ticket boundary models: API 2.16 changed Intercom's wire
+representation of `Contact.owner_id` from an integer to a string and Ticket
+assignee IDs from strings to integers. The SDK preserves the historical public
+field types and converts the wire values at the boundary. `apidiff` reports
+the required alias-to-struct change and its dependent methods and iterators as
+incompatible, so the checker permits only those exact entries. External
+consumer compile and response-conversion regression tests cover the preserved
+contracts. No other `apidiff` finding is suppressed.
 
 The current baseline is `v0.2.0`. After publishing a release that expands the
 public API, maintainers advance `API_BASELINE` in `Makefile` to that release so

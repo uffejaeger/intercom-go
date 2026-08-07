@@ -2,6 +2,7 @@ package intercom
 
 import (
 	"context"
+	"fmt"
 
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
@@ -23,6 +24,9 @@ type WhatsAppService struct{ client *Client }
 
 // GetMessageStatus gets a WhatsApp message status.
 func (s *WhatsAppService) GetMessageStatus(ctx context.Context, params *WhatsAppMessageStatusParams) (*WhatsAppMessageStatusList, error) {
+	if params == nil || params.RulesetId == "" {
+		return nil, fmt.Errorf("intercom: WhatsApp ruleset ID is required")
+	}
 	res, err := s.client.generated.GetWhatsAppMessageStatusWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
@@ -32,6 +36,9 @@ func (s *WhatsAppService) GetMessageStatus(ctx context.Context, params *WhatsApp
 
 // RetrieveMessageStatus retrieves a WhatsApp message status by reference.
 func (s *WhatsAppService) RetrieveMessageStatus(ctx context.Context, params *WhatsAppMessageStatusRetrieveParams) (*WhatsAppMessageStatus, error) {
+	if params == nil || params.MessageId == "" {
+		return nil, fmt.Errorf("intercom: WhatsApp message ID is required")
+	}
 	res, err := s.client.generated.RetrieveWhatsAppMessageStatusWithResponse(ctx, params)
 	if err != nil {
 		return nil, err

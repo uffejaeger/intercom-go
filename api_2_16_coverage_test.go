@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+
+	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
 
 func TestAPI216ServicesCoverSuccessAndTransportFailures(t *testing.T) {
@@ -108,6 +110,22 @@ func TestAPI216ValidationAndResponseFailures(t *testing.T) {
 			return err
 		},
 		"custom object list": func() error { _, err := client.CustomObjects.List(context.Background(), "", nil); return err },
+		"WhatsApp status without ruleset": func() error {
+			_, err := client.WhatsApp.GetMessageStatus(context.Background(), nil)
+			return err
+		},
+		"WhatsApp status with empty ruleset": func() error {
+			_, err := client.WhatsApp.GetMessageStatus(context.Background(), &WhatsAppMessageStatusParams{})
+			return err
+		},
+		"WhatsApp status retrieval without message": func() error {
+			_, err := client.WhatsApp.RetrieveMessageStatus(context.Background(), nil)
+			return err
+		},
+		"WhatsApp status retrieval with empty message": func() error {
+			_, err := client.WhatsApp.RetrieveMessageStatus(context.Background(), &WhatsAppMessageStatusRetrieveParams{})
+			return err
+		},
 	} {
 		t.Run(name, func(t *testing.T) {
 			if err := call(); err == nil {
@@ -121,6 +139,89 @@ func TestAPI216ValidationAndResponseFailures(t *testing.T) {
 	}
 	if _, err := requireStatus("test", http.StatusOK, http.StatusOK, nil, (*struct{})(nil)); err == nil {
 		t.Fatal("expected missing response-body error")
+	}
+}
+
+func TestAPI216ResponseIdentifierCompatibility(t *testing.T) {
+	client := newAPI216TestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+		body := `{}`
+		switch req.URL.Path {
+		case "/contacts/contact-1":
+			body = `{"id":"contact-1","owner_id":"42"}`
+		case "/tickets/ticket-1":
+			body = `{"id":"ticket-1","admin_assignee_id":42,"team_assignee_id":7}`
+		case "/tickets/search":
+			body = `{"tickets":[{"id":"ticket-1","admin_assignee_id":42,"team_assignee_id":7}]}`
+		}
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Header:     http.Header{"Content-Type": []string{"application/json"}},
+			Body:       io.NopCloser(strings.NewReader(body)),
+			Request:    req,
+		}, nil
+	}))
+
+	contact, err := client.Contacts.Get(context.Background(), "contact-1")
+	if err != nil {
+		t.Fatalf("get contact: %v", err)
+	}
+	if contact.OwnerId == nil || *contact.OwnerId != 42 {
+		t.Fatalf("contact owner ID = %v, want 42", contact.OwnerId)
+	}
+
+	ticket, err := client.Tickets.Get(context.Background(), "ticket-1")
+	if err != nil {
+		t.Fatalf("get ticket: %v", err)
+	}
+	if ticket.AdminAssigneeId == nil || *ticket.AdminAssigneeId != "42" {
+		t.Fatalf("ticket admin assignee ID = %v, want 42", ticket.AdminAssigneeId)
+	}
+	if ticket.TeamAssigneeId == nil || *ticket.TeamAssigneeId != "7" {
+		t.Fatalf("ticket team assignee ID = %v, want 7", ticket.TeamAssigneeId)
+	}
+
+	list, err := client.Tickets.Search(context.Background(), TicketSearchQuery{})
+	if err != nil {
+		t.Fatalf("search tickets: %v", err)
+	}
+	if list.Tickets == nil || len(*list.Tickets) != 1 || (*list.Tickets)[0].AdminAssigneeId == nil || *(*list.Tickets)[0].AdminAssigneeId != "42" {
+		t.Fatalf("ticket list = %#v, want converted assignee IDs", list.Tickets)
+	}
+}
+
+func TestAPI216ResponseIdentifierCompatibilityDefensivePaths(t *testing.T) {
+	if contactFromGenerated(nil) != nil {
+		t.Fatal("nil generated contact should remain nil")
+	}
+	if contactListFromGenerated(nil) != nil {
+		t.Fatal("nil generated contact list should remain nil")
+	}
+	if list := contactListFromGenerated(&gen.ContactListSchema{}); list == nil || list.Data != nil {
+		t.Fatalf("empty generated contact list = %#v", list)
+	}
+
+	invalidOwnerID := "not-an-integer"
+	contact := contactFromGenerated(&gen.ContactSchema{OwnerId: &invalidOwnerID})
+	if contact == nil || contact.OwnerId != nil {
+		t.Fatalf("invalid contact owner ID = %#v, want nil", contact)
+	}
+
+	if ticketFromGenerated(nil) != nil {
+		t.Fatal("nil generated ticket should remain nil")
+	}
+	if ticket := ticketFromGenerated(&gen.TicketSchema{}); ticket == nil || ticket.AdminAssigneeId != nil || ticket.TeamAssigneeId != nil {
+		t.Fatalf("empty generated ticket = %#v", ticket)
+	}
+	if ticketListFromGenerated(nil) != nil {
+		t.Fatal("nil generated ticket list should remain nil")
+	}
+	if list := ticketListFromGenerated(&gen.TicketListSchema{}); list == nil || list.Tickets != nil {
+		t.Fatalf("empty generated ticket list = %#v", list)
+	}
+	generatedTickets := []*gen.TicketSchema{nil}
+	list := ticketListFromGenerated(&gen.TicketListSchema{Tickets: &generatedTickets})
+	if list == nil || list.Tickets == nil || len(*list.Tickets) != 1 || (*list.Tickets)[0] != nil {
+		t.Fatalf("ticket list with nil entry = %#v", list)
 	}
 }
 
@@ -281,8 +382,14 @@ func api216Calls(ctx context.Context) map[string]func(*Client) error {
 			_, err := c.Tickets.UnlinkConversation(ctx, "ticket", "conversation")
 			return err
 		},
-		"fin submit csat":          func(c *Client) error { _, err := c.Fin.SubmitCSAT(ctx, FinCSATSubmission{}); return err },
-		"whatsapp get status":      func(c *Client) error { _, err := c.WhatsApp.GetMessageStatus(ctx, nil); return err },
-		"whatsapp retrieve status": func(c *Client) error { _, err := c.WhatsApp.RetrieveMessageStatus(ctx, nil); return err },
+		"fin submit csat": func(c *Client) error { _, err := c.Fin.SubmitCSAT(ctx, FinCSATSubmission{}); return err },
+		"whatsapp get status": func(c *Client) error {
+			_, err := c.WhatsApp.GetMessageStatus(ctx, &WhatsAppMessageStatusParams{RulesetId: "ruleset"})
+			return err
+		},
+		"whatsapp retrieve status": func(c *Client) error {
+			_, err := c.WhatsApp.RetrieveMessageStatus(ctx, &WhatsAppMessageStatusRetrieveParams{MessageId: "message"})
+			return err
+		},
 	}
 }

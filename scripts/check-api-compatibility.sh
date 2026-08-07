@@ -14,13 +14,30 @@ cleanup() {
 }
 trap cleanup EXIT
 
-filter_source_compatible_contact_request_changes() {
+filter_reviewed_source_compatible_changes() {
 	while IFS= read -r line; do
 		case "${line}" in
 			"- (*ContactsService).Create: changed from func(context.Context, ContactCreate) (*Contact, error) to func(context.Context, ContactCreate) (*Contact, error)" | \
 			"- (*ContactsService).Update: changed from func(context.Context, string, ContactUpdate) (*Contact, error) to func(context.Context, string, ContactUpdate) (*Contact, error)" | \
+			"- (*ContactIterator).Contact: changed from func() *Contact to func() *Contact" | \
+			"- (*ContactsService).Get: changed from func(context.Context, string) (*Contact, error) to func(context.Context, string) (*Contact, error)" | \
+			"- (*ContactsService).GetByExternalID: changed from func(context.Context, string) (*Contact, error) to func(context.Context, string) (*Contact, error)" | \
+			"- (*ContactsService).List: changed from func(context.Context) (*ContactList, error) to func(context.Context) (*ContactList, error)" | \
+			"- (*ContactsService).Merge: changed from func(context.Context, string, string) (*Contact, error) to func(context.Context, string, string) (*Contact, error)" | \
+			"- (*ContactsService).Search: changed from func(context.Context, ContactSearch) (*ContactList, error) to func(context.Context, ContactSearch) (*ContactList, error)" | \
+			"- (*ConversationsService).ConvertToTicket: changed from func(context.Context, string, ConversationToTicket) (*Ticket, error) to func(context.Context, string, ConversationToTicket) (*Ticket, error)" | \
+			"- (*TicketIterator).Ticket: changed from func() *Ticket to func() *Ticket" | \
+			"- (*TicketsService).Create: changed from func(context.Context, TicketCreate) (*Ticket, error) to func(context.Context, TicketCreate) (*Ticket, error)" | \
+			"- (*TicketsService).Get: changed from func(context.Context, string) (*Ticket, error) to func(context.Context, string) (*Ticket, error)" | \
+			"- (*TicketsService).Search: changed from func(context.Context, TicketSearchQuery) (*TicketList, error) to func(context.Context, TicketSearchQuery) (*TicketList, error)" | \
+			"- (*TicketsService).SearchWithOptions: changed from func(context.Context, TicketSearchQuery, CursorPageOptions) (*TicketList, error) to func(context.Context, TicketSearchQuery, CursorPageOptions) (*TicketList, error)" | \
+			"- (*TicketsService).Update: changed from func(context.Context, string, TicketUpdate) (*Ticket, error) to func(context.Context, string, TicketUpdate) (*Ticket, error)" | \
 			"- ContactCreate: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.CreateContactRequestSchema to ContactCreate" | \
-			"- ContactUpdate: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.UpdateContactRequestSchema to ContactUpdate")
+			"- ContactUpdate: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.UpdateContactRequestSchema to ContactUpdate" | \
+			"- Contact: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.ContactSchema to Contact" | \
+			"- ContactList: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.ContactListSchema to ContactList" | \
+			"- Ticket: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.TicketSchema to Ticket" | \
+			"- TicketList: changed from github.com/uffejaeger/intercom-go/internal/generated/intercom.TicketListSchema to TicketList")
 				;;
 			*)
 				printf '%s\n' "${line}"
@@ -44,14 +61,14 @@ compare_api() {
 		exit 1
 	fi
 
-	# ContactCreate and ContactUpdate changed from aliases of generated models to
-	# hand-shaped SDK requests in API 2.16. This intentionally preserves the
-	# importable, historical OwnerId *int source contract while converting to the
-	# upstream string wire format. apidiff reports the required type-identity
-	# change as incompatible, so accept only these exact entries; the external
-	# consumer regression test verifies the preserved source contract.
+	# API 2.16 changed the wire representation of Contact.OwnerId and Ticket
+	# assignee IDs. The SDK uses hand-shaped boundary models to preserve the
+	# historical public field types while converting the changed wire values.
+	# apidiff reports each dependent method and iterator as a type-identity
+	# change, so accept only these exact reviewed entries. External-consumer and
+	# response-conversion regression tests verify the preserved source contract.
 	if [[ "${label}" == "public" ]]; then
-		report="$(printf '%s\n' "${report}" | filter_source_compatible_contact_request_changes)"
+		report="$(printf '%s\n' "${report}" | filter_reviewed_source_compatible_changes)"
 	fi
 
 	sed '/^Ignoring internal package /d' "${comparison_errors}" >&2

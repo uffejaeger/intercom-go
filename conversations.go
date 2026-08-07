@@ -32,7 +32,32 @@ type ConversationHandlingEvent = gen.HandlingEventSchema
 type ConversationHandlingEventList = gen.HandlingEventListSchema
 
 // Ticket is an Intercom ticket.
-type Ticket = gen.TicketSchema
+//
+// Assignee identifiers remain strings for source compatibility with earlier
+// SDK releases. Intercom API 2.16 represents the same identifiers as
+// integers; ticketFromGenerated converts them at the API boundary.
+type Ticket struct {
+	gen.TicketSchema
+	AdminAssigneeId *string `json:"admin_assignee_id,omitempty"`
+	TeamAssigneeId  *string `json:"team_assignee_id,omitempty"`
+}
+
+func ticketFromGenerated(ticket *gen.TicketSchema) *Ticket {
+	if ticket == nil {
+		return nil
+	}
+
+	result := &Ticket{TicketSchema: *ticket}
+	if ticket.AdminAssigneeId != nil {
+		adminID := strconv.Itoa(*ticket.AdminAssigneeId)
+		result.AdminAssigneeId = &adminID
+	}
+	if ticket.TeamAssigneeId != nil {
+		teamID := strconv.Itoa(*ticket.TeamAssigneeId)
+		result.TeamAssigneeId = &teamID
+	}
+	return result
+}
 
 // ConversationCreate holds the fields for creating a conversation.
 type ConversationCreate = gen.CreateConversationRequestSchema
@@ -368,7 +393,8 @@ func (s *ConversationsService) ConvertToTicket(ctx context.Context, conversation
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("convert conversation to ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	ticket, err := requireOK("convert conversation to ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return ticketFromGenerated(ticket), err
 }
 
 // AttachTag attaches a tag to a conversation.

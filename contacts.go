@@ -11,10 +11,20 @@ import (
 )
 
 // Contact is an Intercom contact.
-type Contact = gen.ContactSchema
+//
+// OwnerID remains an integer for source compatibility with earlier SDK
+// releases. Intercom API 2.16 represents the same identifier as a string;
+// contactFromGenerated converts it at the API boundary.
+type Contact struct {
+	gen.ContactSchema
+	OwnerId *int `json:"owner_id,omitempty"`
+}
 
 // ContactList is a page of Intercom contacts.
-type ContactList = gen.ContactListSchema
+type ContactList struct {
+	gen.ContactListSchema
+	Data *[]Contact `json:"data,omitempty"`
+}
 
 // ContactDeleted is the result of deleting a contact.
 type ContactDeleted = gen.ContactDeleted
@@ -110,6 +120,42 @@ func contactOwnerID(ownerID *int) *string {
 	return &value
 }
 
+func contactFromGenerated(contact *gen.ContactSchema) *Contact {
+	if contact == nil {
+		return nil
+	}
+
+	result := &Contact{ContactSchema: *contact}
+	if contact.OwnerId == nil {
+		return result
+	}
+	ownerID, err := strconv.Atoi(*contact.OwnerId)
+	if err == nil {
+		result.OwnerId = &ownerID
+	}
+	return result
+}
+
+func contactListFromGenerated(list *gen.ContactListSchema) *ContactList {
+	if list == nil {
+		return nil
+	}
+
+	result := &ContactList{ContactListSchema: *list}
+	if list.Data == nil {
+		return result
+	}
+	contacts := make([]Contact, 0, len(*list.Data))
+	for i := range *list.Data {
+		contact := contactFromGenerated(&(*list.Data)[i])
+		if contact != nil {
+			contacts = append(contacts, *contact)
+		}
+	}
+	result.Data = &contacts
+	return result
+}
+
 // Note is an Intercom note on a contact.
 type Note = gen.NoteSchema
 
@@ -203,7 +249,8 @@ func (s *ContactsService) Get(ctx context.Context, contactID string) (*Contact, 
 		return nil, err
 	}
 
-	return requireOK("get contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contact, err := requireOK("get contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(contact), err
 }
 
 // GetByExternalID retrieves a contact by external ID.
@@ -217,7 +264,8 @@ func (s *ContactsService) GetByExternalID(ctx context.Context, externalID string
 		return nil, err
 	}
 
-	return requireOK("get contact by external ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contact, err := requireOK("get contact by external ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(contact), err
 }
 
 // List returns contacts.
@@ -227,7 +275,8 @@ func (s *ContactsService) List(ctx context.Context) (*ContactList, error) {
 		return nil, err
 	}
 
-	return requireOK("list contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contacts, err := requireOK("list contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactListFromGenerated(contacts), err
 }
 
 // Search searches contacts using one Intercom search filter.
@@ -242,7 +291,8 @@ func (s *ContactsService) Search(ctx context.Context, search ContactSearch) (*Co
 		return nil, err
 	}
 
-	return requireOK("search contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contacts, err := requireOK("search contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactListFromGenerated(contacts), err
 }
 
 // Create creates a new contact.
@@ -255,7 +305,8 @@ func (s *ContactsService) Create(ctx context.Context, contact ContactCreate) (*C
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	created, err := requireOK("create contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(created), err
 }
 
 // Update updates an existing contact.
@@ -271,7 +322,8 @@ func (s *ContactsService) Update(ctx context.Context, contactID string, contact 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	updated, err := requireOK("update contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(updated), err
 }
 
 // Merge merges a lead (from) into a user (into).
@@ -291,7 +343,8 @@ func (s *ContactsService) Merge(ctx context.Context, from, into string) (*Contac
 		return nil, err
 	}
 
-	return requireOK("merge contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	merged, err := requireOK("merge contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(merged), err
 }
 
 // Archive archives a contact.
