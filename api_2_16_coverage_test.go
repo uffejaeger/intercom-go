@@ -307,10 +307,13 @@ func api216Calls(ctx context.Context) map[string]func(*Client) error {
 			_, err := c.Content.AttachSnippetTag(ctx, "snippet", ContentSnippetTag{})
 			return err
 		},
-		"content snippets detach tag": func(c *Client) error { return c.Content.DetachSnippetTag(ctx, "snippet", "tag") },
-		"data connectors list":        func(c *Client) error { _, err := c.DataConnectors.List(ctx, nil); return err },
-		"data connectors create":      func(c *Client) error { _, err := c.DataConnectors.Create(ctx, DataConnectorCreate{}); return err },
-		"data connectors get":         func(c *Client) error { _, err := c.DataConnectors.Get(ctx, "connector"); return err },
+		"content snippets detach tag": func(c *Client) error {
+			_, err := c.Content.DetachSnippetTag(ctx, "snippet", "tag")
+			return err
+		},
+		"data connectors list":   func(c *Client) error { _, err := c.DataConnectors.List(ctx, nil); return err },
+		"data connectors create": func(c *Client) error { _, err := c.DataConnectors.Create(ctx, DataConnectorCreate{}); return err },
+		"data connectors get":    func(c *Client) error { _, err := c.DataConnectors.Get(ctx, "connector"); return err },
 		"data connectors update": func(c *Client) error {
 			_, err := c.DataConnectors.Update(ctx, "connector", DataConnectorUpdate{})
 			return err

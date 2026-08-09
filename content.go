@@ -139,10 +139,11 @@ func (s *ContentService) AttachSnippetTag(ctx context.Context, id string, tag Co
 	return requireOK("attach tag to content snippet", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
-func (s *ContentService) DetachSnippetTag(ctx context.Context, id, tagID string) error {
+// DetachSnippetTag removes a tag from a content snippet and returns the removed tag.
+func (s *ContentService) DetachSnippetTag(ctx context.Context, id, tagID string) (*Tag, error) {
 	res, err := s.client.generated.DetachTagFromContentSnippetWithResponse(ctx, id, tagID, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return requireEmpty(res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
+	return requireOK("detach tag from content snippet", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
