@@ -29,6 +29,7 @@ func main() {
 
 	patchPathParameters(&spec)
 	patchComponentGoNames(&spec)
+	patchConversationAttributeDiscriminator(&spec)
 	patchPropertyGoNames(&spec)
 
 	output, err := yaml.Marshal(&spec)
@@ -133,12 +134,57 @@ func patchComponentGoNames(spec *yaml.Node) {
 		if schema.Kind != yaml.MappingNode || lookup(schema, "x-go-name") != nil {
 			continue
 		}
+		if goName, ok := componentGoNameOverrides[schemaName]; ok {
+			schema.Content = append(schema.Content,
+				&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: "x-go-name"},
+				&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: goName},
+			)
+			continue
+		}
 		if schemaType := lookup(schema, "type"); scalarValue(schemaType) != "object" {
 			continue
 		}
 		schema.Content = append(schema.Content,
 			&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: "x-go-name"},
 			&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: pascal(schemaName) + "Schema"},
+		)
+	}
+}
+
+// componentGoNameOverrides resolves names that oapi-codegen derives from an
+// OpenAPI title and that collide with another generated Go type.
+var componentGoNameOverrides = map[string]string{
+	"conversation_attribute_list_type": "ConversationAttributeListTypeSchema",
+}
+
+// patchConversationAttributeDiscriminator marks the discriminator property as
+// required on each union variant. The upstream schema omits that requirement,
+// which makes oapi-codegen produce invalid assignments in its union helpers.
+func patchConversationAttributeDiscriminator(spec *yaml.Node) {
+	for _, name := range []string{
+		"conversation_attribute_string_type",
+		"conversation_attribute_integer_type",
+		"conversation_attribute_list_type",
+		"conversation_attribute_decimal_type",
+		"conversation_attribute_boolean_type",
+		"conversation_attribute_datetime_type",
+		"conversation_attribute_relationship_type",
+		"conversation_attribute_files_type",
+	} {
+		schema := lookup(spec, "components", "schemas", name, "allOf")
+		if schema == nil || schema.Kind != yaml.SequenceNode || len(schema.Content) < 2 {
+			continue
+		}
+
+		variant := schema.Content[1]
+		if variant.Kind != yaml.MappingNode || lookup(variant, "required") != nil {
+			continue
+		}
+		variant.Content = append(variant.Content,
+			&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: "required"},
+			&yaml.Node{Kind: yaml.SequenceNode, Tag: "!!seq", Content: []*yaml.Node{
+				{Kind: yaml.ScalarNode, Tag: "!!str", Value: "data_type"},
+			}},
 		)
 	}
 }

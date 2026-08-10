@@ -16,6 +16,20 @@ func requireOK[T any](operation string, statusCode int, body []byte, value *T, h
 	return value, nil
 }
 
+func requireCreated[T any](operation string, statusCode int, body []byte, value *T, headers ...http.Header) (*T, error) {
+	return requireStatus(operation, statusCode, http.StatusCreated, body, value, headers...)
+}
+
+func requireStatus[T any](operation string, statusCode, wantStatus int, body []byte, value *T, headers ...http.Header) (*T, error) {
+	if statusCode != wantStatus {
+		return nil, parseErrorResponse(statusCode, body, headers...)
+	}
+	if value == nil {
+		return nil, fmt.Errorf("intercom: %s returned status %d without a response body", operation, statusCode)
+	}
+	return value, nil
+}
+
 func requireEmpty(statusCode int, body []byte, headers ...http.Header) error {
 	if statusCode >= 200 && statusCode < 300 {
 		return nil

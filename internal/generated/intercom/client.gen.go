@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -495,25 +496,25 @@ func (e AiAgentResolutionState) Valid() bool {
 
 // Defines values for AiAgentSourceType.
 const (
-	EssentialsPlanSetup AiAgentSourceType = "essentials_plan_setup"
-	FinPreview          AiAgentSourceType = "fin_preview"
-	Profile             AiAgentSourceType = "profile"
-	Workflow            AiAgentSourceType = "workflow"
-	WorkflowPreview     AiAgentSourceType = "workflow_preview"
+	AiAgentSourceTypeEssentialsPlanSetup AiAgentSourceType = "essentials_plan_setup"
+	AiAgentSourceTypeFinPreview          AiAgentSourceType = "fin_preview"
+	AiAgentSourceTypeProfile             AiAgentSourceType = "profile"
+	AiAgentSourceTypeWorkflow            AiAgentSourceType = "workflow"
+	AiAgentSourceTypeWorkflowPreview     AiAgentSourceType = "workflow_preview"
 )
 
 // Valid indicates whether the value is a known member of the AiAgentSourceType enum.
 func (e AiAgentSourceType) Valid() bool {
 	switch e {
-	case EssentialsPlanSetup:
+	case AiAgentSourceTypeEssentialsPlanSetup:
 		return true
-	case FinPreview:
+	case AiAgentSourceTypeFinPreview:
 		return true
-	case Profile:
+	case AiAgentSourceTypeProfile:
 		return true
-	case Workflow:
+	case AiAgentSourceTypeWorkflow:
 		return true
-	case WorkflowPreview:
+	case AiAgentSourceTypeWorkflowPreview:
 		return true
 	default:
 		return false
@@ -565,6 +566,36 @@ const (
 func (e ArticleListType) Valid() bool {
 	switch e {
 	case ArticleListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ArticleListItemHelpCenterAudience.
+const (
+	ArticleListItemHelpCenterAudienceAllLeads            ArticleListItemHelpCenterAudience = "all_leads"
+	ArticleListItemHelpCenterAudienceAllUsers            ArticleListItemHelpCenterAudience = "all_users"
+	ArticleListItemHelpCenterAudienceAllVisitors         ArticleListItemHelpCenterAudience = "all_visitors"
+	ArticleListItemHelpCenterAudienceAllVisitorsAndLeads ArticleListItemHelpCenterAudience = "all_visitors_and_leads"
+	ArticleListItemHelpCenterAudienceEveryone            ArticleListItemHelpCenterAudience = "everyone"
+	ArticleListItemHelpCenterAudienceRestricted          ArticleListItemHelpCenterAudience = "restricted"
+)
+
+// Valid indicates whether the value is a known member of the ArticleListItemHelpCenterAudience enum.
+func (e ArticleListItemHelpCenterAudience) Valid() bool {
+	switch e {
+	case ArticleListItemHelpCenterAudienceAllLeads:
+		return true
+	case ArticleListItemHelpCenterAudienceAllUsers:
+		return true
+	case ArticleListItemHelpCenterAudienceAllVisitors:
+		return true
+	case ArticleListItemHelpCenterAudienceAllVisitorsAndLeads:
+		return true
+	case ArticleListItemHelpCenterAudienceEveryone:
+		return true
+	case ArticleListItemHelpCenterAudienceRestricted:
 		return true
 	default:
 		return false
@@ -688,6 +719,87 @@ func (e ArticleTranslatedContentType) Valid() bool {
 	}
 }
 
+// Defines values for ArticleVersionState.
+const (
+	ArticleVersionStateDraft     ArticleVersionState = "draft"
+	ArticleVersionStatePublished ArticleVersionState = "published"
+)
+
+// Valid indicates whether the value is a known member of the ArticleVersionState enum.
+func (e ArticleVersionState) Valid() bool {
+	switch e {
+	case ArticleVersionStateDraft:
+		return true
+	case ArticleVersionStatePublished:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ArticleVersionType.
+const (
+	ArticleVersionTypeArticleVersion ArticleVersionType = "article_version"
+)
+
+// Valid indicates whether the value is a known member of the ArticleVersionType enum.
+func (e ArticleVersionType) Valid() bool {
+	switch e {
+	case ArticleVersionTypeArticleVersion:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ArticleVersionListType.
+const (
+	ArticleVersionListTypeList ArticleVersionListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the ArticleVersionListType enum.
+func (e ArticleVersionListType) Valid() bool {
+	switch e {
+	case ArticleVersionListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ArticleVersionSummaryState.
+const (
+	ArticleVersionSummaryStateDraft     ArticleVersionSummaryState = "draft"
+	ArticleVersionSummaryStatePublished ArticleVersionSummaryState = "published"
+)
+
+// Valid indicates whether the value is a known member of the ArticleVersionSummaryState enum.
+func (e ArticleVersionSummaryState) Valid() bool {
+	switch e {
+	case ArticleVersionSummaryStateDraft:
+		return true
+	case ArticleVersionSummaryStatePublished:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ArticleVersionSummaryType.
+const (
+	ArticleVersionSummaryTypeArticleVersion ArticleVersionSummaryType = "article_version"
+)
+
+// Valid indicates whether the value is a known member of the ArticleVersionSummaryType enum.
+func (e ArticleVersionSummaryType) Valid() bool {
+	switch e {
+	case ArticleVersionSummaryTypeArticleVersion:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AssignConversationRequestMessageType.
 const (
 	Assignment AssignConversationRequestMessageType = "assignment"
@@ -715,6 +827,36 @@ func (e AssignConversationRequestType) Valid() bool {
 	case AssignConversationRequestTypeAdmin:
 		return true
 	case AssignConversationRequestTypeTeam:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AudienceType.
+const (
+	Audience AudienceType = "audience"
+)
+
+// Valid indicates whether the value is a known member of the AudienceType enum.
+func (e AudienceType) Valid() bool {
+	switch e {
+	case Audience:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AudienceListType.
+const (
+	AudienceListTypeList AudienceListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the AudienceListType enum.
+func (e AudienceListType) Valid() bool {
+	switch e {
+	case AudienceListTypeList:
 		return true
 	default:
 		return false
@@ -775,6 +917,21 @@ const (
 func (e CollectionListType) Valid() bool {
 	switch e {
 	case CollectionListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CompanyNotesType.
+const (
+	NoteList CompanyNotesType = "note.list"
+)
+
+// Valid indicates whether the value is a known member of the CompanyNotesType enum.
+func (e CompanyNotesType) Valid() bool {
+	switch e {
+	case NoteList:
 		return true
 	default:
 		return false
@@ -976,6 +1133,24 @@ func (e ContactReplyBaseRequestType) Valid() bool {
 	}
 }
 
+// Defines values for ContactSearchRequestSortOrder.
+const (
+	Ascending  ContactSearchRequestSortOrder = "ascending"
+	Descending ContactSearchRequestSortOrder = "descending"
+)
+
+// Valid indicates whether the value is a known member of the ContactSearchRequestSortOrder enum.
+func (e ContactSearchRequestSortOrder) Valid() bool {
+	switch e {
+	case Ascending:
+		return true
+	case Descending:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ContactSegmentsType.
 const (
 	ContactSegmentsTypeList ContactSegmentsType = "list"
@@ -985,6 +1160,66 @@ const (
 func (e ContactSegmentsType) Valid() bool {
 	switch e {
 	case ContactSegmentsTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ContentBulkActionRequestAction.
+const (
+	ContentBulkActionRequestActionDelete          ContentBulkActionRequestAction = "delete"
+	ContentBulkActionRequestActionPublish         ContentBulkActionRequestAction = "publish"
+	ContentBulkActionRequestActionSetAudience     ContentBulkActionRequestAction = "set_audience"
+	ContentBulkActionRequestActionSetAvailability ContentBulkActionRequestAction = "set_availability"
+	ContentBulkActionRequestActionUnpublish       ContentBulkActionRequestAction = "unpublish"
+	ContentBulkActionRequestActionUpdateTags      ContentBulkActionRequestAction = "update_tags"
+)
+
+// Valid indicates whether the value is a known member of the ContentBulkActionRequestAction enum.
+func (e ContentBulkActionRequestAction) Valid() bool {
+	switch e {
+	case ContentBulkActionRequestActionDelete:
+		return true
+	case ContentBulkActionRequestActionPublish:
+		return true
+	case ContentBulkActionRequestActionSetAudience:
+		return true
+	case ContentBulkActionRequestActionSetAvailability:
+		return true
+	case ContentBulkActionRequestActionUnpublish:
+		return true
+	case ContentBulkActionRequestActionUpdateTags:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ContentBulkActionRequestContentIdsType.
+const (
+	ContentBulkActionRequestContentIdsTypeArticle           ContentBulkActionRequestContentIdsType = "article"
+	ContentBulkActionRequestContentIdsTypeArticleContent    ContentBulkActionRequestContentIdsType = "article_content"
+	ContentBulkActionRequestContentIdsTypeContentSnippet    ContentBulkActionRequestContentIdsType = "content_snippet"
+	ContentBulkActionRequestContentIdsTypeExternalContent   ContentBulkActionRequestContentIdsType = "external_content"
+	ContentBulkActionRequestContentIdsTypeFileSourceContent ContentBulkActionRequestContentIdsType = "file_source_content"
+	ContentBulkActionRequestContentIdsTypeInternalArticle   ContentBulkActionRequestContentIdsType = "internal_article"
+)
+
+// Valid indicates whether the value is a known member of the ContentBulkActionRequestContentIdsType enum.
+func (e ContentBulkActionRequestContentIdsType) Valid() bool {
+	switch e {
+	case ContentBulkActionRequestContentIdsTypeArticle:
+		return true
+	case ContentBulkActionRequestContentIdsTypeArticleContent:
+		return true
+	case ContentBulkActionRequestContentIdsTypeContentSnippet:
+		return true
+	case ContentBulkActionRequestContentIdsTypeExternalContent:
+		return true
+	case ContentBulkActionRequestContentIdsTypeFileSourceContent:
+		return true
+	case ContentBulkActionRequestContentIdsTypeInternalArticle:
 		return true
 	default:
 		return false
@@ -1060,6 +1295,105 @@ func (e ContentImportSourcesListType) Valid() bool {
 	}
 }
 
+// Defines values for ContentSearchArticleContentItemType.
+const (
+	ArticleContent ContentSearchArticleContentItemType = "article_content"
+)
+
+// Valid indicates whether the value is a known member of the ContentSearchArticleContentItemType enum.
+func (e ContentSearchArticleContentItemType) Valid() bool {
+	switch e {
+	case ArticleContent:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ContentSearchArticleItemType.
+const (
+	ContentSearchArticleItemTypeArticle ContentSearchArticleItemType = "article"
+)
+
+// Valid indicates whether the value is a known member of the ContentSearchArticleItemType enum.
+func (e ContentSearchArticleItemType) Valid() bool {
+	switch e {
+	case ContentSearchArticleItemTypeArticle:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ContentSearchDefaultItemType.
+const (
+	ContentSearchDefaultItemTypeContentSnippet    ContentSearchDefaultItemType = "content_snippet"
+	ContentSearchDefaultItemTypeExternalContent   ContentSearchDefaultItemType = "external_content"
+	ContentSearchDefaultItemTypeFileSourceContent ContentSearchDefaultItemType = "file_source_content"
+	ContentSearchDefaultItemTypeInternalArticle   ContentSearchDefaultItemType = "internal_article"
+)
+
+// Valid indicates whether the value is a known member of the ContentSearchDefaultItemType enum.
+func (e ContentSearchDefaultItemType) Valid() bool {
+	switch e {
+	case ContentSearchDefaultItemTypeContentSnippet:
+		return true
+	case ContentSearchDefaultItemTypeExternalContent:
+		return true
+	case ContentSearchDefaultItemTypeFileSourceContent:
+		return true
+	case ContentSearchDefaultItemTypeInternalArticle:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ContentSearchResponsePagesType.
+const (
+	ContentSearchResponsePagesTypePages ContentSearchResponsePagesType = "pages"
+)
+
+// Valid indicates whether the value is a known member of the ContentSearchResponsePagesType enum.
+func (e ContentSearchResponsePagesType) Valid() bool {
+	switch e {
+	case ContentSearchResponsePagesTypePages:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ContentSearchResponseType.
+const (
+	ContentSearchResponseTypeList ContentSearchResponseType = "list"
+)
+
+// Valid indicates whether the value is a known member of the ContentSearchResponseType enum.
+func (e ContentSearchResponseType) Valid() bool {
+	switch e {
+	case ContentSearchResponseTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ContentSnippetListType.
+const (
+	ContentSnippetListTypeList ContentSnippetListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the ContentSnippetListType enum.
+func (e ContentSnippetListType) Valid() bool {
+	switch e {
+	case ContentSnippetListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ContentSourceContentType.
 const (
 	ContentSourceContentTypeArticle                 ContentSourceContentType = "article"
@@ -1104,16 +1438,25 @@ func (e ContentSourcesListType) Valid() bool {
 
 // Defines values for ConversationPriority.
 const (
-	ConversationPriorityNotPriority ConversationPriority = "not_priority"
-	ConversationPriorityPriority    ConversationPriority = "priority"
+	ConversationPriorityHigh   ConversationPriority = "high"
+	ConversationPriorityLow    ConversationPriority = "low"
+	ConversationPriorityMedium ConversationPriority = "medium"
+	ConversationPriorityNone   ConversationPriority = "none"
+	ConversationPriorityUrgent ConversationPriority = "urgent"
 )
 
 // Valid indicates whether the value is a known member of the ConversationPriority enum.
 func (e ConversationPriority) Valid() bool {
 	switch e {
-	case ConversationPriorityNotPriority:
+	case ConversationPriorityHigh:
 		return true
-	case ConversationPriorityPriority:
+	case ConversationPriorityLow:
+		return true
+	case ConversationPriorityMedium:
+		return true
+	case ConversationPriorityNone:
+		return true
+	case ConversationPriorityUrgent:
 		return true
 	default:
 		return false
@@ -1135,6 +1478,330 @@ func (e ConversationState) Valid() bool {
 	case ConversationStateOpen:
 		return true
 	case ConversationStateSnoozed:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeBaseDataType.
+const (
+	ConversationAttributeBaseDataTypeBoolean      ConversationAttributeBaseDataType = "boolean"
+	ConversationAttributeBaseDataTypeDatetime     ConversationAttributeBaseDataType = "datetime"
+	ConversationAttributeBaseDataTypeDecimal      ConversationAttributeBaseDataType = "decimal"
+	ConversationAttributeBaseDataTypeFiles        ConversationAttributeBaseDataType = "files"
+	ConversationAttributeBaseDataTypeInteger      ConversationAttributeBaseDataType = "integer"
+	ConversationAttributeBaseDataTypeList         ConversationAttributeBaseDataType = "list"
+	ConversationAttributeBaseDataTypeRelationship ConversationAttributeBaseDataType = "relationship"
+	ConversationAttributeBaseDataTypeString       ConversationAttributeBaseDataType = "string"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeBaseDataType enum.
+func (e ConversationAttributeBaseDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeBaseDataTypeBoolean:
+		return true
+	case ConversationAttributeBaseDataTypeDatetime:
+		return true
+	case ConversationAttributeBaseDataTypeDecimal:
+		return true
+	case ConversationAttributeBaseDataTypeFiles:
+		return true
+	case ConversationAttributeBaseDataTypeInteger:
+		return true
+	case ConversationAttributeBaseDataTypeList:
+		return true
+	case ConversationAttributeBaseDataTypeRelationship:
+		return true
+	case ConversationAttributeBaseDataTypeString:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeBaseType.
+const (
+	ConversationAttributeBaseTypeConversationAttribute ConversationAttributeBaseType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeBaseType enum.
+func (e ConversationAttributeBaseType) Valid() bool {
+	switch e {
+	case ConversationAttributeBaseTypeConversationAttribute:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeBooleanTypeDataType.
+const (
+	ConversationAttributeBooleanTypeDataTypeBoolean ConversationAttributeBooleanTypeDataType = "boolean"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeBooleanTypeDataType enum.
+func (e ConversationAttributeBooleanTypeDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeBooleanTypeDataTypeBoolean:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeBooleanTypeType.
+const (
+	ConversationAttributeBooleanTypeTypeConversationAttribute ConversationAttributeBooleanTypeType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeBooleanTypeType enum.
+func (e ConversationAttributeBooleanTypeType) Valid() bool {
+	switch e {
+	case ConversationAttributeBooleanTypeTypeConversationAttribute:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeDatetimeTypeDataType.
+const (
+	ConversationAttributeDatetimeTypeDataTypeDatetime ConversationAttributeDatetimeTypeDataType = "datetime"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeDatetimeTypeDataType enum.
+func (e ConversationAttributeDatetimeTypeDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeDatetimeTypeDataTypeDatetime:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeDatetimeTypeType.
+const (
+	ConversationAttributeDatetimeTypeTypeConversationAttribute ConversationAttributeDatetimeTypeType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeDatetimeTypeType enum.
+func (e ConversationAttributeDatetimeTypeType) Valid() bool {
+	switch e {
+	case ConversationAttributeDatetimeTypeTypeConversationAttribute:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeDecimalTypeDataType.
+const (
+	ConversationAttributeDecimalTypeDataTypeDecimal ConversationAttributeDecimalTypeDataType = "decimal"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeDecimalTypeDataType enum.
+func (e ConversationAttributeDecimalTypeDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeDecimalTypeDataTypeDecimal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeDecimalTypeType.
+const (
+	ConversationAttributeDecimalTypeTypeConversationAttribute ConversationAttributeDecimalTypeType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeDecimalTypeType enum.
+func (e ConversationAttributeDecimalTypeType) Valid() bool {
+	switch e {
+	case ConversationAttributeDecimalTypeTypeConversationAttribute:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeFilesTypeDataType.
+const (
+	ConversationAttributeFilesTypeDataTypeFiles ConversationAttributeFilesTypeDataType = "files"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeFilesTypeDataType enum.
+func (e ConversationAttributeFilesTypeDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeFilesTypeDataTypeFiles:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeFilesTypeType.
+const (
+	ConversationAttributeFilesTypeTypeConversationAttribute ConversationAttributeFilesTypeType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeFilesTypeType enum.
+func (e ConversationAttributeFilesTypeType) Valid() bool {
+	switch e {
+	case ConversationAttributeFilesTypeTypeConversationAttribute:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeIntegerTypeDataType.
+const (
+	ConversationAttributeIntegerTypeDataTypeInteger ConversationAttributeIntegerTypeDataType = "integer"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeIntegerTypeDataType enum.
+func (e ConversationAttributeIntegerTypeDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeIntegerTypeDataTypeInteger:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeIntegerTypeType.
+const (
+	ConversationAttributeIntegerTypeTypeConversationAttribute ConversationAttributeIntegerTypeType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeIntegerTypeType enum.
+func (e ConversationAttributeIntegerTypeType) Valid() bool {
+	switch e {
+	case ConversationAttributeIntegerTypeTypeConversationAttribute:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeListType.
+const (
+	ConversationAttributeListTypeList ConversationAttributeListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeListType enum.
+func (e ConversationAttributeListType) Valid() bool {
+	switch e {
+	case ConversationAttributeListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeListTypeDataType.
+const (
+	ConversationAttributeListTypeDataTypeList ConversationAttributeListTypeDataType = "list"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeListTypeDataType enum.
+func (e ConversationAttributeListTypeDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeListTypeDataTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeListTypeType.
+const (
+	ConversationAttributeListTypeTypeConversationAttribute ConversationAttributeListTypeType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeListTypeType enum.
+func (e ConversationAttributeListTypeType) Valid() bool {
+	switch e {
+	case ConversationAttributeListTypeTypeConversationAttribute:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeRelationshipTypeDataType.
+const (
+	ConversationAttributeRelationshipTypeDataTypeRelationship ConversationAttributeRelationshipTypeDataType = "relationship"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeRelationshipTypeDataType enum.
+func (e ConversationAttributeRelationshipTypeDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeRelationshipTypeDataTypeRelationship:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeRelationshipTypeReferenceType.
+const (
+	ConversationAttributeRelationshipTypeReferenceTypeMany ConversationAttributeRelationshipTypeReferenceType = "many"
+	ConversationAttributeRelationshipTypeReferenceTypeOne  ConversationAttributeRelationshipTypeReferenceType = "one"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeRelationshipTypeReferenceType enum.
+func (e ConversationAttributeRelationshipTypeReferenceType) Valid() bool {
+	switch e {
+	case ConversationAttributeRelationshipTypeReferenceTypeMany:
+		return true
+	case ConversationAttributeRelationshipTypeReferenceTypeOne:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeRelationshipTypeType.
+const (
+	ConversationAttributeRelationshipTypeTypeConversationAttribute ConversationAttributeRelationshipTypeType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeRelationshipTypeType enum.
+func (e ConversationAttributeRelationshipTypeType) Valid() bool {
+	switch e {
+	case ConversationAttributeRelationshipTypeTypeConversationAttribute:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeStringTypeDataType.
+const (
+	ConversationAttributeStringTypeDataTypeString ConversationAttributeStringTypeDataType = "string"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeStringTypeDataType enum.
+func (e ConversationAttributeStringTypeDataType) Valid() bool {
+	switch e {
+	case ConversationAttributeStringTypeDataTypeString:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ConversationAttributeStringTypeType.
+const (
+	ConversationAttributeStringTypeTypeConversationAttribute ConversationAttributeStringTypeType = "conversation_attribute"
+)
+
+// Valid indicates whether the value is a known member of the ConversationAttributeStringTypeType enum.
+func (e ConversationAttributeStringTypeType) Valid() bool {
+	switch e {
+	case ConversationAttributeStringTypeTypeConversationAttribute:
 		return true
 	default:
 		return false
@@ -1188,16 +1855,25 @@ func (e ConversationListType) Valid() bool {
 
 // Defines values for ConversationListItemPriority.
 const (
-	ConversationListItemPriorityNotPriority ConversationListItemPriority = "not_priority"
-	ConversationListItemPriorityPriority    ConversationListItemPriority = "priority"
+	ConversationListItemPriorityHigh   ConversationListItemPriority = "high"
+	ConversationListItemPriorityLow    ConversationListItemPriority = "low"
+	ConversationListItemPriorityMedium ConversationListItemPriority = "medium"
+	ConversationListItemPriorityNone   ConversationListItemPriority = "none"
+	ConversationListItemPriorityUrgent ConversationListItemPriority = "urgent"
 )
 
 // Valid indicates whether the value is a known member of the ConversationListItemPriority enum.
 func (e ConversationListItemPriority) Valid() bool {
 	switch e {
-	case ConversationListItemPriorityNotPriority:
+	case ConversationListItemPriorityHigh:
 		return true
-	case ConversationListItemPriorityPriority:
+	case ConversationListItemPriorityLow:
+		return true
+	case ConversationListItemPriorityMedium:
+		return true
+	case ConversationListItemPriorityNone:
+		return true
+	case ConversationListItemPriorityUrgent:
 		return true
 	default:
 		return false
@@ -1261,42 +1937,18 @@ func (e ConversationPartsType) Valid() bool {
 	}
 }
 
-// Defines values for ConversationSourceType.
+// Defines values for ConversationScorecardReviewedTeammateType.
 const (
-	ConversationSourceTypeConversation ConversationSourceType = "conversation"
-	ConversationSourceTypeEmail        ConversationSourceType = "email"
-	ConversationSourceTypeFacebook     ConversationSourceType = "facebook"
-	ConversationSourceTypeInstagram    ConversationSourceType = "instagram"
-	ConversationSourceTypePhoneCall    ConversationSourceType = "phone_call"
-	ConversationSourceTypePhoneSwitch  ConversationSourceType = "phone_switch"
-	ConversationSourceTypePush         ConversationSourceType = "push"
-	ConversationSourceTypeSms          ConversationSourceType = "sms"
-	ConversationSourceTypeTwitter      ConversationSourceType = "twitter"
-	ConversationSourceTypeWhatsapp     ConversationSourceType = "whatsapp"
+	ConversationScorecardReviewedTeammateTypeAdmin ConversationScorecardReviewedTeammateType = "admin"
+	ConversationScorecardReviewedTeammateTypeAi    ConversationScorecardReviewedTeammateType = "ai"
 )
 
-// Valid indicates whether the value is a known member of the ConversationSourceType enum.
-func (e ConversationSourceType) Valid() bool {
+// Valid indicates whether the value is a known member of the ConversationScorecardReviewedTeammateType enum.
+func (e ConversationScorecardReviewedTeammateType) Valid() bool {
 	switch e {
-	case ConversationSourceTypeConversation:
+	case ConversationScorecardReviewedTeammateTypeAdmin:
 		return true
-	case ConversationSourceTypeEmail:
-		return true
-	case ConversationSourceTypeFacebook:
-		return true
-	case ConversationSourceTypeInstagram:
-		return true
-	case ConversationSourceTypePhoneCall:
-		return true
-	case ConversationSourceTypePhoneSwitch:
-		return true
-	case ConversationSourceTypePush:
-		return true
-	case ConversationSourceTypeSms:
-		return true
-	case ConversationSourceTypeTwitter:
-		return true
-	case ConversationSourceTypeWhatsapp:
+	case ConversationScorecardReviewedTeammateTypeAi:
 		return true
 	default:
 		return false
@@ -1354,6 +2006,180 @@ func (e CreateContentImportSourceRequestSyncBehavior) Valid() bool {
 	}
 }
 
+// Defines values for CreateConversationAttributeBooleanRequestDataType.
+const (
+	CreateConversationAttributeBooleanRequestDataTypeBoolean CreateConversationAttributeBooleanRequestDataType = "boolean"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeBooleanRequestDataType enum.
+func (e CreateConversationAttributeBooleanRequestDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeBooleanRequestDataTypeBoolean:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeDatetimeRequestDataType.
+const (
+	CreateConversationAttributeDatetimeRequestDataTypeDatetime CreateConversationAttributeDatetimeRequestDataType = "datetime"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeDatetimeRequestDataType enum.
+func (e CreateConversationAttributeDatetimeRequestDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeDatetimeRequestDataTypeDatetime:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeDecimalRequestDataType.
+const (
+	CreateConversationAttributeDecimalRequestDataTypeDecimal CreateConversationAttributeDecimalRequestDataType = "decimal"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeDecimalRequestDataType enum.
+func (e CreateConversationAttributeDecimalRequestDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeDecimalRequestDataTypeDecimal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeFilesRequestDataType.
+const (
+	CreateConversationAttributeFilesRequestDataTypeFiles CreateConversationAttributeFilesRequestDataType = "files"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeFilesRequestDataType enum.
+func (e CreateConversationAttributeFilesRequestDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeFilesRequestDataTypeFiles:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeIntegerRequestDataType.
+const (
+	CreateConversationAttributeIntegerRequestDataTypeInteger CreateConversationAttributeIntegerRequestDataType = "integer"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeIntegerRequestDataType enum.
+func (e CreateConversationAttributeIntegerRequestDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeIntegerRequestDataTypeInteger:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeListRequestDataType.
+const (
+	CreateConversationAttributeListRequestDataTypeList CreateConversationAttributeListRequestDataType = "list"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeListRequestDataType enum.
+func (e CreateConversationAttributeListRequestDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeListRequestDataTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeRelationshipRequestDataType.
+const (
+	CreateConversationAttributeRelationshipRequestDataTypeRelationship CreateConversationAttributeRelationshipRequestDataType = "relationship"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeRelationshipRequestDataType enum.
+func (e CreateConversationAttributeRelationshipRequestDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeRelationshipRequestDataTypeRelationship:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeRelationshipRequestReferenceType.
+const (
+	CreateConversationAttributeRelationshipRequestReferenceTypeMany CreateConversationAttributeRelationshipRequestReferenceType = "many"
+	CreateConversationAttributeRelationshipRequestReferenceTypeOne  CreateConversationAttributeRelationshipRequestReferenceType = "one"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeRelationshipRequestReferenceType enum.
+func (e CreateConversationAttributeRelationshipRequestReferenceType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeRelationshipRequestReferenceTypeMany:
+		return true
+	case CreateConversationAttributeRelationshipRequestReferenceTypeOne:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeRequestBaseDataType.
+const (
+	CreateConversationAttributeRequestBaseDataTypeBoolean      CreateConversationAttributeRequestBaseDataType = "boolean"
+	CreateConversationAttributeRequestBaseDataTypeDatetime     CreateConversationAttributeRequestBaseDataType = "datetime"
+	CreateConversationAttributeRequestBaseDataTypeDecimal      CreateConversationAttributeRequestBaseDataType = "decimal"
+	CreateConversationAttributeRequestBaseDataTypeFiles        CreateConversationAttributeRequestBaseDataType = "files"
+	CreateConversationAttributeRequestBaseDataTypeInteger      CreateConversationAttributeRequestBaseDataType = "integer"
+	CreateConversationAttributeRequestBaseDataTypeList         CreateConversationAttributeRequestBaseDataType = "list"
+	CreateConversationAttributeRequestBaseDataTypeRelationship CreateConversationAttributeRequestBaseDataType = "relationship"
+	CreateConversationAttributeRequestBaseDataTypeString       CreateConversationAttributeRequestBaseDataType = "string"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeRequestBaseDataType enum.
+func (e CreateConversationAttributeRequestBaseDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeRequestBaseDataTypeBoolean:
+		return true
+	case CreateConversationAttributeRequestBaseDataTypeDatetime:
+		return true
+	case CreateConversationAttributeRequestBaseDataTypeDecimal:
+		return true
+	case CreateConversationAttributeRequestBaseDataTypeFiles:
+		return true
+	case CreateConversationAttributeRequestBaseDataTypeInteger:
+		return true
+	case CreateConversationAttributeRequestBaseDataTypeList:
+		return true
+	case CreateConversationAttributeRequestBaseDataTypeRelationship:
+		return true
+	case CreateConversationAttributeRequestBaseDataTypeString:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateConversationAttributeStringRequestDataType.
+const (
+	CreateConversationAttributeStringRequestDataTypeString CreateConversationAttributeStringRequestDataType = "string"
+)
+
+// Valid indicates whether the value is a known member of the CreateConversationAttributeStringRequestDataType enum.
+func (e CreateConversationAttributeStringRequestDataType) Valid() bool {
+	switch e {
+	case CreateConversationAttributeStringRequestDataTypeString:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateConversationRequestFromType.
 const (
 	CreateConversationRequestFromTypeContact CreateConversationRequestFromType = "contact"
@@ -1393,6 +2219,78 @@ func (e CreateDataAttributeRequestModel) Valid() bool {
 	}
 }
 
+// Defines values for CreateDataConnectorRequestAudiences.
+const (
+	CreateDataConnectorRequestAudiencesLeads    CreateDataConnectorRequestAudiences = "leads"
+	CreateDataConnectorRequestAudiencesUsers    CreateDataConnectorRequestAudiences = "users"
+	CreateDataConnectorRequestAudiencesVisitors CreateDataConnectorRequestAudiences = "visitors"
+)
+
+// Valid indicates whether the value is a known member of the CreateDataConnectorRequestAudiences enum.
+func (e CreateDataConnectorRequestAudiences) Valid() bool {
+	switch e {
+	case CreateDataConnectorRequestAudiencesLeads:
+		return true
+	case CreateDataConnectorRequestAudiencesUsers:
+		return true
+	case CreateDataConnectorRequestAudiencesVisitors:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateDataConnectorRequestDataInputsType.
+const (
+	CreateDataConnectorRequestDataInputsTypeBoolean CreateDataConnectorRequestDataInputsType = "boolean"
+	CreateDataConnectorRequestDataInputsTypeDecimal CreateDataConnectorRequestDataInputsType = "decimal"
+	CreateDataConnectorRequestDataInputsTypeInteger CreateDataConnectorRequestDataInputsType = "integer"
+	CreateDataConnectorRequestDataInputsTypeString  CreateDataConnectorRequestDataInputsType = "string"
+)
+
+// Valid indicates whether the value is a known member of the CreateDataConnectorRequestDataInputsType enum.
+func (e CreateDataConnectorRequestDataInputsType) Valid() bool {
+	switch e {
+	case CreateDataConnectorRequestDataInputsTypeBoolean:
+		return true
+	case CreateDataConnectorRequestDataInputsTypeDecimal:
+		return true
+	case CreateDataConnectorRequestDataInputsTypeInteger:
+		return true
+	case CreateDataConnectorRequestDataInputsTypeString:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateDataConnectorRequestHttpMethod.
+const (
+	CreateDataConnectorRequestHttpMethodDelete CreateDataConnectorRequestHttpMethod = "delete"
+	CreateDataConnectorRequestHttpMethodGet    CreateDataConnectorRequestHttpMethod = "get"
+	CreateDataConnectorRequestHttpMethodPatch  CreateDataConnectorRequestHttpMethod = "patch"
+	CreateDataConnectorRequestHttpMethodPost   CreateDataConnectorRequestHttpMethod = "post"
+	CreateDataConnectorRequestHttpMethodPut    CreateDataConnectorRequestHttpMethod = "put"
+)
+
+// Valid indicates whether the value is a known member of the CreateDataConnectorRequestHttpMethod enum.
+func (e CreateDataConnectorRequestHttpMethod) Valid() bool {
+	switch e {
+	case CreateDataConnectorRequestHttpMethodDelete:
+		return true
+	case CreateDataConnectorRequestHttpMethodGet:
+		return true
+	case CreateDataConnectorRequestHttpMethodPatch:
+		return true
+	case CreateDataConnectorRequestHttpMethodPost:
+		return true
+	case CreateDataConnectorRequestHttpMethodPut:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CreateExternalPageRequestLocale.
 const (
 	CreateExternalPageRequestLocaleEn CreateExternalPageRequestLocale = "en"
@@ -1402,6 +2300,24 @@ const (
 func (e CreateExternalPageRequestLocale) Valid() bool {
 	switch e {
 	case CreateExternalPageRequestLocaleEn:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateHelpCenterRedirectRequestTargetType.
+const (
+	CreateHelpCenterRedirectRequestTargetTypeArticle    CreateHelpCenterRedirectRequestTargetType = "article"
+	CreateHelpCenterRedirectRequestTargetTypeCollection CreateHelpCenterRedirectRequestTargetType = "collection"
+)
+
+// Valid indicates whether the value is a known member of the CreateHelpCenterRedirectRequestTargetType enum.
+func (e CreateHelpCenterRedirectRequestTargetType) Valid() bool {
+	switch e {
+	case CreateHelpCenterRedirectRequestTargetTypeArticle:
+		return true
+	case CreateHelpCenterRedirectRequestTargetTypeCollection:
 		return true
 	default:
 		return false
@@ -1425,8 +2341,9 @@ func (e CreateMessageRequestFromType) Valid() bool {
 
 // Defines values for CreateMessageRequestMessageType.
 const (
-	CreateMessageRequestMessageTypeEmail CreateMessageRequestMessageType = "email"
-	CreateMessageRequestMessageTypeInApp CreateMessageRequestMessageType = "in_app"
+	CreateMessageRequestMessageTypeEmail    CreateMessageRequestMessageType = "email"
+	CreateMessageRequestMessageTypeInApp    CreateMessageRequestMessageType = "in_app"
+	CreateMessageRequestMessageTypeWhatsapp CreateMessageRequestMessageType = "whatsapp"
 )
 
 // Valid indicates whether the value is a known member of the CreateMessageRequestMessageType enum.
@@ -1435,6 +2352,26 @@ func (e CreateMessageRequestMessageType) Valid() bool {
 	case CreateMessageRequestMessageTypeEmail:
 		return true
 	case CreateMessageRequestMessageTypeInApp:
+		return true
+	case CreateMessageRequestMessageTypeWhatsapp:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateOfficeHoursExceptionRequestExceptionType.
+const (
+	CreateOfficeHoursExceptionRequestExceptionTypeClosed      CreateOfficeHoursExceptionRequestExceptionType = "closed"
+	CreateOfficeHoursExceptionRequestExceptionTypeCustomHours CreateOfficeHoursExceptionRequestExceptionType = "custom_hours"
+)
+
+// Valid indicates whether the value is a known member of the CreateOfficeHoursExceptionRequestExceptionType enum.
+func (e CreateOfficeHoursExceptionRequestExceptionType) Valid() bool {
+	switch e {
+	case CreateOfficeHoursExceptionRequestExceptionTypeClosed:
+		return true
+	case CreateOfficeHoursExceptionRequestExceptionTypeCustomHours:
 		return true
 	default:
 		return false
@@ -1528,6 +2465,21 @@ func (e CustomActionFinishedActionResult) Valid() bool {
 	}
 }
 
+// Defines values for CustomObjectInstancesPaginatedListType.
+const (
+	CustomObjectInstancesPaginatedListTypeList CustomObjectInstancesPaginatedListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the CustomObjectInstancesPaginatedListType enum.
+func (e CustomObjectInstancesPaginatedListType) Valid() bool {
+	switch e {
+	case CustomObjectInstancesPaginatedListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for DataAttributeDataType.
 const (
 	DataAttributeDataTypeBoolean DataAttributeDataType = "boolean"
@@ -1597,6 +2549,498 @@ const (
 func (e DataAttributeListType) Valid() bool {
 	switch e {
 	case DataAttributeListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorHttpMethod.
+const (
+	DataConnectorHttpMethodDelete DataConnectorHttpMethod = "delete"
+	DataConnectorHttpMethodGet    DataConnectorHttpMethod = "get"
+	DataConnectorHttpMethodPatch  DataConnectorHttpMethod = "patch"
+	DataConnectorHttpMethodPost   DataConnectorHttpMethod = "post"
+	DataConnectorHttpMethodPut    DataConnectorHttpMethod = "put"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorHttpMethod enum.
+func (e DataConnectorHttpMethod) Valid() bool {
+	switch e {
+	case DataConnectorHttpMethodDelete:
+		return true
+	case DataConnectorHttpMethodGet:
+		return true
+	case DataConnectorHttpMethodPatch:
+		return true
+	case DataConnectorHttpMethodPost:
+		return true
+	case DataConnectorHttpMethodPut:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorState.
+const (
+	DataConnectorStateDraft DataConnectorState = "draft"
+	DataConnectorStateLive  DataConnectorState = "live"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorState enum.
+func (e DataConnectorState) Valid() bool {
+	switch e {
+	case DataConnectorStateDraft:
+		return true
+	case DataConnectorStateLive:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorType.
+const (
+	DataConnectorTypeDataConnector DataConnectorType = "data_connector"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorType enum.
+func (e DataConnectorType) Valid() bool {
+	switch e {
+	case DataConnectorTypeDataConnector:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailAudiences.
+const (
+	DataConnectorDetailAudiencesLeads    DataConnectorDetailAudiences = "leads"
+	DataConnectorDetailAudiencesUsers    DataConnectorDetailAudiences = "users"
+	DataConnectorDetailAudiencesVisitors DataConnectorDetailAudiences = "visitors"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailAudiences enum.
+func (e DataConnectorDetailAudiences) Valid() bool {
+	switch e {
+	case DataConnectorDetailAudiencesLeads:
+		return true
+	case DataConnectorDetailAudiencesUsers:
+		return true
+	case DataConnectorDetailAudiencesVisitors:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailConfigurationResponseType.
+const (
+	MockResponseType DataConnectorDetailConfigurationResponseType = "mock_response_type"
+	TestResponseType DataConnectorDetailConfigurationResponseType = "test_response_type"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailConfigurationResponseType enum.
+func (e DataConnectorDetailConfigurationResponseType) Valid() bool {
+	switch e {
+	case MockResponseType:
+		return true
+	case TestResponseType:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailDataInputsType.
+const (
+	DataConnectorDetailDataInputsTypeBoolean DataConnectorDetailDataInputsType = "boolean"
+	DataConnectorDetailDataInputsTypeDecimal DataConnectorDetailDataInputsType = "decimal"
+	DataConnectorDetailDataInputsTypeInteger DataConnectorDetailDataInputsType = "integer"
+	DataConnectorDetailDataInputsTypeString  DataConnectorDetailDataInputsType = "string"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailDataInputsType enum.
+func (e DataConnectorDetailDataInputsType) Valid() bool {
+	switch e {
+	case DataConnectorDetailDataInputsTypeBoolean:
+		return true
+	case DataConnectorDetailDataInputsTypeDecimal:
+		return true
+	case DataConnectorDetailDataInputsTypeInteger:
+		return true
+	case DataConnectorDetailDataInputsTypeString:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailDataTransformationType.
+const (
+	CodeBlockTransformation DataConnectorDetailDataTransformationType = "code_block_transformation"
+	FullAccess              DataConnectorDetailDataTransformationType = "full_access"
+	RedactedAccess          DataConnectorDetailDataTransformationType = "redacted_access"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailDataTransformationType enum.
+func (e DataConnectorDetailDataTransformationType) Valid() bool {
+	switch e {
+	case CodeBlockTransformation:
+		return true
+	case FullAccess:
+		return true
+	case RedactedAccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailExecutionType.
+const (
+	ClientSide DataConnectorDetailExecutionType = "client_side"
+	ServerSide DataConnectorDetailExecutionType = "server_side"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailExecutionType enum.
+func (e DataConnectorDetailExecutionType) Valid() bool {
+	switch e {
+	case ClientSide:
+		return true
+	case ServerSide:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailHttpMethod.
+const (
+	DataConnectorDetailHttpMethodDelete DataConnectorDetailHttpMethod = "delete"
+	DataConnectorDetailHttpMethodGet    DataConnectorDetailHttpMethod = "get"
+	DataConnectorDetailHttpMethodPatch  DataConnectorDetailHttpMethod = "patch"
+	DataConnectorDetailHttpMethodPost   DataConnectorDetailHttpMethod = "post"
+	DataConnectorDetailHttpMethodPut    DataConnectorDetailHttpMethod = "put"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailHttpMethod enum.
+func (e DataConnectorDetailHttpMethod) Valid() bool {
+	switch e {
+	case DataConnectorDetailHttpMethodDelete:
+		return true
+	case DataConnectorDetailHttpMethodGet:
+		return true
+	case DataConnectorDetailHttpMethodPatch:
+		return true
+	case DataConnectorDetailHttpMethodPost:
+		return true
+	case DataConnectorDetailHttpMethodPut:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailObjectMappingsAttributeMappingsMappingType.
+const (
+	ContextMapping   DataConnectorDetailObjectMappingsAttributeMappingsMappingType = "context_mapping"
+	PrimitiveMapping DataConnectorDetailObjectMappingsAttributeMappingsMappingType = "primitive_mapping"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailObjectMappingsAttributeMappingsMappingType enum.
+func (e DataConnectorDetailObjectMappingsAttributeMappingsMappingType) Valid() bool {
+	switch e {
+	case ContextMapping:
+		return true
+	case PrimitiveMapping:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailObjectMappingsIntercomObjectType.
+const (
+	DataConnectorDetailObjectMappingsIntercomObjectTypeConversation DataConnectorDetailObjectMappingsIntercomObjectType = "conversation"
+	DataConnectorDetailObjectMappingsIntercomObjectTypeUser         DataConnectorDetailObjectMappingsIntercomObjectType = "user"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailObjectMappingsIntercomObjectType enum.
+func (e DataConnectorDetailObjectMappingsIntercomObjectType) Valid() bool {
+	switch e {
+	case DataConnectorDetailObjectMappingsIntercomObjectTypeConversation:
+		return true
+	case DataConnectorDetailObjectMappingsIntercomObjectTypeUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectType.
+const (
+	DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectTypeConversation DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectType = "conversation"
+	DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectTypeUser         DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectType = "user"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectType enum.
+func (e DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectType) Valid() bool {
+	switch e {
+	case DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectTypeConversation:
+		return true
+	case DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectTypeUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailResponseFieldsType.
+const (
+	DataConnectorDetailResponseFieldsTypeBoolean  DataConnectorDetailResponseFieldsType = "boolean"
+	DataConnectorDetailResponseFieldsTypeDatetime DataConnectorDetailResponseFieldsType = "datetime"
+	DataConnectorDetailResponseFieldsTypeDecimal  DataConnectorDetailResponseFieldsType = "decimal"
+	DataConnectorDetailResponseFieldsTypeInteger  DataConnectorDetailResponseFieldsType = "integer"
+	DataConnectorDetailResponseFieldsTypeString   DataConnectorDetailResponseFieldsType = "string"
+	DataConnectorDetailResponseFieldsTypeUnknown  DataConnectorDetailResponseFieldsType = "unknown"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailResponseFieldsType enum.
+func (e DataConnectorDetailResponseFieldsType) Valid() bool {
+	switch e {
+	case DataConnectorDetailResponseFieldsTypeBoolean:
+		return true
+	case DataConnectorDetailResponseFieldsTypeDatetime:
+		return true
+	case DataConnectorDetailResponseFieldsTypeDecimal:
+		return true
+	case DataConnectorDetailResponseFieldsTypeInteger:
+		return true
+	case DataConnectorDetailResponseFieldsTypeString:
+		return true
+	case DataConnectorDetailResponseFieldsTypeUnknown:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailState.
+const (
+	DataConnectorDetailStateDraft DataConnectorDetailState = "draft"
+	DataConnectorDetailStateLive  DataConnectorDetailState = "live"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailState enum.
+func (e DataConnectorDetailState) Valid() bool {
+	switch e {
+	case DataConnectorDetailStateDraft:
+		return true
+	case DataConnectorDetailStateLive:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorDetailType.
+const (
+	DataConnectorDetailTypeDataConnector DataConnectorDetailType = "data_connector"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorDetailType enum.
+func (e DataConnectorDetailType) Valid() bool {
+	switch e {
+	case DataConnectorDetailTypeDataConnector:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorExecutionResultErrorType.
+const (
+	DataConnectorExecutionResultErrorTypeClientSideActionError                           DataConnectorExecutionResultErrorType = "client_side_action_error"
+	DataConnectorExecutionResultErrorTypeEmailVerificationError                          DataConnectorExecutionResultErrorType = "email_verification_error"
+	DataConnectorExecutionResultErrorTypeFaradayError                                    DataConnectorExecutionResultErrorType = "faraday_error"
+	DataConnectorExecutionResultErrorTypeFinActionIdentityVerificationError              DataConnectorExecutionResultErrorType = "fin_action_identity_verification_error"
+	DataConnectorExecutionResultErrorTypeFinActionResponseFormattingError                DataConnectorExecutionResultErrorType = "fin_action_response_formatting_error"
+	DataConnectorExecutionResultErrorTypeN3rdPartyError                                  DataConnectorExecutionResultErrorType = "3rd_party_error"
+	DataConnectorExecutionResultErrorTypeNonFinStandaloneActionIdentityVerificationError DataConnectorExecutionResultErrorType = "non_fin_standalone_action_identity_verification_error"
+	DataConnectorExecutionResultErrorTypeRequestConfigurationError                       DataConnectorExecutionResultErrorType = "request_configuration_error"
+	DataConnectorExecutionResultErrorTypeRequestValidationError                          DataConnectorExecutionResultErrorType = "request_validation_error"
+	DataConnectorExecutionResultErrorTypeResponseMappingError                            DataConnectorExecutionResultErrorType = "response_mapping_error"
+	DataConnectorExecutionResultErrorTypeTokenRefreshError                               DataConnectorExecutionResultErrorType = "token_refresh_error"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorExecutionResultErrorType enum.
+func (e DataConnectorExecutionResultErrorType) Valid() bool {
+	switch e {
+	case DataConnectorExecutionResultErrorTypeClientSideActionError:
+		return true
+	case DataConnectorExecutionResultErrorTypeEmailVerificationError:
+		return true
+	case DataConnectorExecutionResultErrorTypeFaradayError:
+		return true
+	case DataConnectorExecutionResultErrorTypeFinActionIdentityVerificationError:
+		return true
+	case DataConnectorExecutionResultErrorTypeFinActionResponseFormattingError:
+		return true
+	case DataConnectorExecutionResultErrorTypeN3rdPartyError:
+		return true
+	case DataConnectorExecutionResultErrorTypeNonFinStandaloneActionIdentityVerificationError:
+		return true
+	case DataConnectorExecutionResultErrorTypeRequestConfigurationError:
+		return true
+	case DataConnectorExecutionResultErrorTypeRequestValidationError:
+		return true
+	case DataConnectorExecutionResultErrorTypeResponseMappingError:
+		return true
+	case DataConnectorExecutionResultErrorTypeTokenRefreshError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorExecutionResultHttpMethod.
+const (
+	DataConnectorExecutionResultHttpMethodDelete DataConnectorExecutionResultHttpMethod = "delete"
+	DataConnectorExecutionResultHttpMethodGet    DataConnectorExecutionResultHttpMethod = "get"
+	DataConnectorExecutionResultHttpMethodPatch  DataConnectorExecutionResultHttpMethod = "patch"
+	DataConnectorExecutionResultHttpMethodPost   DataConnectorExecutionResultHttpMethod = "post"
+	DataConnectorExecutionResultHttpMethodPut    DataConnectorExecutionResultHttpMethod = "put"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorExecutionResultHttpMethod enum.
+func (e DataConnectorExecutionResultHttpMethod) Valid() bool {
+	switch e {
+	case DataConnectorExecutionResultHttpMethodDelete:
+		return true
+	case DataConnectorExecutionResultHttpMethodGet:
+		return true
+	case DataConnectorExecutionResultHttpMethodPatch:
+		return true
+	case DataConnectorExecutionResultHttpMethodPost:
+		return true
+	case DataConnectorExecutionResultHttpMethodPut:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorExecutionResultSourceType.
+const (
+	DataConnectorExecutionResultSourceTypeAnswer               DataConnectorExecutionResultSourceType = "answer"
+	DataConnectorExecutionResultSourceTypeButtonCustomBot      DataConnectorExecutionResultSourceType = "button_custom_bot"
+	DataConnectorExecutionResultSourceTypeCustomBot            DataConnectorExecutionResultSourceType = "custom_bot"
+	DataConnectorExecutionResultSourceTypeFin                  DataConnectorExecutionResultSourceType = "fin"
+	DataConnectorExecutionResultSourceTypeInboundCustomBot     DataConnectorExecutionResultSourceType = "inbound_custom_bot"
+	DataConnectorExecutionResultSourceTypeInbox                DataConnectorExecutionResultSourceType = "inbox"
+	DataConnectorExecutionResultSourceTypeSavedReply           DataConnectorExecutionResultSourceType = "saved_reply"
+	DataConnectorExecutionResultSourceTypeTriggerableCustomBot DataConnectorExecutionResultSourceType = "triggerable_custom_bot"
+	DataConnectorExecutionResultSourceTypeWorkflow             DataConnectorExecutionResultSourceType = "workflow"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorExecutionResultSourceType enum.
+func (e DataConnectorExecutionResultSourceType) Valid() bool {
+	switch e {
+	case DataConnectorExecutionResultSourceTypeAnswer:
+		return true
+	case DataConnectorExecutionResultSourceTypeButtonCustomBot:
+		return true
+	case DataConnectorExecutionResultSourceTypeCustomBot:
+		return true
+	case DataConnectorExecutionResultSourceTypeFin:
+		return true
+	case DataConnectorExecutionResultSourceTypeInboundCustomBot:
+		return true
+	case DataConnectorExecutionResultSourceTypeInbox:
+		return true
+	case DataConnectorExecutionResultSourceTypeSavedReply:
+		return true
+	case DataConnectorExecutionResultSourceTypeTriggerableCustomBot:
+		return true
+	case DataConnectorExecutionResultSourceTypeWorkflow:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorExecutionResultType.
+const (
+	DataConnectorExecution DataConnectorExecutionResultType = "data_connector.execution"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorExecutionResultType enum.
+func (e DataConnectorExecutionResultType) Valid() bool {
+	switch e {
+	case DataConnectorExecution:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorExecutionResultListPagesType.
+const (
+	DataConnectorExecutionResultListPagesTypePages DataConnectorExecutionResultListPagesType = "pages"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorExecutionResultListPagesType enum.
+func (e DataConnectorExecutionResultListPagesType) Valid() bool {
+	switch e {
+	case DataConnectorExecutionResultListPagesTypePages:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorExecutionResultListType.
+const (
+	DataConnectorExecutionResultListTypeList DataConnectorExecutionResultListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorExecutionResultListType enum.
+func (e DataConnectorExecutionResultListType) Valid() bool {
+	switch e {
+	case DataConnectorExecutionResultListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorListPagesType.
+const (
+	DataConnectorListPagesTypePages DataConnectorListPagesType = "pages"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorListPagesType enum.
+func (e DataConnectorListPagesType) Valid() bool {
+	switch e {
+	case DataConnectorListPagesTypePages:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DataConnectorListType.
+const (
+	DataConnectorListTypeList DataConnectorListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the DataConnectorListType enum.
+func (e DataConnectorListType) Valid() bool {
+	switch e {
+	case DataConnectorListTypeList:
 		return true
 	default:
 		return false
@@ -1680,13 +3124,13 @@ func (e DataExportStatus) Valid() bool {
 
 // Defines values for DeletedArticleObjectObject.
 const (
-	Article DeletedArticleObjectObject = "article"
+	DeletedArticleObjectObjectArticle DeletedArticleObjectObject = "article"
 )
 
 // Valid indicates whether the value is a known member of the DeletedArticleObjectObject enum.
 func (e DeletedArticleObjectObject) Valid() bool {
 	switch e {
-	case Article:
+	case DeletedArticleObjectObjectArticle:
 		return true
 	default:
 		return false
@@ -1695,13 +3139,13 @@ func (e DeletedArticleObjectObject) Valid() bool {
 
 // Defines values for DeletedCollectionObjectObject.
 const (
-	Collection DeletedCollectionObjectObject = "collection"
+	DeletedCollectionObjectObjectCollection DeletedCollectionObjectObject = "collection"
 )
 
 // Valid indicates whether the value is a known member of the DeletedCollectionObjectObject enum.
 func (e DeletedCollectionObjectObject) Valid() bool {
 	switch e {
-	case Collection:
+	case DeletedCollectionObjectObjectCollection:
 		return true
 	default:
 		return false
@@ -1717,6 +3161,36 @@ const (
 func (e DeletedCompanyObjectObject) Valid() bool {
 	switch e {
 	case DeletedCompanyObjectObjectCompany:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeletedDataConnectorObjectObject.
+const (
+	DataConnector DeletedDataConnectorObjectObject = "data_connector"
+)
+
+// Valid indicates whether the value is a known member of the DeletedDataConnectorObjectObject enum.
+func (e DeletedDataConnectorObjectObject) Valid() bool {
+	switch e {
+	case DataConnector:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DeletedHelpCenterRedirectObjectObject.
+const (
+	DeletedHelpCenterRedirectObjectObjectHelpCenterRedirect DeletedHelpCenterRedirectObjectObject = "help_center_redirect"
+)
+
+// Valid indicates whether the value is a known member of the DeletedHelpCenterRedirectObjectObject enum.
+func (e DeletedHelpCenterRedirectObjectObject) Valid() bool {
+	switch e {
+	case DeletedHelpCenterRedirectObjectObjectHelpCenterRedirect:
 		return true
 	default:
 		return false
@@ -1816,6 +3290,48 @@ func (e FinAgentAttachmentType) Valid() bool {
 	}
 }
 
+// Defines values for FinAgentCsatRequestedEventCsatOptionsKey.
+const (
+	FinAgentCsatRequestedEventCsatOptionsKeyAmazing  FinAgentCsatRequestedEventCsatOptionsKey = "amazing"
+	FinAgentCsatRequestedEventCsatOptionsKeyBad      FinAgentCsatRequestedEventCsatOptionsKey = "bad"
+	FinAgentCsatRequestedEventCsatOptionsKeyGood     FinAgentCsatRequestedEventCsatOptionsKey = "good"
+	FinAgentCsatRequestedEventCsatOptionsKeyOk       FinAgentCsatRequestedEventCsatOptionsKey = "ok"
+	FinAgentCsatRequestedEventCsatOptionsKeyTerrible FinAgentCsatRequestedEventCsatOptionsKey = "terrible"
+)
+
+// Valid indicates whether the value is a known member of the FinAgentCsatRequestedEventCsatOptionsKey enum.
+func (e FinAgentCsatRequestedEventCsatOptionsKey) Valid() bool {
+	switch e {
+	case FinAgentCsatRequestedEventCsatOptionsKeyAmazing:
+		return true
+	case FinAgentCsatRequestedEventCsatOptionsKeyBad:
+		return true
+	case FinAgentCsatRequestedEventCsatOptionsKeyGood:
+		return true
+	case FinAgentCsatRequestedEventCsatOptionsKeyOk:
+		return true
+	case FinAgentCsatRequestedEventCsatOptionsKeyTerrible:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for FinAgentCsatRequestedEventEventName.
+const (
+	CsatRequested FinAgentCsatRequestedEventEventName = "csat_requested"
+)
+
+// Valid indicates whether the value is a known member of the FinAgentCsatRequestedEventEventName enum.
+func (e FinAgentCsatRequestedEventEventName) Valid() bool {
+	switch e {
+	case CsatRequested:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for FinAgentMessageAuthor.
 const (
 	FinAgentMessageAuthorAgent FinAgentMessageAuthor = "agent"
@@ -1854,13 +3370,13 @@ func (e FinAgentRepliedEventEventName) Valid() bool {
 
 // Defines values for FinAgentRepliedEventMessageAuthor.
 const (
-	Fin FinAgentRepliedEventMessageAuthor = "fin"
+	FinAgentRepliedEventMessageAuthorFin FinAgentRepliedEventMessageAuthor = "fin"
 )
 
 // Valid indicates whether the value is a known member of the FinAgentRepliedEventMessageAuthor enum.
 func (e FinAgentRepliedEventMessageAuthor) Valid() bool {
 	switch e {
-	case Fin:
+	case FinAgentRepliedEventMessageAuthorFin:
 		return true
 	default:
 		return false
@@ -1869,13 +3385,16 @@ func (e FinAgentRepliedEventMessageAuthor) Valid() bool {
 
 // Defines values for FinAgentRepliedEventStatus.
 const (
-	AwaitingUserReply FinAgentRepliedEventStatus = "awaiting_user_reply"
+	FinAgentRepliedEventStatusAwaitingUserReply FinAgentRepliedEventStatus = "awaiting_user_reply"
+	FinAgentRepliedEventStatusReplying          FinAgentRepliedEventStatus = "replying"
 )
 
 // Valid indicates whether the value is a known member of the FinAgentRepliedEventStatus enum.
 func (e FinAgentRepliedEventStatus) Valid() bool {
 	switch e {
-	case AwaitingUserReply:
+	case FinAgentRepliedEventStatusAwaitingUserReply:
+		return true
+	case FinAgentRepliedEventStatusReplying:
 		return true
 	default:
 		return false
@@ -1899,13 +3418,13 @@ func (e FinAgentReplyChunkEventEventName) Valid() bool {
 
 // Defines values for FinAgentReplyChunkEventStatus.
 const (
-	Replying FinAgentReplyChunkEventStatus = "replying"
+	FinAgentReplyChunkEventStatusReplying FinAgentReplyChunkEventStatus = "replying"
 )
 
 // Valid indicates whether the value is a known member of the FinAgentReplyChunkEventStatus enum.
 func (e FinAgentReplyChunkEventStatus) Valid() bool {
 	switch e {
-	case Replying:
+	case FinAgentReplyChunkEventStatusReplying:
 		return true
 	default:
 		return false
@@ -1929,14 +3448,17 @@ func (e FinAgentStatusUpdatedEventEventName) Valid() bool {
 
 // Defines values for FinAgentStatusUpdatedEventStatus.
 const (
-	FinAgentStatusUpdatedEventStatusComplete  FinAgentStatusUpdatedEventStatus = "complete"
-	FinAgentStatusUpdatedEventStatusEscalated FinAgentStatusUpdatedEventStatus = "escalated"
-	FinAgentStatusUpdatedEventStatusResolved  FinAgentStatusUpdatedEventStatus = "resolved"
+	FinAgentStatusUpdatedEventStatusAwaitingUserReply FinAgentStatusUpdatedEventStatus = "awaiting_user_reply"
+	FinAgentStatusUpdatedEventStatusComplete          FinAgentStatusUpdatedEventStatus = "complete"
+	FinAgentStatusUpdatedEventStatusEscalated         FinAgentStatusUpdatedEventStatus = "escalated"
+	FinAgentStatusUpdatedEventStatusResolved          FinAgentStatusUpdatedEventStatus = "resolved"
 )
 
 // Valid indicates whether the value is a known member of the FinAgentStatusUpdatedEventStatus enum.
 func (e FinAgentStatusUpdatedEventStatus) Valid() bool {
 	switch e {
+	case FinAgentStatusUpdatedEventStatusAwaitingUserReply:
+		return true
 	case FinAgentStatusUpdatedEventStatusComplete:
 		return true
 	case FinAgentStatusUpdatedEventStatusEscalated:
@@ -2017,6 +3539,54 @@ func (e HelpCenterListType) Valid() bool {
 	}
 }
 
+// Defines values for HelpCenterRedirectTargetType.
+const (
+	HelpCenterRedirectTargetTypeArticle    HelpCenterRedirectTargetType = "article"
+	HelpCenterRedirectTargetTypeCollection HelpCenterRedirectTargetType = "collection"
+)
+
+// Valid indicates whether the value is a known member of the HelpCenterRedirectTargetType enum.
+func (e HelpCenterRedirectTargetType) Valid() bool {
+	switch e {
+	case HelpCenterRedirectTargetTypeArticle:
+		return true
+	case HelpCenterRedirectTargetTypeCollection:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for HelpCenterRedirectType.
+const (
+	HelpCenterRedirectTypeHelpCenterRedirect HelpCenterRedirectType = "help_center_redirect"
+)
+
+// Valid indicates whether the value is a known member of the HelpCenterRedirectType enum.
+func (e HelpCenterRedirectType) Valid() bool {
+	switch e {
+	case HelpCenterRedirectTypeHelpCenterRedirect:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for HelpCenterRedirectListType.
+const (
+	HelpCenterRedirectListTypeList HelpCenterRedirectListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the HelpCenterRedirectListType enum.
+func (e HelpCenterRedirectListType) Valid() bool {
+	switch e {
+	case HelpCenterRedirectListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for IntercomVersion.
 const (
 	N10  IntercomVersion = "1.0"
@@ -2032,6 +3602,7 @@ const (
 	N213 IntercomVersion = "2.13"
 	N214 IntercomVersion = "2.14"
 	N215 IntercomVersion = "2.15"
+	N216 IntercomVersion = "2.16"
 	N22  IntercomVersion = "2.2"
 	N23  IntercomVersion = "2.3"
 	N24  IntercomVersion = "2.4"
@@ -2070,6 +3641,8 @@ func (e IntercomVersion) Valid() bool {
 	case N214:
 		return true
 	case N215:
+		return true
+	case N216:
 		return true
 	case N22:
 		return true
@@ -2230,6 +3803,120 @@ func (e LinkedObjectListType) Valid() bool {
 	}
 }
 
+// Defines values for MacroAvailableOn.
+const (
+	Inbox     MacroAvailableOn = "inbox"
+	Messenger MacroAvailableOn = "messenger"
+)
+
+// Valid indicates whether the value is a known member of the MacroAvailableOn enum.
+func (e MacroAvailableOn) Valid() bool {
+	switch e {
+	case Inbox:
+		return true
+	case Messenger:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MacroType.
+const (
+	Macro MacroType = "macro"
+)
+
+// Valid indicates whether the value is a known member of the MacroType enum.
+func (e MacroType) Valid() bool {
+	switch e {
+	case Macro:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MacroVisibleTo.
+const (
+	MacroVisibleToEveryone      MacroVisibleTo = "everyone"
+	MacroVisibleToSpecificTeams MacroVisibleTo = "specific_teams"
+)
+
+// Valid indicates whether the value is a known member of the MacroVisibleTo enum.
+func (e MacroVisibleTo) Valid() bool {
+	switch e {
+	case MacroVisibleToEveryone:
+		return true
+	case MacroVisibleToSpecificTeams:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MacroListPagesType.
+const (
+	MacroListPagesTypePages MacroListPagesType = "pages"
+)
+
+// Valid indicates whether the value is a known member of the MacroListPagesType enum.
+func (e MacroListPagesType) Valid() bool {
+	switch e {
+	case MacroListPagesTypePages:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MacroListType.
+const (
+	MacroListTypeList MacroListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the MacroListType enum.
+func (e MacroListType) Valid() bool {
+	switch e {
+	case MacroListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MergeHistoryItemSourceContactRole.
+const (
+	MergeHistoryItemSourceContactRoleLead MergeHistoryItemSourceContactRole = "lead"
+	MergeHistoryItemSourceContactRoleUser MergeHistoryItemSourceContactRole = "user"
+)
+
+// Valid indicates whether the value is a known member of the MergeHistoryItemSourceContactRole enum.
+func (e MergeHistoryItemSourceContactRole) Valid() bool {
+	switch e {
+	case MergeHistoryItemSourceContactRoleLead:
+		return true
+	case MergeHistoryItemSourceContactRoleUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MergeHistoryListType.
+const (
+	MergeHistoryListTypeList MergeHistoryListType = "list"
+)
+
+// Valid indicates whether the value is a known member of the MergeHistoryListType enum.
+func (e MergeHistoryListType) Valid() bool {
+	switch e {
+	case MergeHistoryListTypeList:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for MessageMessageType.
 const (
 	MessageMessageTypeEmail    MessageMessageType = "email"
@@ -2338,15 +4025,33 @@ func (e NewsfeedType) Valid() bool {
 	}
 }
 
+// Defines values for OfficeHoursExceptionExceptionType.
+const (
+	OfficeHoursExceptionExceptionTypeClosed      OfficeHoursExceptionExceptionType = "closed"
+	OfficeHoursExceptionExceptionTypeCustomHours OfficeHoursExceptionExceptionType = "custom_hours"
+)
+
+// Valid indicates whether the value is a known member of the OfficeHoursExceptionExceptionType enum.
+func (e OfficeHoursExceptionExceptionType) Valid() bool {
+	switch e {
+	case OfficeHoursExceptionExceptionTypeClosed:
+		return true
+	case OfficeHoursExceptionExceptionTypeCustomHours:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for OpenConversationRequestMessageType.
 const (
-	OpenConversationRequestMessageTypeOpen OpenConversationRequestMessageType = "open"
+	Open OpenConversationRequestMessageType = "open"
 )
 
 // Valid indicates whether the value is a known member of the OpenConversationRequestMessageType enum.
 func (e OpenConversationRequestMessageType) Valid() bool {
 	switch e {
-	case OpenConversationRequestMessageTypeOpen:
+	case Open:
 		return true
 	default:
 		return false
@@ -2470,6 +4175,33 @@ func (e RegisterFinVoiceCallRequestSource) Valid() bool {
 	}
 }
 
+// Defines values for SalesAgentOutcome.
+const (
+	Disqualified       SalesAgentOutcome = "disqualified"
+	EscalatedToSupport SalesAgentOutcome = "escalated_to_support"
+	ProductDiscovery   SalesAgentOutcome = "product_discovery"
+	Qualified          SalesAgentOutcome = "qualified"
+	Spam               SalesAgentOutcome = "spam"
+)
+
+// Valid indicates whether the value is a known member of the SalesAgentOutcome enum.
+func (e SalesAgentOutcome) Valid() bool {
+	switch e {
+	case Disqualified:
+		return true
+	case EscalatedToSupport:
+		return true
+	case ProductDiscovery:
+		return true
+	case Qualified:
+		return true
+	case Spam:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SegmentPersonType.
 const (
 	SegmentPersonTypeContact SegmentPersonType = "contact"
@@ -2518,42 +4250,72 @@ func (e SegmentListType) Valid() bool {
 	}
 }
 
+// Defines values for SideConversationListPagesType.
+const (
+	SideConversationListPagesTypePages SideConversationListPagesType = "pages"
+)
+
+// Valid indicates whether the value is a known member of the SideConversationListPagesType enum.
+func (e SideConversationListPagesType) Valid() bool {
+	switch e {
+	case SideConversationListPagesTypePages:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SideConversationListType.
+const (
+	SideConversationList SideConversationListType = "side_conversation.list"
+)
+
+// Valid indicates whether the value is a known member of the SideConversationListType enum.
+func (e SideConversationListType) Valid() bool {
+	switch e {
+	case SideConversationList:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for SingleFilterSearchRequestOperator.
 const (
-	Caret       SingleFilterSearchRequestOperator = "^"
-	DollarSign  SingleFilterSearchRequestOperator = "$"
-	Empty       SingleFilterSearchRequestOperator = "!="
-	Equal       SingleFilterSearchRequestOperator = "="
-	GreaterThan SingleFilterSearchRequestOperator = ">"
-	IN          SingleFilterSearchRequestOperator = "IN"
-	LessThan    SingleFilterSearchRequestOperator = "<"
-	N1          SingleFilterSearchRequestOperator = "!~"
-	NIN         SingleFilterSearchRequestOperator = "NIN"
-	Tilde       SingleFilterSearchRequestOperator = "~"
+	SingleFilterSearchRequestOperatorCaret       SingleFilterSearchRequestOperator = "^"
+	SingleFilterSearchRequestOperatorDollarSign  SingleFilterSearchRequestOperator = "$"
+	SingleFilterSearchRequestOperatorEmpty       SingleFilterSearchRequestOperator = "!="
+	SingleFilterSearchRequestOperatorEqual       SingleFilterSearchRequestOperator = "="
+	SingleFilterSearchRequestOperatorGreaterThan SingleFilterSearchRequestOperator = ">"
+	SingleFilterSearchRequestOperatorIN          SingleFilterSearchRequestOperator = "IN"
+	SingleFilterSearchRequestOperatorLessThan    SingleFilterSearchRequestOperator = "<"
+	SingleFilterSearchRequestOperatorN1          SingleFilterSearchRequestOperator = "!~"
+	SingleFilterSearchRequestOperatorNIN         SingleFilterSearchRequestOperator = "NIN"
+	SingleFilterSearchRequestOperatorTilde       SingleFilterSearchRequestOperator = "~"
 )
 
 // Valid indicates whether the value is a known member of the SingleFilterSearchRequestOperator enum.
 func (e SingleFilterSearchRequestOperator) Valid() bool {
 	switch e {
-	case Caret:
+	case SingleFilterSearchRequestOperatorCaret:
 		return true
-	case DollarSign:
+	case SingleFilterSearchRequestOperatorDollarSign:
 		return true
-	case Empty:
+	case SingleFilterSearchRequestOperatorEmpty:
 		return true
-	case Equal:
+	case SingleFilterSearchRequestOperatorEqual:
 		return true
-	case GreaterThan:
+	case SingleFilterSearchRequestOperatorGreaterThan:
 		return true
-	case IN:
+	case SingleFilterSearchRequestOperatorIN:
 		return true
-	case LessThan:
+	case SingleFilterSearchRequestOperatorLessThan:
 		return true
-	case N1:
+	case SingleFilterSearchRequestOperatorN1:
 		return true
-	case NIN:
+	case SingleFilterSearchRequestOperatorNIN:
 		return true
-	case Tilde:
+	case SingleFilterSearchRequestOperatorTilde:
 		return true
 	default:
 		return false
@@ -2718,19 +4480,19 @@ func (e TeamListType) Valid() bool {
 
 // Defines values for TeammateReferenceType.
 const (
-	TeammateReferenceTypeAdmin TeammateReferenceType = "admin"
-	TeammateReferenceTypeBot   TeammateReferenceType = "bot"
-	TeammateReferenceTypeTeam  TeammateReferenceType = "team"
+	Admin TeammateReferenceType = "admin"
+	Bot   TeammateReferenceType = "bot"
+	Team  TeammateReferenceType = "team"
 )
 
 // Valid indicates whether the value is a known member of the TeammateReferenceType enum.
 func (e TeammateReferenceType) Valid() bool {
 	switch e {
-	case TeammateReferenceTypeAdmin:
+	case Admin:
 		return true
-	case TeammateReferenceTypeBot:
+	case Bot:
 		return true
-	case TeammateReferenceTypeTeam:
+	case Team:
 		return true
 	default:
 		return false
@@ -2898,22 +4660,22 @@ func (e TicketPartUpdatedAttributeDataValueType) Valid() bool {
 
 // Defines values for TicketPartAuthorType.
 const (
-	Admin TicketPartAuthorType = "admin"
-	Bot   TicketPartAuthorType = "bot"
-	Team  TicketPartAuthorType = "team"
-	User  TicketPartAuthorType = "user"
+	TicketPartAuthorTypeAdmin TicketPartAuthorType = "admin"
+	TicketPartAuthorTypeBot   TicketPartAuthorType = "bot"
+	TicketPartAuthorTypeTeam  TicketPartAuthorType = "team"
+	TicketPartAuthorTypeUser  TicketPartAuthorType = "user"
 )
 
 // Valid indicates whether the value is a known member of the TicketPartAuthorType enum.
 func (e TicketPartAuthorType) Valid() bool {
 	switch e {
-	case Admin:
+	case TicketPartAuthorTypeAdmin:
 		return true
-	case Bot:
+	case TicketPartAuthorTypeBot:
 		return true
-	case Team:
+	case TicketPartAuthorTypeTeam:
 		return true
-	case User:
+	case TicketPartAuthorTypeUser:
 		return true
 	default:
 		return false
@@ -3042,16 +4804,16 @@ func (e TicketTypeCategory) Valid() bool {
 
 // Defines values for UpdateArticleRequestState.
 const (
-	Draft     UpdateArticleRequestState = "draft"
-	Published UpdateArticleRequestState = "published"
+	UpdateArticleRequestStateDraft     UpdateArticleRequestState = "draft"
+	UpdateArticleRequestStatePublished UpdateArticleRequestState = "published"
 )
 
 // Valid indicates whether the value is a known member of the UpdateArticleRequestState enum.
 func (e UpdateArticleRequestState) Valid() bool {
 	switch e {
-	case Draft:
+	case UpdateArticleRequestStateDraft:
 		return true
-	case Published:
+	case UpdateArticleRequestStatePublished:
 		return true
 	default:
 		return false
@@ -3097,6 +4859,114 @@ func (e UpdateContentImportSourceRequestSyncBehavior) Valid() bool {
 	}
 }
 
+// Defines values for UpdateConversationAttributeRequestReferenceType.
+const (
+	Many UpdateConversationAttributeRequestReferenceType = "many"
+	One  UpdateConversationAttributeRequestReferenceType = "one"
+)
+
+// Valid indicates whether the value is a known member of the UpdateConversationAttributeRequestReferenceType enum.
+func (e UpdateConversationAttributeRequestReferenceType) Valid() bool {
+	switch e {
+	case Many:
+		return true
+	case One:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateDataConnectorRequestAudiences.
+const (
+	Leads    UpdateDataConnectorRequestAudiences = "leads"
+	Users    UpdateDataConnectorRequestAudiences = "users"
+	Visitors UpdateDataConnectorRequestAudiences = "visitors"
+)
+
+// Valid indicates whether the value is a known member of the UpdateDataConnectorRequestAudiences enum.
+func (e UpdateDataConnectorRequestAudiences) Valid() bool {
+	switch e {
+	case Leads:
+		return true
+	case Users:
+		return true
+	case Visitors:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateDataConnectorRequestDataInputsType.
+const (
+	Boolean UpdateDataConnectorRequestDataInputsType = "boolean"
+	Decimal UpdateDataConnectorRequestDataInputsType = "decimal"
+	Integer UpdateDataConnectorRequestDataInputsType = "integer"
+	String  UpdateDataConnectorRequestDataInputsType = "string"
+)
+
+// Valid indicates whether the value is a known member of the UpdateDataConnectorRequestDataInputsType enum.
+func (e UpdateDataConnectorRequestDataInputsType) Valid() bool {
+	switch e {
+	case Boolean:
+		return true
+	case Decimal:
+		return true
+	case Integer:
+		return true
+	case String:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateDataConnectorRequestHttpMethod.
+const (
+	UpdateDataConnectorRequestHttpMethodDelete UpdateDataConnectorRequestHttpMethod = "delete"
+	UpdateDataConnectorRequestHttpMethodGet    UpdateDataConnectorRequestHttpMethod = "get"
+	UpdateDataConnectorRequestHttpMethodPatch  UpdateDataConnectorRequestHttpMethod = "patch"
+	UpdateDataConnectorRequestHttpMethodPost   UpdateDataConnectorRequestHttpMethod = "post"
+	UpdateDataConnectorRequestHttpMethodPut    UpdateDataConnectorRequestHttpMethod = "put"
+)
+
+// Valid indicates whether the value is a known member of the UpdateDataConnectorRequestHttpMethod enum.
+func (e UpdateDataConnectorRequestHttpMethod) Valid() bool {
+	switch e {
+	case UpdateDataConnectorRequestHttpMethodDelete:
+		return true
+	case UpdateDataConnectorRequestHttpMethodGet:
+		return true
+	case UpdateDataConnectorRequestHttpMethodPatch:
+		return true
+	case UpdateDataConnectorRequestHttpMethodPost:
+		return true
+	case UpdateDataConnectorRequestHttpMethodPut:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateDataConnectorRequestState.
+const (
+	UpdateDataConnectorRequestStateDraft UpdateDataConnectorRequestState = "draft"
+	UpdateDataConnectorRequestStateLive  UpdateDataConnectorRequestState = "live"
+)
+
+// Valid indicates whether the value is a known member of the UpdateDataConnectorRequestState enum.
+func (e UpdateDataConnectorRequestState) Valid() bool {
+	switch e {
+	case UpdateDataConnectorRequestStateDraft:
+		return true
+	case UpdateDataConnectorRequestStateLive:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for UpdateExternalPageRequestLocale.
 const (
 	En UpdateExternalPageRequestLocale = "en"
@@ -3106,6 +4976,24 @@ const (
 func (e UpdateExternalPageRequestLocale) Valid() bool {
 	switch e {
 	case En:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateOfficeHoursExceptionRequestExceptionType.
+const (
+	UpdateOfficeHoursExceptionRequestExceptionTypeClosed      UpdateOfficeHoursExceptionRequestExceptionType = "closed"
+	UpdateOfficeHoursExceptionRequestExceptionTypeCustomHours UpdateOfficeHoursExceptionRequestExceptionType = "custom_hours"
+)
+
+// Valid indicates whether the value is a known member of the UpdateOfficeHoursExceptionRequestExceptionType enum.
+func (e UpdateOfficeHoursExceptionRequestExceptionType) Valid() bool {
+	switch e {
+	case UpdateOfficeHoursExceptionRequestExceptionTypeClosed:
+		return true
+	case UpdateOfficeHoursExceptionRequestExceptionTypeCustomHours:
 		return true
 	default:
 		return false
@@ -3223,24 +5111,48 @@ func (e VisitorDeletedObjectType) Valid() bool {
 	}
 }
 
+// Defines values for WhatsappMessageStatusStatus.
+const (
+	WhatsappMessageStatusStatusDelivered WhatsappMessageStatusStatus = "delivered"
+	WhatsappMessageStatusStatusFailed    WhatsappMessageStatusStatus = "failed"
+	WhatsappMessageStatusStatusRead      WhatsappMessageStatusStatus = "read"
+	WhatsappMessageStatusStatusSent      WhatsappMessageStatusStatus = "sent"
+)
+
+// Valid indicates whether the value is a known member of the WhatsappMessageStatusStatus enum.
+func (e WhatsappMessageStatusStatus) Valid() bool {
+	switch e {
+	case WhatsappMessageStatusStatusDelivered:
+		return true
+	case WhatsappMessageStatusStatusFailed:
+		return true
+	case WhatsappMessageStatusStatusRead:
+		return true
+	case WhatsappMessageStatusStatusSent:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for WhatsappMessageStatusListEventsStatus.
 const (
-	WhatsappMessageStatusListEventsStatusDelivered WhatsappMessageStatusListEventsStatus = "delivered"
-	WhatsappMessageStatusListEventsStatusFailed    WhatsappMessageStatusListEventsStatus = "failed"
-	WhatsappMessageStatusListEventsStatusRead      WhatsappMessageStatusListEventsStatus = "read"
-	WhatsappMessageStatusListEventsStatusSent      WhatsappMessageStatusListEventsStatus = "sent"
+	Delivered WhatsappMessageStatusListEventsStatus = "delivered"
+	Failed    WhatsappMessageStatusListEventsStatus = "failed"
+	Read      WhatsappMessageStatusListEventsStatus = "read"
+	Sent      WhatsappMessageStatusListEventsStatus = "sent"
 )
 
 // Valid indicates whether the value is a known member of the WhatsappMessageStatusListEventsStatus enum.
 func (e WhatsappMessageStatusListEventsStatus) Valid() bool {
 	switch e {
-	case WhatsappMessageStatusListEventsStatusDelivered:
+	case Delivered:
 		return true
-	case WhatsappMessageStatusListEventsStatusFailed:
+	case Failed:
 		return true
-	case WhatsappMessageStatusListEventsStatusRead:
+	case Read:
 		return true
-	case WhatsappMessageStatusListEventsStatusSent:
+	case Sent:
 		return true
 	default:
 		return false
@@ -3264,13 +5176,13 @@ func (e WhatsappMessageStatusListEventsType) Valid() bool {
 
 // Defines values for WhatsappMessageStatusListPagesType.
 const (
-	Pages WhatsappMessageStatusListPagesType = "pages"
+	WhatsappMessageStatusListPagesTypePages WhatsappMessageStatusListPagesType = "pages"
 )
 
 // Valid indicates whether the value is a known member of the WhatsappMessageStatusListPagesType enum.
 func (e WhatsappMessageStatusListPagesType) Valid() bool {
 	switch e {
-	case Pages:
+	case WhatsappMessageStatusListPagesTypePages:
 		return true
 	default:
 		return false
@@ -3313,11 +5225,160 @@ func (e WorkflowExportWorkflowState) Valid() bool {
 	}
 }
 
+// Defines values for ListContactMergeHistoryParamsOrder.
+const (
+	Asc  ListContactMergeHistoryParamsOrder = "asc"
+	Desc ListContactMergeHistoryParamsOrder = "desc"
+)
+
+// Valid indicates whether the value is a known member of the ListContactMergeHistoryParamsOrder enum.
+func (e ListContactMergeHistoryParamsOrder) Valid() bool {
+	switch e {
+	case Asc:
+		return true
+	case Desc:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchContentParamsStates.
+const (
+	SearchContentParamsStatesDraft     SearchContentParamsStates = "draft"
+	SearchContentParamsStatesPublished SearchContentParamsStates = "published"
+)
+
+// Valid indicates whether the value is a known member of the SearchContentParamsStates enum.
+func (e SearchContentParamsStates) Valid() bool {
+	switch e {
+	case SearchContentParamsStatesDraft:
+		return true
+	case SearchContentParamsStatesPublished:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchContentParamsTagOperator.
+const (
+	SearchContentParamsTagOperatorIN  SearchContentParamsTagOperator = "IN"
+	SearchContentParamsTagOperatorNIN SearchContentParamsTagOperator = "NIN"
+)
+
+// Valid indicates whether the value is a known member of the SearchContentParamsTagOperator enum.
+func (e SearchContentParamsTagOperator) Valid() bool {
+	switch e {
+	case SearchContentParamsTagOperatorIN:
+		return true
+	case SearchContentParamsTagOperatorNIN:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchContentParamsFolderEntityType.
+const (
+	Folder SearchContentParamsFolderEntityType = "folder"
+)
+
+// Valid indicates whether the value is a known member of the SearchContentParamsFolderEntityType enum.
+func (e SearchContentParamsFolderEntityType) Valid() bool {
+	switch e {
+	case Folder:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchContentParamsContentTypes.
+const (
+	SearchContentParamsContentTypesArticle           SearchContentParamsContentTypes = "article"
+	SearchContentParamsContentTypesExternalContent   SearchContentParamsContentTypes = "external_content"
+	SearchContentParamsContentTypesFileSourceContent SearchContentParamsContentTypes = "file_source_content"
+	SearchContentParamsContentTypesInternalArticle   SearchContentParamsContentTypes = "internal_article"
+	SearchContentParamsContentTypesSnippet           SearchContentParamsContentTypes = "snippet"
+)
+
+// Valid indicates whether the value is a known member of the SearchContentParamsContentTypes enum.
+func (e SearchContentParamsContentTypes) Valid() bool {
+	switch e {
+	case SearchContentParamsContentTypesArticle:
+		return true
+	case SearchContentParamsContentTypesExternalContent:
+		return true
+	case SearchContentParamsContentTypesFileSourceContent:
+		return true
+	case SearchContentParamsContentTypesInternalArticle:
+		return true
+	case SearchContentParamsContentTypesSnippet:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchContentParamsCopilotState.
+const (
+	SearchContentParamsCopilotStateOff SearchContentParamsCopilotState = "off"
+	SearchContentParamsCopilotStateOn  SearchContentParamsCopilotState = "on"
+)
+
+// Valid indicates whether the value is a known member of the SearchContentParamsCopilotState enum.
+func (e SearchContentParamsCopilotState) Valid() bool {
+	switch e {
+	case SearchContentParamsCopilotStateOff:
+		return true
+	case SearchContentParamsCopilotStateOn:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchContentParamsFinServiceState.
+const (
+	SearchContentParamsFinServiceStateOff SearchContentParamsFinServiceState = "off"
+	SearchContentParamsFinServiceStateOn  SearchContentParamsFinServiceState = "on"
+)
+
+// Valid indicates whether the value is a known member of the SearchContentParamsFinServiceState enum.
+func (e SearchContentParamsFinServiceState) Valid() bool {
+	switch e {
+	case SearchContentParamsFinServiceStateOff:
+		return true
+	case SearchContentParamsFinServiceStateOn:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SearchContentParamsFinSalesState.
+const (
+	Off SearchContentParamsFinSalesState = "off"
+	On  SearchContentParamsFinSalesState = "on"
+)
+
+// Valid indicates whether the value is a known member of the SearchContentParamsFinSalesState enum.
+func (e SearchContentParamsFinSalesState) Valid() bool {
+	switch e {
+	case Off:
+		return true
+	case On:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for LisDataAttributesParamsModel.
 const (
-	LisDataAttributesParamsModelCompany      LisDataAttributesParamsModel = "company"
-	LisDataAttributesParamsModelContact      LisDataAttributesParamsModel = "contact"
-	LisDataAttributesParamsModelConversation LisDataAttributesParamsModel = "conversation"
+	LisDataAttributesParamsModelCompany LisDataAttributesParamsModel = "company"
+	LisDataAttributesParamsModelContact LisDataAttributesParamsModel = "contact"
 )
 
 // Valid indicates whether the value is a known member of the LisDataAttributesParamsModel enum.
@@ -3327,7 +5388,104 @@ func (e LisDataAttributesParamsModel) Valid() bool {
 		return true
 	case LisDataAttributesParamsModelContact:
 		return true
-	case LisDataAttributesParamsModelConversation:
+	default:
+		return false
+	}
+}
+
+// Defines values for ListDataConnectorExecutionResultsParamsSuccess.
+const (
+	ListDataConnectorExecutionResultsParamsSuccessFalse ListDataConnectorExecutionResultsParamsSuccess = "false"
+	ListDataConnectorExecutionResultsParamsSuccessTrue  ListDataConnectorExecutionResultsParamsSuccess = "true"
+)
+
+// Valid indicates whether the value is a known member of the ListDataConnectorExecutionResultsParamsSuccess enum.
+func (e ListDataConnectorExecutionResultsParamsSuccess) Valid() bool {
+	switch e {
+	case ListDataConnectorExecutionResultsParamsSuccessFalse:
+		return true
+	case ListDataConnectorExecutionResultsParamsSuccessTrue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListDataConnectorExecutionResultsParamsErrorType.
+const (
+	ListDataConnectorExecutionResultsParamsErrorTypeClientSideActionError                           ListDataConnectorExecutionResultsParamsErrorType = "client_side_action_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeEmailVerificationError                          ListDataConnectorExecutionResultsParamsErrorType = "email_verification_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeFaradayError                                    ListDataConnectorExecutionResultsParamsErrorType = "faraday_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeFinActionIdentityVerificationError              ListDataConnectorExecutionResultsParamsErrorType = "fin_action_identity_verification_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeFinActionResponseFormattingError                ListDataConnectorExecutionResultsParamsErrorType = "fin_action_response_formatting_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeN3rdPartyError                                  ListDataConnectorExecutionResultsParamsErrorType = "3rd_party_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeNonFinStandaloneActionIdentityVerificationError ListDataConnectorExecutionResultsParamsErrorType = "non_fin_standalone_action_identity_verification_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeRequestConfigurationError                       ListDataConnectorExecutionResultsParamsErrorType = "request_configuration_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeRequestValidationError                          ListDataConnectorExecutionResultsParamsErrorType = "request_validation_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeResponseMappingError                            ListDataConnectorExecutionResultsParamsErrorType = "response_mapping_error"
+	ListDataConnectorExecutionResultsParamsErrorTypeTokenRefreshError                               ListDataConnectorExecutionResultsParamsErrorType = "token_refresh_error"
+)
+
+// Valid indicates whether the value is a known member of the ListDataConnectorExecutionResultsParamsErrorType enum.
+func (e ListDataConnectorExecutionResultsParamsErrorType) Valid() bool {
+	switch e {
+	case ListDataConnectorExecutionResultsParamsErrorTypeClientSideActionError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeEmailVerificationError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeFaradayError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeFinActionIdentityVerificationError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeFinActionResponseFormattingError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeN3rdPartyError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeNonFinStandaloneActionIdentityVerificationError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeRequestConfigurationError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeRequestValidationError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeResponseMappingError:
+		return true
+	case ListDataConnectorExecutionResultsParamsErrorTypeTokenRefreshError:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListDataConnectorExecutionResultsParamsIncludeBodies.
+const (
+	ListDataConnectorExecutionResultsParamsIncludeBodiesFalse ListDataConnectorExecutionResultsParamsIncludeBodies = "false"
+	ListDataConnectorExecutionResultsParamsIncludeBodiesTrue  ListDataConnectorExecutionResultsParamsIncludeBodies = "true"
+)
+
+// Valid indicates whether the value is a known member of the ListDataConnectorExecutionResultsParamsIncludeBodies enum.
+func (e ListDataConnectorExecutionResultsParamsIncludeBodies) Valid() bool {
+	switch e {
+	case ListDataConnectorExecutionResultsParamsIncludeBodiesFalse:
+		return true
+	case ListDataConnectorExecutionResultsParamsIncludeBodiesTrue:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RetrieveDataConnectorParamsStateVersion.
+const (
+	RetrieveDataConnectorParamsStateVersionDraft RetrieveDataConnectorParamsStateVersion = "draft"
+	RetrieveDataConnectorParamsStateVersionLive  RetrieveDataConnectorParamsStateVersion = "live"
+)
+
+// Valid indicates whether the value is a known member of the RetrieveDataConnectorParamsStateVersion enum.
+func (e RetrieveDataConnectorParamsStateVersion) Valid() bool {
+	switch e {
+	case RetrieveDataConnectorParamsStateVersionDraft:
+		return true
+	case RetrieveDataConnectorParamsStateVersionLive:
 		return true
 	default:
 		return false
@@ -3343,6 +5501,33 @@ const (
 func (e GetDownloadReportingDataJobIdentifierParamsAccept) Valid() bool {
 	switch e {
 	case ApplicationoctetStream:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SubmitFinCsatJSONBodyRating.
+const (
+	SubmitFinCsatJSONBodyRatingAmazing  SubmitFinCsatJSONBodyRating = "amazing"
+	SubmitFinCsatJSONBodyRatingBad      SubmitFinCsatJSONBodyRating = "bad"
+	SubmitFinCsatJSONBodyRatingGood     SubmitFinCsatJSONBodyRating = "good"
+	SubmitFinCsatJSONBodyRatingOk       SubmitFinCsatJSONBodyRating = "ok"
+	SubmitFinCsatJSONBodyRatingTerrible SubmitFinCsatJSONBodyRating = "terrible"
+)
+
+// Valid indicates whether the value is a known member of the SubmitFinCsatJSONBodyRating enum.
+func (e SubmitFinCsatJSONBodyRating) Valid() bool {
+	switch e {
+	case SubmitFinCsatJSONBodyRatingAmazing:
+		return true
+	case SubmitFinCsatJSONBodyRatingBad:
+		return true
+	case SubmitFinCsatJSONBodyRatingGood:
+		return true
+	case SubmitFinCsatJSONBodyRatingOk:
+		return true
+	case SubmitFinCsatJSONBodyRatingTerrible:
 		return true
 	default:
 		return false
@@ -3380,6 +5565,15 @@ type ActivityLogSchema struct {
 
 // ActivityLogActivityType defines model for ActivityLog.ActivityType.
 type ActivityLogActivityType string
+
+// ActivityLogEventTypeListSchema A list of all activity log event types.
+type ActivityLogEventTypeListSchema struct {
+	// EventTypes An array of activity log event type strings.
+	EventTypes *[]string `json:"event_types,omitempty"`
+
+	// Type String representing the object's type. Always has the value `activity_log_event_type.list`.
+	Type *string `json:"type,omitempty"`
+}
 
 // ActivityLogListSchema A paginated list of activity logs.
 type ActivityLogListSchema struct {
@@ -3498,6 +5692,18 @@ type AdminSchema struct {
 	// Name The name of the admin.
 	Name *string `json:"name,omitempty"`
 
+	// Role The role assigned to this admin. Only present if the admin has a role assigned.
+	Role *struct {
+		// Id The id of the role.
+		Id *string `json:"id,omitempty"`
+
+		// Name The name of the role.
+		Name *string `json:"name,omitempty"`
+
+		// Type String representing the object's type. Always has the value `role`.
+		Type *string `json:"type,omitempty"`
+	} `json:"role,omitempty"`
+
 	// TeamIds This object represents the avatar associated with the admin.
 	TeamIds           *[]int                   `json:"team_ids,omitempty"`
 	TeamPriorityLevel *TeamPriorityLevelSchema `json:"team_priority_level,omitempty"`
@@ -3560,6 +5766,9 @@ type AdminReplyConversationRequestType string
 type AdminReplyTicketRequestSchema struct {
 	// AdminId The id of the admin who is authoring the comment.
 	AdminId string `json:"admin_id"`
+
+	// AttachmentFiles A list of files that will be added as attachments. You can include up to 10 files. If both attachment_files and attachment_urls are provided, attachment_files takes precedence.
+	AttachmentFiles *[]ConversationAttachmentFilesSchema `json:"attachment_files,omitempty"`
 
 	// AttachmentUrls A list of image URLs that will be added as attachments. You can include up to 10 URLs.
 	AttachmentUrls *[]string `json:"attachment_urls,omitempty"`
@@ -3734,17 +5943,41 @@ type ArticleSchema = ArticleListItemSchema
 
 // ArticleContentSchema The Content of an Article.
 type ArticleContentSchema struct {
+	// AiChatbotAvailability Whether the article is available for AI Chatbot.
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the article is available for AI Copilot.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the article is available for AI Sales Agent.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs this article content is targeted to for Fin AI Agent. On multilingual help centers this field appears per-locale inside `translated_content`. On single-language help centers it appears at the article root level. Empty array means no audience targeting is set.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
 	// AuthorId The ID of the author of the article.
 	AuthorId *int `json:"author_id,omitempty"`
 
-	// Body The body of the article.
+	// Body The body of the article in HTML.
 	Body *string `json:"body,omitempty"`
+
+	// BodyMarkdown The body of the article in markdown.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
 
 	// CreatedAt The time when the article was created (seconds).
 	CreatedAt *int `json:"created_at,omitempty"`
 
+	// CreatedById The ID of the teammate who created this content version.
+	CreatedById *int `json:"created_by_id,omitempty"`
+
 	// Description The description of the article.
 	Description *string `json:"description,omitempty"`
+
+	// DraftUpdatedAt The time, in seconds, when this locale's staged draft was last edited, or `null` when there is no staged draft.
+	DraftUpdatedAt *int `json:"draft_updated_at,omitempty"`
+
+	// HasUnpublishedChanges Whether this locale's published content has unpublished changes staged as a draft on top of its live content.
+	HasUnpublishedChanges *bool `json:"has_unpublished_changes,omitempty"`
 
 	// State Whether the article is `published` or is a `draft` .
 	State *ArticleContentState `json:"state,omitempty"`
@@ -3757,6 +5990,9 @@ type ArticleContentSchema struct {
 
 	// UpdatedAt The time when the article was last updated (seconds).
 	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// UpdatedById The ID of the teammate who last updated this content version.
+	UpdatedById *int `json:"updated_by_id,omitempty"`
 
 	// Url The URL of the article.
 	Url *string `json:"url,omitempty"`
@@ -3786,14 +6022,29 @@ type ArticleListType string
 
 // ArticleListItemSchema The data returned about your articles when you list them.
 type ArticleListItemSchema struct {
+	// AiChatbotAvailability Whether the article is available for AI Chatbot. For multilingual articles, this will be the value of the default language's content.
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the article is available for AI Copilot. For multilingual articles, this will be the value of the default language's content.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the article is available for AI Sales Agent. For multilingual articles, this will be the value of the default language's content.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
 	// AuthorId The id of the author of the article. For multilingual articles, this will be the id of the author of the default language's content. Must be a teammate on the help center's workspace.
 	AuthorId *int `json:"author_id,omitempty"`
 
 	// Body The body of the article in HTML. For multilingual articles, this will be the body of the default language's content.
 	Body *string `json:"body,omitempty"`
 
+	// BodyMarkdown The body of the article in markdown. For multilingual articles, this will be the body of the default language's content.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
+
 	// CreatedAt The time when the article was created. For multilingual articles, this will be the timestamp of creation of the default language's content in seconds.
 	CreatedAt *int `json:"created_at,omitempty"`
+
+	// CreatedById The ID of the teammate who created the article. For multilingual articles, this will be the creator of the default language's content.
+	CreatedById *int `json:"created_by_id,omitempty"`
 
 	// DefaultLocale The default locale of the help center. This field is only returned for multilingual help centers.
 	DefaultLocale *string `json:"default_locale,omitempty"`
@@ -3801,17 +6052,29 @@ type ArticleListItemSchema struct {
 	// Description The description of the article. For multilingual articles, this will be the description of the default language's content.
 	Description *string `json:"description,omitempty"`
 
+	// DraftUpdatedAt The time, in seconds, when the staged draft was last edited, or `null` when there is no staged draft.
+	DraftUpdatedAt *int `json:"draft_updated_at,omitempty"`
+
+	// ExcludeFromArticleSuggestions Whether the article is excluded from Fin AI Agent article suggestions.
+	ExcludeFromArticleSuggestions *bool `json:"exclude_from_article_suggestions,omitempty"`
+
+	// HasUnpublishedChanges Whether the published article has unpublished changes staged as a draft on top of its live content. For multilingual articles this reflects the default language's content; a pure draft (never published) reports `false`.
+	HasUnpublishedChanges *bool `json:"has_unpublished_changes,omitempty"`
+
+	// HelpCenterAudience The audience that can view this article in the Help Center. `everyone` means all users and visitors can view it; `restricted` indicates a custom audience ruleset. For multilingual articles, this is the article-level audience.
+	HelpCenterAudience *ArticleListItemHelpCenterAudience `json:"help_center_audience,omitempty"`
+
 	// Id The unique identifier for the article which is given by Intercom.
 	Id *string `json:"id,omitempty"`
-
-	// ParentId The id of the article's parent collection or section. An article without this field stands alone.
-	ParentId *int `json:"parent_id,omitempty"`
 
 	// ParentIds The ids of the article's parent collections or sections. An article without this field stands alone.
 	ParentIds *[]int `json:"parent_ids,omitempty"`
 
-	// ParentType The type of parent, which can either be a `collection` or `section`.
-	ParentType *string `json:"parent_type,omitempty"`
+	// ScheduledPublishAt The Unix timestamp (in seconds) at which the article is scheduled to be published. `null` when no publish is scheduled. Mutually exclusive with `scheduled_unpublish_at` — at most one pending schedule exists per article.
+	ScheduledPublishAt *int `json:"scheduled_publish_at,omitempty"`
+
+	// ScheduledUnpublishAt The Unix timestamp (in seconds) at which the article is scheduled to be unpublished. `null` when no unpublish is scheduled. Mutually exclusive with `scheduled_publish_at` — at most one pending schedule exists per article.
+	ScheduledUnpublishAt *int `json:"scheduled_unpublish_at,omitempty"`
 
 	// State Whether the article is `published` or is a `draft`. For multilingual articles, this will be the state of the default language's content.
 	State *ArticleListItemState `json:"state,omitempty"`
@@ -3827,12 +6090,18 @@ type ArticleListItemSchema struct {
 	// UpdatedAt The time when the article was last updated. For multilingual articles, this will be the timestamp of last update of the default language's content in seconds.
 	UpdatedAt *int `json:"updated_at,omitempty"`
 
+	// UpdatedById The ID of the teammate who last updated the article. For multilingual articles, this will be the last editor of the default language's content.
+	UpdatedById *int `json:"updated_by_id,omitempty"`
+
 	// Url The URL of the article. For multilingual articles, this will be the URL of the default language's content.
 	Url *string `json:"url,omitempty"`
 
 	// WorkspaceId The id of the workspace which the article belongs to.
 	WorkspaceId *string `json:"workspace_id,omitempty"`
 }
+
+// ArticleListItemHelpCenterAudience The audience that can view this article in the Help Center. `everyone` means all users and visitors can view it; `restricted` indicates a custom audience ruleset. For multilingual articles, this is the article-level audience.
+type ArticleListItemHelpCenterAudience string
 
 // ArticleListItemState Whether the article is `published` or is a `draft`. For multilingual articles, this will be the state of the default language's content.
 type ArticleListItemState string
@@ -3897,6 +6166,15 @@ type ArticleStatisticsSchema struct {
 	// Conversions The number of conversations started from the article.
 	Conversions *int `json:"conversions,omitempty"`
 
+	// FinInvolvements The number of conversations in which Fin AI Agent used this article, summed across all of the article's locales.
+	FinInvolvements *int `json:"fin_involvements,omitempty"`
+
+	// FinResolutionRate The percentage of Fin AI Agent involvements that resulted in a resolution (fin_resolutions / fin_involvements * 100).
+	FinResolutionRate *float32 `json:"fin_resolution_rate,omitempty"`
+
+	// FinResolutions The number of conversations Fin AI Agent resolved using this article, summed across all of the article's locales.
+	FinResolutions *int `json:"fin_resolutions,omitempty"`
+
 	// HappyReactionPercentage The percentage of happy reactions the article has received against other types of reaction.
 	HappyReactionPercentage *float32 `json:"happy_reaction_percentage,omitempty"`
 
@@ -3906,7 +6184,7 @@ type ArticleStatisticsSchema struct {
 	// Reactions The number of total reactions the article has received.
 	Reactions *int `json:"reactions,omitempty"`
 
-	// SadReactionPercentage The percentage of sad reactions the article has received against other types of reaction.
+	// SadReactionPercentage The percentage of sad reactions the article has received against
 	SadReactionPercentage *float32 `json:"sad_reaction_percentage,omitempty"`
 
 	// Type The type of object - `article_statistics`.
@@ -4039,6 +6317,115 @@ type ArticleTranslatedContentSchema struct {
 // ArticleTranslatedContentType The type of object - article_translated_content.
 type ArticleTranslatedContentType string
 
+// ArticleVersionSchema A historical version of an article, including its content.
+type ArticleVersionSchema struct {
+	// ArticleId The unique identifier of the article this version belongs to.
+	ArticleId *string `json:"article_id,omitempty"`
+
+	// AuthorId The id of the teammate listed as the article's author at this version.
+	AuthorId *string `json:"author_id,omitempty"`
+
+	// Body The HTML body of the article at this version.
+	Body *string `json:"body,omitempty"`
+
+	// BodyMarkdown The Markdown body of the article at this version.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
+
+	// CreatedAt The time the version was created, as a UTC Unix timestamp.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// CreatedById The id of the teammate who created this version.
+	CreatedById *string `json:"created_by_id,omitempty"`
+
+	// CreatedVia How this version was created (for example `web`, `api`).
+	CreatedVia *string `json:"created_via,omitempty"`
+
+	// Description The description of the article at this version.
+	Description *string `json:"description,omitempty"`
+
+	// FromVersionId The id of the version this version was created from, or `null` if this is the first version.
+	FromVersionId *string `json:"from_version_id,omitempty"`
+
+	// Id The unique identifier for the version.
+	Id *string `json:"id,omitempty"`
+
+	// State Whether this version is the currently published version of the article (`published`) or an earlier non-live version (`draft`).
+	State *ArticleVersionState `json:"state,omitempty"`
+
+	// Title The title of the article at this version.
+	Title *string `json:"title,omitempty"`
+
+	// Type String representing the object's type. Always has the value `article_version`.
+	Type *ArticleVersionType `json:"type,omitempty"`
+
+	// UpdatedAt The time the version was last updated, as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+}
+
+// ArticleVersionState Whether this version is the currently published version of the article (`published`) or an earlier non-live version (`draft`).
+type ArticleVersionState string
+
+// ArticleVersionType String representing the object's type. Always has the value `article_version`.
+type ArticleVersionType string
+
+// ArticleVersionListSchema A paginated list of versions of an article.
+type ArticleVersionListSchema struct {
+	// Data An array of Article version summary objects.
+	Data  *[]ArticleVersionSummarySchema `json:"data,omitempty"`
+	Pages *CursorPagesSchema             `json:"pages,omitempty"`
+
+	// TotalCount A count of the total number of versions.
+	TotalCount *int `json:"total_count,omitempty"`
+
+	// Type The type of the object - `list`.
+	Type *ArticleVersionListType `json:"type,omitempty"`
+}
+
+// ArticleVersionListType The type of the object - `list`.
+type ArticleVersionListType string
+
+// ArticleVersionSummarySchema A metadata summary of an article version, as returned by the version-history list endpoint. Omits the version's body content - fetch a single version to retrieve its `body` and `body_markdown`.
+type ArticleVersionSummarySchema struct {
+	// ArticleId The unique identifier of the article this version belongs to.
+	ArticleId *string `json:"article_id,omitempty"`
+
+	// AuthorId The id of the teammate listed as the article's author at this version.
+	AuthorId *string `json:"author_id,omitempty"`
+
+	// CreatedAt The time the version was created, as a UTC Unix timestamp.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// CreatedById The id of the teammate who created this version.
+	CreatedById *string `json:"created_by_id,omitempty"`
+
+	// CreatedVia How this version was created (for example `web`, `api`).
+	CreatedVia *string `json:"created_via,omitempty"`
+
+	// Description The description of the article at this version.
+	Description *string `json:"description,omitempty"`
+
+	// FromVersionId The id of the version this version was created from, or `null` if this is the first version.
+	FromVersionId *string `json:"from_version_id,omitempty"`
+
+	// Id The unique identifier for the version.
+	Id *string `json:"id,omitempty"`
+
+	// State Whether this version is the currently published version of the article (`published`) or an earlier non-live version (`draft`).
+	State *ArticleVersionSummaryState `json:"state,omitempty"`
+
+	// Title The title of the article at this version.
+	Title *string `json:"title,omitempty"`
+
+	// Type String representing the object's type. Always has the value `article_version`.
+	Type *ArticleVersionSummaryType `json:"type,omitempty"`
+}
+
+// ArticleVersionSummaryState Whether this version is the currently published version of the article (`published`) or an earlier non-live version (`draft`).
+type ArticleVersionSummaryState string
+
+// ArticleVersionSummaryType String representing the object's type. Always has the value `article_version`.
+type ArticleVersionSummaryType string
+
 // AssignConversationRequestSchema Payload of the request to assign a conversation
 type AssignConversationRequestSchema struct {
 	// AdminId The id of the admin who is performing the action.
@@ -4095,6 +6482,57 @@ type AttachContactToConversationRequest_Customer struct {
 	union json.RawMessage
 }
 
+// AudienceSchema An audience represents a group of contacts that can be targeted by Fin.
+type AudienceSchema struct {
+	// CreatedAt The time the audience was created as a Unix timestamp.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// Id The unique identifier representing the audience.
+	Id *string `json:"id,omitempty"`
+
+	// Name The name of the audience.
+	Name *string `json:"name,omitempty"`
+
+	// Predicates The predicates that define which contacts belong to the audience.
+	Predicates *[]PredicateSchema `json:"predicates,omitempty"`
+
+	// RolePredicates Role-based predicates that further filter audience membership by contact role.
+	RolePredicates *[]PredicateSchema `json:"role_predicates,omitempty"`
+
+	// Type The type of object.
+	Type *AudienceType `json:"type,omitempty"`
+
+	// UpdatedAt The time the audience was last updated as a Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+}
+
+// AudienceType The type of object.
+type AudienceType string
+
+// AudienceListSchema A paginated list of audience objects.
+type AudienceListSchema struct {
+	// Data A list of audience objects.
+	Data *[]AudienceSchema `json:"data,omitempty"`
+
+	// Page The current page number.
+	Page *int `json:"page,omitempty"`
+
+	// PerPage The number of results per page.
+	PerPage *int `json:"per_page,omitempty"`
+
+	// TotalCount The total number of audiences.
+	TotalCount *int `json:"total_count,omitempty"`
+
+	// TotalPages The total number of pages.
+	TotalPages *int `json:"total_pages,omitempty"`
+
+	// Type The type of the object.
+	Type *AudienceListType `json:"type,omitempty"`
+}
+
+// AudienceListType The type of the object.
+type AudienceListType string
+
 // AwayStatusReasonSchema defines model for away_status_reason.
 type AwayStatusReasonSchema struct {
 	// CreatedAt The Unix timestamp when the status reason was created
@@ -4131,6 +6569,92 @@ type AwayStatusReasonListSchema struct {
 
 // AwayStatusReasonListType The type of the object
 type AwayStatusReasonListType string
+
+// BannerSchema A banner the contact currently matches, with the content and view identifier needed to display and dismiss it.
+type BannerSchema struct {
+	// Action The action a contact can take on the banner, or `null` when the banner has
+	// no action. The fields present depend on `type`:
+	// `url` (`label`, `target`), `reaction` (`reaction_set`),
+	// `email_collector`, or `product_tour` (`tour_id`, `tour_url`).
+	Action *struct {
+		// Label For `url` actions, the label shown on the action link or button.
+		Label *string `json:"label,omitempty"`
+
+		// ReactionSet For `reaction` actions, the reactions a contact can choose from.
+		ReactionSet *[]struct {
+			// Index The reaction's position in the set.
+			Index *int `json:"index,omitempty"`
+
+			// UnicodeEmoticon The reaction's unicode emoji.
+			UnicodeEmoticon *string `json:"unicode_emoticon,omitempty"`
+		} `json:"reaction_set,omitempty"`
+
+		// Target For `url` actions, the URL the contact is sent to.
+		Target *string `json:"target,omitempty"`
+
+		// TourId For `product_tour` actions, the id of the product tour to launch.
+		TourId *string `json:"tour_id,omitempty"`
+
+		// TourUrl For `product_tour` actions, the URL that launches the product tour.
+		TourUrl *string `json:"tour_url,omitempty"`
+
+		// Type The kind of action. One of `url`, `reaction`, `email_collector`, or `product_tour`.
+		Type *string `json:"type,omitempty"`
+	} `json:"action,omitempty"`
+
+	// Body The banner's body content as HTML.
+	Body *string `json:"body,omitempty"`
+
+	// ClientTargeting Reserved for future use. Always `null` in the current version — banners
+	// that depend on client-side targeting rules (such as page URL or time on
+	// page) are not returned by this endpoint.
+	ClientTargeting *[]map[string]interface{} `json:"client_targeting,omitempty"`
+
+	// CreatedAt The time the contact's view of this banner was created.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// Id The id of the banner.
+	Id *string `json:"id,omitempty"`
+
+	// Position Where the banner is positioned.
+	Position *string `json:"position,omitempty"`
+
+	// ShowDismissButton Whether the banner should display a dismiss control.
+	ShowDismissButton *bool `json:"show_dismiss_button,omitempty"`
+
+	// Style How the banner is displayed.
+	Style *string `json:"style,omitempty"`
+
+	// Title The banner's title. `null` when the banner has no title.
+	Title *string `json:"title,omitempty"`
+
+	// Type String representing the object's type. Always has the value `banner`.
+	Type *string `json:"type,omitempty"`
+
+	// ViewId The id of the contact's view of this banner. Pass this to the dismiss endpoint to record a dismissal.
+	ViewId *string `json:"view_id,omitempty"`
+}
+
+// BannerDismissSchema The result of dismissing a banner for a contact.
+type BannerDismissSchema struct {
+	// Dismissed Whether the banner view is dismissed.
+	Dismissed *bool `json:"dismissed,omitempty"`
+
+	// Type String representing the object's type. Always has the value `banner_dismiss`.
+	Type *string `json:"type,omitempty"`
+
+	// ViewId The id of the dismissed banner view.
+	ViewId *string `json:"view_id,omitempty"`
+}
+
+// BannerListSchema A list of banners a contact currently matches.
+type BannerListSchema struct {
+	// Data An array of banners.
+	Data *[]BannerSchema `json:"data,omitempty"`
+
+	// Type String representing the object's type. Always has the value `list`.
+	Type *string `json:"type,omitempty"`
+}
 
 // BrandSchema Represents a branding configuration for the workspace
 type BrandSchema struct {
@@ -4228,6 +6752,18 @@ type CallListSchema struct {
 
 	// Type String representing the object's type. Always has the value `list`.
 	Type *string `json:"type,omitempty"`
+}
+
+// ChangeTicketTypeRequestSchema You can change the type of a Ticket
+type ChangeTicketTypeRequestSchema struct {
+	// TicketAttributes The attributes to set on the ticket for the new type. Attributes matching by name and type are transferred automatically from the old type; values provided here override the transferred values.
+	TicketAttributes *map[string]interface{} `json:"ticket_attributes,omitempty"`
+
+	// TicketStateId The ID of the ticket state for the new ticket type.
+	TicketStateId string `json:"ticket_state_id"`
+
+	// TicketTypeId The ID of the new ticket type. Must be in the same category as the current type.
+	TicketTypeId string `json:"ticket_type_id"`
 }
 
 // CloseConversationRequestSchema Payload of the request to close a conversation
@@ -4331,6 +6867,14 @@ type CompanySchema struct {
 
 	// Name The name of the company.
 	Name *string `json:"name,omitempty"`
+
+	// Notes The list of notes associated with the company
+	Notes *struct {
+		Notes *[]CompanyNoteSchema `json:"notes,omitempty"`
+
+		// Type The type of the object
+		Type *CompanyNotesType `json:"type,omitempty"`
+	} `json:"notes,omitempty"`
 	Plan *struct {
 		// Id The id of the plan
 		Id *string `json:"id,omitempty"`
@@ -4379,6 +6923,9 @@ type CompanySchema struct {
 	// Website The URL for the company website.
 	Website *string `json:"website,omitempty"`
 }
+
+// CompanyNotesType The type of the object
+type CompanyNotesType string
 
 // CompanySegmentsType The type of the object
 type CompanySegmentsType string
@@ -4591,6 +7138,9 @@ type ContactSchema struct {
 	// MarkedEmailAsSpam Whether the contact has marked an email sent to them as spam.
 	MarkedEmailAsSpam *bool `json:"marked_email_as_spam,omitempty"`
 
+	// MergeHistory A list of contacts that were merged into this contact. Only included in the response when `include_merge_history=true` is passed as a query parameter. Only available for contacts with a `user` role.
+	MergeHistory *[]MergeHistoryItemSchema `json:"merge_history,omitempty"`
+
 	// Name The contacts name.
 	Name  *string             `json:"name,omitempty"`
 	Notes *ContactNotesSchema `json:"notes,omitempty"`
@@ -4599,7 +7149,7 @@ type ContactSchema struct {
 	Os *string `json:"os,omitempty"`
 
 	// OwnerId The id of an admin that has been assigned account ownership of the contact.
-	OwnerId *int `json:"owner_id,omitempty"`
+	OwnerId *string `json:"owner_id,omitempty"`
 
 	// Phone The contacts phone.
 	Phone *string `json:"phone,omitempty"`
@@ -4783,6 +7333,29 @@ type ContactReplyTicketUserIdRequestSchema = ContactReplyBaseRequestSchema
 // ContactReplyUserIdRequestSchema defines model for contact_reply_user_id_request.
 type ContactReplyUserIdRequestSchema = ContactReplyBaseRequestSchema
 
+// ContactSearchRequestSchema Search for contacts using Intercom's Search API.
+type ContactSearchRequestSchema struct {
+	Pagination *StartingAfterPagingSchema `json:"pagination,omitempty"`
+	Query      ContactSearchRequest_Query `json:"query"`
+
+	// Sort An optional object to sort the results by.
+	Sort *struct {
+		// Field The field to sort the results on.
+		Field *string `json:"field,omitempty"`
+
+		// Order The order to sort the results in. Defaults to `descending` when omitted. Values other than `ascending` or `descending` return a `400` error with code `invalid_sort_order`.
+		Order *ContactSearchRequestSortOrder `json:"order,omitempty"`
+	} `json:"sort,omitempty"`
+}
+
+// ContactSearchRequest_Query defines model for ContactSearchRequest.Query.
+type ContactSearchRequest_Query struct {
+	union json.RawMessage
+}
+
+// ContactSearchRequestSortOrder The order to sort the results in. Defaults to `descending` when omitted. Values other than `ascending` or `descending` return a `400` error with code `invalid_sort_order`.
+type ContactSearchRequestSortOrder string
+
 // ContactSegmentsSchema A list of segments objects attached to a specific contact.
 type ContactSegmentsSchema struct {
 	// Data Segment objects associated with the contact.
@@ -4833,6 +7406,78 @@ type ContactTagsSchema struct {
 
 // ContactUnarchived reference to contact object
 type ContactUnarchived = ContactReferenceSchema
+
+// ContentBulkActionRequestSchema defines model for content_bulk_action_request.
+type ContentBulkActionRequestSchema struct {
+	// Action The bulk action to perform. Allowed `content_ids[].type` values vary per action:
+	//   * `publish`, `unpublish`: `article_content`
+	//   * `delete`: `article_content`, `content_snippet`, `file_source_content`, `internal_article`
+	//   * `set_availability`, `set_audience`: `article_content`, `content_snippet`, `external_content`, `file_source_content`, `internal_article`
+	//   * `update_tags`: `article` (the parent Article id, not `article_content`), `content_snippet`, `external_content`, `file_source_content`, `internal_article`
+	Action ContentBulkActionRequestAction `json:"action"`
+
+	// Audience Required when `action` is `set_audience`. Manages segment membership.
+	Audience *struct {
+		// AddSegmentIds Segment IDs to assign to the selected content.
+		AddSegmentIds *[]int `json:"add_segment_ids,omitempty"`
+
+		// RemoveAll When `true`, removes all segments from the selected content.
+		RemoveAll *bool `json:"remove_all,omitempty"`
+
+		// RemoveSegmentIds Segment IDs to remove from the selected content.
+		RemoveSegmentIds *[]int `json:"remove_segment_ids,omitempty"`
+	} `json:"audience,omitempty"`
+
+	// Availability Required when `action` is `set_availability`. Each field is optional — only the
+	// properties present in the request are toggled.
+	Availability *struct {
+		// AiAgent Toggle Fin AI Agent availability.
+		AiAgent *bool `json:"ai_agent,omitempty"`
+
+		// Copilot Toggle Copilot availability.
+		Copilot *bool `json:"copilot,omitempty"`
+
+		// SalesAgent Toggle Sales Agent availability.
+		SalesAgent *bool `json:"sales_agent,omitempty"`
+	} `json:"availability,omitempty"`
+
+	// ContentIds Up to 1,000 content items to apply the action to.
+	ContentIds []struct {
+		Id   string                                 `json:"id"`
+		Type ContentBulkActionRequestContentIdsType `json:"type"`
+	} `json:"content_ids"`
+
+	// Tags Required when `action` is `update_tags`. Applies and/or removes existing tags.
+	// Supply at least one of `add_tag_ids` / `remove_tag_ids`. At most 100 distinct tag IDs
+	// may be supplied across `add_tag_ids` and `remove_tag_ids` combined. Tag IDs must
+	// reference existing, non-archived tags; exceeding the limit or referencing unknown or
+	// archived IDs is rejected with `parameter_invalid` (HTTP 422).
+	Tags *struct {
+		// AddTagIds Tag IDs to apply to the selected content.
+		AddTagIds *[]int `json:"add_tag_ids,omitempty"`
+
+		// RemoveTagIds Tag IDs to remove from the selected content.
+		RemoveTagIds *[]int `json:"remove_tag_ids,omitempty"`
+	} `json:"tags,omitempty"`
+}
+
+// ContentBulkActionRequestAction The bulk action to perform. Allowed `content_ids[].type` values vary per action:
+//   - `publish`, `unpublish`: `article_content`
+//   - `delete`: `article_content`, `content_snippet`, `file_source_content`, `internal_article`
+//   - `set_availability`, `set_audience`: `article_content`, `content_snippet`, `external_content`, `file_source_content`, `internal_article`
+//   - `update_tags`: `article` (the parent Article id, not `article_content`), `content_snippet`, `external_content`, `file_source_content`, `internal_article`
+type ContentBulkActionRequestAction string
+
+// ContentBulkActionRequestContentIdsType defines model for ContentBulkActionRequest.ContentIds.Type.
+type ContentBulkActionRequestContentIdsType string
+
+// ContentBulkActionResponseSchema Phase 1 envelope returned immediately after the request is enqueued. A future
+// Preview release will replace this with a polling-friendly job resource that
+// surfaces progress and per-item results (updated, unchanged, skipped, failed).
+type ContentBulkActionResponseSchema struct {
+	Status *string `json:"status,omitempty"`
+	Type   *string `json:"type,omitempty"`
+}
 
 // ContentImportSourceSchema An external source for External Pages that you add to your Fin Content Library.
 type ContentImportSourceSchema struct {
@@ -4889,6 +7534,222 @@ type ContentImportSourcesListSchema struct {
 // ContentImportSourcesListType The type of the object - `list`.
 type ContentImportSourcesListType string
 
+// ContentSearchArticleContentItemSchema A single locale variant of a help center article returned from Knowledge Hub search.
+type ContentSearchArticleContentItemSchema struct {
+	// Id The unique identifier of the article content.
+	Id *string `json:"id,omitempty"`
+
+	// Locale The locale of this article content.
+	Locale *string `json:"locale,omitempty"`
+
+	// Title The localized title of the article.
+	Title *string `json:"title,omitempty"`
+
+	// Type Always `article_content`.
+	Type *ContentSearchArticleContentItemType `json:"type,omitempty"`
+}
+
+// ContentSearchArticleContentItemType Always `article_content`.
+type ContentSearchArticleContentItemType string
+
+// ContentSearchArticleItemSchema A help center article result from Knowledge Hub search, with one nested `article_content` entry per locale.
+type ContentSearchArticleItemSchema struct {
+	// Contents One entry per locale of the article.
+	Contents *[]ContentSearchArticleContentItemSchema `json:"contents,omitempty"`
+
+	// Id The unique identifier of the article.
+	Id *string `json:"id,omitempty"`
+
+	// Title The article's canonical title.
+	Title *string `json:"title,omitempty"`
+
+	// Type Always `article`.
+	Type ContentSearchArticleItemType `json:"type"`
+}
+
+// ContentSearchArticleItemType Always `article`.
+type ContentSearchArticleItemType string
+
+// ContentSearchDefaultItemSchema The flat result shape returned from Knowledge Hub search for content snippets, external pages, uploaded files, and internal articles.
+type ContentSearchDefaultItemSchema struct {
+	// Id The unique identifier of the content item.
+	Id *string `json:"id,omitempty"`
+
+	// Title The display title of the content item.
+	Title *string `json:"title,omitempty"`
+
+	// Type The kind of content item.
+	Type ContentSearchDefaultItemType `json:"type"`
+}
+
+// ContentSearchDefaultItemType The kind of content item.
+type ContentSearchDefaultItemType string
+
+// ContentSearchResponseSchema A paginated list of Knowledge Hub content results matching a search query.
+type ContentSearchResponseSchema struct {
+	// Data The list of matched content items. Each item's `type` field determines its shape.
+	Data *[]ContentSearchResult `json:"data,omitempty"`
+
+	// Pages Pagination metadata, including links to neighbouring pages.
+	Pages *struct {
+		// Next A link to the next page of results, or null when on the last page.
+		Next *string `json:"next,omitempty"`
+
+		// Page The current page number.
+		Page *int `json:"page,omitempty"`
+
+		// PerPage Number of results per page.
+		PerPage *int `json:"per_page,omitempty"`
+
+		// Prev A link to the previous page of results, or null when on the first page.
+		Prev *string `json:"prev,omitempty"`
+
+		// TotalPages Total number of pages of results.
+		TotalPages *int                            `json:"total_pages,omitempty"`
+		Type       *ContentSearchResponsePagesType `json:"type,omitempty"`
+	} `json:"pages,omitempty"`
+
+	// TotalCount Total number of results matching the query.
+	TotalCount *int `json:"total_count,omitempty"`
+
+	// Type Always `list`.
+	Type *ContentSearchResponseType `json:"type,omitempty"`
+}
+
+// ContentSearchResponsePagesType defines model for ContentSearchResponse.Pages.Type.
+type ContentSearchResponsePagesType string
+
+// ContentSearchResponseType Always `list`.
+type ContentSearchResponseType string
+
+// ContentSearchResult A single search result. The `type` field discriminates between the flat shape used for snippets, external pages, files, and internal articles, and the nested shape used for help center articles.
+type ContentSearchResult struct {
+	union json.RawMessage
+}
+
+// ContentSnippetSchema A content snippet is a reusable piece of content for your AI agent and Copilot.
+type ContentSnippetSchema struct {
+	// AiChatbotAvailability Whether the content snippet is available for AI Chatbot (Fin).
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the content snippet is available for AI Copilot.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the content snippet is available for AI Sales Agent.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs this content snippet is targeted to for Fin AI Agent. Empty array means no audience targeting is set.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
+	// BodyMarkdown The body of the content snippet in markdown.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
+
+	// ChatbotAvailability Deprecated. Use ai_chatbot_availability instead. Whether this snippet is available for Fin (1 = on, 0 = off).
+	// Deprecated: this property has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	ChatbotAvailability *int `json:"chatbot_availability,omitempty"`
+
+	// CopilotAvailability Deprecated. Use ai_copilot_availability instead. Whether this snippet is available for Copilot (1 = on, 0 = off).
+	// Deprecated: this property has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	CopilotAvailability *int `json:"copilot_availability,omitempty"`
+
+	// CreatedAt The time the snippet was created as a UNIX timestamp.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// Id The unique identifier for the content snippet.
+	Id *string `json:"id,omitempty"`
+
+	// JsonBlocks The content blocks that make up the body of the snippet.
+	JsonBlocks *[]map[string]interface{} `json:"json_blocks,omitempty"`
+
+	// Locale The locale of the content snippet.
+	Locale *string `json:"locale,omitempty"`
+
+	// Title The title of the content snippet.
+	Title *string `json:"title,omitempty"`
+
+	// Type String representing the object's type. Always has the value `content_snippet`.
+	Type *string `json:"type,omitempty"`
+
+	// UpdatedAt The time the snippet was last updated as a UNIX timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+}
+
+// ContentSnippetCreateRequestSchema The request payload for creating a content snippet. You must provide either `json_blocks` or `body_markdown` for the snippet content — they are mutually exclusive.
+type ContentSnippetCreateRequestSchema struct {
+	// AiChatbotAvailability Whether the content snippet should be available for AI Chatbot (Fin). Defaults to false.
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the content snippet should be available for AI Copilot. Defaults to false.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the content snippet should be available for AI Sales Agent. Defaults to false.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs to target this content snippet to for Fin AI Agent. Pass an empty array or omit the field for no audience targeting. Unknown audience IDs return a `404` error with no partial commit.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
+	// BodyMarkdown The content of the snippet in markdown. An alternative to `json_blocks` — you can provide content as markdown instead of structured blocks. Mutually exclusive with `json_blocks`.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
+
+	// JsonBlocks The content blocks that make up the body of the snippet. Mutually exclusive with `body_markdown`.
+	JsonBlocks *[]map[string]interface{} `json:"json_blocks,omitempty"`
+
+	// Locale The locale of the content snippet. Defaults to `en`.
+	Locale *string `json:"locale,omitempty"`
+
+	// Title The title of the content snippet.
+	Title string `json:"title"`
+}
+
+// ContentSnippetListSchema A paginated list of content snippets.
+type ContentSnippetListSchema struct {
+	// Data An array of content snippet objects.
+	Data *[]ContentSnippetSchema `json:"data,omitempty"`
+
+	// Page The current page number.
+	Page *int `json:"page,omitempty"`
+
+	// PerPage The number of results per page.
+	PerPage *int `json:"per_page,omitempty"`
+
+	// TotalCount The total number of content snippets.
+	TotalCount *int `json:"total_count,omitempty"`
+
+	// TotalPages The total number of pages.
+	TotalPages *int                    `json:"total_pages,omitempty"`
+	Type       *ContentSnippetListType `json:"type,omitempty"`
+}
+
+// ContentSnippetListType defines model for ContentSnippetList.Type.
+type ContentSnippetListType string
+
+// ContentSnippetUpdateRequestSchema The request payload for updating a content snippet. All fields are optional — only provided fields will be updated. `json_blocks` and `body_markdown` are mutually exclusive.
+type ContentSnippetUpdateRequestSchema struct {
+	// AiChatbotAvailability Whether the content snippet should be available for AI Chatbot (Fin).
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the content snippet should be available for AI Copilot.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the content snippet should be available for AI Sales Agent.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs to target this content snippet to for Fin AI Agent. Omitting the field leaves existing audience memberships unchanged (PATCH semantics). Pass `[]` to clear all audience memberships. Unknown audience IDs return a `404` error with no partial commit.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
+	// BodyMarkdown The content of the snippet in markdown. An alternative to `json_blocks` — you can provide content as markdown instead of structured blocks. Mutually exclusive with `json_blocks`.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
+
+	// JsonBlocks The content blocks that make up the body of the snippet. Mutually exclusive with `body_markdown`.
+	JsonBlocks *[]map[string]interface{} `json:"json_blocks,omitempty"`
+
+	// Locale The locale of the content snippet.
+	Locale *string `json:"locale,omitempty"`
+
+	// Title The title of the content snippet.
+	Title *string `json:"title,omitempty"`
+}
+
 // ContentSourceSchema The content source used by AI Agent in the conversation.
 type ContentSourceSchema struct {
 	// ContentType The type of the content source.
@@ -4922,12 +7783,15 @@ type ContentSourcesListType string
 
 // ConversationSchema Conversations are how you can communicate with users in Intercom. They are created when a contact replies to an outbound message, or when one admin directly sends a message to a single contact.
 type ConversationSchema struct {
-	// AdminAssigneeId The id of the admin assigned to the conversation. If it's not assigned to an admin it will return null.
+	// AdminAssigneeId The id of the admin assigned to the conversation. If it's not assigned to an admin it will return 0.
 	AdminAssigneeId *int           `json:"admin_assignee_id,omitempty"`
 	AiAgent         *AiAgentSchema `json:"ai_agent,omitempty"`
 
 	// AiAgentParticipated Indicates whether the AI Agent participated in the conversation.
 	AiAgentParticipated *bool `json:"ai_agent_participated,omitempty"`
+
+	// Channel The channel through which the conversation was initiated and its current channel.
+	Channel *ConversationChannelSchema `json:"channel,omitempty"`
 
 	// Company The company associated with the conversation.
 	Company            *CompanySchema              `json:"company,omitempty"`
@@ -4936,23 +7800,36 @@ type ConversationSchema struct {
 	ConversationRating *ConversationRatingSchema   `json:"conversation_rating,omitempty"`
 
 	// CreatedAt The time the conversation was created.
-	CreatedAt         *int                                 `json:"created_at,omitempty"`
-	CustomAttributes  *CustomAttributesSchema              `json:"custom_attributes,omitempty"`
-	FirstContactReply *ConversationFirstContactReplySchema `json:"first_contact_reply,omitempty"`
+	CreatedAt        *int                    `json:"created_at,omitempty"`
+	CustomAttributes *CustomAttributesSchema `json:"custom_attributes,omitempty"`
+
+	// ExternalReferences References linking this conversation to records in an external helpdesk or CRM system. Populated for Fin Standalone workspaces synced from an external platform; an empty array otherwise. Sorted alphabetically by `type` and capped at 20 entries.
+	ExternalReferences *[]ConversationExternalReferenceSchema `json:"external_references,omitempty"`
+	FirstContactReply  *ConversationFirstContactReplySchema   `json:"first_contact_reply,omitempty"`
 
 	// Id The id representing the conversation.
 	Id            *string                 `json:"id,omitempty"`
 	LinkedObjects *LinkedObjectListSchema `json:"linked_objects,omitempty"`
 
+	// MonitorEvaluations QA monitor evaluations that flagged this conversation. Only included when `include_monitors=true` is passed as a query parameter.
+	MonitorEvaluations *[]ConversationMonitorEvaluationSchema `json:"monitor_evaluations,omitempty"`
+
 	// Open Indicates whether a conversation is open (true) or closed (false).
 	Open *bool `json:"open,omitempty"`
 
-	// Priority If marked as priority, it will return priority or else not_priority.
+	// Priority The priority level of the conversation. Returns one of none, low, medium, high, or urgent.
 	Priority *ConversationPriority `json:"priority,omitempty"`
 
 	// Read Indicates whether a conversation has been read.
 	Read       *bool             `json:"read,omitempty"`
-	SlaApplied *SlaAppliedSchema `json:"sla_applied,omitempty"`
+	SalesAgent *SalesAgentSchema `json:"sales_agent,omitempty"`
+
+	// SalesAgentParticipated Indicates whether the Sales Agent participated in the conversation.
+	SalesAgentParticipated *bool `json:"sales_agent_participated,omitempty"`
+
+	// Scorecards QA scorecard results for this conversation. Only included when `include_scorecards=true` is passed as a query parameter.
+	Scorecards *[]ConversationScorecardSchema `json:"scorecards,omitempty"`
+	SlaApplied *SlaAppliedSchema              `json:"sla_applied,omitempty"`
 
 	// SnoozedUntil If set this is the time in the future when this conversation will be marked as open. i.e. it will be in a snoozed state until this time. i.e. it will be in a snoozed state until this time.
 	SnoozedUntil *int                      `json:"snoozed_until,omitempty"`
@@ -4963,7 +7840,7 @@ type ConversationSchema struct {
 	Statistics *ConversationStatisticsSchema `json:"statistics,omitempty"`
 	Tags       *TagsSchema                   `json:"tags,omitempty"`
 
-	// TeamAssigneeId The id of the team assigned to the conversation. If it's not assigned to a team it will return null.
+	// TeamAssigneeId The id of the team assigned to the conversation. If it's not assigned to a team it will return 0.
 	TeamAssigneeId *int                         `json:"team_assignee_id,omitempty"`
 	Teammates      *ConversationTeammatesSchema `json:"teammates,omitempty"`
 
@@ -4980,7 +7857,7 @@ type ConversationSchema struct {
 	WaitingSince *int `json:"waiting_since,omitempty"`
 }
 
-// ConversationPriority If marked as priority, it will return priority or else not_priority.
+// ConversationPriority The priority level of the conversation. Returns one of none, low, medium, high, or urgent.
 type ConversationPriority string
 
 // ConversationState Can be set to "open", "closed" or "snoozed".
@@ -4997,6 +7874,415 @@ type ConversationAttachmentFilesSchema struct {
 	// Name The name of the file.
 	Name *string `json:"name,omitempty"`
 }
+
+// ConversationAttribute Conversation Attributes represent custom metadata fields for conversations. They support type-specific properties: strings (multiline), lists (options), and relationships (reference).
+type ConversationAttribute struct {
+	union json.RawMessage
+}
+
+// ConversationAttributeBaseSchema defines model for conversation_attribute_base.
+type ConversationAttributeBaseSchema struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// DataType The data type of the attribute. Allowed types: string, integer, list, decimal, boolean, datetime, relationship, files.
+	DataType *ConversationAttributeBaseDataType `json:"data_type,omitempty"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeBaseType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeBaseDataType The data type of the attribute. Allowed types: string, integer, list, decimal, boolean, datetime, relationship, files.
+type ConversationAttributeBaseDataType string
+
+// ConversationAttributeBaseType Value is `conversation_attribute`.
+type ConversationAttributeBaseType string
+
+// ConversationAttributeBooleanType defines model for conversation_attribute_boolean_type.
+type ConversationAttributeBooleanType struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int                                     `json:"created_at,omitempty"`
+	DataType  ConversationAttributeBooleanTypeDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeBooleanTypeType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeBooleanTypeDataType defines model for ConversationAttributeBooleanType.DataType.
+type ConversationAttributeBooleanTypeDataType string
+
+// ConversationAttributeBooleanTypeType Value is `conversation_attribute`.
+type ConversationAttributeBooleanTypeType string
+
+// ConversationAttributeDatetimeType defines model for conversation_attribute_datetime_type.
+type ConversationAttributeDatetimeType struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int                                      `json:"created_at,omitempty"`
+	DataType  ConversationAttributeDatetimeTypeDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeDatetimeTypeType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeDatetimeTypeDataType defines model for ConversationAttributeDatetimeType.DataType.
+type ConversationAttributeDatetimeTypeDataType string
+
+// ConversationAttributeDatetimeTypeType Value is `conversation_attribute`.
+type ConversationAttributeDatetimeTypeType string
+
+// ConversationAttributeDecimalType defines model for conversation_attribute_decimal_type.
+type ConversationAttributeDecimalType struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int                                     `json:"created_at,omitempty"`
+	DataType  ConversationAttributeDecimalTypeDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeDecimalTypeType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeDecimalTypeDataType defines model for ConversationAttributeDecimalType.DataType.
+type ConversationAttributeDecimalTypeDataType string
+
+// ConversationAttributeDecimalTypeType Value is `conversation_attribute`.
+type ConversationAttributeDecimalTypeType string
+
+// ConversationAttributeFilesType defines model for conversation_attribute_files_type.
+type ConversationAttributeFilesType struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int                                   `json:"created_at,omitempty"`
+	DataType  ConversationAttributeFilesTypeDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeFilesTypeType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeFilesTypeDataType defines model for ConversationAttributeFilesType.DataType.
+type ConversationAttributeFilesTypeDataType string
+
+// ConversationAttributeFilesTypeType Value is `conversation_attribute`.
+type ConversationAttributeFilesTypeType string
+
+// ConversationAttributeIntegerType defines model for conversation_attribute_integer_type.
+type ConversationAttributeIntegerType struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int                                     `json:"created_at,omitempty"`
+	DataType  ConversationAttributeIntegerTypeDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeIntegerTypeType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeIntegerTypeDataType defines model for ConversationAttributeIntegerType.DataType.
+type ConversationAttributeIntegerTypeDataType string
+
+// ConversationAttributeIntegerTypeType Value is `conversation_attribute`.
+type ConversationAttributeIntegerTypeType string
+
+// ConversationAttributeListSchema A list of all conversation attributes belonging to a workspace.
+type ConversationAttributeListSchema struct {
+	// Data A list of conversation attributes.
+	Data *[]ConversationAttribute `json:"data,omitempty"`
+
+	// Type The type of the object.
+	Type *ConversationAttributeListType `json:"type,omitempty"`
+}
+
+// ConversationAttributeListType The type of the object.
+type ConversationAttributeListType string
+
+// ConversationAttributeListTypeSchema defines model for conversation_attribute_list_type.
+type ConversationAttributeListTypeSchema struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int                                  `json:"created_at,omitempty"`
+	DataType  ConversationAttributeListTypeDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Options Predefined options for this attribute. Each option has a unique UUID used to identify it in the options management endpoints.
+	Options *[]ConversationAttributeOptionSchema `json:"options,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeListTypeType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeListTypeDataType defines model for ConversationAttributeListType.DataType.
+type ConversationAttributeListTypeDataType string
+
+// ConversationAttributeListTypeType Value is `conversation_attribute`.
+type ConversationAttributeListTypeType string
+
+// ConversationAttributeOptionSchema A single option on a list-type conversation attribute.
+type ConversationAttributeOptionSchema struct {
+	// Archived Whether this option is archived (soft-deleted).
+	Archived *bool `json:"archived,omitempty"`
+
+	// Id The unique UUID identifier for this option. Use this value as `option_id` in the options management endpoints.
+	Id *string `json:"id,omitempty"`
+
+	// Label The display label for the option.
+	Label *string `json:"label,omitempty"`
+}
+
+// ConversationAttributeRelationshipType defines model for conversation_attribute_relationship_type.
+type ConversationAttributeRelationshipType struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int                                          `json:"created_at,omitempty"`
+	DataType  ConversationAttributeRelationshipTypeDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Reference Reference configuration for related objects.
+	Reference *struct {
+		// ObjectTypeId The ID of the related custom object type.
+		ObjectTypeId *string `json:"object_type_id,omitempty"`
+
+		// Type The cardinality of the relationship: `one` or `many`.
+		Type *ConversationAttributeRelationshipTypeReferenceType `json:"type,omitempty"`
+	} `json:"reference,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeRelationshipTypeType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeRelationshipTypeDataType defines model for ConversationAttributeRelationshipType.DataType.
+type ConversationAttributeRelationshipTypeDataType string
+
+// ConversationAttributeRelationshipTypeReferenceType The cardinality of the relationship: `one` or `many`.
+type ConversationAttributeRelationshipTypeReferenceType string
+
+// ConversationAttributeRelationshipTypeType Value is `conversation_attribute`.
+type ConversationAttributeRelationshipTypeType string
+
+// ConversationAttributeStringType defines model for conversation_attribute_string_type.
+type ConversationAttributeStringType struct {
+	// AdminId ID of the admin who created the attribute.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Archived Whether this attribute is archived.
+	Archived *bool `json:"archived,omitempty"`
+
+	// CreatedAt The time the attribute was created as a UTC Unix timestamp.
+	CreatedAt *int                                    `json:"created_at,omitempty"`
+	DataType  ConversationAttributeStringTypeDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Id The unique identifier for the conversation attribute.
+	Id *int `json:"id,omitempty"`
+
+	// Multiline Whether this string attribute is multiline.
+	Multiline *bool `json:"multiline,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// Type Value is `conversation_attribute`.
+	Type *ConversationAttributeStringTypeType `json:"type,omitempty"`
+
+	// UpdatedAt The time the attribute was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// ConversationAttributeStringTypeDataType defines model for ConversationAttributeStringType.DataType.
+type ConversationAttributeStringTypeDataType string
+
+// ConversationAttributeStringTypeType Value is `conversation_attribute`.
+type ConversationAttributeStringTypeType string
 
 // ConversationAttributeUpdatedByAdminSchema Contains details about Custom Data Attributes (CDAs) that were modified by an admin (operator) for conversation part type <code>conversation_attribute_updated_by_admin</code>.
 type ConversationAttributeUpdatedByAdminSchema struct {
@@ -5044,6 +8330,15 @@ type ConversationAttributeUpdatedByWorkflowSchema struct {
 	} `json:"workflow,omitempty"`
 }
 
+// ConversationChannelSchema The channel through which a conversation was originally initiated and its current channel.
+type ConversationChannelSchema struct {
+	// Current The current channel of the conversation. May differ from `initial` if the conversation was migrated between channels. Returns `null` if channel data is unavailable.
+	Current *string `json:"current,omitempty"`
+
+	// Initial The channel through which the conversation was originally initiated. Possible values include `messenger`, `zendesk_sunshine`, `zendesk_ticket`, `twitter`, `email`. Returns `null` if channel data is unavailable.
+	Initial *string `json:"initial,omitempty"`
+}
+
 // ConversationContactsSchema The list of contacts (users or leads) involved in this conversation. This will only contain one customer unless more were added via the group conversation feature.
 type ConversationContactsSchema struct {
 	// Contacts The list of contacts (users or leads) involved in this conversation. This will only contain one customer unless more were added via the group conversation feature.
@@ -5068,6 +8363,15 @@ type ConversationDeletedSchema struct {
 
 // ConversationDeletedObject always conversation
 type ConversationDeletedObject string
+
+// ConversationExternalReferenceSchema A reference linking a conversation to a record in an external helpdesk or CRM system, surfaced for Fin Standalone workspaces.
+type ConversationExternalReferenceSchema struct {
+	// Id The identifier of the record in the external system. Always serialized as a string, since some external IDs exceed 32-bit integer range.
+	Id *string `json:"id,omitempty"`
+
+	// Type The type of external system the reference points to. Possible values include `zendesk_ticket`, `zendesk_sunshine_conversation`, `salesforce_case`, `salesforce_in_app_message_conversation`, `freshdesk_ticket`, `freshchat_conversation`, `hubspot_conversation`, `custom_helpdesk_conversation`, `api_conversation`.
+	Type *string `json:"type,omitempty"`
+}
 
 // ConversationFirstContactReplySchema An object containing information on the first users message. For a contact initiated message this will represent the users original message.
 type ConversationFirstContactReplySchema struct {
@@ -5094,12 +8398,15 @@ type ConversationListType string
 
 // ConversationListItemSchema The data returned about your conversations when you list or search them.
 type ConversationListItemSchema struct {
-	// AdminAssigneeId The id of the admin assigned to the conversation. If it's not assigned to an admin it will return null.
+	// AdminAssigneeId The id of the admin assigned to the conversation. If it's not assigned to an admin it will return 0.
 	AdminAssigneeId *int           `json:"admin_assignee_id,omitempty"`
 	AiAgent         *AiAgentSchema `json:"ai_agent,omitempty"`
 
 	// AiAgentParticipated Indicates whether the AI Agent participated in the conversation.
 	AiAgentParticipated *bool `json:"ai_agent_participated,omitempty"`
+
+	// Channel The channel through which the conversation was initiated and its current channel.
+	Channel *ConversationChannelSchema `json:"channel,omitempty"`
 
 	// Company The company associated with the conversation.
 	Company            *CompanySchema              `json:"company,omitempty"`
@@ -5107,23 +8414,36 @@ type ConversationListItemSchema struct {
 	ConversationRating *ConversationRatingSchema   `json:"conversation_rating,omitempty"`
 
 	// CreatedAt The time the conversation was created.
-	CreatedAt         *int                                 `json:"created_at,omitempty"`
-	CustomAttributes  *CustomAttributesSchema              `json:"custom_attributes,omitempty"`
-	FirstContactReply *ConversationFirstContactReplySchema `json:"first_contact_reply,omitempty"`
+	CreatedAt        *int                    `json:"created_at,omitempty"`
+	CustomAttributes *CustomAttributesSchema `json:"custom_attributes,omitempty"`
+
+	// ExternalReferences References linking this conversation to records in an external helpdesk or CRM system. Populated for Fin Standalone workspaces synced from an external platform; an empty array otherwise. Sorted alphabetically by `type` and capped at 20 entries.
+	ExternalReferences *[]ConversationExternalReferenceSchema `json:"external_references,omitempty"`
+	FirstContactReply  *ConversationFirstContactReplySchema   `json:"first_contact_reply,omitempty"`
 
 	// Id The id representing the conversation.
 	Id            *string                 `json:"id,omitempty"`
 	LinkedObjects *LinkedObjectListSchema `json:"linked_objects,omitempty"`
 
+	// MonitorEvaluations QA monitor evaluations that flagged this conversation. Only included when `include_monitors=true` is passed as a query parameter.
+	MonitorEvaluations *[]ConversationMonitorEvaluationSchema `json:"monitor_evaluations,omitempty"`
+
 	// Open Indicates whether a conversation is open (true) or closed (false).
 	Open *bool `json:"open,omitempty"`
 
-	// Priority If marked as priority, it will return priority or else not_priority.
+	// Priority The priority level of the conversation. Returns one of none, low, medium, high, or urgent.
 	Priority *ConversationListItemPriority `json:"priority,omitempty"`
 
 	// Read Indicates whether a conversation has been read.
 	Read       *bool             `json:"read,omitempty"`
-	SlaApplied *SlaAppliedSchema `json:"sla_applied,omitempty"`
+	SalesAgent *SalesAgentSchema `json:"sales_agent,omitempty"`
+
+	// SalesAgentParticipated Indicates whether the Sales Agent participated in the conversation.
+	SalesAgentParticipated *bool `json:"sales_agent_participated,omitempty"`
+
+	// Scorecards QA scorecard results for this conversation. Only included when `include_scorecards=true` is passed as a query parameter.
+	Scorecards *[]ConversationScorecardSchema `json:"scorecards,omitempty"`
+	SlaApplied *SlaAppliedSchema              `json:"sla_applied,omitempty"`
 
 	// SnoozedUntil If set this is the time in the future when this conversation will be marked as open. i.e. it will be in a snoozed state until this time. i.e. it will be in a snoozed state until this time.
 	SnoozedUntil *int                      `json:"snoozed_until,omitempty"`
@@ -5134,7 +8454,7 @@ type ConversationListItemSchema struct {
 	Statistics *ConversationStatisticsSchema `json:"statistics,omitempty"`
 	Tags       *TagsSchema                   `json:"tags,omitempty"`
 
-	// TeamAssigneeId The id of the team assigned to the conversation. If it's not assigned to a team it will return null.
+	// TeamAssigneeId The id of the team assigned to the conversation. If it's not assigned to a team it will return 0.
 	TeamAssigneeId *int                         `json:"team_assignee_id,omitempty"`
 	Teammates      *ConversationTeammatesSchema `json:"teammates,omitempty"`
 
@@ -5151,11 +8471,32 @@ type ConversationListItemSchema struct {
 	WaitingSince *int `json:"waiting_since,omitempty"`
 }
 
-// ConversationListItemPriority If marked as priority, it will return priority or else not_priority.
+// ConversationListItemPriority The priority level of the conversation. Returns one of none, low, medium, high, or urgent.
 type ConversationListItemPriority string
 
 // ConversationListItemState Can be set to "open", "closed" or "snoozed".
 type ConversationListItemState string
+
+// ConversationMonitorEvaluationSchema A QA monitor evaluation that flagged this conversation. Returned in the `monitor_evaluations` array on conversation responses when `include_monitors=true` is passed.
+type ConversationMonitorEvaluationSchema struct {
+	// EvaluatedAt The time the monitor evaluated this conversation. Null in the rare case the underlying record's timestamp is not yet set.
+	EvaluatedAt *int `json:"evaluated_at,omitempty"`
+
+	// Explanation The reasoning provided by the monitor for its result. May be null if no reasoning was generated.
+	Explanation *string `json:"explanation,omitempty"`
+
+	// MonitorId The unique identifier of the monitor that produced this evaluation.
+	MonitorId *string `json:"monitor_id,omitempty"`
+
+	// MonitorName The name of the monitor at the time of evaluation. Null if the monitor has since been deleted.
+	MonitorName *string `json:"monitor_name,omitempty"`
+
+	// MonitorType The type of the monitor. Null if the monitor has since been deleted.
+	MonitorType *string `json:"monitor_type,omitempty"`
+
+	// Result The evaluation outcome reported by the monitor.
+	Result *string `json:"result,omitempty"`
+}
 
 // ConversationPartSchema A Conversation Part represents a message in the conversation.
 type ConversationPartSchema struct {
@@ -5280,36 +8621,140 @@ type ConversationResponseTimeSchema struct {
 	TeamName *string `json:"team_name,omitempty"`
 }
 
+// ConversationScorecardSchema A QA scorecard result for this conversation. Returned in the `scorecards` array on conversation responses when `include_scorecards=true` is passed.
+type ConversationScorecardSchema struct {
+	// AiScore The numeric score produced by AI evaluation, if applicable. Null when not AI-scored.
+	AiScore *float32 `json:"ai_score,omitempty"`
+
+	// EvaluatedAt The time the scorecard was last evaluated. Null in the rare case the underlying record's timestamp is not yet set.
+	EvaluatedAt *int `json:"evaluated_at,omitempty"`
+
+	// Evaluators Per-evaluator results within this scorecard.
+	Evaluators *[]ConversationScorecardEvaluatorSchema `json:"evaluators,omitempty"`
+
+	// Name The name of the scorecard.
+	Name *string `json:"name,omitempty"`
+
+	// Passed Whether the conversation passed the scorecard. Null when the scorecard has not been scored.
+	Passed           *bool                                        `json:"passed,omitempty"`
+	ReviewedTeammate *ConversationScorecardReviewedTeammateSchema `json:"reviewed_teammate,omitempty"`
+
+	// Score The numeric score for the scorecard. Null when the scorecard has not been scored.
+	Score *float32 `json:"score,omitempty"`
+
+	// ScorecardId The unique identifier of the scorecard definition.
+	ScorecardId *string `json:"scorecard_id,omitempty"`
+
+	// ScorecardType The type of scorecard.
+	ScorecardType *string `json:"scorecard_type,omitempty"`
+
+	// ScorecardVersionId The unique identifier of the specific scorecard version that produced this result.
+	ScorecardVersionId *string `json:"scorecard_version_id,omitempty"`
+}
+
+// ConversationScorecardEvaluatorSchema A single evaluator within a scorecard, including its result for this conversation.
+type ConversationScorecardEvaluatorSchema struct {
+	// EvaluatorId The unique identifier of the evaluator (criterion) within the scorecard.
+	EvaluatorId *string `json:"evaluator_id,omitempty"`
+
+	// Result The evaluator's result for this conversation. Null if the evaluator was not scored.
+	Result *ConversationScorecardEvaluatorResultSchema `json:"result,omitempty"`
+}
+
+// ConversationScorecardEvaluatorResultSchema The outcome of a single evaluator within a scorecard.
+type ConversationScorecardEvaluatorResultSchema struct {
+	// OtherText Free-text entered by the reviewer to supplement or stand in for the structured `reason_ids` — typically captured when the reviewer selects an "Other" option or adds a custom note. Null when not provided.
+	OtherText *string `json:"other_text,omitempty"`
+
+	// ReasonIds Identifiers for structured reasons assigned to the result, if any.
+	ReasonIds *[]string `json:"reason_ids,omitempty"`
+
+	// Reasoning A free-text explanation of the result.
+	Reasoning *string `json:"reasoning,omitempty"`
+
+	// Source The origin of the result (for example, `ai` or `human`).
+	Source *string `json:"source,omitempty"`
+
+	// Value The evaluator's selected value (typically a label such as `pass`, `fail`, or a category identifier).
+	Value *string `json:"value,omitempty"`
+}
+
+// ConversationScorecardReviewedTeammateSchema The teammate (or AI agent) whose handling of the conversation was reviewed by this scorecard.
+type ConversationScorecardReviewedTeammateSchema struct {
+	// AdminId The id of the admin who was reviewed. Present only when `type` is `admin`.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Type The kind of reviewee. `ai` if the conversation was handled by Fin or scored without a specific teammate; `admin` if a specific teammate was reviewed.
+	Type *ConversationScorecardReviewedTeammateType `json:"type,omitempty"`
+}
+
+// ConversationScorecardReviewedTeammateType The kind of reviewee. `ai` if the conversation was handled by Fin or scored without a specific teammate; `admin` if a specific teammate was reviewed.
+type ConversationScorecardReviewedTeammateType string
+
 // ConversationSourceSchema The type of the conversation part that started this conversation. Can be Contact, Admin, Campaign, Automated or Operator initiated.
 type ConversationSourceSchema struct {
 	// Attachments A list of attachments for the part.
-	Attachments *[]PartAttachmentSchema       `json:"attachments,omitempty"`
-	Author      *ConversationPartAuthorSchema `json:"author,omitempty"`
+	Attachments *[]PartAttachmentSchema         `json:"attachments,omitempty"`
+	Author      *ConversationSourceAuthorSchema `json:"author,omitempty"`
 
 	// Body The message body, which may contain HTML. For Twitter, this will show a generic message regarding why the body is obscured. In webhook payloads for API version 2.15+, this field returns plain text.
 	Body *string `json:"body,omitempty"`
 
-	// DeliveredAs The conversation's initiation type. Possible values are customer_initiated, campaigns_initiated (legacy campaigns), operator_initiated (Custom bot), automated (Series and other outbounds with dynamic audience message) and admin_initiated (fixed audience message, ticket initiated by an admin, group email).
-	DeliveredAs *string `json:"delivered_as,omitempty"`
+	// DeliveredAs How the conversation was initiated.
+	DeliveredAs          *string                           `json:"delivered_as,omitempty"`
+	EmailMessageMetadata *SourceEmailMessageMetadataSchema `json:"email_message_metadata,omitempty"`
 
-	// Id The id representing the message.
+	// Id The id of the source message.
 	Id *string `json:"id,omitempty"`
+
+	// Recipients The recipients of the source message. Only present for email conversations.
+	Recipients *[]struct {
+		// DropReason The reason this recipient was dropped, if applicable.
+		DropReason *string `json:"drop_reason,omitempty"`
+
+		// Email The recipient email address.
+		Email *openapi_types.Email `json:"email,omitempty"`
+
+		// Type The recipient type. One of `to`, `cc`, or `bcc`.
+		Type *string `json:"type,omitempty"`
+	} `json:"recipients,omitempty"`
 
 	// Redacted Whether or not the source message has been redacted. Only applicable for contact initiated messages.
 	Redacted *bool `json:"redacted,omitempty"`
 
+	// ReplyTo The Reply-To header addresses of the source message, where a reply will be routed. Can differ from the sender's From address. Only present for email conversations.
+	ReplyTo *[]struct {
+		// Email The Reply-To email address.
+		Email *openapi_types.Email `json:"email,omitempty"`
+
+		// Name The display name associated with the Reply-To address.
+		Name *string `json:"name,omitempty"`
+	} `json:"reply_to,omitempty"`
+
 	// Subject Optional. The message subject. For Twitter, this will show a generic message regarding why the subject is obscured. In webhook payloads for API version 2.15+, this field returns plain text.
 	Subject *string `json:"subject,omitempty"`
 
-	// Type This includes conversation, email, facebook, instagram, phone_call, phone_switch, push, sms, twitter and whatsapp.
-	Type *ConversationSourceType `json:"type,omitempty"`
+	// Type The origin of this conversation.
+	Type *string `json:"type,omitempty"`
 
 	// Url The URL where the conversation was started. For Twitter, Email, and Bots, this will be blank.
 	Url *string `json:"url,omitempty"`
 }
 
-// ConversationSourceType This includes conversation, email, facebook, instagram, phone_call, phone_switch, push, sms, twitter and whatsapp.
-type ConversationSourceType string
+// ConversationSourceAuthorSchema The author who started the conversation. Can be a Contact, Admin, or Bot.
+type ConversationSourceAuthorSchema struct {
+	// Email The email of the author.
+	Email *openapi_types.Email `json:"email,omitempty"`
+
+	// Id The id of the author.
+	Id *string `json:"id,omitempty"`
+
+	// Name The name of the author.
+	Name *string `json:"name,omitempty"`
+
+	// Type The type of the author.
+	Type *string `json:"type,omitempty"`
+}
 
 // ConversationStatisticsSchema A Statistics object containing all information required for reporting, with timestamps and calculated metrics.
 type ConversationStatisticsSchema struct {
@@ -5394,6 +8839,9 @@ type ConversationTeammatesSchema struct {
 type ConvertConversationToTicketRequestSchema struct {
 	Attributes *TicketRequestCustomAttributesSchema `json:"attributes,omitempty"`
 
+	// TicketStateId The ID of the ticket state associated with the ticket type.
+	TicketStateId *string `json:"ticket_state_id,omitempty"`
+
 	// TicketTypeId The ID of the type of ticket you want to convert the conversation to
 	TicketTypeId string `json:"ticket_type_id"`
 }
@@ -5453,11 +8901,26 @@ type ConvertVisitorRequest_Visitor struct {
 
 // CreateArticleRequestSchema You can create an Article
 type CreateArticleRequestSchema struct {
+	// AiChatbotAvailability Whether the article should be available for AI Chatbot (Fin). For multilingual articles, this sets the default language's availability.
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the article should be available for AI Copilot. For multilingual articles, this sets the default language's availability.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the article should be available for AI Sales Agent. For multilingual articles, this sets the default language's availability.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs to assign to this article for Fin AI Agent targeting. Sending a top-level `audience_ids` broadcasts the same set to every locale. For per-locale targeting, use `translated_content.<locale>.audience_ids` instead. Sending both top-level and per-locale in the same request causes top-level to win. Unknown audience IDs return a 404 error. No partial commit occurs.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
 	// AuthorId The id of the author of the article. For multilingual articles, this will be the id of the author of the default language's content. Must be a teammate on the help center's workspace.
 	AuthorId int `json:"author_id"`
 
-	// Body The content of the article. For multilingual articles, this will be the body of the default language's content.
+	// Body The content of the article in HTML. For multilingual articles, this will be the body of the default language's content. Mutually exclusive with `body_markdown`.
 	Body *string `json:"body,omitempty"`
+
+	// BodyMarkdown The content of the article in markdown. For multilingual articles, this will be the body of the default language's content. An alternative to `body` — you can provide content as markdown instead of HTML. Mutually exclusive with `body`.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
 
 	// Description The description of the article. For multilingual articles, this will be the description of the default language's content.
 	Description *string `json:"description,omitempty"`
@@ -5467,6 +8930,12 @@ type CreateArticleRequestSchema struct {
 
 	// ParentType The type of parent, which can either be a `collection` or `section`.
 	ParentType *string `json:"parent_type,omitempty"`
+
+	// ScheduledPublishAt ISO 8601 timestamp at which to schedule a future publish of the article. When set together with `state: "published"`, the article is scheduled instead of published immediately. Setting `null` cancels a pending publish schedule. Timestamps in the past or equal to the current time are rejected with 400 `parameter_invalid` — the value must be strictly in the future. Combining with `state: "draft"` returns 400 `parameter_invalid`. Sending in the same request as `scheduled_unpublish_at` returns 400 — only one pending schedule per article. Empty string returns 400 `parameter_invalid`.
+	ScheduledPublishAt *time.Time `json:"scheduled_publish_at,omitempty"`
+
+	// ScheduledUnpublishAt ISO 8601 timestamp at which to schedule a future unpublish of the article. Setting `null` cancels a pending unpublish schedule. Timestamps in the past or equal to the current time are rejected with 400 `parameter_invalid` — the value must be strictly in the future. Rejected with 400 `parameter_invalid` if the article has never been published. Sending in the same request as `scheduled_publish_at` returns 400 — only one pending schedule per article. Empty string returns 400 `parameter_invalid`.
+	ScheduledUnpublishAt *time.Time `json:"scheduled_unpublish_at,omitempty"`
 
 	// State Whether the article will be `published` or will be a `draft`. Defaults to draft. For multilingual articles, this will be the state of the default language's content.
 	State *CreateArticleRequestState `json:"state,omitempty"`
@@ -5478,6 +8947,18 @@ type CreateArticleRequestSchema struct {
 
 // CreateArticleRequestState Whether the article will be `published` or will be a `draft`. Defaults to draft. For multilingual articles, this will be the state of the default language's content.
 type CreateArticleRequestState string
+
+// CreateAudienceRequestSchema The request payload for creating an audience.
+type CreateAudienceRequestSchema struct {
+	// Name The name of the audience.
+	Name string `json:"name"`
+
+	// Predicates The predicates that define which contacts belong to the audience.
+	Predicates *[]PredicateSchema `json:"predicates,omitempty"`
+
+	// RolePredicates Role-based predicates that further filter audience membership by contact role.
+	RolePredicates *[]PredicateSchema `json:"role_predicates,omitempty"`
+}
 
 // CreateCollectionRequestSchema You can create a collection
 type CreateCollectionRequestSchema struct {
@@ -5506,6 +8987,9 @@ type CreateContactRequestSchema struct {
 	// Email The contacts email
 	Email *string `json:"email,omitempty"`
 
+	// EmailVerified Whether the contact's email address has been verified. Set to true to indicate you have verified the contact owns this email address, or false to mark it as unverified. Must be supplied together with an email in the same request; sending it without an email returns a 400.
+	EmailVerified *bool `json:"email_verified,omitempty"`
+
 	// ExternalId A unique identifier for the contact which is given to Intercom
 	ExternalId *string `json:"external_id,omitempty"`
 
@@ -5516,7 +9000,7 @@ type CreateContactRequestSchema struct {
 	Name *string `json:"name,omitempty"`
 
 	// OwnerId The id of an admin that has been assigned account ownership of the contact
-	OwnerId *int `json:"owner_id,omitempty"`
+	OwnerId *string `json:"owner_id,omitempty"`
 
 	// Phone The contacts phone
 	Phone *string `json:"phone,omitempty"`
@@ -5573,6 +9057,216 @@ type CreateContentImportSourceRequestStatus string
 // CreateContentImportSourceRequestSyncBehavior If you intend to create or update External Pages via the API, this should be set to `api`.
 type CreateContentImportSourceRequestSyncBehavior string
 
+// CreateConversationAttributeBooleanRequest defines model for create_conversation_attribute_boolean_request.
+type CreateConversationAttributeBooleanRequest struct {
+	DataType CreateConversationAttributeBooleanRequestDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeBooleanRequestDataType defines model for CreateConversationAttributeBooleanRequest.DataType.
+type CreateConversationAttributeBooleanRequestDataType string
+
+// CreateConversationAttributeDatetimeRequest defines model for create_conversation_attribute_datetime_request.
+type CreateConversationAttributeDatetimeRequest struct {
+	DataType CreateConversationAttributeDatetimeRequestDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeDatetimeRequestDataType defines model for CreateConversationAttributeDatetimeRequest.DataType.
+type CreateConversationAttributeDatetimeRequestDataType string
+
+// CreateConversationAttributeDecimalRequest defines model for create_conversation_attribute_decimal_request.
+type CreateConversationAttributeDecimalRequest struct {
+	DataType CreateConversationAttributeDecimalRequestDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeDecimalRequestDataType defines model for CreateConversationAttributeDecimalRequest.DataType.
+type CreateConversationAttributeDecimalRequestDataType string
+
+// CreateConversationAttributeFilesRequest defines model for create_conversation_attribute_files_request.
+type CreateConversationAttributeFilesRequest struct {
+	DataType CreateConversationAttributeFilesRequestDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeFilesRequestDataType defines model for CreateConversationAttributeFilesRequest.DataType.
+type CreateConversationAttributeFilesRequestDataType string
+
+// CreateConversationAttributeIntegerRequest defines model for create_conversation_attribute_integer_request.
+type CreateConversationAttributeIntegerRequest struct {
+	DataType CreateConversationAttributeIntegerRequestDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeIntegerRequestDataType defines model for CreateConversationAttributeIntegerRequest.DataType.
+type CreateConversationAttributeIntegerRequestDataType string
+
+// CreateConversationAttributeListRequest defines model for create_conversation_attribute_list_request.
+type CreateConversationAttributeListRequest struct {
+	DataType CreateConversationAttributeListRequestDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Options Initial options for this list attribute. Each option must have a `label`.
+	Options *[]CreateConversationAttributeOptionRequestSchema `json:"options,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeListRequestDataType defines model for CreateConversationAttributeListRequest.DataType.
+type CreateConversationAttributeListRequestDataType string
+
+// CreateConversationAttributeOptionRequestSchema Payload for adding a new option to a list-type conversation attribute.
+type CreateConversationAttributeOptionRequestSchema struct {
+	// Label The label for the new option.
+	Label string `json:"label"`
+}
+
+// CreateConversationAttributeRelationshipRequest defines model for create_conversation_attribute_relationship_request.
+type CreateConversationAttributeRelationshipRequest struct {
+	DataType CreateConversationAttributeRelationshipRequestDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Reference Reference configuration for related objects.
+	Reference *struct {
+		// ObjectTypeId The ID of the related custom object type.
+		ObjectTypeId *string `json:"object_type_id,omitempty"`
+
+		// Type The cardinality of the relationship: `one` or `many`.
+		Type CreateConversationAttributeRelationshipRequestReferenceType `json:"type"`
+	} `json:"reference,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeRelationshipRequestDataType defines model for CreateConversationAttributeRelationshipRequest.DataType.
+type CreateConversationAttributeRelationshipRequestDataType string
+
+// CreateConversationAttributeRelationshipRequestReferenceType The cardinality of the relationship: `one` or `many`.
+type CreateConversationAttributeRelationshipRequestReferenceType string
+
+// CreateConversationAttributeRequest Payload for creating a new conversation attribute.
+type CreateConversationAttributeRequest struct {
+	union json.RawMessage
+}
+
+// CreateConversationAttributeRequestBaseSchema defines model for create_conversation_attribute_request_base.
+type CreateConversationAttributeRequestBaseSchema struct {
+	// DataType The data type of the attribute. Allowed types: string, integer, list, decimal, boolean, datetime, relationship, files.
+	DataType CreateConversationAttributeRequestBaseDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeRequestBaseDataType The data type of the attribute. Allowed types: string, integer, list, decimal, boolean, datetime, relationship, files.
+type CreateConversationAttributeRequestBaseDataType string
+
+// CreateConversationAttributeStringRequest defines model for create_conversation_attribute_string_request.
+type CreateConversationAttributeStringRequest struct {
+	DataType CreateConversationAttributeStringRequestDataType `json:"data_type"`
+
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Multiline Whether this string attribute is multiline.
+	Multiline *bool `json:"multiline,omitempty"`
+
+	// Name Name of the attribute.
+	Name string `json:"name"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// CreateConversationAttributeStringRequestDataType defines model for CreateConversationAttributeStringRequest.DataType.
+type CreateConversationAttributeStringRequestDataType string
+
 // CreateConversationRequestSchema Conversations are how you can communicate with users in Intercom. They are created when a contact replies to an outbound message, or when one admin directly sends a message to a single contact.
 type CreateConversationRequestSchema struct {
 	// AttachmentUrls A list of image URLs that will be added as attachments. You can include up to 10 URLs.
@@ -5580,6 +9274,9 @@ type CreateConversationRequestSchema struct {
 
 	// Body The content of the message. HTML is not supported.
 	Body string `json:"body"`
+
+	// BrandId The unique identifier of the brand to associate with this conversation.
+	BrandId *string `json:"brand_id,omitempty"`
 
 	// CreatedAt The time the conversation was created as a UTC Unix timestamp. If not provided, the current time will be used. This field is only recommneded for migrating past conversations from another source into Intercom.
 	CreatedAt *int `json:"created_at,omitempty"`
@@ -5631,6 +9328,81 @@ type CreateDataAttributeRequest0 struct {
 type CreateDataAttributeRequest1 struct {
 	DataType interface{} `json:"data_type,omitempty"`
 }
+
+// CreateDataConnectorRequestSchema You can create a data connector by providing the required parameters.
+type CreateDataConnectorRequestSchema struct {
+	// Audiences The user types this connector is available for.
+	Audiences *[]CreateDataConnectorRequestAudiences `json:"audiences,omitempty"`
+
+	// Body The request body template. Supports template variables.
+	Body *string `json:"body,omitempty"`
+
+	// BypassAuthentication Whether authentication is bypassed entirely (public endpoint). Defaults to false.
+	BypassAuthentication *bool `json:"bypass_authentication,omitempty"`
+
+	// CustomerAuthentication Whether the connector requires customer authentication before executing. Defaults to false.
+	CustomerAuthentication *bool `json:"customer_authentication,omitempty"`
+
+	// DataInputs Input parameters accepted by the connector.
+	DataInputs *[]struct {
+		// DefaultValue The default value for the parameter. Defaults to an empty string if omitted.
+		DefaultValue *string `json:"default_value,omitempty"`
+
+		// Description A description of the parameter.
+		Description *string `json:"description,omitempty"`
+
+		// Name The parameter name.
+		Name *string `json:"name,omitempty"`
+
+		// Required Whether the parameter is required.
+		Required *bool `json:"required,omitempty"`
+
+		// Type The parameter type.
+		Type *CreateDataConnectorRequestDataInputsType `json:"type,omitempty"`
+	} `json:"data_inputs,omitempty"`
+
+	// Description A description of what this data connector does.
+	Description *string `json:"description,omitempty"`
+
+	// DirectFinUsage Whether the connector is used directly by Fin (true) or only in workflows (false). Defaults to false.
+	DirectFinUsage *bool `json:"direct_fin_usage,omitempty"`
+
+	// Headers HTTP headers to include in the request.
+	Headers *[]struct {
+		// Name The header name.
+		Name *string `json:"name,omitempty"`
+
+		// Value The header value. Supports template variables.
+		Value *string `json:"value,omitempty"`
+	} `json:"headers,omitempty"`
+
+	// HttpMethod The HTTP method used when calling the external API.
+	HttpMethod *CreateDataConnectorRequestHttpMethod `json:"http_method,omitempty"`
+
+	// MockResponse A sample JSON response from the external API. Auto-generates `response_fields` and sets `configuration_response_type` to `mock_response_type`.
+	MockResponse *map[string]interface{} `json:"mock_response,omitempty"`
+
+	// Name The name of the data connector.
+	Name string `json:"name"`
+
+	// TokenIds IDs of authentication tokens to attach to this data connector.
+	TokenIds *[]string `json:"token_ids,omitempty"`
+
+	// Url The URL of the external API endpoint. Supports template variables like `{{order_id}}`.
+	Url *string `json:"url,omitempty"`
+
+	// ValidateMissingAttributes Whether to validate that all required data inputs have values before executing.
+	ValidateMissingAttributes *bool `json:"validate_missing_attributes,omitempty"`
+}
+
+// CreateDataConnectorRequestAudiences defines model for CreateDataConnectorRequest.Audiences.
+type CreateDataConnectorRequestAudiences string
+
+// CreateDataConnectorRequestDataInputsType The parameter type.
+type CreateDataConnectorRequestDataInputsType string
+
+// CreateDataConnectorRequestHttpMethod The HTTP method used when calling the external API.
+type CreateDataConnectorRequestHttpMethod string
 
 // CreateDataEventRequestSchema defines model for create_data_event_request.
 type CreateDataEventRequestSchema struct {
@@ -5723,13 +9495,46 @@ type CreateExternalPageRequestSchema struct {
 // CreateExternalPageRequestLocale Always en
 type CreateExternalPageRequestLocale string
 
+// CreateHelpCenterRedirectRequestSchema You can create a help center redirect.
+type CreateHelpCenterRedirectRequestSchema struct {
+	// FromUrl The source URL to redirect. Must be an absolute URL within the help center's URL space.
+	FromUrl string `json:"from_url"`
+
+	// Locale The locale of the target translation (e.g. `en`, `fr`). For article targets this selects the ArticleContent variant.
+	Locale string `json:"locale"`
+
+	// TargetId The unique identifier of the target article or collection. The target must be a member of the help center.
+	TargetId string `json:"target_id"`
+
+	// TargetType The type of the redirect target.
+	TargetType CreateHelpCenterRedirectRequestTargetType `json:"target_type"`
+}
+
+// CreateHelpCenterRedirectRequestTargetType The type of the redirect target.
+type CreateHelpCenterRedirectRequestTargetType string
+
 // CreateInternalArticleRequestSchema You can create an Internal Article
 type CreateInternalArticleRequestSchema struct {
+	// AiChatbotAvailability Whether the internal article should be available for AI Chatbot (Fin). Defaults to false.
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the internal article should be available for AI Copilot. Defaults to false.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the internal article should be available for AI Sales Agent. Defaults to false.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs to target this internal article to for Fin AI Agent. Pass an empty array or omit the field for no audience targeting. Unknown audience IDs return a `404` error with no partial commit.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
 	// AuthorId The id of the author of the article.
 	AuthorId int `json:"author_id"`
 
-	// Body The content of the article.
+	// Body The content of the article in HTML. Mutually exclusive with `body_markdown`.
 	Body *string `json:"body,omitempty"`
+
+	// BodyMarkdown The content of the article in markdown. An alternative to `body` — you can provide content as markdown instead of HTML. Mutually exclusive with `body`.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
 
 	// OwnerId The id of the owner of the article.
 	OwnerId int `json:"owner_id"`
@@ -5761,7 +9566,7 @@ type CreateMessageRequestSchema struct {
 		Type CreateMessageRequestFromType `json:"type"`
 	} `json:"from,omitempty"`
 
-	// MessageType The kind of message being created. Values: `in_app` or `email`.
+	// MessageType The kind of message being created. Values: `in_app`, `email` or `whatsapp`.
 	MessageType *CreateMessageRequestMessageType `json:"message_type,omitempty"`
 
 	// Subject The title of the email.
@@ -5792,7 +9597,7 @@ type CreateMessageRequest_Cc struct {
 // CreateMessageRequestFromType Always `admin`.
 type CreateMessageRequestFromType string
 
-// CreateMessageRequestMessageType The kind of message being created. Values: `in_app` or `email`.
+// CreateMessageRequestMessageType The kind of message being created. Values: `in_app`, `email` or `whatsapp`.
 type CreateMessageRequestMessageType string
 
 // CreateMessageRequestTo1 The recipients of the message.
@@ -5808,6 +9613,42 @@ type CreateMessageRequest0 = interface{}
 
 // CreateMessageRequest1 defines model for .
 type CreateMessageRequest1 = interface{}
+
+// CreateMessageRequest2 defines model for .
+type CreateMessageRequest2 = interface{}
+
+// CreateOfficeHoursExceptionRequestSchema The request payload for creating an office hours exception. Omit `time_intervals` when `exception_type` is `closed`.
+type CreateOfficeHoursExceptionRequestSchema struct {
+	// ExceptionDate The date the exception applies to, in `YYYY-MM-DD` format.
+	ExceptionDate openapi_types.Date `json:"exception_date"`
+
+	// ExceptionType The type of exception.
+	ExceptionType CreateOfficeHoursExceptionRequestExceptionType `json:"exception_type"`
+
+	// Name An optional name for the exception.
+	Name *string `json:"name,omitempty"`
+
+	// RecurringAnnually Whether the exception repeats every year on the same date.
+	RecurringAnnually *bool `json:"recurring_annually,omitempty"`
+
+	// TimeIntervals The open intervals for the exception date. Required for `custom_hours`; omit for `closed`.
+	TimeIntervals *[]OfficeHoursTimeIntervalSchema `json:"time_intervals,omitempty"`
+}
+
+// CreateOfficeHoursExceptionRequestExceptionType The type of exception.
+type CreateOfficeHoursExceptionRequestExceptionType string
+
+// CreateOfficeHoursScheduleRequestSchema The request payload for creating an office hours schedule.
+type CreateOfficeHoursScheduleRequestSchema struct {
+	// Name The name of the office hours schedule.
+	Name string `json:"name"`
+
+	// TimeIntervals The open intervals for the schedule. `start_minute` and `end_minute` must be on a 15-minute boundary.
+	TimeIntervals []OfficeHoursTimeIntervalSchema `json:"time_intervals"`
+
+	// TimeZoneName The IANA time zone the schedule's hours are evaluated in.
+	TimeZoneName string `json:"time_zone_name"`
+}
 
 // CreateOrUpdateCompanyRequestSchema You can create or update a Company
 type CreateOrUpdateCompanyRequestSchema struct {
@@ -5834,6 +9675,9 @@ type CreateOrUpdateCompanyRequestSchema struct {
 
 	// Size The number of employees in this company.
 	Size *int `json:"size,omitempty"`
+
+	// UpdateLastRequestAt Set to true to update the company's last seen time to now.
+	UpdateLastRequestAt *bool `json:"update_last_request_at,omitempty"`
 
 	// Website The URL for this company's website. Please note that the value specified here is not validated. Accepts any string.
 	Website *string `json:"website,omitempty"`
@@ -6092,6 +9936,22 @@ type CustomObjectInstanceListSchema struct {
 	Type      *string                        `json:"type,omitempty"`
 }
 
+// CustomObjectInstancesPaginatedListSchema A paginated list of custom object instances.
+type CustomObjectInstancesPaginatedListSchema struct {
+	// Data An array of Custom Object Instance objects.
+	Data  *[]*CustomObjectInstanceSchema `json:"data,omitempty"`
+	Pages *PagesLinkSchema               `json:"pages,omitempty"`
+
+	// TotalCount A count of the total number of custom object instances.
+	TotalCount *int `json:"total_count,omitempty"`
+
+	// Type The type of the object - `list`.
+	Type *CustomObjectInstancesPaginatedListType `json:"type,omitempty"`
+}
+
+// CustomObjectInstancesPaginatedListType The type of the object - `list`.
+type CustomObjectInstancesPaginatedListType string
+
 // CustomerRequestSchema defines model for customer_request.
 type CustomerRequestSchema struct {
 	union json.RawMessage
@@ -6115,7 +9975,7 @@ type CustomerRequest2 struct {
 	Email string `json:"email"`
 }
 
-// DataAttributeSchema Data Attributes are metadata used to describe your contact, company and conversation models. These include standard and custom attributes. By using the data attributes endpoint, you can get the global list of attributes for your workspace, as well as create and archive custom attributes.
+// DataAttributeSchema Data Attributes are metadata used to describe your contact and company models. These include standard and custom attributes. By using the data attributes endpoint, you can get the global list of attributes for your workspace, as well as create and archive custom attributes.
 type DataAttributeSchema struct {
 	// AdminId Teammate who created the attribute. Only applicable to CDAs
 	AdminId *string `json:"admin_id,omitempty"`
@@ -6178,7 +10038,7 @@ type DataAttributeModel string
 // DataAttributeType Value is `data_attribute`.
 type DataAttributeType string
 
-// DataAttributeListSchema A list of all data attributes belonging to a workspace for contacts, companies or conversations.
+// DataAttributeListSchema A list of all data attributes belonging to a workspace for contacts or companies.
 type DataAttributeListSchema struct {
 	// Data A list of data attributes
 	Data *[]DataAttributeSchema `json:"data,omitempty"`
@@ -6189,6 +10049,345 @@ type DataAttributeListSchema struct {
 
 // DataAttributeListType The type of the object
 type DataAttributeListType string
+
+// DataConnectorSchema A data connector allows you to make HTTP requests to external APIs from Intercom workflows and AI agents.
+type DataConnectorSchema struct {
+	// CreatedAt The time the data connector was created.
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+
+	// CreatedByAdminId The ID of the admin who created this data connector.
+	CreatedByAdminId *string `json:"created_by_admin_id,omitempty"`
+
+	// Description A description of what this data connector does.
+	Description *string `json:"description,omitempty"`
+
+	// DirectFinUsage Whether this data connector is assigned to Fin for direct usage.
+	DirectFinUsage *bool `json:"direct_fin_usage,omitempty"`
+
+	// ExecutionResultsUrl The URL path to fetch execution results for this connector.
+	ExecutionResultsUrl *string `json:"execution_results_url,omitempty"`
+
+	// HttpMethod The HTTP method used by the data connector.
+	HttpMethod *DataConnectorHttpMethod `json:"http_method,omitempty"`
+
+	// Id The unique identifier for the data connector.
+	Id *string `json:"id,omitempty"`
+
+	// Name The name of the data connector.
+	Name *string `json:"name,omitempty"`
+
+	// State The current state of the data connector.
+	State *DataConnectorState `json:"state,omitempty"`
+
+	// Type The type of object - `data_connector`.
+	Type *DataConnectorType `json:"type,omitempty"`
+
+	// UpdatedAt The time the data connector was last updated.
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+
+	// UpdatedByAdminId The ID of the admin who last updated this data connector.
+	UpdatedByAdminId *string `json:"updated_by_admin_id,omitempty"`
+}
+
+// DataConnectorHttpMethod The HTTP method used by the data connector.
+type DataConnectorHttpMethod string
+
+// DataConnectorState The current state of the data connector.
+type DataConnectorState string
+
+// DataConnectorType The type of object - `data_connector`.
+type DataConnectorType string
+
+// DataConnectorDetailSchema Full detail view of a data connector, returned by `GET /data_connectors/{id}`.
+// Includes configuration, data inputs, response fields, and object mappings.
+type DataConnectorDetailSchema struct {
+	// Audiences The audience types this connector targets.
+	Audiences *[]DataConnectorDetailAudiences `json:"audiences,omitempty"`
+
+	// Body The request body template. Supports template variables.
+	Body *string `json:"body,omitempty"`
+
+	// BypassAuthentication Whether authentication is bypassed for this connector.
+	BypassAuthentication *bool `json:"bypass_authentication,omitempty"`
+
+	// ClientFunctionName The name of the client-side function, if applicable.
+	ClientFunctionName *string `json:"client_function_name,omitempty"`
+
+	// ClientFunctionTimeoutMs Timeout in milliseconds for the client function, if applicable.
+	ClientFunctionTimeoutMs *int `json:"client_function_timeout_ms,omitempty"`
+
+	// ConfigurationResponseType The expected response format from the connector.
+	ConfigurationResponseType *DataConnectorDetailConfigurationResponseType `json:"configuration_response_type,omitempty"`
+
+	// CreatedAt The time the data connector was created.
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+
+	// CreatedByAdminId The ID of the admin who created this connector.
+	CreatedByAdminId *string `json:"created_by_admin_id,omitempty"`
+
+	// CustomerAuthentication Whether OTP authentication is enabled for this connector.
+	CustomerAuthentication *bool `json:"customer_authentication,omitempty"`
+
+	// DataInputs The input parameters accepted by this data connector.
+	DataInputs *[]struct {
+		// DefaultValue The default value for this input, if any.
+		DefaultValue *string `json:"default_value,omitempty"`
+
+		// Description A description of the input parameter.
+		Description *string `json:"description,omitempty"`
+
+		// Name The name of the input parameter.
+		Name *string `json:"name,omitempty"`
+
+		// Required Whether this input is required.
+		Required *bool `json:"required,omitempty"`
+
+		// Type The data type of the input.
+		Type *DataConnectorDetailDataInputsType `json:"type,omitempty"`
+	} `json:"data_inputs,omitempty"`
+
+	// DataTransformationType The type of data transformation applied to the response.
+	DataTransformationType *DataConnectorDetailDataTransformationType `json:"data_transformation_type,omitempty"`
+
+	// Description A description of what this data connector does.
+	Description *string `json:"description,omitempty"`
+
+	// DirectFinUsage Whether this connector is used directly by Fin.
+	DirectFinUsage *bool `json:"direct_fin_usage,omitempty"`
+
+	// ExecutionResultsUrl The URL path to fetch execution results for this connector.
+	ExecutionResultsUrl *string `json:"execution_results_url,omitempty"`
+
+	// ExecutionType How the connector executes.
+	ExecutionType *DataConnectorDetailExecutionType `json:"execution_type,omitempty"`
+
+	// Headers HTTP headers for the request. Header values are always redacted as `"****"` in responses.
+	Headers *[]struct {
+		// Name The header name.
+		Name *string `json:"name,omitempty"`
+
+		// Value Always `"****"` in responses.
+		Value *string `json:"value,omitempty"`
+	} `json:"headers,omitempty"`
+
+	// HttpMethod The HTTP method used by the data connector.
+	HttpMethod *DataConnectorDetailHttpMethod `json:"http_method,omitempty"`
+
+	// Id The unique identifier for the data connector.
+	Id *string `json:"id,omitempty"`
+
+	// Name The name of the data connector.
+	Name *string `json:"name,omitempty"`
+
+	// ObjectMappings Mappings from connector response objects to Intercom objects.
+	ObjectMappings *[]struct {
+		AttributeMappings *[]struct {
+			IntercomAttributeIdentifier *string                                                        `json:"intercom_attribute_identifier,omitempty"`
+			MappingType                 *DataConnectorDetailObjectMappingsAttributeMappingsMappingType `json:"mapping_type,omitempty"`
+			ResponseAttributePath       *string                                                        `json:"response_attribute_path,omitempty"`
+		} `json:"attribute_mappings,omitempty"`
+		IntercomObjectType *DataConnectorDetailObjectMappingsIntercomObjectType `json:"intercom_object_type,omitempty"`
+		ReferenceMappings  *[]struct {
+			IntercomAttributeIdentifier *string                                                               `json:"intercom_attribute_identifier,omitempty"`
+			IntercomObjectType          *DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectType `json:"intercom_object_type,omitempty"`
+		} `json:"reference_mappings,omitempty"`
+		ResponseObjectPath *string `json:"response_object_path,omitempty"`
+	} `json:"object_mappings,omitempty"`
+
+	// ResponseFields The fields returned in the connector response.
+	ResponseFields *[]struct {
+		// ExampleValue An example value for this field.
+		ExampleValue interface{} `json:"example_value,omitempty"`
+
+		// Path The JSON path of the response field.
+		Path *string `json:"path,omitempty"`
+
+		// Redacted Whether this field is redacted in logs.
+		Redacted *bool `json:"redacted,omitempty"`
+
+		// Type The data type of the response field.
+		Type *DataConnectorDetailResponseFieldsType `json:"type,omitempty"`
+	} `json:"response_fields,omitempty"`
+
+	// State The current state of the data connector.
+	State *DataConnectorDetailState `json:"state,omitempty"`
+
+	// TokenIds IDs of authentication tokens associated with this connector.
+	TokenIds *[]string `json:"token_ids,omitempty"`
+
+	// Type The type of object - `data_connector`.
+	Type *DataConnectorDetailType `json:"type,omitempty"`
+
+	// UpdatedAt The time the data connector was last updated.
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+
+	// UpdatedByAdminId The ID of the admin who last updated this connector.
+	UpdatedByAdminId *string `json:"updated_by_admin_id,omitempty"`
+
+	// Url The URL of the external API endpoint. Supports template variables like `{{order_id}}`.
+	Url *string `json:"url,omitempty"`
+
+	// ValidateMissingAttributes Whether to validate missing attributes before execution.
+	ValidateMissingAttributes *bool `json:"validate_missing_attributes,omitempty"`
+}
+
+// DataConnectorDetailAudiences defines model for DataConnectorDetail.Audiences.
+type DataConnectorDetailAudiences string
+
+// DataConnectorDetailConfigurationResponseType The expected response format from the connector.
+type DataConnectorDetailConfigurationResponseType string
+
+// DataConnectorDetailDataInputsType The data type of the input.
+type DataConnectorDetailDataInputsType string
+
+// DataConnectorDetailDataTransformationType The type of data transformation applied to the response.
+type DataConnectorDetailDataTransformationType string
+
+// DataConnectorDetailExecutionType How the connector executes.
+type DataConnectorDetailExecutionType string
+
+// DataConnectorDetailHttpMethod The HTTP method used by the data connector.
+type DataConnectorDetailHttpMethod string
+
+// DataConnectorDetailObjectMappingsAttributeMappingsMappingType defines model for DataConnectorDetail.ObjectMappings.AttributeMappings.MappingType.
+type DataConnectorDetailObjectMappingsAttributeMappingsMappingType string
+
+// DataConnectorDetailObjectMappingsIntercomObjectType defines model for DataConnectorDetail.ObjectMappings.IntercomObjectType.
+type DataConnectorDetailObjectMappingsIntercomObjectType string
+
+// DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectType defines model for DataConnectorDetail.ObjectMappings.ReferenceMappings.IntercomObjectType.
+type DataConnectorDetailObjectMappingsReferenceMappingsIntercomObjectType string
+
+// DataConnectorDetailResponseFieldsType The data type of the response field.
+type DataConnectorDetailResponseFieldsType string
+
+// DataConnectorDetailState The current state of the data connector.
+type DataConnectorDetailState string
+
+// DataConnectorDetailType The type of object - `data_connector`.
+type DataConnectorDetailType string
+
+// DataConnectorExecutionResultSchema An execution result from a data connector HTTP request.
+type DataConnectorExecutionResultSchema struct {
+	// ConversationId The conversation associated with this execution, if any.
+	ConversationId *string `json:"conversation_id,omitempty"`
+
+	// CreatedAt The time the execution occurred.
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+
+	// DataConnectorId The unique identifier of the data connector that produced this result.
+	DataConnectorId *string `json:"data_connector_id,omitempty"`
+
+	// ErrorMessage A human-readable error message. Query parameters, userinfo, and fragments in URLs are redacted.
+	ErrorMessage *string `json:"error_message,omitempty"`
+
+	// ErrorType The type of error that occurred, if any.
+	ErrorType *DataConnectorExecutionResultErrorType `json:"error_type,omitempty"`
+
+	// ExecutionTimeMs The execution time in milliseconds.
+	ExecutionTimeMs *int `json:"execution_time_ms,omitempty"`
+
+	// HttpMethod The HTTP method used for the request.
+	HttpMethod *DataConnectorExecutionResultHttpMethod `json:"http_method,omitempty"`
+
+	// HttpStatus The HTTP status code returned by the external API.
+	HttpStatus *int `json:"http_status,omitempty"`
+
+	// Id The unique identifier for the execution result.
+	Id *string `json:"id,omitempty"`
+
+	// RawResponseBody The raw (unmapped) response body.
+	RawResponseBody *string `json:"raw_response_body,omitempty"`
+
+	// RequestBody The request body sent to the external API.
+	RequestBody *string `json:"request_body,omitempty"`
+
+	// RequestUrl The request URL. Query parameters, userinfo, and fragments are redacted.
+	RequestUrl *string `json:"request_url,omitempty"`
+
+	// ResponseBody The response body from the external API.
+	ResponseBody *string `json:"response_body,omitempty"`
+
+	// SourceId The identifier of the source that triggered this execution.
+	SourceId *string `json:"source_id,omitempty"`
+
+	// SourceType The type of source that triggered this execution.
+	SourceType *DataConnectorExecutionResultSourceType `json:"source_type,omitempty"`
+
+	// Success Whether the execution was successful.
+	Success *bool `json:"success,omitempty"`
+
+	// Type The type of object - `data_connector.execution`.
+	Type *DataConnectorExecutionResultType `json:"type,omitempty"`
+}
+
+// DataConnectorExecutionResultErrorType The type of error that occurred, if any.
+type DataConnectorExecutionResultErrorType string
+
+// DataConnectorExecutionResultHttpMethod The HTTP method used for the request.
+type DataConnectorExecutionResultHttpMethod string
+
+// DataConnectorExecutionResultSourceType The type of source that triggered this execution.
+type DataConnectorExecutionResultSourceType string
+
+// DataConnectorExecutionResultType The type of object - `data_connector.execution`.
+type DataConnectorExecutionResultType string
+
+// DataConnectorExecutionResultListSchema A paginated list of data connector execution results.
+type DataConnectorExecutionResultListSchema struct {
+	// Data An array of execution result objects.
+	Data *[]DataConnectorExecutionResultSchema `json:"data,omitempty"`
+
+	// Pages Pagination information.
+	Pages *struct {
+		// Next Cursor for the next page of results.
+		Next *struct {
+			// StartingAfter The cursor value to use for the next page.
+			StartingAfter *string `json:"starting_after,omitempty"`
+		} `json:"next,omitempty"`
+
+		// PerPage The number of results per page.
+		PerPage *int                                       `json:"per_page,omitempty"`
+		Type    *DataConnectorExecutionResultListPagesType `json:"type,omitempty"`
+	} `json:"pages,omitempty"`
+
+	// Type The type of object - `list`.
+	Type *DataConnectorExecutionResultListType `json:"type,omitempty"`
+}
+
+// DataConnectorExecutionResultListPagesType defines model for DataConnectorExecutionResultList.Pages.Type.
+type DataConnectorExecutionResultListPagesType string
+
+// DataConnectorExecutionResultListType The type of object - `list`.
+type DataConnectorExecutionResultListType string
+
+// DataConnectorListSchema A paginated list of data connectors.
+type DataConnectorListSchema struct {
+	// Data An array of data connector objects.
+	Data *[]DataConnectorSchema `json:"data,omitempty"`
+
+	// Pages Pagination information.
+	Pages *struct {
+		// Next Cursor for the next page of results.
+		Next *struct {
+			// StartingAfter The cursor value to use for the next page.
+			StartingAfter *string `json:"starting_after,omitempty"`
+		} `json:"next,omitempty"`
+
+		// PerPage The number of results per page.
+		PerPage *int                        `json:"per_page,omitempty"`
+		Type    *DataConnectorListPagesType `json:"type,omitempty"`
+	} `json:"pages,omitempty"`
+
+	// Type The type of object - `list`.
+	Type *DataConnectorListType `json:"type,omitempty"`
+}
+
+// DataConnectorListPagesType defines model for DataConnectorList.Pages.Type.
+type DataConnectorListPagesType string
+
+// DataConnectorListType The type of object - `list`.
+type DataConnectorListType string
 
 // DataEventSchema Data events are used to notify Intercom of changes to your data.
 type DataEventSchema struct {
@@ -6431,6 +10630,64 @@ type DeletedCompanyObjectSchema struct {
 
 // DeletedCompanyObjectObject The type of object which was deleted. - `company`
 type DeletedCompanyObjectObject string
+
+// DeletedConversationItemSchema A deleted conversation record containing its ID, metrics retained status and deletion timestamp.
+type DeletedConversationItemSchema struct {
+	// DeletedAt The time when the conversation was deleted.
+	DeletedAt *int `json:"deleted_at,omitempty"`
+
+	// Id The ID of the deleted conversation.
+	Id *string `json:"id,omitempty"`
+
+	// MetricsRetained Whether reporting metrics are retained for this conversation ID
+	MetricsRetained *bool `json:"metrics_retained,omitempty"`
+
+	// Type String representing the object's type. Always has the value `conversation`.
+	Type *string `json:"type,omitempty"`
+}
+
+// DeletedConversationListSchema A paginated list of deleted conversation IDs.
+type DeletedConversationListSchema struct {
+	// Conversations The list of deleted conversation IDs.
+	Conversations *[]DeletedConversationItemSchema `json:"conversations,omitempty"`
+	Pages         *PagesLinkSchema                 `json:"pages,omitempty"`
+
+	// TotalCount Total number of items available.
+	TotalCount *int `json:"total_count,omitempty"`
+
+	// Type String representing the object's type. Always has the value `conversations.list`.
+	Type *string `json:"type,omitempty"`
+}
+
+// DeletedDataConnectorObjectSchema Response returned when a data connector is deleted.
+type DeletedDataConnectorObjectSchema struct {
+	// Deleted Whether the data connector was deleted successfully.
+	Deleted *bool `json:"deleted,omitempty"`
+
+	// Id The unique identifier for the data connector.
+	Id *string `json:"id,omitempty"`
+
+	// Object The type of object which was deleted.
+	Object *DeletedDataConnectorObjectObject `json:"object,omitempty"`
+}
+
+// DeletedDataConnectorObjectObject The type of object which was deleted.
+type DeletedDataConnectorObjectObject string
+
+// DeletedHelpCenterRedirectObjectSchema Response returned when a redirect is deleted.
+type DeletedHelpCenterRedirectObjectSchema struct {
+	// Deleted Whether the redirect was deleted successfully or not.
+	Deleted *bool `json:"deleted,omitempty"`
+
+	// Id The unique identifier for the redirect which you provided in the URL.
+	Id *string `json:"id,omitempty"`
+
+	// Object The type of object which was deleted. - `help_center_redirect`
+	Object *DeletedHelpCenterRedirectObjectObject `json:"object,omitempty"`
+}
+
+// DeletedHelpCenterRedirectObjectObject The type of object which was deleted. - `help_center_redirect`
+type DeletedHelpCenterRedirectObjectObject string
 
 // DeletedInternalArticleObjectSchema Response returned when an object is deleted
 type DeletedInternalArticleObjectSchema struct {
@@ -6700,6 +10957,50 @@ type FinAgentConversationMetadataSchema struct {
 	History *[]FinAgentMessageSchema `json:"history,omitempty"`
 }
 
+// FinAgentCsatRequestedEventSchema Event fired when Fin asks the user to rate the conversation.
+// Delivered via webhooks or SSE. Carries the rating options to present to the user; submit
+// the user's choice with POST /fin/csat. Unlike the reply events it has no message — a
+// rating survey is a set of options to choose from, not readable text.
+// Over SSE this event arrives after Fin reaches 'complete'. Because a survey is expected,
+// 'complete' does not close the stream: the connection is held open so this event can be
+// delivered, and the token is revoked once it is sent.
+type FinAgentCsatRequestedEventSchema struct {
+	// ConversationId The ID of the conversation.
+	ConversationId string `json:"conversation_id"`
+
+	// CreatedAtMs The timestamp the event was created at, with millisecond precision.
+	CreatedAtMs time.Time `json:"created_at_ms"`
+
+	// Csat The rating survey to present to the user.
+	Csat struct {
+		// Options The ordered rating options to show the user.
+		Options []struct {
+			// Emoji The emoji representing this rating.
+			Emoji string `json:"emoji"`
+
+			// Key The stable key to send back as 'rating' on POST /fin/csat.
+			Key FinAgentCsatRequestedEventCsatOptionsKey `json:"key"`
+
+			// Label The human-readable label for this rating, localised to the conversation's
+			// detected language. Distinct from 'key' — display the label, but send back
+			// the key.
+			Label string `json:"label"`
+		} `json:"options"`
+	} `json:"csat"`
+
+	// EventName The name of the event.
+	EventName FinAgentCsatRequestedEventEventName `json:"event_name"`
+
+	// UserId The ID of the user.
+	UserId string `json:"user_id"`
+}
+
+// FinAgentCsatRequestedEventCsatOptionsKey The stable key to send back as 'rating' on POST /fin/csat.
+type FinAgentCsatRequestedEventCsatOptionsKey string
+
+// FinAgentCsatRequestedEventEventName The name of the event.
+type FinAgentCsatRequestedEventEventName string
+
 // FinAgentMessageSchema A message exchanged within a Fin Agent conversation.
 type FinAgentMessageSchema struct {
 	// Author The author that created the message.
@@ -6725,7 +11026,7 @@ type FinAgentMessageAuthor string
 
 // FinAgentRepliedEventSchema Event fired when Fin replies to a user.
 // Delivered via webhooks or SSE. The content of the response will be contained in the message object.
-// Fin's status will update to 'awaiting_user_reply'.
+// Intermediate replies have status 'replying'; a separate fin_status_updated event with 'awaiting_user_reply' fires once Fin's reply is done.
 type FinAgentRepliedEventSchema struct {
 	// ConversationId The ID of the conversation.
 	ConversationId string `json:"conversation_id"`
@@ -6751,7 +11052,9 @@ type FinAgentRepliedEventSchema struct {
 		TimestampMs time.Time `json:"timestamp_ms"`
 	} `json:"message"`
 
-	// Status Fin's current status (always 'awaiting_user_reply' for this event).
+	// Status Fin's current status.
+	// - replying: Intermediate reply part; more parts may follow
+	// - awaiting_user_reply: Legacy status; instead use the fin_status_updated event with 'awaiting_user_reply', which fires once Fin's reply is done
 	Status FinAgentRepliedEventStatus `json:"status"`
 
 	// StreamId Optional. Present when the reply was generated via streaming.
@@ -6769,7 +11072,9 @@ type FinAgentRepliedEventEventName string
 // FinAgentRepliedEventMessageAuthor The author of the message (always 'fin' for this event).
 type FinAgentRepliedEventMessageAuthor string
 
-// FinAgentRepliedEventStatus Fin's current status (always 'awaiting_user_reply' for this event).
+// FinAgentRepliedEventStatus Fin's current status.
+// - replying: Intermediate reply part; more parts may follow
+// - awaiting_user_reply: Legacy status; instead use the fin_status_updated event with 'awaiting_user_reply', which fires once Fin's reply is done
 type FinAgentRepliedEventStatus string
 
 // FinAgentReplyChunkEventSchema SSE-only event fired during streaming reply generation.
@@ -6830,9 +11135,10 @@ type FinAgentStatusUpdatedEventSchema struct {
 	Reason *string `json:"reason,omitempty"`
 
 	// Status Fin's current status.
+	// - awaiting_user_reply: Fin has finished replying and is waiting for the user to respond
 	// - escalated: The conversation has been escalated to a human
 	// - resolved: The user's query has been resolved
-	// - complete: Fin has completed its workflow
+	// - complete: Fin has completed its workflow. When CSAT is enabled a csat_requested event may follow, in which case the SSE stream is held open past complete until it is delivered or the token expires
 	Status FinAgentStatusUpdatedEventStatus `json:"status"`
 
 	// UserId The ID of the user.
@@ -6843,9 +11149,10 @@ type FinAgentStatusUpdatedEventSchema struct {
 type FinAgentStatusUpdatedEventEventName string
 
 // FinAgentStatusUpdatedEventStatus Fin's current status.
+// - awaiting_user_reply: Fin has finished replying and is waiting for the user to respond
 // - escalated: The conversation has been escalated to a human
 // - resolved: The user's query has been resolved
-// - complete: Fin has completed its workflow
+// - complete: Fin has completed its workflow. When CSAT is enabled a csat_requested event may follow, in which case the SSE stream is held open past complete until it is delivered or the token expires
 type FinAgentStatusUpdatedEventStatus string
 
 // FinAgentUserSchema A user object representing the user in a Fin Agent conversation.
@@ -7031,6 +11338,9 @@ type HelpCenterSchema struct {
 	// CustomDomain Custom domain configured for the help center
 	CustomDomain *string `json:"custom_domain,omitempty"`
 
+	// Default Whether this help center is the default for the workspace.
+	Default *bool `json:"default,omitempty"`
+
 	// DisplayName The display name of the Help Center only seen by teammates.
 	DisplayName *string `json:"display_name,omitempty"`
 
@@ -7039,6 +11349,9 @@ type HelpCenterSchema struct {
 
 	// Identifier The identifier of the Help Center. This is used in the URL of the Help Center.
 	Identifier *string `json:"identifier,omitempty"`
+
+	// Locales The locales in which the help center is available.
+	Locales *[]string `json:"locales,omitempty"`
 
 	// UpdatedAt The time when the Help Center was last updated.
 	UpdatedAt *int `json:"updated_at,omitempty"`
@@ -7065,6 +11378,59 @@ type HelpCenterListSchema struct {
 // HelpCenterListType The type of the object - `list`.
 type HelpCenterListType string
 
+// HelpCenterRedirectSchema A redirect maps a source URL (`from_url`) to an article or collection within a
+// help center, so that links to old or external URLs resolve to live content.
+type HelpCenterRedirectSchema struct {
+	// CreatedAt The time the redirect was created as a UTC Unix timestamp.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// FromUrl The source URL that is redirected. An absolute URL within the help center's URL space.
+	FromUrl *string `json:"from_url,omitempty"`
+
+	// HelpCenterId The unique identifier for the help center the redirect belongs to.
+	HelpCenterId *string `json:"help_center_id,omitempty"`
+
+	// Id The unique identifier for the redirect.
+	Id *string `json:"id,omitempty"`
+
+	// Locale The locale of the redirect's target. For article targets this is the bound translation's locale, which may differ from the requested locale if no translation exists in that locale.
+	Locale *string `json:"locale,omitempty"`
+
+	// TargetId The unique identifier of the target article or collection. For article targets this is the Article ID.
+	TargetId *string `json:"target_id,omitempty"`
+
+	// TargetType The type of the redirect target.
+	TargetType *HelpCenterRedirectTargetType `json:"target_type,omitempty"`
+
+	// Type The type of the object - `help_center_redirect`.
+	Type *HelpCenterRedirectType `json:"type,omitempty"`
+
+	// UpdatedAt The time the redirect was last updated as a UTC Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+}
+
+// HelpCenterRedirectTargetType The type of the redirect target.
+type HelpCenterRedirectTargetType string
+
+// HelpCenterRedirectType The type of the object - `help_center_redirect`.
+type HelpCenterRedirectType string
+
+// HelpCenterRedirectListSchema This will return a list of redirects for the help center.
+type HelpCenterRedirectListSchema struct {
+	// Data An array of help center redirect objects.
+	Data  *[]HelpCenterRedirectSchema `json:"data,omitempty"`
+	Pages *CursorPagesSchema          `json:"pages,omitempty"`
+
+	// TotalCount A count of the total number of redirects.
+	TotalCount *int `json:"total_count,omitempty"`
+
+	// Type The type of the object - `list`.
+	Type *HelpCenterRedirectListType `json:"type,omitempty"`
+}
+
+// HelpCenterRedirectListType The type of the object - `list`.
+type HelpCenterRedirectListType string
+
 // IntercomVersion Intercom API version.</br>By default, it's equal to the version set in the app package.
 type IntercomVersion string
 
@@ -7089,11 +11455,26 @@ type InternalArticleListType string
 
 // InternalArticleListItemSchema The data returned about your internal articles when you list them.
 type InternalArticleListItemSchema struct {
+	// AiChatbotAvailability Whether the internal article is available for AI Chatbot (Fin).
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the internal article is available for AI Copilot.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the internal article is available for AI Sales Agent.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs this internal article is targeted to for Fin AI Agent. Empty array means no audience targeting is set.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
 	// AuthorId The id of the author of the article.
 	AuthorId *int `json:"author_id,omitempty"`
 
 	// Body The body of the article in HTML.
 	Body *string `json:"body,omitempty"`
+
+	// BodyMarkdown The body of the article in markdown.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
 
 	// CreatedAt The time when the article was created.
 	CreatedAt *int `json:"created_at,omitempty"`
@@ -7220,6 +11601,78 @@ type LinkedObjectListSchema struct {
 // LinkedObjectListType Always list.
 type LinkedObjectListType string
 
+// MacroSchema A macro is a pre-defined response template (saved reply) that can be used to quickly reply to conversations.
+type MacroSchema struct {
+	// AvailableOn Where the macro is available for use.
+	AvailableOn *[]MacroAvailableOn `json:"available_on,omitempty"`
+
+	// Body The body of the macro in HTML format with placeholders transformed to XML-like format.
+	Body *string `json:"body,omitempty"`
+
+	// BodyText The plain text version of the macro body with original Intercom placeholder format.
+	BodyText *string `json:"body_text,omitempty"`
+
+	// CreatedAt The time the macro was created in ISO 8601 format.
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+
+	// Id The unique identifier for the macro.
+	Id *string `json:"id,omitempty"`
+
+	// Name The name of the macro.
+	Name *string `json:"name,omitempty"`
+
+	// Type String representing the object's type. Always has the value `macro`.
+	Type *MacroType `json:"type,omitempty"`
+
+	// UpdatedAt The time the macro was last updated in ISO 8601 format.
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+
+	// VisibleTo Who can view this macro.
+	VisibleTo *MacroVisibleTo `json:"visible_to,omitempty"`
+
+	// VisibleToTeamIds The team IDs that can view this macro when visible_to is set to specific_teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// MacroAvailableOn defines model for Macro.AvailableOn.
+type MacroAvailableOn string
+
+// MacroType String representing the object's type. Always has the value `macro`.
+type MacroType string
+
+// MacroVisibleTo Who can view this macro.
+type MacroVisibleTo string
+
+// MacroListSchema A paginated list of macros (saved replies) in the workspace.
+type MacroListSchema struct {
+	// Data The list of macro objects
+	Data *[]*MacroSchema `json:"data,omitempty"`
+
+	// Pages Pagination information
+	Pages *struct {
+		// Next Cursor for the next page
+		Next *struct {
+			// StartingAfter Base64-encoded cursor containing [updated_at, id] for pagination
+			StartingAfter *string `json:"starting_after,omitempty"`
+		} `json:"next,omitempty"`
+
+		// PerPage Number of results per page
+		PerPage *int `json:"per_page,omitempty"`
+
+		// Type The type of pagination
+		Type *MacroListPagesType `json:"type,omitempty"`
+	} `json:"pages,omitempty"`
+
+	// Type Always list
+	Type *MacroListType `json:"type,omitempty"`
+}
+
+// MacroListPagesType The type of pagination
+type MacroListPagesType string
+
+// MacroListType Always list
+type MacroListType string
+
 // MergeContactsRequestSchema Merge contact data.
 type MergeContactsRequestSchema struct {
 	// From The unique identifier for the contact to merge away from. Must be a lead.
@@ -7227,7 +11680,52 @@ type MergeContactsRequestSchema struct {
 
 	// Into The unique identifier for the contact to merge into. Must be a user.
 	Into string `json:"into"`
+
+	// SkipDuplicateValidation Set to `true` to merge two contacts that are not duplicates (they share no matching email or phone).
+	SkipDuplicateValidation *bool `json:"skip_duplicate_validation,omitempty"`
 }
+
+// MergeConversationsRequestSchema Payload to merge a secondary conversation into a primary conversation.
+type MergeConversationsRequestSchema struct {
+	// MergeIntoConversationId The ID of the primary (target) conversation to merge into.
+	MergeIntoConversationId int `json:"merge_into_conversation_id"`
+}
+
+// MergeHistoryItemSchema A record of a contact that was merged into another contact.
+type MergeHistoryItemSchema struct {
+	// MergedAt (Unix timestamp in seconds) The time when the merge occurred.
+	MergedAt *int `json:"merged_at,omitempty"`
+
+	// SourceContactId The Intercom ID of the contact that was merged into this contact.
+	SourceContactId *string `json:"source_contact_id,omitempty"`
+
+	// SourceContactRole The role of the contact that was merged in.
+	SourceContactRole *MergeHistoryItemSourceContactRole `json:"source_contact_role,omitempty"`
+
+	// Type The type of object.
+	Type *string `json:"type,omitempty"`
+}
+
+// MergeHistoryItemSourceContactRole The role of the contact that was merged in.
+type MergeHistoryItemSourceContactRole string
+
+// MergeHistoryListSchema A paginated list of merge history entries for a contact.
+type MergeHistoryListSchema struct {
+	// Data An array of merge history entries.
+	Data *[]MergeHistoryItemSchema `json:"data,omitempty"`
+
+	// HasMore Whether there are more results to fetch.
+	HasMore *bool `json:"has_more,omitempty"`
+
+	// NextCursor A cursor to pass as the `cursor` query parameter to fetch the next page of results. Absent when there are no more pages.
+	NextCursor *string `json:"next_cursor,omitempty"`
+
+	// Type The type of object.
+	Type *MergeHistoryListType `json:"type,omitempty"`
+}
+
+// MergeHistoryListType The type of object.
+type MergeHistoryListType string
 
 // MessageSchema Message are how you reach out to contacts in Intercom. They are created when an admin sends an outbound message to a contact.
 type MessageSchema struct {
@@ -7393,13 +11891,22 @@ type NewsfeedAssignmentSchema struct {
 	PublishedAt *int `json:"published_at,omitempty"`
 }
 
-// NoteSchema Notes allow you to annotate and comment on your contacts.
+// NoteSchema Notes allow you to annotate and comment on your contacts and companies. A note is attached to either a contact or a company, never both.
 type NoteSchema struct {
 	// Author Optional. Represents the Admin that created the note.
 	Author *AdminSchema `json:"author,omitempty"`
 
 	// Body The body text of the note.
 	Body *string `json:"body,omitempty"`
+
+	// Company Represents the company that the note was created about.
+	Company *struct {
+		// Id The id of the company.
+		Id *string `json:"id,omitempty"`
+
+		// Type String representing the object's type. Always has the value `company`.
+		Type *string `json:"type,omitempty"`
+	} `json:"company,omitempty"`
 
 	// Contact Represents the contact that the note was created about.
 	Contact *struct {
@@ -7420,7 +11927,7 @@ type NoteSchema struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// NoteListSchema A paginated list of notes associated with a contact.
+// NoteListSchema A paginated list of notes associated with a contact or a company.
 type NoteListSchema struct {
 	// Data An array of notes.
 	Data  *[]NoteSchema      `json:"data,omitempty"`
@@ -7431,6 +11938,99 @@ type NoteListSchema struct {
 
 	// Type String representing the object's type. Always has the value `list`.
 	Type *string `json:"type,omitempty"`
+}
+
+// OfficeHoursExceptionSchema An exception overrides a schedule's regular hours on a specific date, such as a public holiday.
+type OfficeHoursExceptionSchema struct {
+	// CreatedAt The time the exception was created as a Unix timestamp.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// ExceptionDate The date the exception applies to, in `YYYY-MM-DD` format.
+	ExceptionDate *openapi_types.Date `json:"exception_date,omitempty"`
+
+	// ExceptionType `closed` means the workspace is closed all day; `custom_hours` replaces the regular hours with `time_intervals`.
+	ExceptionType *OfficeHoursExceptionExceptionType `json:"exception_type,omitempty"`
+
+	// Id The unique identifier for the office hours exception.
+	Id *string `json:"id,omitempty"`
+
+	// Name An optional name for the exception.
+	Name *string `json:"name,omitempty"`
+
+	// OfficeHoursScheduleId The unique identifier for the schedule this exception belongs to.
+	OfficeHoursScheduleId *string `json:"office_hours_schedule_id,omitempty"`
+
+	// RecurringAnnually Whether the exception repeats every year on the same date.
+	RecurringAnnually *bool `json:"recurring_annually,omitempty"`
+
+	// TimeIntervals The open intervals for the exception date. `null` when `exception_type` is `closed`.
+	TimeIntervals *[]OfficeHoursTimeIntervalSchema `json:"time_intervals,omitempty"`
+
+	// Type The type of the object - always `office_hours_exception`.
+	Type *string `json:"type,omitempty"`
+
+	// UpdatedAt The time the exception was last updated as a Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+}
+
+// OfficeHoursExceptionExceptionType `closed` means the workspace is closed all day; `custom_hours` replaces the regular hours with `time_intervals`.
+type OfficeHoursExceptionExceptionType string
+
+// OfficeHoursExceptionListSchema A list of office hours exceptions.
+type OfficeHoursExceptionListSchema struct {
+	// Data An array of office hours exceptions.
+	Data *[]OfficeHoursExceptionSchema `json:"data,omitempty"`
+
+	// Type The type of the object - always `office_hours_exception.list`.
+	Type *string `json:"type,omitempty"`
+}
+
+// OfficeHoursScheduleSchema An office hours schedule defines the recurring weekly hours during which the workspace is open.
+type OfficeHoursScheduleSchema struct {
+	// CreatedAt The time the schedule was created as a Unix timestamp.
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// Id The unique identifier for the office hours schedule.
+	Id *string `json:"id,omitempty"`
+
+	// Name The name of the office hours schedule.
+	Name *string `json:"name,omitempty"`
+
+	// TimeIntervals The open intervals that make up the weekly schedule.
+	TimeIntervals *[]OfficeHoursTimeIntervalSchema `json:"time_intervals,omitempty"`
+
+	// TimeZoneName The IANA time zone the schedule's hours are evaluated in.
+	TimeZoneName *string `json:"time_zone_name,omitempty"`
+
+	// TwentyFourSeven Whether the schedule is open 24/7.
+	TwentyFourSeven *bool `json:"twenty_four_seven,omitempty"`
+
+	// Type The type of the object - always `office_hours_schedule`.
+	Type *string `json:"type,omitempty"`
+
+	// UpdatedAt The time the schedule was last updated as a Unix timestamp.
+	UpdatedAt *int `json:"updated_at,omitempty"`
+}
+
+// OfficeHoursScheduleListSchema A list of office hours schedules.
+type OfficeHoursScheduleListSchema struct {
+	// Data An array of office hours schedules.
+	Data *[]OfficeHoursScheduleSchema `json:"data,omitempty"`
+
+	// Type The type of the object - always `office_hours_schedule.list`.
+	Type *string `json:"type,omitempty"`
+}
+
+// OfficeHoursTimeIntervalSchema A single open interval. For schedules, `start_minute` and `end_minute` are minute offsets from the start of the week (Monday 00:00 = 0), in the range 0 to 10080. For exceptions, they are minute offsets from midnight on `exception_date`, in the range 0 to 1440.
+type OfficeHoursTimeIntervalSchema struct {
+	// DayOfWeek Derived day of the week the interval falls on (0 = Monday … 6 = Sunday). For exceptions, this is derived from `exception_date`.
+	DayOfWeek *int `json:"day_of_week,omitempty"`
+
+	// EndMinute Minute the interval ends. For schedules, offset from the start of the week (Monday 00:00 = 0); for exceptions, offset from midnight on `exception_date`.
+	EndMinute *int `json:"end_minute,omitempty"`
+
+	// StartMinute Minute the interval starts. For schedules, offset from the start of the week (Monday 00:00 = 0); for exceptions, offset from midnight on `exception_date`.
+	StartMinute *int `json:"start_minute,omitempty"`
 }
 
 // OpenConversationRequestSchema Payload of the request to open a conversation
@@ -7528,6 +12128,30 @@ type PhoneSwitchSchema struct {
 // PhoneSwitchType defines model for PhoneSwitch.Type.
 type PhoneSwitchType string
 
+// PredicateSchema A condition used to filter contacts in an audience.
+type PredicateSchema struct {
+	// Attribute The attribute to filter on.
+	Attribute *string `json:"attribute,omitempty"`
+
+	// Comparison The comparison operator.
+	Comparison *string `json:"comparison,omitempty"`
+
+	// Type The type of the attribute.
+	Type *string `json:"type,omitempty"`
+
+	// Value The value to compare against.
+	Value *string `json:"value,omitempty"`
+}
+
+// PublishArticleDraftRequestSchema Optional body for publishing a staged article draft. On a single-language
+// workspace the body can be omitted. On a multilingual workspace, `locales`
+// is required and lists which locales' drafts to publish.
+type PublishArticleDraftRequestSchema struct {
+	// Locales The locales whose staged drafts should be published. Required on
+	// multilingual workspaces; each locale must have a pending draft.
+	Locales *[]string `json:"locales,omitempty"`
+}
+
 // QuickReplyOptionSchema defines model for quick_reply_option.
 type QuickReplyOptionSchema struct {
 	// Text The text to display in this quick reply option.
@@ -7613,6 +12237,21 @@ type ReplyConversationRequest struct {
 	union json.RawMessage
 }
 
+// SalesAgentSchema Data related to Sales Agent involvement in the conversation.
+type SalesAgentSchema struct {
+	// CollectedData A flat key-value map of memory fields collected by the sales agent during the conversation.
+	CollectedData *map[string]string `json:"collected_data,omitempty"`
+
+	// Outcome The fixed outcome of the sales agent interaction, used for billing and tracking.
+	Outcome *SalesAgentOutcome `json:"outcome,omitempty"`
+
+	// RoutingOutcome The identifier of the user-defined routing outcome selected by the sales agent.
+	RoutingOutcome *string `json:"routing_outcome,omitempty"`
+}
+
+// SalesAgentOutcome The fixed outcome of the sales agent interaction, used for billing and tracking.
+type SalesAgentOutcome string
+
 // SearchRequestSchema Search using Intercoms Search APIs.
 type SearchRequestSchema struct {
 	Pagination *StartingAfterPagingSchema `json:"pagination,omitempty"`
@@ -7668,6 +12307,49 @@ type SegmentListSchema struct {
 
 // SegmentListType The type of the object
 type SegmentListType string
+
+// SideConversationListSchema A paginated list of side conversations for a conversation.
+type SideConversationListSchema struct {
+	// Pages Pagination metadata.
+	Pages *struct {
+		// Page The current page number.
+		Page *int `json:"page,omitempty"`
+
+		// PerPage The number of results per page.
+		PerPage *int `json:"per_page,omitempty"`
+
+		// TotalPages The total number of pages.
+		TotalPages *int                           `json:"total_pages,omitempty"`
+		Type       *SideConversationListPagesType `json:"type,omitempty"`
+	} `json:"pages,omitempty"`
+
+	// SideConversations An array of side conversation objects.
+	SideConversations *[]SideConversationSummarySchema `json:"side_conversations,omitempty"`
+
+	// TotalCount The total number of side conversations.
+	TotalCount *int `json:"total_count,omitempty"`
+
+	// Type The type of the response object.
+	Type *SideConversationListType `json:"type,omitempty"`
+}
+
+// SideConversationListPagesType defines model for SideConversationList.Pages.Type.
+type SideConversationListPagesType string
+
+// SideConversationListType The type of the response object.
+type SideConversationListType string
+
+// SideConversationSummarySchema A side conversation with its conversation parts.
+type SideConversationSummarySchema struct {
+	// ConversationParts The conversation parts (messages) in this side conversation.
+	ConversationParts *[]ConversationPartSchema `json:"conversation_parts,omitempty"`
+
+	// SideConversationId The unique identifier for the side conversation.
+	SideConversationId *string `json:"side_conversation_id,omitempty"`
+
+	// TotalCount The total number of conversation parts in this side conversation.
+	TotalCount *int `json:"total_count,omitempty"`
+}
 
 // SingleFilterSearchRequestSchema Search using Intercoms Search APIs with a single filter.
 type SingleFilterSearchRequestSchema struct {
@@ -7757,6 +12439,21 @@ type SocialProfileSchema struct {
 
 	// Url The name of the Social media profile
 	Url *string `json:"url,omitempty"`
+}
+
+// SourceEmailMessageMetadataSchema Contains metadata if the message was sent as an email
+type SourceEmailMessageMetadataSchema struct {
+	// EmailAddressHeaders A list of an email address headers.
+	EmailAddressHeaders *[]EmailAddressHeaderSchema `json:"email_address_headers,omitempty"`
+
+	// History The HTML content of any quoted or forwarded email history from the initial inbound message
+	History *string `json:"history,omitempty"`
+
+	// MessageId The unique identifier for the email message as specified in the Message-ID header
+	MessageId *string `json:"message_id,omitempty"`
+
+	// Subject The subject of the email
+	Subject *string `json:"subject,omitempty"`
 }
 
 // StartingAfterPagingSchema defines model for starting_after_paging.
@@ -7856,6 +12553,36 @@ type TagCompanyRequestSchema struct {
 	Name string `json:"name"`
 }
 
+// TagCreateResponse defines model for tag_create_response.
+type TagCreateResponse struct {
+	// Companies The companies that were tagged or untagged.
+	Companies *[]struct {
+		// Id The Intercom ID of the company.
+		Id *string `json:"id,omitempty"`
+
+		// Tagged Whether the company was tagged (true) or untagged (false).
+		Tagged *bool `json:"tagged,omitempty"`
+	} `json:"companies,omitempty"`
+
+	// Id The id of the tag
+	Id *string `json:"id,omitempty"`
+
+	// Name The name of the tag
+	Name *string `json:"name,omitempty"`
+
+	// Type value is "tag"
+	Type *string `json:"type,omitempty"`
+
+	// Users The users that were tagged or untagged.
+	Users *[]struct {
+		// Id The Intercom ID of the user.
+		Id *string `json:"id,omitempty"`
+
+		// Tagged Whether the user was tagged (true) or untagged (false).
+		Tagged *bool `json:"tagged,omitempty"`
+	} `json:"users,omitempty"`
+}
+
 // TagListSchema A list of tags objects in the workspace.
 type TagListSchema struct {
 	// Data A list of tags objects associated with the workspace .
@@ -7924,6 +12651,28 @@ type TeamListSchema struct {
 // TeamListType The type of the object
 type TeamListType string
 
+// TeamMetricSchema Per-admin activity metrics within a team.
+type TeamMetricSchema struct {
+	// AdminId The unique identifier for the admin.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Idle The number of idle conversations assigned to the admin. A conversation is idle when it has been open and waiting for an admin reply longer than the idle_threshold.
+	Idle *int `json:"idle,omitempty"`
+
+	// Open The number of open conversations assigned to the admin.
+	Open *int `json:"open,omitempty"`
+
+	// Snoozed The number of snoozed conversations assigned to the admin.
+	Snoozed *int    `json:"snoozed,omitempty"`
+	Type    *string `json:"type,omitempty"`
+}
+
+// TeamMetricListSchema A list of team metrics.
+type TeamMetricListSchema struct {
+	Data *[]TeamMetricSchema `json:"data,omitempty"`
+	Type *string             `json:"type,omitempty"`
+}
+
 // TeamPriorityLevelSchema Admin priority levels for teams
 type TeamPriorityLevelSchema struct {
 	// PrimaryTeamIds The primary team ids for the team
@@ -7953,8 +12702,8 @@ type TeammateReferenceType string
 
 // TicketSchema Tickets are how you track requests from your users.
 type TicketSchema struct {
-	// AdminAssigneeId The id representing the admin assigned to the ticket.
-	AdminAssigneeId *string `json:"admin_assignee_id,omitempty"`
+	// AdminAssigneeId The id representing the admin assigned to the ticket. If it's not assigned to an admin it will return 0.
+	AdminAssigneeId *int `json:"admin_assignee_id,omitempty"`
 
 	// Category Category of the Ticket.
 	Category *TicketCategory       `json:"category,omitempty"`
@@ -7973,11 +12722,14 @@ type TicketSchema struct {
 	// Open Whether or not the ticket is open. If false, the ticket is closed.
 	Open *bool `json:"open,omitempty"`
 
+	// PreviousTicketStateId The ID of the previous ticket state from the most recent state change. Returns null if no state change history exists. Useful for tracking state transitions for reporting and compliance.
+	PreviousTicketStateId *string `json:"previous_ticket_state_id,omitempty"`
+
 	// SnoozedUntil The time the ticket will be snoozed until as a UTC Unix timestamp. If null, the ticket is not currently snoozed.
 	SnoozedUntil *int `json:"snoozed_until,omitempty"`
 
-	// TeamAssigneeId The id representing the team assigned to the ticket.
-	TeamAssigneeId   *string                       `json:"team_assignee_id,omitempty"`
+	// TeamAssigneeId The id representing the team assigned to the ticket. If it's not assigned to a team it will return 0.
+	TeamAssigneeId   *int                          `json:"team_assignee_id,omitempty"`
 	TicketAttributes *TicketCustomAttributesSchema `json:"ticket_attributes,omitempty"`
 
 	// TicketId The ID of the Ticket used in the Intercom Inbox and Messenger. Do not use ticket_id for API queries.
@@ -8460,11 +13212,26 @@ type UntagCompanyRequestSchema struct {
 
 // UpdateArticleRequestSchema You can Update an Article
 type UpdateArticleRequestSchema struct {
+	// AiChatbotAvailability Whether the article should be available for AI Chatbot (Fin). For multilingual articles, this sets the default language's availability.
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the article should be available for AI Copilot. For multilingual articles, this sets the default language's availability.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the article should be available for AI Sales Agent. For multilingual articles, this sets the default language's availability.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs to assign to this article for Fin AI Agent targeting. Sending a top-level `audience_ids` broadcasts the same set to every locale. Sending `audience_ids: []` clears all audience memberships from every locale. For per-locale targeting, use `translated_content.<locale>.audience_ids` instead. Sending both top-level and per-locale in the same request causes top-level to win. Unknown audience IDs return a 404 error. No partial commit occurs.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
 	// AuthorId The id of the author of the article. For multilingual articles, this will be the id of the author of the default language's content. Must be a teammate on the help center's workspace.
 	AuthorId *int `json:"author_id,omitempty"`
 
-	// Body The content of the article. For multilingual articles, this will be the body of the default language's content.
+	// Body The content of the article in HTML. For multilingual articles, this will be the body of the default language's content. Mutually exclusive with `body_markdown`.
 	Body *string `json:"body,omitempty"`
+
+	// BodyMarkdown The content of the article in markdown. For multilingual articles, this will be the body of the default language's content. An alternative to `body` — you can provide content as markdown instead of HTML. Mutually exclusive with `body`.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
 
 	// Description The description of the article. For multilingual articles, this will be the description of the default language's content.
 	Description *string `json:"description,omitempty"`
@@ -8474,6 +13241,12 @@ type UpdateArticleRequestSchema struct {
 
 	// ParentType The type of parent, which can either be a `collection` or `section`.
 	ParentType *string `json:"parent_type,omitempty"`
+
+	// ScheduledPublishAt ISO 8601 timestamp at which to schedule a future publish of the article. When set together with `state: "published"`, the article is scheduled instead of published immediately. Setting `null` cancels a pending publish schedule. Timestamps in the past or equal to the current time are rejected with 400 `parameter_invalid` — the value must be strictly in the future. Combining with `state: "draft"` returns 400 `parameter_invalid`. Sending in the same request as `scheduled_unpublish_at` returns 400 — only one pending schedule per article. Empty string returns 400 `parameter_invalid`.
+	ScheduledPublishAt *time.Time `json:"scheduled_publish_at,omitempty"`
+
+	// ScheduledUnpublishAt ISO 8601 timestamp at which to schedule a future unpublish of the article. Setting `null` cancels a pending unpublish schedule. Timestamps in the past or equal to the current time are rejected with 400 `parameter_invalid` — the value must be strictly in the future. Rejected with 400 `parameter_invalid` if the article has never been published. Sending in the same request as `scheduled_publish_at` returns 400 — only one pending schedule per article. Empty string returns 400 `parameter_invalid`.
+	ScheduledUnpublishAt *time.Time `json:"scheduled_unpublish_at,omitempty"`
 
 	// State Whether the article will be `published` or will be a `draft`. Defaults to draft. For multilingual articles, this will be the state of the default language's content.
 	State *UpdateArticleRequestState `json:"state,omitempty"`
@@ -8485,6 +13258,18 @@ type UpdateArticleRequestSchema struct {
 
 // UpdateArticleRequestState Whether the article will be `published` or will be a `draft`. Defaults to draft. For multilingual articles, this will be the state of the default language's content.
 type UpdateArticleRequestState string
+
+// UpdateAudienceRequestSchema The request payload for updating an audience. All fields are optional — only provided fields will be updated.
+type UpdateAudienceRequestSchema struct {
+	// Name The name of the audience.
+	Name *string `json:"name,omitempty"`
+
+	// Predicates The predicates that define which contacts belong to the audience.
+	Predicates *[]PredicateSchema `json:"predicates,omitempty"`
+
+	// RolePredicates Role-based predicates that further filter audience membership by contact role.
+	RolePredicates *[]PredicateSchema `json:"role_predicates,omitempty"`
+}
 
 // UpdateCollectionRequestSchema You can update a collection
 type UpdateCollectionRequestSchema struct {
@@ -8534,6 +13319,9 @@ type UpdateContactRequestSchema struct {
 	// Email The contacts email
 	Email *string `json:"email,omitempty"`
 
+	// EmailVerified Whether the contact's email address has been verified. Set to true to indicate you have verified the contact owns this email address, or false to mark it as unverified. Must be supplied together with an email in the same request; sending it without an email returns a 400.
+	EmailVerified *bool `json:"email_verified,omitempty"`
+
 	// ExternalId A unique identifier for the contact which is given to Intercom
 	ExternalId *string `json:"external_id,omitempty"`
 
@@ -8544,7 +13332,7 @@ type UpdateContactRequestSchema struct {
 	Name *string `json:"name,omitempty"`
 
 	// OwnerId The id of an admin that has been assigned account ownership of the contact
-	OwnerId *int `json:"owner_id,omitempty"`
+	OwnerId *string `json:"owner_id,omitempty"`
 
 	// Phone The contacts phone
 	Phone *string `json:"phone,omitempty"`
@@ -8594,6 +13382,42 @@ type UpdateContentImportSourceRequestStatus string
 // UpdateContentImportSourceRequestSyncBehavior If you intend to create or update External Pages via the API, this should be set to `api`. You can not change the value to or from api.
 type UpdateContentImportSourceRequestSyncBehavior string
 
+// UpdateConversationAttributeOptionRequestSchema Payload for renaming a list option on a conversation attribute.
+type UpdateConversationAttributeOptionRequestSchema struct {
+	// Label The updated label for the option.
+	Label string `json:"label"`
+}
+
+// UpdateConversationAttributeRequestSchema Payload for updating a conversation attribute.
+type UpdateConversationAttributeRequestSchema struct {
+	// Description Readable description of the attribute.
+	Description *string `json:"description,omitempty"`
+
+	// Multiline (String data type only) Whether this string attribute is multiline.
+	Multiline *bool `json:"multiline,omitempty"`
+
+	// Name Name of the attribute.
+	Name *string `json:"name,omitempty"`
+
+	// Reference (Relationship data type only) Reference configuration for related objects.
+	Reference *struct {
+		// ObjectTypeId The ID of the related custom object type.
+		ObjectTypeId *string `json:"object_type_id,omitempty"`
+
+		// Type The cardinality of the relationship: `one` or `many`.
+		Type UpdateConversationAttributeRequestReferenceType `json:"type"`
+	} `json:"reference,omitempty"`
+
+	// Required Whether this attribute is required.
+	Required *bool `json:"required,omitempty"`
+
+	// VisibleToTeamIds Team IDs that can see this attribute. Empty array means all teams.
+	VisibleToTeamIds *[]string `json:"visible_to_team_ids,omitempty"`
+}
+
+// UpdateConversationAttributeRequestReferenceType The cardinality of the relationship: `one` or `many`.
+type UpdateConversationAttributeRequestReferenceType string
+
 // UpdateConversationRequestSchema Payload of the request to update a conversation
 type UpdateConversationRequestSchema struct {
 	// CompanyId The ID of the company that the conversation is associated with. The unique identifier for the company which is given by Intercom. Set to nil to remove company.
@@ -8631,6 +13455,87 @@ type UpdateDataAttributeRequest0 struct {
 // UpdateDataAttributeRequest1 defines model for .
 type UpdateDataAttributeRequest1 = interface{}
 
+// UpdateDataConnectorRequestSchema Update an existing data connector. All fields are optional — only provided fields will be updated. Set `state` to `live` or `draft` to change the connector's state.
+type UpdateDataConnectorRequestSchema struct {
+	// Audiences The audience types this connector targets.
+	Audiences *[]UpdateDataConnectorRequestAudiences `json:"audiences,omitempty"`
+
+	// Body The request body template. Supports template variables.
+	Body *string `json:"body,omitempty"`
+
+	// BypassAuthentication Whether authentication is bypassed for this connector.
+	BypassAuthentication *bool `json:"bypass_authentication,omitempty"`
+
+	// CustomerAuthentication Whether OTP authentication is enabled for this connector.
+	CustomerAuthentication *bool `json:"customer_authentication,omitempty"`
+
+	// DataInputs The input parameters accepted by this data connector. Replaces all existing inputs.
+	DataInputs *[]struct {
+		// DefaultValue The default value for this input, if any.
+		DefaultValue *string `json:"default_value,omitempty"`
+
+		// Description A description of the input parameter. Required for each input.
+		Description *string `json:"description,omitempty"`
+
+		// Name The name of the input parameter.
+		Name *string `json:"name,omitempty"`
+
+		// Required Whether this input is required.
+		Required *bool `json:"required,omitempty"`
+
+		// Type The data type of the input.
+		Type *UpdateDataConnectorRequestDataInputsType `json:"type,omitempty"`
+	} `json:"data_inputs,omitempty"`
+
+	// Description A description of what this data connector does.
+	Description *string `json:"description,omitempty"`
+
+	// DirectFinUsage Whether this connector is used directly by Fin.
+	DirectFinUsage *bool `json:"direct_fin_usage,omitempty"`
+
+	// Headers HTTP headers to include in the request.
+	Headers *[]struct {
+		// Name The header name.
+		Name *string `json:"name,omitempty"`
+
+		// Value The header value. Supports template variables.
+		Value *string `json:"value,omitempty"`
+	} `json:"headers,omitempty"`
+
+	// HttpMethod The HTTP method used by the data connector.
+	HttpMethod *UpdateDataConnectorRequestHttpMethod `json:"http_method,omitempty"`
+
+	// MockResponse A sample JSON response from the external API. Auto-generates `response_fields` and sets `configuration_response_type` to `mock_response_type`.
+	MockResponse *map[string]interface{} `json:"mock_response,omitempty"`
+
+	// Name The name of the data connector.
+	Name *string `json:"name,omitempty"`
+
+	// State The desired state of the connector.
+	State *UpdateDataConnectorRequestState `json:"state,omitempty"`
+
+	// TokenIds IDs of authentication tokens to attach to this data connector. An empty array removes all tokens.
+	TokenIds *[]string `json:"token_ids,omitempty"`
+
+	// Url The URL of the external API endpoint. Supports template variables like `{{order_id}}`.
+	Url *string `json:"url,omitempty"`
+
+	// ValidateMissingAttributes Whether to validate missing attributes before execution.
+	ValidateMissingAttributes *bool `json:"validate_missing_attributes,omitempty"`
+}
+
+// UpdateDataConnectorRequestAudiences defines model for UpdateDataConnectorRequest.Audiences.
+type UpdateDataConnectorRequestAudiences string
+
+// UpdateDataConnectorRequestDataInputsType The data type of the input.
+type UpdateDataConnectorRequestDataInputsType string
+
+// UpdateDataConnectorRequestHttpMethod The HTTP method used by the data connector.
+type UpdateDataConnectorRequestHttpMethod string
+
+// UpdateDataConnectorRequestState The desired state of the connector.
+type UpdateDataConnectorRequestState string
+
 // UpdateExternalPageRequestSchema You can update an External Page in your Fin Content Library.
 type UpdateExternalPageRequestSchema struct {
 	// ExternalId The identifier for the external page which was given by the source. Must be unique for the source.
@@ -8660,17 +13565,65 @@ type UpdateExternalPageRequestLocale string
 
 // UpdateInternalArticleRequestSchema You can Update an Internal Article
 type UpdateInternalArticleRequestSchema struct {
+	// AiChatbotAvailability Whether the internal article should be available for AI Chatbot (Fin).
+	AiChatbotAvailability *bool `json:"ai_chatbot_availability,omitempty"`
+
+	// AiCopilotAvailability Whether the internal article should be available for AI Copilot.
+	AiCopilotAvailability *bool `json:"ai_copilot_availability,omitempty"`
+
+	// AiSalesAgentAvailability Whether the internal article should be available for AI Sales Agent.
+	AiSalesAgentAvailability *bool `json:"ai_sales_agent_availability,omitempty"`
+
+	// AudienceIds The list of audience IDs to target this internal article to for Fin AI Agent. Omitting the field leaves existing audience memberships unchanged (PATCH semantics). Pass `[]` to clear all audience memberships. Unknown audience IDs return a `404` error with no partial commit.
+	AudienceIds *[]int `json:"audience_ids,omitempty"`
+
 	// AuthorId The id of the author of the article.
 	AuthorId *int `json:"author_id,omitempty"`
 
-	// Body The content of the article.
+	// Body The content of the article in HTML. Mutually exclusive with `body_markdown`.
 	Body *string `json:"body,omitempty"`
+
+	// BodyMarkdown The content of the article in markdown. An alternative to `body` — you can provide content as markdown instead of HTML. Mutually exclusive with `body`.
+	BodyMarkdown *string `json:"body_markdown,omitempty"`
 
 	// OwnerId The id of the author of the article.
 	OwnerId *int `json:"owner_id,omitempty"`
 
 	// Title The title of the article.
 	Title *string `json:"title,omitempty"`
+}
+
+// UpdateOfficeHoursExceptionRequestSchema The request payload for updating an office hours exception. Only the provided fields are updated.
+type UpdateOfficeHoursExceptionRequestSchema struct {
+	// ExceptionDate The date the exception applies to, in `YYYY-MM-DD` format.
+	ExceptionDate *openapi_types.Date `json:"exception_date,omitempty"`
+
+	// ExceptionType The type of exception.
+	ExceptionType *UpdateOfficeHoursExceptionRequestExceptionType `json:"exception_type,omitempty"`
+
+	// Name An optional name for the exception.
+	Name *string `json:"name,omitempty"`
+
+	// RecurringAnnually Whether the exception repeats every year on the same date.
+	RecurringAnnually *bool `json:"recurring_annually,omitempty"`
+
+	// TimeIntervals The open intervals for the exception date. Required for `custom_hours`; omit for `closed`.
+	TimeIntervals *[]OfficeHoursTimeIntervalSchema `json:"time_intervals,omitempty"`
+}
+
+// UpdateOfficeHoursExceptionRequestExceptionType The type of exception.
+type UpdateOfficeHoursExceptionRequestExceptionType string
+
+// UpdateOfficeHoursScheduleRequestSchema The request payload for updating an office hours schedule. Only the provided fields are updated.
+type UpdateOfficeHoursScheduleRequestSchema struct {
+	// Name The name of the office hours schedule.
+	Name *string `json:"name,omitempty"`
+
+	// TimeIntervals The open intervals for the schedule. `start_minute` and `end_minute` must be on a 15-minute boundary.
+	TimeIntervals *[]OfficeHoursTimeIntervalSchema `json:"time_intervals,omitempty"`
+
+	// TimeZoneName The IANA time zone the schedule's hours are evaluated in.
+	TimeZoneName *string `json:"time_zone_name,omitempty"`
 }
 
 // UpdateTicketRequestSchema You can update a Ticket
@@ -8955,6 +13908,42 @@ type VisitorDeletedObjectSchema struct {
 // VisitorDeletedObjectType The type of object which was deleted
 type VisitorDeletedObjectType string
 
+// WhatsappMessageStatusSchema The delivery status of a specific WhatsApp message.
+type WhatsappMessageStatusSchema struct {
+	// ConversationId ID of the conversation
+	ConversationId *string `json:"conversation_id,omitempty"`
+
+	// CreatedAt Creation timestamp
+	CreatedAt *int `json:"created_at,omitempty"`
+
+	// Error Error details, present only when status is "failed"
+	Error *struct {
+		// Details Detailed error information
+		Details *string `json:"details,omitempty"`
+
+		// Message Error message
+		Message *string `json:"message,omitempty"`
+	} `json:"error,omitempty"`
+
+	// MessageId The WhatsApp message ID
+	MessageId *string `json:"message_id,omitempty"`
+
+	// Status Current delivery status of the message
+	Status *WhatsappMessageStatusStatus `json:"status,omitempty"`
+
+	// TemplateName Name of the WhatsApp template used
+	TemplateName *string `json:"template_name,omitempty"`
+
+	// Type Event type
+	Type *string `json:"type,omitempty"`
+
+	// UpdatedAt Last update timestamp
+	UpdatedAt *int `json:"updated_at,omitempty"`
+}
+
+// WhatsappMessageStatusStatus Current delivery status of the message
+type WhatsappMessageStatusStatus string
+
 // WhatsappMessageStatusListSchema defines model for whatsapp_message_status_list.
 type WhatsappMessageStatusListSchema struct {
 	Events []struct {
@@ -9096,6 +14085,11 @@ type ListAdminsParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// ListActivityLogEventTypesParams defines parameters for ListActivityLogEventTypes.
+type ListActivityLogEventTypesParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // ListActivityLogsParams defines parameters for ListActivityLogs.
 type ListActivityLogsParams struct {
 	// CreatedAtAfter The start date that you request data for. It must be formatted as a UNIX timestamp.
@@ -9103,6 +14097,29 @@ type ListActivityLogsParams struct {
 
 	// CreatedAtBefore The end date that you request data for. It must be formatted as a UNIX timestamp.
 	CreatedAtBefore *string          `form:"created_at_before,omitempty" json:"created_at_before,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// SearchActivityLogsJSONBody defines parameters for SearchActivityLogs.
+type SearchActivityLogsJSONBody struct {
+	// CreatedAtAfter The start date that you request data for. It must be formatted as a UNIX timestamp.
+	CreatedAtAfter int `json:"created_at_after"`
+
+	// CreatedAtBefore The end date that you request data for. It must be formatted as a UNIX timestamp.
+	CreatedAtBefore *int `json:"created_at_before,omitempty"`
+
+	// EventTypes An optional list of event types to filter activity logs by. Use the list all activity log event types endpoint to retrieve available values.
+	EventTypes *[]string `json:"event_types,omitempty"`
+
+	// Page The page number of results to return.
+	Page *int `json:"page,omitempty"`
+
+	// PerPage The number of results per page. Must be between 1 and 250.
+	PerPage *int `json:"per_page,omitempty"`
+}
+
+// SearchActivityLogsParams defines parameters for SearchActivityLogs.
+type SearchActivityLogsParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
@@ -9216,6 +14233,90 @@ type RetrieveArticleParams struct {
 
 // UpdateArticleParams defines parameters for UpdateArticle.
 type UpdateArticleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// AttachTagToArticleJSONBody defines parameters for AttachTagToArticle.
+type AttachTagToArticleJSONBody struct {
+	// AdminId Optional id of the teammate to attribute the tagging to. Defaults to the authenticating teammate. Does not affect authorization.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Id The unique identifier of the tag to apply, as given by Intercom.
+	Id string `json:"id"`
+}
+
+// AttachTagToArticleParams defines parameters for AttachTagToArticle.
+type AttachTagToArticleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DetachTagFromArticleParams defines parameters for DetachTagFromArticle.
+type DetachTagFromArticleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListArticleVersionsParams defines parameters for ListArticleVersions.
+type ListArticleVersionsParams struct {
+	// Page The page of results to fetch. Defaults to the first page.
+	Page *int `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage The number of results to return per page.
+	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// Locale Filter versions to a specific locale. Use the locale identifier (for example `en`, `fr`). If the locale is not configured for the workspace, a `400` is returned.
+	Locale          *string          `form:"locale,omitempty" json:"locale,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// RetrieveArticleVersionParams defines parameters for RetrieveArticleVersion.
+type RetrieveArticleVersionParams struct {
+	// Locale Return the version's content for a specific locale. If the locale is not configured for the workspace, a `400` is returned.
+	Locale          *string          `form:"locale,omitempty" json:"locale,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// RetrieveArticleDraftParams defines parameters for RetrieveArticleDraft.
+type RetrieveArticleDraftParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// StageArticleDraftParams defines parameters for StageArticleDraft.
+type StageArticleDraftParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// PublishArticleDraftParams defines parameters for PublishArticleDraft.
+type PublishArticleDraftParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListAudiencesParams defines parameters for ListAudiences.
+type ListAudiencesParams struct {
+	// Page The page of results to fetch. Defaults to first page.
+	Page *int `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage The number of results to return per page. Defaults to 50. Maximum is 50.
+	PerPage         *int             `form:"per_page,omitempty" json:"per_page,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// CreateAudienceParams defines parameters for CreateAudience.
+type CreateAudienceParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DeleteAudienceParams defines parameters for DeleteAudience.
+type DeleteAudienceParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// RetrieveAudienceParams defines parameters for RetrieveAudience.
+type RetrieveAudienceParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// UpdateAudienceParams defines parameters for UpdateAudience.
+type UpdateAudienceParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
@@ -9341,6 +14442,20 @@ type ListCompanyNotesParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// CreateCompanyNoteJSONBody defines parameters for CreateCompanyNote.
+type CreateCompanyNoteJSONBody struct {
+	// AdminId The unique identifier of the admin creating the note. If not provided, defaults to the admin associated with the access token.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Body The text of the note.
+	Body string `json:"body"`
+}
+
+// CreateCompanyNoteParams defines parameters for CreateCompanyNote.
+type CreateCompanyNoteParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // ListAttachedSegmentsForCompaniesParams defines parameters for ListAttachedSegmentsForCompanies.
 type ListAttachedSegmentsForCompaniesParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
@@ -9348,7 +14463,9 @@ type ListAttachedSegmentsForCompaniesParams struct {
 
 // ListContactsParams defines parameters for ListContacts.
 type ListContactsParams struct {
-	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+	// IncludeMergeHistory Pass `true` to include a `merge_history` array on each contact in the response. Only returned for contacts with a `user` role.
+	IncludeMergeHistory *bool            `form:"include_merge_history,omitempty" json:"include_merge_history,omitempty"`
+	IntercomVersion     *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
 // CreateContactJSONBody defines parameters for CreateContact.
@@ -9363,17 +14480,23 @@ type CreateContactParams struct {
 
 // ShowContactByExternalIdParams defines parameters for ShowContactByExternalId.
 type ShowContactByExternalIdParams struct {
-	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+	// IncludeMergeHistory Pass `true` to include the contact's merge history in the response. Only returned for contacts with a `user` role.
+	IncludeMergeHistory *bool            `form:"include_merge_history,omitempty" json:"include_merge_history,omitempty"`
+	IntercomVersion     *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
 // MergeContactParams defines parameters for MergeContact.
 type MergeContactParams struct {
-	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+	// IncludeMergeHistory Pass `true` to include the merge history of the resulting contact in the response. Only returned for contacts with a `user` role.
+	IncludeMergeHistory *bool            `form:"include_merge_history,omitempty" json:"include_merge_history,omitempty"`
+	IntercomVersion     *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
 // SearchContactsParams defines parameters for SearchContacts.
 type SearchContactsParams struct {
-	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+	// IncludeMergeHistory Pass `true` to include a `merge_history` array on each contact in the response. Only returned for contacts with a `user` role.
+	IncludeMergeHistory *bool            `form:"include_merge_history,omitempty" json:"include_merge_history,omitempty"`
+	IntercomVersion     *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
 // DeleteContactParams defines parameters for DeleteContact.
@@ -9383,7 +14506,9 @@ type DeleteContactParams struct {
 
 // ShowContactParams defines parameters for ShowContact.
 type ShowContactParams struct {
-	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+	// IncludeMergeHistory Pass `true` to include the contact's merge history in the response. Only returned for contacts with a `user` role.
+	IncludeMergeHistory *bool            `form:"include_merge_history,omitempty" json:"include_merge_history,omitempty"`
+	IntercomVersion     *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
 // UpdateContactJSONBody defines parameters for UpdateContact.
@@ -9393,7 +14518,9 @@ type UpdateContactJSONBody struct {
 
 // UpdateContactParams defines parameters for UpdateContact.
 type UpdateContactParams struct {
-	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+	// IncludeMergeHistory Pass `true` to include the contact's merge history in the response. Only returned for contacts with a `user` role.
+	IncludeMergeHistory *bool            `form:"include_merge_history,omitempty" json:"include_merge_history,omitempty"`
+	IntercomVersion     *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
 // ArchiveContactParams defines parameters for ArchiveContact.
@@ -9501,6 +14628,171 @@ type UnarchiveContactParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// ListContactBannersParams defines parameters for ListContactBanners.
+type ListContactBannersParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DismissContactBannerParams defines parameters for DismissContactBanner.
+type DismissContactBannerParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListContactMergeHistoryParams defines parameters for ListContactMergeHistory.
+type ListContactMergeHistoryParams struct {
+	// Cursor A cursor for pagination. Pass the `next_cursor` value from a previous response to fetch the next page.
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// PerPage The number of results to return per page (default 50, max 150).
+	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// Order The order to return results in. Defaults to descending.
+	Order           *ListContactMergeHistoryParamsOrder `form:"order,omitempty" json:"order,omitempty"`
+	IntercomVersion *IntercomVersion                    `json:"Intercom-Version,omitempty"`
+}
+
+// ListContactMergeHistoryParamsOrder defines parameters for ListContactMergeHistory.
+type ListContactMergeHistoryParamsOrder string
+
+// BulkContentActionsParams defines parameters for BulkContentActions.
+type BulkContentActionsParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// SearchContentParams defines parameters for SearchContent.
+type SearchContentParams struct {
+	// Query A free-text search term matched against the title and body of each content item. When omitted, returns the most recent content items.
+	Query *string `form:"query,omitempty" json:"query,omitempty"`
+
+	// Page The page number to fetch. Defaults to 1. Values below 1 are clamped to 1.
+	Page *int `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage Number of results per page. Defaults to 10. Maximum 50.
+	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// States Filter by publication state. Accepts a comma-separated list or repeated params.
+	States *[]SearchContentParamsStates `form:"states,omitempty" json:"states,omitempty"`
+
+	// Locales Filter by locale codes (e.g. `en`, `fr`, `de`). Accepts a comma-separated list or repeated params.
+	Locales *[]string `form:"locales,omitempty" json:"locales,omitempty"`
+
+	// TagIds Filter by tag IDs. Pairs with `tag_operator` to control match semantics. Accepts a comma-separated list or repeated params.
+	TagIds *[]int `form:"tag_ids,omitempty" json:"tag_ids,omitempty"`
+
+	// TagOperator Match operator paired with `tag_ids`. `IN` returns content matching any of the given tags; `NIN` excludes content matching any of them.
+	TagOperator *SearchContentParamsTagOperator `form:"tag_operator,omitempty" json:"tag_operator,omitempty"`
+
+	// AnyTagIds Filter by tag IDs using OR semantics — returns content matching any of the given tags. Alternative to `tag_ids` + `tag_operator`. Accepts a comma-separated list or repeated params.
+	AnyTagIds *[]int `form:"any_tag_ids,omitempty" json:"any_tag_ids,omitempty"`
+
+	// FolderIds Filter by folder IDs. Must be sent together with `folder_entity_type`. Accepts a comma-separated list or repeated params.
+	FolderIds *[]int `form:"folder_ids,omitempty" json:"folder_ids,omitempty"`
+
+	// FolderEntityType Required when `folder_ids` is provided. Identifies the entity type the folder IDs refer to.
+	FolderEntityType *SearchContentParamsFolderEntityType `form:"folder_entity_type,omitempty" json:"folder_entity_type,omitempty"`
+
+	// ContentTypes Restrict the search to specific content types. When provided, this REPLACES the default content type set rather than filtering on top of it. Accepts a comma-separated list or repeated params.
+	ContentTypes *[]SearchContentParamsContentTypes `form:"content_types,omitempty" json:"content_types,omitempty"`
+
+	// CopilotState Filter by whether the content is enabled for Copilot.
+	CopilotState *SearchContentParamsCopilotState `form:"copilot_state,omitempty" json:"copilot_state,omitempty"`
+
+	// FinServiceState Filter by whether the content is enabled for Fin AI Agent (customer-facing service).
+	FinServiceState *SearchContentParamsFinServiceState `form:"fin_service_state,omitempty" json:"fin_service_state,omitempty"`
+
+	// FinSalesState Filter by whether the content is enabled for Fin Sales Agent.
+	FinSalesState *SearchContentParamsFinSalesState `form:"fin_sales_state,omitempty" json:"fin_sales_state,omitempty"`
+
+	// CreatedByIds Filter by the admin IDs that created the content. Accepts a comma-separated list or repeated params.
+	CreatedByIds *[]int `form:"created_by_ids,omitempty" json:"created_by_ids,omitempty"`
+
+	// LastUpdatedByIds Filter by the admin IDs that last updated the content. Accepts a comma-separated list or repeated params.
+	LastUpdatedByIds *[]int `form:"last_updated_by_ids,omitempty" json:"last_updated_by_ids,omitempty"`
+
+	// CreatedAtAfter Return content created at or after this time. Unix epoch seconds.
+	CreatedAtAfter *int `form:"created_at_after,omitempty" json:"created_at_after,omitempty"`
+
+	// CreatedAtBefore Return content created at or before this time. Unix epoch seconds.
+	CreatedAtBefore *int `form:"created_at_before,omitempty" json:"created_at_before,omitempty"`
+
+	// UpdatedAtAfter Return content last updated at or after this time. Unix epoch seconds.
+	UpdatedAtAfter *int `form:"updated_at_after,omitempty" json:"updated_at_after,omitempty"`
+
+	// UpdatedAtBefore Return content last updated at or before this time. Unix epoch seconds.
+	UpdatedAtBefore *int             `form:"updated_at_before,omitempty" json:"updated_at_before,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// SearchContentParamsStates defines parameters for SearchContent.
+type SearchContentParamsStates string
+
+// SearchContentParamsTagOperator defines parameters for SearchContent.
+type SearchContentParamsTagOperator string
+
+// SearchContentParamsFolderEntityType defines parameters for SearchContent.
+type SearchContentParamsFolderEntityType string
+
+// SearchContentParamsContentTypes defines parameters for SearchContent.
+type SearchContentParamsContentTypes string
+
+// SearchContentParamsCopilotState defines parameters for SearchContent.
+type SearchContentParamsCopilotState string
+
+// SearchContentParamsFinServiceState defines parameters for SearchContent.
+type SearchContentParamsFinServiceState string
+
+// SearchContentParamsFinSalesState defines parameters for SearchContent.
+type SearchContentParamsFinSalesState string
+
+// ListContentSnippetsParams defines parameters for ListContentSnippets.
+type ListContentSnippetsParams struct {
+	// Page The page of results to fetch.
+	Page *int `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage The number of results to return per page. Max value of 50.
+	PerPage         *int             `form:"per_page,omitempty" json:"per_page,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// CreateContentSnippetParams defines parameters for CreateContentSnippet.
+type CreateContentSnippetParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// AttachTagToContentSnippetJSONBody defines parameters for AttachTagToContentSnippet.
+type AttachTagToContentSnippetJSONBody struct {
+	// AdminId Optional id of the teammate to attribute the tagging to. Defaults to the authenticating teammate. Does not affect authorization.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Id The unique identifier of the tag to apply, as given by Intercom.
+	Id string `json:"id"`
+}
+
+// AttachTagToContentSnippetParams defines parameters for AttachTagToContentSnippet.
+type AttachTagToContentSnippetParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DetachTagFromContentSnippetParams defines parameters for DetachTagFromContentSnippet.
+type DetachTagFromContentSnippetParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DeleteContentSnippetParams defines parameters for DeleteContentSnippet.
+type DeleteContentSnippetParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// GetContentSnippetParams defines parameters for GetContentSnippet.
+type GetContentSnippetParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// UpdateContentSnippetParams defines parameters for UpdateContentSnippet.
+type UpdateContentSnippetParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // ListConversationsParams defines parameters for ListConversations.
 type ListConversationsParams struct {
 	// PerPage How many results per page
@@ -9516,6 +14808,61 @@ type CreateConversationParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// ListConversationAttributesParams defines parameters for ListConversationAttributes.
+type ListConversationAttributesParams struct {
+	// IncludeArchived Include archived attributes in the list. Default `false`.
+	IncludeArchived *bool            `form:"include_archived,omitempty" json:"include_archived,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// CreateConversationAttributeParams defines parameters for CreateConversationAttribute.
+type CreateConversationAttributeParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DeleteConversationAttributeParams defines parameters for DeleteConversationAttribute.
+type DeleteConversationAttributeParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// GetConversationAttributeParams defines parameters for GetConversationAttribute.
+type GetConversationAttributeParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// UpdateConversationAttributeParams defines parameters for UpdateConversationAttribute.
+type UpdateConversationAttributeParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// CreateConversationAttributeOptionParams defines parameters for CreateConversationAttributeOption.
+type CreateConversationAttributeOptionParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DeleteConversationAttributeOptionParams defines parameters for DeleteConversationAttributeOption.
+type DeleteConversationAttributeOptionParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// UpdateConversationAttributeOptionParams defines parameters for UpdateConversationAttributeOption.
+type UpdateConversationAttributeOptionParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListDeletedConversationIdsParams defines parameters for ListDeletedConversationIds.
+type ListDeletedConversationIdsParams struct {
+	// Page The page of results to fetch. Defaults to first page
+	Page *int `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage How many results per page
+	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// Order `asc` or `desc`. Returns the conversation IDs in ascending or descending order. Defaults to desc
+	Order           *string          `form:"order,omitempty" json:"order,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // RedactConversationParams defines parameters for RedactConversation.
 type RedactConversationParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
@@ -9523,17 +14870,24 @@ type RedactConversationParams struct {
 
 // SearchConversationsParams defines parameters for SearchConversations.
 type SearchConversationsParams struct {
-	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+	// IncludeMonitors If set to true, the response will include a `monitor_evaluations` array on each conversation with any QA monitor results that flagged it.
+	IncludeMonitors *bool `form:"include_monitors,omitempty" json:"include_monitors,omitempty"`
+
+	// IncludeScorecards If set to true, the response will include a `scorecards` array on each conversation with any QA scorecard results.
+	IncludeScorecards *bool            `form:"include_scorecards,omitempty" json:"include_scorecards,omitempty"`
+	IntercomVersion   *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
 // DeleteConversationParams defines parameters for DeleteConversation.
 type DeleteConversationParams struct {
+	// RetainMetrics If true (default), deletes the conversation while retaining reporting data. If false, deletes the conversation and all associated reporting data. Setting to false requires the `delete_conversations_and_metrics` OAuth scope.
+	RetainMetrics   *bool            `form:"retain_metrics,omitempty" json:"retain_metrics,omitempty"`
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
 // RetrieveConversationParams defines parameters for RetrieveConversation.
 type RetrieveConversationParams struct {
-	// DisplayAs Set to plaintext to retrieve conversation messages in plain text.
+	// DisplayAs Set to plaintext to retrieve conversation messages in plain text. This affects both the body and subject fields. Inline links are rendered as `label (url)`, preserving the link URL alongside the visible text.
 	DisplayAs *string `form:"display_as,omitempty" json:"display_as,omitempty"`
 
 	// IncludeTranslations If set to true, conversation parts will be translated to the detected language of the conversation.
@@ -9543,7 +14897,7 @@ type RetrieveConversationParams struct {
 
 // UpdateConversationParams defines parameters for UpdateConversation.
 type UpdateConversationParams struct {
-	// DisplayAs Set to plaintext to retrieve conversation messages in plain text.
+	// DisplayAs Set to plaintext to retrieve conversation messages in plain text. This affects both the body and subject fields. Inline links are rendered as `label (url)`, preserving the link URL alongside the visible text.
 	DisplayAs       *string          `form:"display_as,omitempty" json:"display_as,omitempty"`
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
@@ -9608,15 +14962,43 @@ type ListHandlingEventsParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// MergeConversationParams defines parameters for MergeConversation.
+type MergeConversationParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListSideConversationsParams defines parameters for ListSideConversations.
+type ListSideConversationsParams struct {
+	// Page The page number of results to return (starting from 1).
+	Page *int `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage The number of side conversations to return per page (max 50).
+	PerPage         *int             `form:"per_page,omitempty" json:"per_page,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // DeleteCustomObjectInstancesByIdParams defines parameters for DeleteCustomObjectInstancesById.
 type DeleteCustomObjectInstancesByIdParams struct {
 	ExternalId      string           `form:"external_id" json:"external_id"`
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
-// GetCustomObjectInstancesByExternalIdParams defines parameters for GetCustomObjectInstancesByExternalId.
-type GetCustomObjectInstancesByExternalIdParams struct {
-	ExternalId      string           `form:"external_id" json:"external_id"`
+// ListCustomObjectInstancesParams defines parameters for ListCustomObjectInstances.
+type ListCustomObjectInstancesParams struct {
+	// ReferencesContactId Return instances associated with the given contact ID.
+	ReferencesContactId *string `form:"references_contact_id,omitempty" json:"references_contact_id,omitempty"`
+
+	// ReferencesConversationId Return instances associated with the given conversation ID.
+	ReferencesConversationId *string `form:"references_conversation_id,omitempty" json:"references_conversation_id,omitempty"`
+
+	// ExternalId Return the single instance with this external ID. When provided, the response is a single object rather than a list.
+	ExternalId *string `form:"external_id,omitempty" json:"external_id,omitempty"`
+
+	// Page Page number of results to fetch.
+	Page *int `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage Number of results per page. Maximum 150.
+	PerPage         *int             `form:"per_page,omitempty" json:"per_page,omitempty"`
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
@@ -9637,7 +15019,7 @@ type GetCustomObjectInstancesByIdParams struct {
 
 // LisDataAttributesParams defines parameters for LisDataAttributes.
 type LisDataAttributesParams struct {
-	// Model Specify the data attribute model to return.
+	// Model Specify the data attribute model to return. For conversation attributes, use GET /conversations/attributes instead.
 	Model *LisDataAttributesParamsModel `form:"model,omitempty" json:"model,omitempty"`
 
 	// IncludeArchived Include archived attributes in the list. By default we return only non archived data attributes.
@@ -9655,6 +15037,80 @@ type CreateDataAttributeParams struct {
 
 // UpdateDataAttributeParams defines parameters for UpdateDataAttribute.
 type UpdateDataAttributeParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListDataConnectorsParams defines parameters for ListDataConnectors.
+type ListDataConnectorsParams struct {
+	// PerPage The number of results to return per page. Defaults to 20, minimum 1, maximum 50.
+	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// StartingAfter The cursor value from `pages.next.starting_after` in a previous response. Used to paginate through results.
+	StartingAfter   *string          `form:"starting_after,omitempty" json:"starting_after,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// CreateDataConnectorParams defines parameters for CreateDataConnector.
+type CreateDataConnectorParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListDataConnectorExecutionResultsParams defines parameters for ListDataConnectorExecutionResults.
+type ListDataConnectorExecutionResultsParams struct {
+	// PerPage The number of results per page (1-30, default 10).
+	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// StartingAfter Cursor for pagination. Use the value from `pages.next.starting_after` in a previous response.
+	StartingAfter *string `form:"starting_after,omitempty" json:"starting_after,omitempty"`
+
+	// Success Filter by success status. Use `true`, `false`, or omit for all.
+	Success *ListDataConnectorExecutionResultsParamsSuccess `form:"success,omitempty" json:"success,omitempty"`
+
+	// ErrorType Filter by error type.
+	ErrorType *ListDataConnectorExecutionResultsParamsErrorType `form:"error_type,omitempty" json:"error_type,omitempty"`
+
+	// StartTs Unix timestamp for start of time range (default 1 hour ago).
+	StartTs *int `form:"start_ts,omitempty" json:"start_ts,omitempty"`
+
+	// EndTs Unix timestamp for end of time range (default now).
+	EndTs *int `form:"end_ts,omitempty" json:"end_ts,omitempty"`
+
+	// IncludeBodies Include request/response bodies in the response (default false).
+	IncludeBodies   *ListDataConnectorExecutionResultsParamsIncludeBodies `form:"include_bodies,omitempty" json:"include_bodies,omitempty"`
+	IntercomVersion *IntercomVersion                                      `json:"Intercom-Version,omitempty"`
+}
+
+// ListDataConnectorExecutionResultsParamsSuccess defines parameters for ListDataConnectorExecutionResults.
+type ListDataConnectorExecutionResultsParamsSuccess string
+
+// ListDataConnectorExecutionResultsParamsErrorType defines parameters for ListDataConnectorExecutionResults.
+type ListDataConnectorExecutionResultsParamsErrorType string
+
+// ListDataConnectorExecutionResultsParamsIncludeBodies defines parameters for ListDataConnectorExecutionResults.
+type ListDataConnectorExecutionResultsParamsIncludeBodies string
+
+// ShowDataConnectorExecutionResultParams defines parameters for ShowDataConnectorExecutionResult.
+type ShowDataConnectorExecutionResultParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DeleteDataConnectorParams defines parameters for DeleteDataConnector.
+type DeleteDataConnectorParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// RetrieveDataConnectorParams defines parameters for RetrieveDataConnector.
+type RetrieveDataConnectorParams struct {
+	// StateVersion Which version of the data connector to return. Defaults to live.
+	StateVersion    *RetrieveDataConnectorParamsStateVersion `form:"state_version,omitempty" json:"state_version,omitempty"`
+	IntercomVersion *IntercomVersion                         `json:"Intercom-Version,omitempty"`
+}
+
+// RetrieveDataConnectorParamsStateVersion defines parameters for RetrieveDataConnector.
+type RetrieveDataConnectorParamsStateVersion string
+
+// UpdateDataConnectorParams defines parameters for UpdateDataConnector.
+type UpdateDataConnectorParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
@@ -9770,6 +15226,26 @@ type ExportWorkflowParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// SubmitFinCsatJSONBody defines parameters for SubmitFinCsat.
+type SubmitFinCsatJSONBody struct {
+	// ConversationId Your external conversation ID — the same ID you started the conversation with, and the one echoed on the `csat_requested` event.
+	ConversationId string `json:"conversation_id"`
+
+	// Rating The rating the user selected — one of the `key` values from the `csat_requested` event's options.
+	Rating SubmitFinCsatJSONBodyRating `json:"rating"`
+
+	// Remark Optional free-text comment the user left alongside the rating. Can be added to an already-rated survey, but only once — the rating locks after a remark is recorded.
+	Remark *string `json:"remark,omitempty"`
+}
+
+// SubmitFinCsatParams defines parameters for SubmitFinCsat.
+type SubmitFinCsatParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// SubmitFinCsatJSONBodyRating defines parameters for SubmitFinCsat.
+type SubmitFinCsatJSONBodyRating string
+
 // ReplyToFinJSONBody defines parameters for ReplyToFin.
 type ReplyToFinJSONBody struct {
 	// Attachments An array of attachments to include with the message. Maximum of 10 attachments.
@@ -9848,6 +15324,31 @@ type RetrieveHelpCenterParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// ListHelpCenterRedirectsParams defines parameters for ListHelpCenterRedirects.
+type ListHelpCenterRedirectsParams struct {
+	// Page The page of results to fetch. Defaults to the first page.
+	Page *int `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage The number of results to return per page. Defaults to 50, maximum 250.
+	PerPage         *int             `form:"per_page,omitempty" json:"per_page,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// CreateHelpCenterRedirectParams defines parameters for CreateHelpCenterRedirect.
+type CreateHelpCenterRedirectParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DeleteHelpCenterRedirectParams defines parameters for DeleteHelpCenterRedirect.
+type DeleteHelpCenterRedirectParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// RetrieveHelpCenterRedirectParams defines parameters for RetrieveHelpCenterRedirect.
+type RetrieveHelpCenterRedirectParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // ListInternalArticlesParams defines parameters for ListInternalArticles.
 type ListInternalArticlesParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
@@ -9880,6 +15381,25 @@ type UpdateInternalArticleParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// AttachTagToInternalArticleJSONBody defines parameters for AttachTagToInternalArticle.
+type AttachTagToInternalArticleJSONBody struct {
+	// AdminId Optional id of the teammate to attribute the tagging to. Defaults to the authenticating teammate. Does not affect authorization.
+	AdminId *string `json:"admin_id,omitempty"`
+
+	// Id The unique identifier of the tag to apply, as given by Intercom.
+	Id string `json:"id"`
+}
+
+// AttachTagToInternalArticleParams defines parameters for AttachTagToInternalArticle.
+type AttachTagToInternalArticleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DetachTagFromInternalArticleParams defines parameters for DetachTagFromInternalArticle.
+type DetachTagFromInternalArticleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // GetIpAllowlistParams defines parameters for GetIpAllowlist.
 type GetIpAllowlistParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
@@ -9895,6 +15415,24 @@ type JobsStatusParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// ListMacrosParams defines parameters for ListMacros.
+type ListMacrosParams struct {
+	// PerPage The number of results per page
+	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// StartingAfter Base64-encoded cursor containing [updated_at, id] for pagination
+	StartingAfter *string `form:"starting_after,omitempty" json:"starting_after,omitempty"`
+
+	// UpdatedSince Unix timestamp to filter macros updated after this time
+	UpdatedSince    *int64           `form:"updated_since,omitempty" json:"updated_since,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// GetMacroParams defines parameters for GetMacro.
+type GetMacroParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // IdentifyAdminParams defines parameters for IdentifyAdmin.
 type IdentifyAdminParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
@@ -9902,6 +15440,26 @@ type IdentifyAdminParams struct {
 
 // CreateMessageParams defines parameters for CreateMessage.
 type CreateMessageParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// GetWhatsAppMessageStatusParams defines parameters for GetWhatsAppMessageStatus.
+type GetWhatsAppMessageStatusParams struct {
+	// RulesetId The unique identifier for the set of messages to check status for
+	RulesetId string `form:"ruleset_id" json:"ruleset_id"`
+
+	// PerPage Number of results per page (default 50, max 100)
+	PerPage *int `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// StartingAfter Cursor for pagination, used to fetch the next page of results
+	StartingAfter   *string          `form:"starting_after,omitempty" json:"starting_after,omitempty"`
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// RetrieveWhatsAppMessageStatusParams defines parameters for RetrieveWhatsAppMessageStatus.
+type RetrieveWhatsAppMessageStatusParams struct {
+	// MessageId The WhatsApp message ID to check status for
+	MessageId       string           `form:"message_id" json:"message_id"`
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
@@ -9947,6 +15505,56 @@ type ListLiveNewsfeedItemsParams struct {
 
 // RetrieveNoteParams defines parameters for RetrieveNote.
 type RetrieveNoteParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListOfficeHoursSchedulesParams defines parameters for ListOfficeHoursSchedules.
+type ListOfficeHoursSchedulesParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// CreateOfficeHoursScheduleParams defines parameters for CreateOfficeHoursSchedule.
+type CreateOfficeHoursScheduleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DeleteOfficeHoursScheduleParams defines parameters for DeleteOfficeHoursSchedule.
+type DeleteOfficeHoursScheduleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// GetOfficeHoursScheduleParams defines parameters for GetOfficeHoursSchedule.
+type GetOfficeHoursScheduleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// UpdateOfficeHoursScheduleParams defines parameters for UpdateOfficeHoursSchedule.
+type UpdateOfficeHoursScheduleParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// ListOfficeHoursExceptionsParams defines parameters for ListOfficeHoursExceptions.
+type ListOfficeHoursExceptionsParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// CreateOfficeHoursExceptionParams defines parameters for CreateOfficeHoursException.
+type CreateOfficeHoursExceptionParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// DeleteOfficeHoursExceptionParams defines parameters for DeleteOfficeHoursException.
+type DeleteOfficeHoursExceptionParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// GetOfficeHoursExceptionParams defines parameters for GetOfficeHoursException.
+type GetOfficeHoursExceptionParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// UpdateOfficeHoursExceptionParams defines parameters for UpdateOfficeHoursException.
+type UpdateOfficeHoursExceptionParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
@@ -10004,6 +15612,13 @@ type ListTeamsParams struct {
 
 // RetrieveTeamParams defines parameters for RetrieveTeam.
 type RetrieveTeamParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// GetTeamMetricsParams defines parameters for GetTeamMetrics.
+type GetTeamMetricsParams struct {
+	// IdleThreshold The number of seconds after which an open conversation is considered idle. Clamped to the range 1–86400. Defaults to 1800 (30 minutes).
+	IdleThreshold   *int             `form:"idle_threshold,omitempty" json:"idle_threshold,omitempty"`
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
@@ -10081,6 +15696,27 @@ type UpdateTicketParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// ChangeTicketTypeParams defines parameters for ChangeTicketType.
+type ChangeTicketTypeParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// LinkConversationToTicketJSONBody defines parameters for LinkConversationToTicket.
+type LinkConversationToTicketJSONBody struct {
+	// ConversationId The unique identifier (given by Intercom) for the conversation or customer ticket to link to the tracker ticket.
+	ConversationId string `json:"conversation_id"`
+}
+
+// LinkConversationToTicketParams defines parameters for LinkConversationToTicket.
+type LinkConversationToTicketParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
+// UnlinkConversationFromTicketParams defines parameters for UnlinkConversationFromTicket.
+type UnlinkConversationFromTicketParams struct {
+	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
+}
+
 // ReplyTicketJSONBody defines parameters for ReplyTicket.
 type ReplyTicketJSONBody struct {
 	// SkipNotifications Option to disable notifications when replying to a Ticket.
@@ -10135,6 +15771,9 @@ type ConvertVisitorParams struct {
 	IntercomVersion *IntercomVersion `json:"Intercom-Version,omitempty"`
 }
 
+// SearchActivityLogsJSONRequestBody defines body for SearchActivityLogs for application/json ContentType.
+type SearchActivityLogsJSONRequestBody SearchActivityLogsJSONBody
+
 // SetAwayAdminJSONRequestBody defines body for SetAwayAdmin for application/json ContentType.
 type SetAwayAdminJSONRequestBody SetAwayAdminJSONBody
 
@@ -10156,6 +15795,21 @@ type CreateArticleJSONRequestBody = CreateArticleRequestSchema
 // UpdateArticleJSONRequestBody defines body for UpdateArticle for application/json ContentType.
 type UpdateArticleJSONRequestBody = UpdateArticleRequestSchema
 
+// AttachTagToArticleJSONRequestBody defines body for AttachTagToArticle for application/json ContentType.
+type AttachTagToArticleJSONRequestBody AttachTagToArticleJSONBody
+
+// StageArticleDraftJSONRequestBody defines body for StageArticleDraft for application/json ContentType.
+type StageArticleDraftJSONRequestBody = UpdateArticleRequestSchema
+
+// PublishArticleDraftJSONRequestBody defines body for PublishArticleDraft for application/json ContentType.
+type PublishArticleDraftJSONRequestBody = PublishArticleDraftRequestSchema
+
+// CreateAudienceJSONRequestBody defines body for CreateAudience for application/json ContentType.
+type CreateAudienceJSONRequestBody = CreateAudienceRequestSchema
+
+// UpdateAudienceJSONRequestBody defines body for UpdateAudience for application/json ContentType.
+type UpdateAudienceJSONRequestBody = UpdateAudienceRequestSchema
+
 // ListCallsWithTranscriptsJSONRequestBody defines body for ListCallsWithTranscripts for application/json ContentType.
 type ListCallsWithTranscriptsJSONRequestBody ListCallsWithTranscriptsJSONBody
 
@@ -10165,6 +15819,9 @@ type CreateOrUpdateCompanyJSONRequestBody = CreateOrUpdateCompanyRequestSchema
 // UpdateCompanyJSONRequestBody defines body for UpdateCompany for application/json ContentType.
 type UpdateCompanyJSONRequestBody = UpdateCompanyRequestSchema
 
+// CreateCompanyNoteJSONRequestBody defines body for CreateCompanyNote for application/json ContentType.
+type CreateCompanyNoteJSONRequestBody CreateCompanyNoteJSONBody
+
 // CreateContactJSONRequestBody defines body for CreateContact for application/json ContentType.
 type CreateContactJSONRequestBody CreateContactJSONBody
 
@@ -10172,7 +15829,7 @@ type CreateContactJSONRequestBody CreateContactJSONBody
 type MergeContactJSONRequestBody = MergeContactsRequestSchema
 
 // SearchContactsJSONRequestBody defines body for SearchContacts for application/json ContentType.
-type SearchContactsJSONRequestBody = SearchRequestSchema
+type SearchContactsJSONRequestBody = ContactSearchRequestSchema
 
 // UpdateContactJSONRequestBody defines body for UpdateContact for application/json ContentType.
 type UpdateContactJSONRequestBody UpdateContactJSONBody
@@ -10189,8 +15846,32 @@ type AttachSubscriptionTypeToContactJSONRequestBody AttachSubscriptionTypeToCont
 // AttachTagToContactJSONRequestBody defines body for AttachTagToContact for application/json ContentType.
 type AttachTagToContactJSONRequestBody AttachTagToContactJSONBody
 
+// BulkContentActionsJSONRequestBody defines body for BulkContentActions for application/json ContentType.
+type BulkContentActionsJSONRequestBody = ContentBulkActionRequestSchema
+
+// CreateContentSnippetJSONRequestBody defines body for CreateContentSnippet for application/json ContentType.
+type CreateContentSnippetJSONRequestBody = ContentSnippetCreateRequestSchema
+
+// AttachTagToContentSnippetJSONRequestBody defines body for AttachTagToContentSnippet for application/json ContentType.
+type AttachTagToContentSnippetJSONRequestBody AttachTagToContentSnippetJSONBody
+
+// UpdateContentSnippetJSONRequestBody defines body for UpdateContentSnippet for application/json ContentType.
+type UpdateContentSnippetJSONRequestBody = ContentSnippetUpdateRequestSchema
+
 // CreateConversationJSONRequestBody defines body for CreateConversation for application/json ContentType.
 type CreateConversationJSONRequestBody = CreateConversationRequestSchema
+
+// CreateConversationAttributeJSONRequestBody defines body for CreateConversationAttribute for application/json ContentType.
+type CreateConversationAttributeJSONRequestBody = CreateConversationAttributeRequest
+
+// UpdateConversationAttributeJSONRequestBody defines body for UpdateConversationAttribute for application/json ContentType.
+type UpdateConversationAttributeJSONRequestBody = UpdateConversationAttributeRequestSchema
+
+// CreateConversationAttributeOptionJSONRequestBody defines body for CreateConversationAttributeOption for application/json ContentType.
+type CreateConversationAttributeOptionJSONRequestBody = CreateConversationAttributeOptionRequestSchema
+
+// UpdateConversationAttributeOptionJSONRequestBody defines body for UpdateConversationAttributeOption for application/json ContentType.
+type UpdateConversationAttributeOptionJSONRequestBody = UpdateConversationAttributeOptionRequestSchema
 
 // RedactConversationJSONRequestBody defines body for RedactConversation for application/json ContentType.
 type RedactConversationJSONRequestBody = RedactConversationRequest
@@ -10222,6 +15903,9 @@ type AttachTagToConversationJSONRequestBody AttachTagToConversationJSONBody
 // DetachTagFromConversationJSONRequestBody defines body for DetachTagFromConversation for application/json ContentType.
 type DetachTagFromConversationJSONRequestBody DetachTagFromConversationJSONBody
 
+// MergeConversationJSONRequestBody defines body for MergeConversation for application/json ContentType.
+type MergeConversationJSONRequestBody = MergeConversationsRequestSchema
+
 // CreateCustomObjectInstancesJSONRequestBody defines body for CreateCustomObjectInstances for application/json ContentType.
 type CreateCustomObjectInstancesJSONRequestBody = CreateOrUpdateCustomObjectInstanceRequestSchema
 
@@ -10230,6 +15914,12 @@ type CreateDataAttributeJSONRequestBody = CreateDataAttributeRequestSchema
 
 // UpdateDataAttributeJSONRequestBody defines body for UpdateDataAttribute for application/json ContentType.
 type UpdateDataAttributeJSONRequestBody = UpdateDataAttributeRequestSchema
+
+// CreateDataConnectorJSONRequestBody defines body for CreateDataConnector for application/json ContentType.
+type CreateDataConnectorJSONRequestBody = CreateDataConnectorRequestSchema
+
+// UpdateDataConnectorJSONRequestBody defines body for UpdateDataConnector for application/json ContentType.
+type UpdateDataConnectorJSONRequestBody = UpdateDataConnectorRequestSchema
 
 // CreateDataEventJSONRequestBody defines body for CreateDataEvent for application/json ContentType.
 type CreateDataEventJSONRequestBody = CreateDataEventRequestSchema
@@ -10242,6 +15932,9 @@ type CreateDataExportJSONRequestBody = CreateDataExportsRequestSchema
 
 // PostExportReportingDataEnqueueJSONRequestBody defines body for PostExportReportingDataEnqueue for application/json ContentType.
 type PostExportReportingDataEnqueueJSONRequestBody PostExportReportingDataEnqueueJSONBody
+
+// SubmitFinCsatJSONRequestBody defines body for SubmitFinCsat for application/json ContentType.
+type SubmitFinCsatJSONRequestBody SubmitFinCsatJSONBody
 
 // ReplyToFinJSONRequestBody defines body for ReplyToFin for application/json ContentType.
 type ReplyToFinJSONRequestBody ReplyToFinJSONBody
@@ -10258,11 +15951,17 @@ type CreateCollectionJSONRequestBody = CreateCollectionRequestSchema
 // UpdateCollectionJSONRequestBody defines body for UpdateCollection for application/json ContentType.
 type UpdateCollectionJSONRequestBody = UpdateCollectionRequestSchema
 
+// CreateHelpCenterRedirectJSONRequestBody defines body for CreateHelpCenterRedirect for application/json ContentType.
+type CreateHelpCenterRedirectJSONRequestBody = CreateHelpCenterRedirectRequestSchema
+
 // CreateInternalArticleJSONRequestBody defines body for CreateInternalArticle for application/json ContentType.
 type CreateInternalArticleJSONRequestBody = CreateInternalArticleRequestSchema
 
 // UpdateInternalArticleJSONRequestBody defines body for UpdateInternalArticle for application/json ContentType.
 type UpdateInternalArticleJSONRequestBody = UpdateInternalArticleRequestSchema
+
+// AttachTagToInternalArticleJSONRequestBody defines body for AttachTagToInternalArticle for application/json ContentType.
+type AttachTagToInternalArticleJSONRequestBody AttachTagToInternalArticleJSONBody
 
 // UpdateIpAllowlistJSONRequestBody defines body for UpdateIpAllowlist for application/json ContentType.
 type UpdateIpAllowlistJSONRequestBody = IpAllowlistSchema
@@ -10275,6 +15974,18 @@ type CreateNewsItemJSONRequestBody = NewsItemRequestSchema
 
 // UpdateNewsItemJSONRequestBody defines body for UpdateNewsItem for application/json ContentType.
 type UpdateNewsItemJSONRequestBody = NewsItemRequestSchema
+
+// CreateOfficeHoursScheduleJSONRequestBody defines body for CreateOfficeHoursSchedule for application/json ContentType.
+type CreateOfficeHoursScheduleJSONRequestBody = CreateOfficeHoursScheduleRequestSchema
+
+// UpdateOfficeHoursScheduleJSONRequestBody defines body for UpdateOfficeHoursSchedule for application/json ContentType.
+type UpdateOfficeHoursScheduleJSONRequestBody = UpdateOfficeHoursScheduleRequestSchema
+
+// CreateOfficeHoursExceptionJSONRequestBody defines body for CreateOfficeHoursException for application/json ContentType.
+type CreateOfficeHoursExceptionJSONRequestBody = CreateOfficeHoursExceptionRequestSchema
+
+// UpdateOfficeHoursExceptionJSONRequestBody defines body for UpdateOfficeHoursException for application/json ContentType.
+type UpdateOfficeHoursExceptionJSONRequestBody = UpdateOfficeHoursExceptionRequestSchema
 
 // CreatePhoneSwitchJSONRequestBody defines body for CreatePhoneSwitch for application/json ContentType.
 type CreatePhoneSwitchJSONRequestBody = CreatePhoneSwitchRequestSchema
@@ -10305,6 +16016,12 @@ type SearchTicketsJSONRequestBody = SearchRequestSchema
 
 // UpdateTicketJSONRequestBody defines body for UpdateTicket for application/json ContentType.
 type UpdateTicketJSONRequestBody = UpdateTicketJSONBody
+
+// ChangeTicketTypeJSONRequestBody defines body for ChangeTicketType for application/json ContentType.
+type ChangeTicketTypeJSONRequestBody = ChangeTicketTypeRequestSchema
+
+// LinkConversationToTicketJSONRequestBody defines body for LinkConversationToTicket for application/json ContentType.
+type LinkConversationToTicketJSONRequestBody LinkConversationToTicketJSONBody
 
 // ReplyTicketJSONRequestBody defines body for ReplyTicket for application/json ContentType.
 type ReplyTicketJSONRequestBody ReplyTicketJSONBody
@@ -10581,6 +16298,428 @@ func (t ContactReplyTicketRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (t *ContactReplyTicketRequest) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsSingleFilterSearchRequestSchema returns the union data inside the ContactSearchRequest_Query as a SingleFilterSearchRequestSchema
+func (t ContactSearchRequest_Query) AsSingleFilterSearchRequestSchema() (SingleFilterSearchRequestSchema, error) {
+	var body SingleFilterSearchRequestSchema
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromSingleFilterSearchRequestSchema overwrites any union data inside the ContactSearchRequest_Query as the provided SingleFilterSearchRequestSchema
+func (t *ContactSearchRequest_Query) FromSingleFilterSearchRequestSchema(v SingleFilterSearchRequestSchema) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeSingleFilterSearchRequestSchema performs a merge with any union data inside the ContactSearchRequest_Query, using the provided SingleFilterSearchRequestSchema
+func (t *ContactSearchRequest_Query) MergeSingleFilterSearchRequestSchema(v SingleFilterSearchRequestSchema) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsMultipleFilterSearchRequestSchema returns the union data inside the ContactSearchRequest_Query as a MultipleFilterSearchRequestSchema
+func (t ContactSearchRequest_Query) AsMultipleFilterSearchRequestSchema() (MultipleFilterSearchRequestSchema, error) {
+	var body MultipleFilterSearchRequestSchema
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromMultipleFilterSearchRequestSchema overwrites any union data inside the ContactSearchRequest_Query as the provided MultipleFilterSearchRequestSchema
+func (t *ContactSearchRequest_Query) FromMultipleFilterSearchRequestSchema(v MultipleFilterSearchRequestSchema) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeMultipleFilterSearchRequestSchema performs a merge with any union data inside the ContactSearchRequest_Query, using the provided MultipleFilterSearchRequestSchema
+func (t *ContactSearchRequest_Query) MergeMultipleFilterSearchRequestSchema(v MultipleFilterSearchRequestSchema) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ContactSearchRequest_Query) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ContactSearchRequest_Query) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsContentSearchDefaultItemSchema returns the union data inside the ContentSearchResult as a ContentSearchDefaultItemSchema
+func (t ContentSearchResult) AsContentSearchDefaultItemSchema() (ContentSearchDefaultItemSchema, error) {
+	var body ContentSearchDefaultItemSchema
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromContentSearchDefaultItemSchema overwrites any union data inside the ContentSearchResult as the provided ContentSearchDefaultItemSchema
+func (t *ContentSearchResult) FromContentSearchDefaultItemSchema(v ContentSearchDefaultItemSchema) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeContentSearchDefaultItemSchema performs a merge with any union data inside the ContentSearchResult, using the provided ContentSearchDefaultItemSchema
+func (t *ContentSearchResult) MergeContentSearchDefaultItemSchema(v ContentSearchDefaultItemSchema) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsContentSearchArticleItemSchema returns the union data inside the ContentSearchResult as a ContentSearchArticleItemSchema
+func (t ContentSearchResult) AsContentSearchArticleItemSchema() (ContentSearchArticleItemSchema, error) {
+	var body ContentSearchArticleItemSchema
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromContentSearchArticleItemSchema overwrites any union data inside the ContentSearchResult as the provided ContentSearchArticleItemSchema
+func (t *ContentSearchResult) FromContentSearchArticleItemSchema(v ContentSearchArticleItemSchema) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeContentSearchArticleItemSchema performs a merge with any union data inside the ContentSearchResult, using the provided ContentSearchArticleItemSchema
+func (t *ContentSearchResult) MergeContentSearchArticleItemSchema(v ContentSearchArticleItemSchema) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ContentSearchResult) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"type"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t ContentSearchResult) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "article":
+		return t.AsContentSearchArticleItemSchema()
+	case "content_snippet":
+		return t.AsContentSearchDefaultItemSchema()
+	case "external_content":
+		return t.AsContentSearchDefaultItemSchema()
+	case "file_source_content":
+		return t.AsContentSearchDefaultItemSchema()
+	case "internal_article":
+		return t.AsContentSearchDefaultItemSchema()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t ContentSearchResult) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ContentSearchResult) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsConversationAttributeStringType returns the union data inside the ConversationAttribute as a ConversationAttributeStringType
+func (t ConversationAttribute) AsConversationAttributeStringType() (ConversationAttributeStringType, error) {
+	var body ConversationAttributeStringType
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromConversationAttributeStringType overwrites any union data inside the ConversationAttribute as the provided ConversationAttributeStringType
+func (t *ConversationAttribute) FromConversationAttributeStringType(v ConversationAttributeStringType) error {
+	v.DataType = "string"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeConversationAttributeStringType performs a merge with any union data inside the ConversationAttribute, using the provided ConversationAttributeStringType
+func (t *ConversationAttribute) MergeConversationAttributeStringType(v ConversationAttributeStringType) error {
+	v.DataType = "string"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsConversationAttributeIntegerType returns the union data inside the ConversationAttribute as a ConversationAttributeIntegerType
+func (t ConversationAttribute) AsConversationAttributeIntegerType() (ConversationAttributeIntegerType, error) {
+	var body ConversationAttributeIntegerType
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromConversationAttributeIntegerType overwrites any union data inside the ConversationAttribute as the provided ConversationAttributeIntegerType
+func (t *ConversationAttribute) FromConversationAttributeIntegerType(v ConversationAttributeIntegerType) error {
+	v.DataType = "integer"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeConversationAttributeIntegerType performs a merge with any union data inside the ConversationAttribute, using the provided ConversationAttributeIntegerType
+func (t *ConversationAttribute) MergeConversationAttributeIntegerType(v ConversationAttributeIntegerType) error {
+	v.DataType = "integer"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsConversationAttributeListTypeSchema returns the union data inside the ConversationAttribute as a ConversationAttributeListTypeSchema
+func (t ConversationAttribute) AsConversationAttributeListTypeSchema() (ConversationAttributeListTypeSchema, error) {
+	var body ConversationAttributeListTypeSchema
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromConversationAttributeListTypeSchema overwrites any union data inside the ConversationAttribute as the provided ConversationAttributeListTypeSchema
+func (t *ConversationAttribute) FromConversationAttributeListTypeSchema(v ConversationAttributeListTypeSchema) error {
+	v.DataType = "list"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeConversationAttributeListTypeSchema performs a merge with any union data inside the ConversationAttribute, using the provided ConversationAttributeListTypeSchema
+func (t *ConversationAttribute) MergeConversationAttributeListTypeSchema(v ConversationAttributeListTypeSchema) error {
+	v.DataType = "list"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsConversationAttributeDecimalType returns the union data inside the ConversationAttribute as a ConversationAttributeDecimalType
+func (t ConversationAttribute) AsConversationAttributeDecimalType() (ConversationAttributeDecimalType, error) {
+	var body ConversationAttributeDecimalType
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromConversationAttributeDecimalType overwrites any union data inside the ConversationAttribute as the provided ConversationAttributeDecimalType
+func (t *ConversationAttribute) FromConversationAttributeDecimalType(v ConversationAttributeDecimalType) error {
+	v.DataType = "decimal"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeConversationAttributeDecimalType performs a merge with any union data inside the ConversationAttribute, using the provided ConversationAttributeDecimalType
+func (t *ConversationAttribute) MergeConversationAttributeDecimalType(v ConversationAttributeDecimalType) error {
+	v.DataType = "decimal"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsConversationAttributeBooleanType returns the union data inside the ConversationAttribute as a ConversationAttributeBooleanType
+func (t ConversationAttribute) AsConversationAttributeBooleanType() (ConversationAttributeBooleanType, error) {
+	var body ConversationAttributeBooleanType
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromConversationAttributeBooleanType overwrites any union data inside the ConversationAttribute as the provided ConversationAttributeBooleanType
+func (t *ConversationAttribute) FromConversationAttributeBooleanType(v ConversationAttributeBooleanType) error {
+	v.DataType = "boolean"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeConversationAttributeBooleanType performs a merge with any union data inside the ConversationAttribute, using the provided ConversationAttributeBooleanType
+func (t *ConversationAttribute) MergeConversationAttributeBooleanType(v ConversationAttributeBooleanType) error {
+	v.DataType = "boolean"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsConversationAttributeDatetimeType returns the union data inside the ConversationAttribute as a ConversationAttributeDatetimeType
+func (t ConversationAttribute) AsConversationAttributeDatetimeType() (ConversationAttributeDatetimeType, error) {
+	var body ConversationAttributeDatetimeType
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromConversationAttributeDatetimeType overwrites any union data inside the ConversationAttribute as the provided ConversationAttributeDatetimeType
+func (t *ConversationAttribute) FromConversationAttributeDatetimeType(v ConversationAttributeDatetimeType) error {
+	v.DataType = "datetime"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeConversationAttributeDatetimeType performs a merge with any union data inside the ConversationAttribute, using the provided ConversationAttributeDatetimeType
+func (t *ConversationAttribute) MergeConversationAttributeDatetimeType(v ConversationAttributeDatetimeType) error {
+	v.DataType = "datetime"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsConversationAttributeRelationshipType returns the union data inside the ConversationAttribute as a ConversationAttributeRelationshipType
+func (t ConversationAttribute) AsConversationAttributeRelationshipType() (ConversationAttributeRelationshipType, error) {
+	var body ConversationAttributeRelationshipType
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromConversationAttributeRelationshipType overwrites any union data inside the ConversationAttribute as the provided ConversationAttributeRelationshipType
+func (t *ConversationAttribute) FromConversationAttributeRelationshipType(v ConversationAttributeRelationshipType) error {
+	v.DataType = "relationship"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeConversationAttributeRelationshipType performs a merge with any union data inside the ConversationAttribute, using the provided ConversationAttributeRelationshipType
+func (t *ConversationAttribute) MergeConversationAttributeRelationshipType(v ConversationAttributeRelationshipType) error {
+	v.DataType = "relationship"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsConversationAttributeFilesType returns the union data inside the ConversationAttribute as a ConversationAttributeFilesType
+func (t ConversationAttribute) AsConversationAttributeFilesType() (ConversationAttributeFilesType, error) {
+	var body ConversationAttributeFilesType
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromConversationAttributeFilesType overwrites any union data inside the ConversationAttribute as the provided ConversationAttributeFilesType
+func (t *ConversationAttribute) FromConversationAttributeFilesType(v ConversationAttributeFilesType) error {
+	v.DataType = "files"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeConversationAttributeFilesType performs a merge with any union data inside the ConversationAttribute, using the provided ConversationAttributeFilesType
+func (t *ConversationAttribute) MergeConversationAttributeFilesType(v ConversationAttributeFilesType) error {
+	v.DataType = "files"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ConversationAttribute) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"data_type"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t ConversationAttribute) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "boolean":
+		return t.AsConversationAttributeBooleanType()
+	case "datetime":
+		return t.AsConversationAttributeDatetimeType()
+	case "decimal":
+		return t.AsConversationAttributeDecimalType()
+	case "files":
+		return t.AsConversationAttributeFilesType()
+	case "integer":
+		return t.AsConversationAttributeIntegerType()
+	case "list":
+		return t.AsConversationAttributeListTypeSchema()
+	case "relationship":
+		return t.AsConversationAttributeRelationshipType()
+	case "string":
+		return t.AsConversationAttributeStringType()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t ConversationAttribute) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ConversationAttribute) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -10971,6 +17110,13 @@ func (t CreateContactRequestSchema) MarshalJSON() ([]byte, error) {
 		}
 	}
 
+	if t.EmailVerified != nil {
+		object["email_verified"], err = json.Marshal(t.EmailVerified)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling 'email_verified': %w", err)
+		}
+	}
+
 	if t.ExternalId != nil {
 		object["external_id"], err = json.Marshal(t.ExternalId)
 		if err != nil {
@@ -11059,6 +17205,13 @@ func (t *CreateContactRequestSchema) UnmarshalJSON(b []byte) error {
 		err = json.Unmarshal(raw, &t.Email)
 		if err != nil {
 			return fmt.Errorf("error reading 'email': %w", err)
+		}
+	}
+
+	if raw, found := object["email_verified"]; found {
+		err = json.Unmarshal(raw, &t.EmailVerified)
+		if err != nil {
+			return fmt.Errorf("error reading 'email_verified': %w", err)
 		}
 	}
 
@@ -11179,6 +17332,275 @@ func (t CreateContentImportSourceRequest_AudienceIds) MarshalJSON() ([]byte, err
 }
 
 func (t *CreateContentImportSourceRequest_AudienceIds) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsCreateConversationAttributeStringRequest returns the union data inside the CreateConversationAttributeRequest as a CreateConversationAttributeStringRequest
+func (t CreateConversationAttributeRequest) AsCreateConversationAttributeStringRequest() (CreateConversationAttributeStringRequest, error) {
+	var body CreateConversationAttributeStringRequest
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateConversationAttributeStringRequest overwrites any union data inside the CreateConversationAttributeRequest as the provided CreateConversationAttributeStringRequest
+func (t *CreateConversationAttributeRequest) FromCreateConversationAttributeStringRequest(v CreateConversationAttributeStringRequest) error {
+	v.DataType = "string"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateConversationAttributeStringRequest performs a merge with any union data inside the CreateConversationAttributeRequest, using the provided CreateConversationAttributeStringRequest
+func (t *CreateConversationAttributeRequest) MergeCreateConversationAttributeStringRequest(v CreateConversationAttributeStringRequest) error {
+	v.DataType = "string"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateConversationAttributeIntegerRequest returns the union data inside the CreateConversationAttributeRequest as a CreateConversationAttributeIntegerRequest
+func (t CreateConversationAttributeRequest) AsCreateConversationAttributeIntegerRequest() (CreateConversationAttributeIntegerRequest, error) {
+	var body CreateConversationAttributeIntegerRequest
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateConversationAttributeIntegerRequest overwrites any union data inside the CreateConversationAttributeRequest as the provided CreateConversationAttributeIntegerRequest
+func (t *CreateConversationAttributeRequest) FromCreateConversationAttributeIntegerRequest(v CreateConversationAttributeIntegerRequest) error {
+	v.DataType = "integer"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateConversationAttributeIntegerRequest performs a merge with any union data inside the CreateConversationAttributeRequest, using the provided CreateConversationAttributeIntegerRequest
+func (t *CreateConversationAttributeRequest) MergeCreateConversationAttributeIntegerRequest(v CreateConversationAttributeIntegerRequest) error {
+	v.DataType = "integer"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateConversationAttributeListRequest returns the union data inside the CreateConversationAttributeRequest as a CreateConversationAttributeListRequest
+func (t CreateConversationAttributeRequest) AsCreateConversationAttributeListRequest() (CreateConversationAttributeListRequest, error) {
+	var body CreateConversationAttributeListRequest
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateConversationAttributeListRequest overwrites any union data inside the CreateConversationAttributeRequest as the provided CreateConversationAttributeListRequest
+func (t *CreateConversationAttributeRequest) FromCreateConversationAttributeListRequest(v CreateConversationAttributeListRequest) error {
+	v.DataType = "list"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateConversationAttributeListRequest performs a merge with any union data inside the CreateConversationAttributeRequest, using the provided CreateConversationAttributeListRequest
+func (t *CreateConversationAttributeRequest) MergeCreateConversationAttributeListRequest(v CreateConversationAttributeListRequest) error {
+	v.DataType = "list"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateConversationAttributeDecimalRequest returns the union data inside the CreateConversationAttributeRequest as a CreateConversationAttributeDecimalRequest
+func (t CreateConversationAttributeRequest) AsCreateConversationAttributeDecimalRequest() (CreateConversationAttributeDecimalRequest, error) {
+	var body CreateConversationAttributeDecimalRequest
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateConversationAttributeDecimalRequest overwrites any union data inside the CreateConversationAttributeRequest as the provided CreateConversationAttributeDecimalRequest
+func (t *CreateConversationAttributeRequest) FromCreateConversationAttributeDecimalRequest(v CreateConversationAttributeDecimalRequest) error {
+	v.DataType = "decimal"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateConversationAttributeDecimalRequest performs a merge with any union data inside the CreateConversationAttributeRequest, using the provided CreateConversationAttributeDecimalRequest
+func (t *CreateConversationAttributeRequest) MergeCreateConversationAttributeDecimalRequest(v CreateConversationAttributeDecimalRequest) error {
+	v.DataType = "decimal"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateConversationAttributeBooleanRequest returns the union data inside the CreateConversationAttributeRequest as a CreateConversationAttributeBooleanRequest
+func (t CreateConversationAttributeRequest) AsCreateConversationAttributeBooleanRequest() (CreateConversationAttributeBooleanRequest, error) {
+	var body CreateConversationAttributeBooleanRequest
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateConversationAttributeBooleanRequest overwrites any union data inside the CreateConversationAttributeRequest as the provided CreateConversationAttributeBooleanRequest
+func (t *CreateConversationAttributeRequest) FromCreateConversationAttributeBooleanRequest(v CreateConversationAttributeBooleanRequest) error {
+	v.DataType = "boolean"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateConversationAttributeBooleanRequest performs a merge with any union data inside the CreateConversationAttributeRequest, using the provided CreateConversationAttributeBooleanRequest
+func (t *CreateConversationAttributeRequest) MergeCreateConversationAttributeBooleanRequest(v CreateConversationAttributeBooleanRequest) error {
+	v.DataType = "boolean"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateConversationAttributeDatetimeRequest returns the union data inside the CreateConversationAttributeRequest as a CreateConversationAttributeDatetimeRequest
+func (t CreateConversationAttributeRequest) AsCreateConversationAttributeDatetimeRequest() (CreateConversationAttributeDatetimeRequest, error) {
+	var body CreateConversationAttributeDatetimeRequest
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateConversationAttributeDatetimeRequest overwrites any union data inside the CreateConversationAttributeRequest as the provided CreateConversationAttributeDatetimeRequest
+func (t *CreateConversationAttributeRequest) FromCreateConversationAttributeDatetimeRequest(v CreateConversationAttributeDatetimeRequest) error {
+	v.DataType = "datetime"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateConversationAttributeDatetimeRequest performs a merge with any union data inside the CreateConversationAttributeRequest, using the provided CreateConversationAttributeDatetimeRequest
+func (t *CreateConversationAttributeRequest) MergeCreateConversationAttributeDatetimeRequest(v CreateConversationAttributeDatetimeRequest) error {
+	v.DataType = "datetime"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateConversationAttributeRelationshipRequest returns the union data inside the CreateConversationAttributeRequest as a CreateConversationAttributeRelationshipRequest
+func (t CreateConversationAttributeRequest) AsCreateConversationAttributeRelationshipRequest() (CreateConversationAttributeRelationshipRequest, error) {
+	var body CreateConversationAttributeRelationshipRequest
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateConversationAttributeRelationshipRequest overwrites any union data inside the CreateConversationAttributeRequest as the provided CreateConversationAttributeRelationshipRequest
+func (t *CreateConversationAttributeRequest) FromCreateConversationAttributeRelationshipRequest(v CreateConversationAttributeRelationshipRequest) error {
+	v.DataType = "relationship"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateConversationAttributeRelationshipRequest performs a merge with any union data inside the CreateConversationAttributeRequest, using the provided CreateConversationAttributeRelationshipRequest
+func (t *CreateConversationAttributeRequest) MergeCreateConversationAttributeRelationshipRequest(v CreateConversationAttributeRelationshipRequest) error {
+	v.DataType = "relationship"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateConversationAttributeFilesRequest returns the union data inside the CreateConversationAttributeRequest as a CreateConversationAttributeFilesRequest
+func (t CreateConversationAttributeRequest) AsCreateConversationAttributeFilesRequest() (CreateConversationAttributeFilesRequest, error) {
+	var body CreateConversationAttributeFilesRequest
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateConversationAttributeFilesRequest overwrites any union data inside the CreateConversationAttributeRequest as the provided CreateConversationAttributeFilesRequest
+func (t *CreateConversationAttributeRequest) FromCreateConversationAttributeFilesRequest(v CreateConversationAttributeFilesRequest) error {
+	v.DataType = "files"
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateConversationAttributeFilesRequest performs a merge with any union data inside the CreateConversationAttributeRequest, using the provided CreateConversationAttributeFilesRequest
+func (t *CreateConversationAttributeRequest) MergeCreateConversationAttributeFilesRequest(v CreateConversationAttributeFilesRequest) error {
+	v.DataType = "files"
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CreateConversationAttributeRequest) Discriminator() (string, error) {
+	var discriminator struct {
+		Discriminator string `json:"data_type"`
+	}
+	err := json.Unmarshal(t.union, &discriminator)
+	return discriminator.Discriminator, err
+}
+
+func (t CreateConversationAttributeRequest) ValueByDiscriminator() (interface{}, error) {
+	discriminator, err := t.Discriminator()
+	if err != nil {
+		return nil, err
+	}
+	switch discriminator {
+	case "boolean":
+		return t.AsCreateConversationAttributeBooleanRequest()
+	case "datetime":
+		return t.AsCreateConversationAttributeDatetimeRequest()
+	case "decimal":
+		return t.AsCreateConversationAttributeDecimalRequest()
+	case "files":
+		return t.AsCreateConversationAttributeFilesRequest()
+	case "integer":
+		return t.AsCreateConversationAttributeIntegerRequest()
+	case "list":
+		return t.AsCreateConversationAttributeListRequest()
+	case "relationship":
+		return t.AsCreateConversationAttributeRelationshipRequest()
+	case "string":
+		return t.AsCreateConversationAttributeStringRequest()
+	default:
+		return nil, errors.New("unknown discriminator value: " + discriminator)
+	}
+}
+
+func (t CreateConversationAttributeRequest) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CreateConversationAttributeRequest) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -11552,6 +17974,32 @@ func (t *CreateMessageRequestSchema) FromCreateMessageRequest1(v CreateMessageRe
 
 // MergeCreateMessageRequest1 performs a merge with any union data inside the CreateMessageRequestSchema, using the provided CreateMessageRequest1
 func (t *CreateMessageRequestSchema) MergeCreateMessageRequest1(v CreateMessageRequest1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateMessageRequest2 returns the union data inside the CreateMessageRequestSchema as a CreateMessageRequest2
+func (t CreateMessageRequestSchema) AsCreateMessageRequest2() (CreateMessageRequest2, error) {
+	var body CreateMessageRequest2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateMessageRequest2 overwrites any union data inside the CreateMessageRequestSchema as the provided CreateMessageRequest2
+func (t *CreateMessageRequestSchema) FromCreateMessageRequest2(v CreateMessageRequest2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateMessageRequest2 performs a merge with any union data inside the CreateMessageRequestSchema, using the provided CreateMessageRequest2
+func (t *CreateMessageRequestSchema) MergeCreateMessageRequest2(v CreateMessageRequest2) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -13762,8 +20210,16 @@ type ClientInterface interface {
 	// ListAdmins request
 	ListAdmins(ctx context.Context, params *ListAdminsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListActivityLogEventTypes request
+	ListActivityLogEventTypes(ctx context.Context, params *ListActivityLogEventTypesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListActivityLogs request
 	ListActivityLogs(ctx context.Context, params *ListActivityLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SearchActivityLogsWithBody request with any body
+	SearchActivityLogsWithBody(ctx context.Context, params *SearchActivityLogsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SearchActivityLogs(ctx context.Context, params *SearchActivityLogsParams, body SearchActivityLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RetrieveAdmin request
 	RetrieveAdmin(ctx context.Context, adminId int, params *RetrieveAdminParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -13833,6 +20289,52 @@ type ClientInterface interface {
 
 	UpdateArticle(ctx context.Context, articleId int, params *UpdateArticleParams, body UpdateArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// AttachTagToArticleWithBody request with any body
+	AttachTagToArticleWithBody(ctx context.Context, articleId int, params *AttachTagToArticleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AttachTagToArticle(ctx context.Context, articleId int, params *AttachTagToArticleParams, body AttachTagToArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DetachTagFromArticle request
+	DetachTagFromArticle(ctx context.Context, articleId int, id string, params *DetachTagFromArticleParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListArticleVersions request
+	ListArticleVersions(ctx context.Context, articleId int, params *ListArticleVersionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrieveArticleVersion request
+	RetrieveArticleVersion(ctx context.Context, articleId int, id string, params *RetrieveArticleVersionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrieveArticleDraft request
+	RetrieveArticleDraft(ctx context.Context, id int, params *RetrieveArticleDraftParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// StageArticleDraftWithBody request with any body
+	StageArticleDraftWithBody(ctx context.Context, id int, params *StageArticleDraftParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	StageArticleDraft(ctx context.Context, id int, params *StageArticleDraftParams, body StageArticleDraftJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PublishArticleDraftWithBody request with any body
+	PublishArticleDraftWithBody(ctx context.Context, id int, params *PublishArticleDraftParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PublishArticleDraft(ctx context.Context, id int, params *PublishArticleDraftParams, body PublishArticleDraftJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListAudiences request
+	ListAudiences(ctx context.Context, params *ListAudiencesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateAudienceWithBody request with any body
+	CreateAudienceWithBody(ctx context.Context, params *CreateAudienceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateAudience(ctx context.Context, params *CreateAudienceParams, body CreateAudienceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteAudience request
+	DeleteAudience(ctx context.Context, id string, params *DeleteAudienceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrieveAudience request
+	RetrieveAudience(ctx context.Context, id string, params *RetrieveAudienceParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAudienceWithBody request with any body
+	UpdateAudienceWithBody(ctx context.Context, id string, params *UpdateAudienceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateAudience(ctx context.Context, id string, params *UpdateAudienceParams, body UpdateAudienceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListAwayStatusReasons request
 	ListAwayStatusReasons(ctx context.Context, params *ListAwayStatusReasonsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -13889,6 +20391,11 @@ type ClientInterface interface {
 
 	// ListCompanyNotes request
 	ListCompanyNotes(ctx context.Context, companyId string, params *ListCompanyNotesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateCompanyNoteWithBody request with any body
+	CreateCompanyNoteWithBody(ctx context.Context, companyId string, params *CreateCompanyNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateCompanyNote(ctx context.Context, companyId string, params *CreateCompanyNoteParams, body CreateCompanyNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListAttachedSegmentsForCompanies request
 	ListAttachedSegmentsForCompanies(ctx context.Context, companyId string, params *ListAttachedSegmentsForCompaniesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -13978,6 +20485,50 @@ type ClientInterface interface {
 	// UnarchiveContact request
 	UnarchiveContact(ctx context.Context, contactId string, params *UnarchiveContactParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListContactBanners request
+	ListContactBanners(ctx context.Context, id string, params *ListContactBannersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DismissContactBanner request
+	DismissContactBanner(ctx context.Context, id string, viewId string, params *DismissContactBannerParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListContactMergeHistory request
+	ListContactMergeHistory(ctx context.Context, id string, params *ListContactMergeHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BulkContentActionsWithBody request with any body
+	BulkContentActionsWithBody(ctx context.Context, params *BulkContentActionsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	BulkContentActions(ctx context.Context, params *BulkContentActionsParams, body BulkContentActionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SearchContent request
+	SearchContent(ctx context.Context, params *SearchContentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListContentSnippets request
+	ListContentSnippets(ctx context.Context, params *ListContentSnippetsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateContentSnippetWithBody request with any body
+	CreateContentSnippetWithBody(ctx context.Context, params *CreateContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateContentSnippet(ctx context.Context, params *CreateContentSnippetParams, body CreateContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AttachTagToContentSnippetWithBody request with any body
+	AttachTagToContentSnippetWithBody(ctx context.Context, contentSnippetId string, params *AttachTagToContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AttachTagToContentSnippet(ctx context.Context, contentSnippetId string, params *AttachTagToContentSnippetParams, body AttachTagToContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DetachTagFromContentSnippet request
+	DetachTagFromContentSnippet(ctx context.Context, contentSnippetId string, id string, params *DetachTagFromContentSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteContentSnippet request
+	DeleteContentSnippet(ctx context.Context, id string, params *DeleteContentSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetContentSnippet request
+	GetContentSnippet(ctx context.Context, id string, params *GetContentSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateContentSnippetWithBody request with any body
+	UpdateContentSnippetWithBody(ctx context.Context, id string, params *UpdateContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateContentSnippet(ctx context.Context, id string, params *UpdateContentSnippetParams, body UpdateContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListConversations request
 	ListConversations(ctx context.Context, params *ListConversationsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -13985,6 +20536,41 @@ type ClientInterface interface {
 	CreateConversationWithBody(ctx context.Context, params *CreateConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateConversation(ctx context.Context, params *CreateConversationParams, body CreateConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListConversationAttributes request
+	ListConversationAttributes(ctx context.Context, params *ListConversationAttributesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateConversationAttributeWithBody request with any body
+	CreateConversationAttributeWithBody(ctx context.Context, params *CreateConversationAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateConversationAttribute(ctx context.Context, params *CreateConversationAttributeParams, body CreateConversationAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteConversationAttribute request
+	DeleteConversationAttribute(ctx context.Context, id int, params *DeleteConversationAttributeParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConversationAttribute request
+	GetConversationAttribute(ctx context.Context, id int, params *GetConversationAttributeParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateConversationAttributeWithBody request with any body
+	UpdateConversationAttributeWithBody(ctx context.Context, id int, params *UpdateConversationAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateConversationAttribute(ctx context.Context, id int, params *UpdateConversationAttributeParams, body UpdateConversationAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateConversationAttributeOptionWithBody request with any body
+	CreateConversationAttributeOptionWithBody(ctx context.Context, id int, params *CreateConversationAttributeOptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateConversationAttributeOption(ctx context.Context, id int, params *CreateConversationAttributeOptionParams, body CreateConversationAttributeOptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteConversationAttributeOption request
+	DeleteConversationAttributeOption(ctx context.Context, id int, optionId string, params *DeleteConversationAttributeOptionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateConversationAttributeOptionWithBody request with any body
+	UpdateConversationAttributeOptionWithBody(ctx context.Context, id int, optionId string, params *UpdateConversationAttributeOptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateConversationAttributeOption(ctx context.Context, id int, optionId string, params *UpdateConversationAttributeOptionParams, body UpdateConversationAttributeOptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListDeletedConversationIds request
+	ListDeletedConversationIds(ctx context.Context, params *ListDeletedConversationIdsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RedactConversationWithBody request with any body
 	RedactConversationWithBody(ctx context.Context, params *RedactConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14045,11 +20631,19 @@ type ClientInterface interface {
 	// ListHandlingEvents request
 	ListHandlingEvents(ctx context.Context, id string, params *ListHandlingEventsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// MergeConversationWithBody request with any body
+	MergeConversationWithBody(ctx context.Context, id string, params *MergeConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	MergeConversation(ctx context.Context, id string, params *MergeConversationParams, body MergeConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSideConversations request
+	ListSideConversations(ctx context.Context, id string, params *ListSideConversationsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteCustomObjectInstancesById request
 	DeleteCustomObjectInstancesById(ctx context.Context, customObjectTypeIdentifier string, params *DeleteCustomObjectInstancesByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetCustomObjectInstancesByExternalId request
-	GetCustomObjectInstancesByExternalId(ctx context.Context, customObjectTypeIdentifier string, params *GetCustomObjectInstancesByExternalIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListCustomObjectInstances request
+	ListCustomObjectInstances(ctx context.Context, customObjectTypeIdentifier string, params *ListCustomObjectInstancesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateCustomObjectInstancesWithBody request with any body
 	CreateCustomObjectInstancesWithBody(ctx context.Context, customObjectTypeIdentifier string, params *CreateCustomObjectInstancesParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14074,6 +20668,31 @@ type ClientInterface interface {
 	UpdateDataAttributeWithBody(ctx context.Context, dataAttributeId int, params *UpdateDataAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateDataAttribute(ctx context.Context, dataAttributeId int, params *UpdateDataAttributeParams, body UpdateDataAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListDataConnectors request
+	ListDataConnectors(ctx context.Context, params *ListDataConnectorsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateDataConnectorWithBody request with any body
+	CreateDataConnectorWithBody(ctx context.Context, params *CreateDataConnectorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateDataConnector(ctx context.Context, params *CreateDataConnectorParams, body CreateDataConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListDataConnectorExecutionResults request
+	ListDataConnectorExecutionResults(ctx context.Context, dataConnectorId string, params *ListDataConnectorExecutionResultsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ShowDataConnectorExecutionResult request
+	ShowDataConnectorExecutionResult(ctx context.Context, dataConnectorId string, id string, params *ShowDataConnectorExecutionResultParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteDataConnector request
+	DeleteDataConnector(ctx context.Context, id string, params *DeleteDataConnectorParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrieveDataConnector request
+	RetrieveDataConnector(ctx context.Context, id string, params *RetrieveDataConnectorParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateDataConnectorWithBody request with any body
+	UpdateDataConnectorWithBody(ctx context.Context, id string, params *UpdateDataConnectorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateDataConnector(ctx context.Context, id string, params *UpdateDataConnectorParams, body UpdateDataConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DownloadDataExport request
 	DownloadDataExport(ctx context.Context, jobIdentifier string, params *DownloadDataExportParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14124,6 +20743,11 @@ type ClientInterface interface {
 
 	// ExportWorkflow request
 	ExportWorkflow(ctx context.Context, id string, params *ExportWorkflowParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SubmitFinCsatWithBody request with any body
+	SubmitFinCsatWithBody(ctx context.Context, params *SubmitFinCsatParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SubmitFinCsat(ctx context.Context, params *SubmitFinCsatParams, body SubmitFinCsatJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReplyToFinWithBody request with any body
 	ReplyToFinWithBody(ctx context.Context, params *ReplyToFinParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14177,6 +20801,20 @@ type ClientInterface interface {
 	// RetrieveHelpCenter request
 	RetrieveHelpCenter(ctx context.Context, helpCenterId int, params *RetrieveHelpCenterParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListHelpCenterRedirects request
+	ListHelpCenterRedirects(ctx context.Context, helpCenterId string, params *ListHelpCenterRedirectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateHelpCenterRedirectWithBody request with any body
+	CreateHelpCenterRedirectWithBody(ctx context.Context, helpCenterId string, params *CreateHelpCenterRedirectParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateHelpCenterRedirect(ctx context.Context, helpCenterId string, params *CreateHelpCenterRedirectParams, body CreateHelpCenterRedirectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteHelpCenterRedirect request
+	DeleteHelpCenterRedirect(ctx context.Context, helpCenterId string, id string, params *DeleteHelpCenterRedirectParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrieveHelpCenterRedirect request
+	RetrieveHelpCenterRedirect(ctx context.Context, helpCenterId string, id string, params *RetrieveHelpCenterRedirectParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListInternalArticles request
 	ListInternalArticles(ctx context.Context, params *ListInternalArticlesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -14199,6 +20837,14 @@ type ClientInterface interface {
 
 	UpdateInternalArticle(ctx context.Context, internalArticleId int, params *UpdateInternalArticleParams, body UpdateInternalArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// AttachTagToInternalArticleWithBody request with any body
+	AttachTagToInternalArticleWithBody(ctx context.Context, internalArticleId int, params *AttachTagToInternalArticleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AttachTagToInternalArticle(ctx context.Context, internalArticleId int, params *AttachTagToInternalArticleParams, body AttachTagToInternalArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DetachTagFromInternalArticle request
+	DetachTagFromInternalArticle(ctx context.Context, internalArticleId int, id string, params *DetachTagFromInternalArticleParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetIpAllowlist request
 	GetIpAllowlist(ctx context.Context, params *GetIpAllowlistParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -14210,6 +20856,12 @@ type ClientInterface interface {
 	// JobsStatus request
 	JobsStatus(ctx context.Context, jobId string, params *JobsStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListMacros request
+	ListMacros(ctx context.Context, params *ListMacrosParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMacro request
+	GetMacro(ctx context.Context, id string, params *GetMacroParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// IdentifyAdmin request
 	IdentifyAdmin(ctx context.Context, params *IdentifyAdminParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -14217,6 +20869,12 @@ type ClientInterface interface {
 	CreateMessageWithBody(ctx context.Context, params *CreateMessageParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateMessage(ctx context.Context, params *CreateMessageParams, body CreateMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetWhatsAppMessageStatus request
+	GetWhatsAppMessageStatus(ctx context.Context, params *GetWhatsAppMessageStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RetrieveWhatsAppMessageStatus request
+	RetrieveWhatsAppMessageStatus(ctx context.Context, params *RetrieveWhatsAppMessageStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListNewsItems request
 	ListNewsItems(ctx context.Context, params *ListNewsItemsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14248,6 +20906,44 @@ type ClientInterface interface {
 
 	// RetrieveNote request
 	RetrieveNote(ctx context.Context, noteId int, params *RetrieveNoteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListOfficeHoursSchedules request
+	ListOfficeHoursSchedules(ctx context.Context, params *ListOfficeHoursSchedulesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateOfficeHoursScheduleWithBody request with any body
+	CreateOfficeHoursScheduleWithBody(ctx context.Context, params *CreateOfficeHoursScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateOfficeHoursSchedule(ctx context.Context, params *CreateOfficeHoursScheduleParams, body CreateOfficeHoursScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteOfficeHoursSchedule request
+	DeleteOfficeHoursSchedule(ctx context.Context, id string, params *DeleteOfficeHoursScheduleParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOfficeHoursSchedule request
+	GetOfficeHoursSchedule(ctx context.Context, id string, params *GetOfficeHoursScheduleParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateOfficeHoursScheduleWithBody request with any body
+	UpdateOfficeHoursScheduleWithBody(ctx context.Context, id string, params *UpdateOfficeHoursScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateOfficeHoursSchedule(ctx context.Context, id string, params *UpdateOfficeHoursScheduleParams, body UpdateOfficeHoursScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListOfficeHoursExceptions request
+	ListOfficeHoursExceptions(ctx context.Context, officeHoursScheduleId string, params *ListOfficeHoursExceptionsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateOfficeHoursExceptionWithBody request with any body
+	CreateOfficeHoursExceptionWithBody(ctx context.Context, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateOfficeHoursException(ctx context.Context, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, body CreateOfficeHoursExceptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteOfficeHoursException request
+	DeleteOfficeHoursException(ctx context.Context, officeHoursScheduleId string, id string, params *DeleteOfficeHoursExceptionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOfficeHoursException request
+	GetOfficeHoursException(ctx context.Context, officeHoursScheduleId string, id string, params *GetOfficeHoursExceptionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateOfficeHoursExceptionWithBody request with any body
+	UpdateOfficeHoursExceptionWithBody(ctx context.Context, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateOfficeHoursException(ctx context.Context, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, body UpdateOfficeHoursExceptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreatePhoneSwitchWithBody request with any body
 	CreatePhoneSwitchWithBody(ctx context.Context, params *CreatePhoneSwitchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14282,6 +20978,9 @@ type ClientInterface interface {
 
 	// RetrieveTeam request
 	RetrieveTeam(ctx context.Context, teamId string, params *RetrieveTeamParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTeamMetrics request
+	GetTeamMetrics(ctx context.Context, teamId string, params *GetTeamMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListTicketStates request
 	ListTicketStates(ctx context.Context, params *ListTicketStatesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14338,6 +21037,19 @@ type ClientInterface interface {
 
 	UpdateTicket(ctx context.Context, ticketId string, params *UpdateTicketParams, body UpdateTicketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ChangeTicketTypeWithBody request with any body
+	ChangeTicketTypeWithBody(ctx context.Context, ticketId string, params *ChangeTicketTypeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ChangeTicketType(ctx context.Context, ticketId string, params *ChangeTicketTypeParams, body ChangeTicketTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LinkConversationToTicketWithBody request with any body
+	LinkConversationToTicketWithBody(ctx context.Context, ticketId string, params *LinkConversationToTicketParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	LinkConversationToTicket(ctx context.Context, ticketId string, params *LinkConversationToTicketParams, body LinkConversationToTicketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UnlinkConversationFromTicket request
+	UnlinkConversationFromTicket(ctx context.Context, ticketId string, id string, params *UnlinkConversationFromTicketParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ReplyTicketWithBody request with any body
 	ReplyTicketWithBody(ctx context.Context, ticketId string, params *ReplyTicketParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -14379,8 +21091,44 @@ func (c *Client) ListAdmins(ctx context.Context, params *ListAdminsParams, reqEd
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListActivityLogEventTypes(ctx context.Context, params *ListActivityLogEventTypesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListActivityLogEventTypesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListActivityLogs(ctx context.Context, params *ListActivityLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListActivityLogsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SearchActivityLogsWithBody(ctx context.Context, params *SearchActivityLogsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSearchActivityLogsRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SearchActivityLogs(ctx context.Context, params *SearchActivityLogsParams, body SearchActivityLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSearchActivityLogsRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -14691,6 +21439,210 @@ func (c *Client) UpdateArticle(ctx context.Context, articleId int, params *Updat
 	return c.Client.Do(req)
 }
 
+func (c *Client) AttachTagToArticleWithBody(ctx context.Context, articleId int, params *AttachTagToArticleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachTagToArticleRequestWithBody(c.Server, articleId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttachTagToArticle(ctx context.Context, articleId int, params *AttachTagToArticleParams, body AttachTagToArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachTagToArticleRequest(c.Server, articleId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DetachTagFromArticle(ctx context.Context, articleId int, id string, params *DetachTagFromArticleParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDetachTagFromArticleRequest(c.Server, articleId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListArticleVersions(ctx context.Context, articleId int, params *ListArticleVersionsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListArticleVersionsRequest(c.Server, articleId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrieveArticleVersion(ctx context.Context, articleId int, id string, params *RetrieveArticleVersionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveArticleVersionRequest(c.Server, articleId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrieveArticleDraft(ctx context.Context, id int, params *RetrieveArticleDraftParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveArticleDraftRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StageArticleDraftWithBody(ctx context.Context, id int, params *StageArticleDraftParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStageArticleDraftRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) StageArticleDraft(ctx context.Context, id int, params *StageArticleDraftParams, body StageArticleDraftJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewStageArticleDraftRequest(c.Server, id, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PublishArticleDraftWithBody(ctx context.Context, id int, params *PublishArticleDraftParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPublishArticleDraftRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PublishArticleDraft(ctx context.Context, id int, params *PublishArticleDraftParams, body PublishArticleDraftJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPublishArticleDraftRequest(c.Server, id, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListAudiences(ctx context.Context, params *ListAudiencesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListAudiencesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateAudienceWithBody(ctx context.Context, params *CreateAudienceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAudienceRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateAudience(ctx context.Context, params *CreateAudienceParams, body CreateAudienceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAudienceRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteAudience(ctx context.Context, id string, params *DeleteAudienceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAudienceRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrieveAudience(ctx context.Context, id string, params *RetrieveAudienceParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveAudienceRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAudienceWithBody(ctx context.Context, id string, params *UpdateAudienceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAudienceRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAudience(ctx context.Context, id string, params *UpdateAudienceParams, body UpdateAudienceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAudienceRequest(c.Server, id, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListAwayStatusReasons(ctx context.Context, params *ListAwayStatusReasonsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListAwayStatusReasonsRequest(c.Server, params)
 	if err != nil {
@@ -14921,6 +21873,30 @@ func (c *Client) ListAttachedContacts(ctx context.Context, companyId string, par
 
 func (c *Client) ListCompanyNotes(ctx context.Context, companyId string, params *ListCompanyNotesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListCompanyNotesRequest(c.Server, companyId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateCompanyNoteWithBody(ctx context.Context, companyId string, params *CreateCompanyNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCompanyNoteRequestWithBody(c.Server, companyId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateCompanyNote(ctx context.Context, companyId string, params *CreateCompanyNoteParams, body CreateCompanyNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCompanyNoteRequest(c.Server, companyId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -15315,6 +22291,198 @@ func (c *Client) UnarchiveContact(ctx context.Context, contactId string, params 
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListContactBanners(ctx context.Context, id string, params *ListContactBannersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListContactBannersRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DismissContactBanner(ctx context.Context, id string, viewId string, params *DismissContactBannerParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDismissContactBannerRequest(c.Server, id, viewId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListContactMergeHistory(ctx context.Context, id string, params *ListContactMergeHistoryParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListContactMergeHistoryRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) BulkContentActionsWithBody(ctx context.Context, params *BulkContentActionsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBulkContentActionsRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) BulkContentActions(ctx context.Context, params *BulkContentActionsParams, body BulkContentActionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBulkContentActionsRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SearchContent(ctx context.Context, params *SearchContentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSearchContentRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListContentSnippets(ctx context.Context, params *ListContentSnippetsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListContentSnippetsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateContentSnippetWithBody(ctx context.Context, params *CreateContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateContentSnippetRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateContentSnippet(ctx context.Context, params *CreateContentSnippetParams, body CreateContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateContentSnippetRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttachTagToContentSnippetWithBody(ctx context.Context, contentSnippetId string, params *AttachTagToContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachTagToContentSnippetRequestWithBody(c.Server, contentSnippetId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttachTagToContentSnippet(ctx context.Context, contentSnippetId string, params *AttachTagToContentSnippetParams, body AttachTagToContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachTagToContentSnippetRequest(c.Server, contentSnippetId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DetachTagFromContentSnippet(ctx context.Context, contentSnippetId string, id string, params *DetachTagFromContentSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDetachTagFromContentSnippetRequest(c.Server, contentSnippetId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteContentSnippet(ctx context.Context, id string, params *DeleteContentSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteContentSnippetRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetContentSnippet(ctx context.Context, id string, params *GetContentSnippetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetContentSnippetRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateContentSnippetWithBody(ctx context.Context, id string, params *UpdateContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateContentSnippetRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateContentSnippet(ctx context.Context, id string, params *UpdateContentSnippetParams, body UpdateContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateContentSnippetRequest(c.Server, id, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListConversations(ctx context.Context, params *ListConversationsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListConversationsRequest(c.Server, params)
 	if err != nil {
@@ -15341,6 +22509,162 @@ func (c *Client) CreateConversationWithBody(ctx context.Context, params *CreateC
 
 func (c *Client) CreateConversation(ctx context.Context, params *CreateConversationParams, body CreateConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateConversationRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListConversationAttributes(ctx context.Context, params *ListConversationAttributesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListConversationAttributesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateConversationAttributeWithBody(ctx context.Context, params *CreateConversationAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateConversationAttributeRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateConversationAttribute(ctx context.Context, params *CreateConversationAttributeParams, body CreateConversationAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateConversationAttributeRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteConversationAttribute(ctx context.Context, id int, params *DeleteConversationAttributeParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteConversationAttributeRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetConversationAttribute(ctx context.Context, id int, params *GetConversationAttributeParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConversationAttributeRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateConversationAttributeWithBody(ctx context.Context, id int, params *UpdateConversationAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConversationAttributeRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateConversationAttribute(ctx context.Context, id int, params *UpdateConversationAttributeParams, body UpdateConversationAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConversationAttributeRequest(c.Server, id, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateConversationAttributeOptionWithBody(ctx context.Context, id int, params *CreateConversationAttributeOptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateConversationAttributeOptionRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateConversationAttributeOption(ctx context.Context, id int, params *CreateConversationAttributeOptionParams, body CreateConversationAttributeOptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateConversationAttributeOptionRequest(c.Server, id, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteConversationAttributeOption(ctx context.Context, id int, optionId string, params *DeleteConversationAttributeOptionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteConversationAttributeOptionRequest(c.Server, id, optionId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateConversationAttributeOptionWithBody(ctx context.Context, id int, optionId string, params *UpdateConversationAttributeOptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConversationAttributeOptionRequestWithBody(c.Server, id, optionId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateConversationAttributeOption(ctx context.Context, id int, optionId string, params *UpdateConversationAttributeOptionParams, body UpdateConversationAttributeOptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConversationAttributeOptionRequest(c.Server, id, optionId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListDeletedConversationIds(ctx context.Context, params *ListDeletedConversationIdsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDeletedConversationIdsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -15627,6 +22951,42 @@ func (c *Client) ListHandlingEvents(ctx context.Context, id string, params *List
 	return c.Client.Do(req)
 }
 
+func (c *Client) MergeConversationWithBody(ctx context.Context, id string, params *MergeConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewMergeConversationRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) MergeConversation(ctx context.Context, id string, params *MergeConversationParams, body MergeConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewMergeConversationRequest(c.Server, id, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListSideConversations(ctx context.Context, id string, params *ListSideConversationsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSideConversationsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteCustomObjectInstancesById(ctx context.Context, customObjectTypeIdentifier string, params *DeleteCustomObjectInstancesByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteCustomObjectInstancesByIdRequest(c.Server, customObjectTypeIdentifier, params)
 	if err != nil {
@@ -15639,8 +22999,8 @@ func (c *Client) DeleteCustomObjectInstancesById(ctx context.Context, customObje
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetCustomObjectInstancesByExternalId(ctx context.Context, customObjectTypeIdentifier string, params *GetCustomObjectInstancesByExternalIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetCustomObjectInstancesByExternalIdRequest(c.Server, customObjectTypeIdentifier, params)
+func (c *Client) ListCustomObjectInstances(ctx context.Context, customObjectTypeIdentifier string, params *ListCustomObjectInstancesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListCustomObjectInstancesRequest(c.Server, customObjectTypeIdentifier, params)
 	if err != nil {
 		return nil, err
 	}
@@ -15749,6 +23109,114 @@ func (c *Client) UpdateDataAttributeWithBody(ctx context.Context, dataAttributeI
 
 func (c *Client) UpdateDataAttribute(ctx context.Context, dataAttributeId int, params *UpdateDataAttributeParams, body UpdateDataAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateDataAttributeRequest(c.Server, dataAttributeId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListDataConnectors(ctx context.Context, params *ListDataConnectorsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDataConnectorsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDataConnectorWithBody(ctx context.Context, params *CreateDataConnectorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDataConnectorRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDataConnector(ctx context.Context, params *CreateDataConnectorParams, body CreateDataConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDataConnectorRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListDataConnectorExecutionResults(ctx context.Context, dataConnectorId string, params *ListDataConnectorExecutionResultsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDataConnectorExecutionResultsRequest(c.Server, dataConnectorId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ShowDataConnectorExecutionResult(ctx context.Context, dataConnectorId string, id string, params *ShowDataConnectorExecutionResultParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewShowDataConnectorExecutionResultRequest(c.Server, dataConnectorId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteDataConnector(ctx context.Context, id string, params *DeleteDataConnectorParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteDataConnectorRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrieveDataConnector(ctx context.Context, id string, params *RetrieveDataConnectorParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveDataConnectorRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateDataConnectorWithBody(ctx context.Context, id string, params *UpdateDataConnectorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateDataConnectorRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateDataConnector(ctx context.Context, id string, params *UpdateDataConnectorParams, body UpdateDataConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateDataConnectorRequest(c.Server, id, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -15965,6 +23433,30 @@ func (c *Client) GetExportReportingDataJobIdentifier(ctx context.Context, jobIde
 
 func (c *Client) ExportWorkflow(ctx context.Context, id string, params *ExportWorkflowParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewExportWorkflowRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SubmitFinCsatWithBody(ctx context.Context, params *SubmitFinCsatParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSubmitFinCsatRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SubmitFinCsat(ctx context.Context, params *SubmitFinCsatParams, body SubmitFinCsatJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSubmitFinCsatRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -16203,6 +23695,66 @@ func (c *Client) RetrieveHelpCenter(ctx context.Context, helpCenterId int, param
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListHelpCenterRedirects(ctx context.Context, helpCenterId string, params *ListHelpCenterRedirectsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListHelpCenterRedirectsRequest(c.Server, helpCenterId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateHelpCenterRedirectWithBody(ctx context.Context, helpCenterId string, params *CreateHelpCenterRedirectParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateHelpCenterRedirectRequestWithBody(c.Server, helpCenterId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateHelpCenterRedirect(ctx context.Context, helpCenterId string, params *CreateHelpCenterRedirectParams, body CreateHelpCenterRedirectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateHelpCenterRedirectRequest(c.Server, helpCenterId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteHelpCenterRedirect(ctx context.Context, helpCenterId string, id string, params *DeleteHelpCenterRedirectParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteHelpCenterRedirectRequest(c.Server, helpCenterId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrieveHelpCenterRedirect(ctx context.Context, helpCenterId string, id string, params *RetrieveHelpCenterRedirectParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveHelpCenterRedirectRequest(c.Server, helpCenterId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListInternalArticles(ctx context.Context, params *ListInternalArticlesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListInternalArticlesRequest(c.Server, params)
 	if err != nil {
@@ -16299,6 +23851,42 @@ func (c *Client) UpdateInternalArticle(ctx context.Context, internalArticleId in
 	return c.Client.Do(req)
 }
 
+func (c *Client) AttachTagToInternalArticleWithBody(ctx context.Context, internalArticleId int, params *AttachTagToInternalArticleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachTagToInternalArticleRequestWithBody(c.Server, internalArticleId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttachTagToInternalArticle(ctx context.Context, internalArticleId int, params *AttachTagToInternalArticleParams, body AttachTagToInternalArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttachTagToInternalArticleRequest(c.Server, internalArticleId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DetachTagFromInternalArticle(ctx context.Context, internalArticleId int, id string, params *DetachTagFromInternalArticleParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDetachTagFromInternalArticleRequest(c.Server, internalArticleId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetIpAllowlist(ctx context.Context, params *GetIpAllowlistParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetIpAllowlistRequest(c.Server, params)
 	if err != nil {
@@ -16347,6 +23935,30 @@ func (c *Client) JobsStatus(ctx context.Context, jobId string, params *JobsStatu
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListMacros(ctx context.Context, params *ListMacrosParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListMacrosRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMacro(ctx context.Context, id string, params *GetMacroParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMacroRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) IdentifyAdmin(ctx context.Context, params *IdentifyAdminParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewIdentifyAdminRequest(c.Server, params)
 	if err != nil {
@@ -16373,6 +23985,30 @@ func (c *Client) CreateMessageWithBody(ctx context.Context, params *CreateMessag
 
 func (c *Client) CreateMessage(ctx context.Context, params *CreateMessageParams, body CreateMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateMessageRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetWhatsAppMessageStatus(ctx context.Context, params *GetWhatsAppMessageStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetWhatsAppMessageStatusRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RetrieveWhatsAppMessageStatus(ctx context.Context, params *RetrieveWhatsAppMessageStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetrieveWhatsAppMessageStatusRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -16505,6 +24141,174 @@ func (c *Client) ListLiveNewsfeedItems(ctx context.Context, newsfeedId string, p
 
 func (c *Client) RetrieveNote(ctx context.Context, noteId int, params *RetrieveNoteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRetrieveNoteRequest(c.Server, noteId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListOfficeHoursSchedules(ctx context.Context, params *ListOfficeHoursSchedulesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListOfficeHoursSchedulesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOfficeHoursScheduleWithBody(ctx context.Context, params *CreateOfficeHoursScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOfficeHoursScheduleRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOfficeHoursSchedule(ctx context.Context, params *CreateOfficeHoursScheduleParams, body CreateOfficeHoursScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOfficeHoursScheduleRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteOfficeHoursSchedule(ctx context.Context, id string, params *DeleteOfficeHoursScheduleParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteOfficeHoursScheduleRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetOfficeHoursSchedule(ctx context.Context, id string, params *GetOfficeHoursScheduleParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOfficeHoursScheduleRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOfficeHoursScheduleWithBody(ctx context.Context, id string, params *UpdateOfficeHoursScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOfficeHoursScheduleRequestWithBody(c.Server, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOfficeHoursSchedule(ctx context.Context, id string, params *UpdateOfficeHoursScheduleParams, body UpdateOfficeHoursScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOfficeHoursScheduleRequest(c.Server, id, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListOfficeHoursExceptions(ctx context.Context, officeHoursScheduleId string, params *ListOfficeHoursExceptionsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListOfficeHoursExceptionsRequest(c.Server, officeHoursScheduleId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOfficeHoursExceptionWithBody(ctx context.Context, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOfficeHoursExceptionRequestWithBody(c.Server, officeHoursScheduleId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOfficeHoursException(ctx context.Context, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, body CreateOfficeHoursExceptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOfficeHoursExceptionRequest(c.Server, officeHoursScheduleId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteOfficeHoursException(ctx context.Context, officeHoursScheduleId string, id string, params *DeleteOfficeHoursExceptionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteOfficeHoursExceptionRequest(c.Server, officeHoursScheduleId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetOfficeHoursException(ctx context.Context, officeHoursScheduleId string, id string, params *GetOfficeHoursExceptionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOfficeHoursExceptionRequest(c.Server, officeHoursScheduleId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOfficeHoursExceptionWithBody(ctx context.Context, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOfficeHoursExceptionRequestWithBody(c.Server, officeHoursScheduleId, id, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOfficeHoursException(ctx context.Context, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, body UpdateOfficeHoursExceptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOfficeHoursExceptionRequest(c.Server, officeHoursScheduleId, id, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -16649,6 +24453,18 @@ func (c *Client) ListTeams(ctx context.Context, params *ListTeamsParams, reqEdit
 
 func (c *Client) RetrieveTeam(ctx context.Context, teamId string, params *RetrieveTeamParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRetrieveTeamRequest(c.Server, teamId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTeamMetrics(ctx context.Context, teamId string, params *GetTeamMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamMetricsRequest(c.Server, teamId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -16911,6 +24727,66 @@ func (c *Client) UpdateTicket(ctx context.Context, ticketId string, params *Upda
 	return c.Client.Do(req)
 }
 
+func (c *Client) ChangeTicketTypeWithBody(ctx context.Context, ticketId string, params *ChangeTicketTypeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeTicketTypeRequestWithBody(c.Server, ticketId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ChangeTicketType(ctx context.Context, ticketId string, params *ChangeTicketTypeParams, body ChangeTicketTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeTicketTypeRequest(c.Server, ticketId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) LinkConversationToTicketWithBody(ctx context.Context, ticketId string, params *LinkConversationToTicketParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLinkConversationToTicketRequestWithBody(c.Server, ticketId, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) LinkConversationToTicket(ctx context.Context, ticketId string, params *LinkConversationToTicketParams, body LinkConversationToTicketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLinkConversationToTicketRequest(c.Server, ticketId, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UnlinkConversationFromTicket(ctx context.Context, ticketId string, id string, params *UnlinkConversationFromTicketParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnlinkConversationFromTicketRequest(c.Server, ticketId, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ReplyTicketWithBody(ctx context.Context, ticketId string, params *ReplyTicketParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewReplyTicketRequestWithBody(c.Server, ticketId, params, contentType, body)
 	if err != nil {
@@ -17107,6 +24983,48 @@ func NewListAdminsRequest(server string, params *ListAdminsParams) (*http.Reques
 	return req, nil
 }
 
+// NewListActivityLogEventTypesRequest generates requests for ListActivityLogEventTypes
+func NewListActivityLogEventTypesRequest(server string, params *ListActivityLogEventTypesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/admins/activity_log_event_types")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListActivityLogsRequest generates requests for ListActivityLogs
 func NewListActivityLogsRequest(server string, params *ListActivityLogsParams) (*http.Request, error) {
 	var err error
@@ -17164,6 +25082,61 @@ func NewListActivityLogsRequest(server string, params *ListActivityLogsParams) (
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewSearchActivityLogsRequest calls the generic SearchActivityLogs builder with application/json body
+func NewSearchActivityLogsRequest(server string, params *SearchActivityLogsParams, body SearchActivityLogsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSearchActivityLogsRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewSearchActivityLogsRequestWithBody generates requests for SearchActivityLogs with any type of body
+func NewSearchActivityLogsRequestWithBody(server string, params *SearchActivityLogsParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/admins/activity_logs/search")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -18143,6 +26116,773 @@ func NewUpdateArticleRequestWithBody(server string, articleId int, params *Updat
 	}
 
 	operationPath := fmt.Sprintf("/articles/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewAttachTagToArticleRequest calls the generic AttachTagToArticle builder with application/json body
+func NewAttachTagToArticleRequest(server string, articleId int, params *AttachTagToArticleParams, body AttachTagToArticleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAttachTagToArticleRequestWithBody(server, articleId, params, "application/json", bodyReader)
+}
+
+// NewAttachTagToArticleRequestWithBody generates requests for AttachTagToArticle with any type of body
+func NewAttachTagToArticleRequestWithBody(server string, articleId int, params *AttachTagToArticleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "article_id", articleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/articles/%s/tags", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDetachTagFromArticleRequest generates requests for DetachTagFromArticle
+func NewDetachTagFromArticleRequest(server string, articleId int, id string, params *DetachTagFromArticleParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "article_id", articleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/articles/%s/tags/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListArticleVersionsRequest generates requests for ListArticleVersions
+func NewListArticleVersionsRequest(server string, articleId int, params *ListArticleVersionsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "article_id", articleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/articles/%s/versions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Locale != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "locale", *params.Locale, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetrieveArticleVersionRequest generates requests for RetrieveArticleVersion
+func NewRetrieveArticleVersionRequest(server string, articleId int, id string, params *RetrieveArticleVersionParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "article_id", articleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/articles/%s/versions/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Locale != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "locale", *params.Locale, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetrieveArticleDraftRequest generates requests for RetrieveArticleDraft
+func NewRetrieveArticleDraftRequest(server string, id int, params *RetrieveArticleDraftParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/articles/%s/draft", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewStageArticleDraftRequest calls the generic StageArticleDraft builder with application/json body
+func NewStageArticleDraftRequest(server string, id int, params *StageArticleDraftParams, body StageArticleDraftJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewStageArticleDraftRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewStageArticleDraftRequestWithBody generates requests for StageArticleDraft with any type of body
+func NewStageArticleDraftRequestWithBody(server string, id int, params *StageArticleDraftParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/articles/%s/draft", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewPublishArticleDraftRequest calls the generic PublishArticleDraft builder with application/json body
+func NewPublishArticleDraftRequest(server string, id int, params *PublishArticleDraftParams, body PublishArticleDraftJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPublishArticleDraftRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewPublishArticleDraftRequestWithBody generates requests for PublishArticleDraft with any type of body
+func NewPublishArticleDraftRequestWithBody(server string, id int, params *PublishArticleDraftParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/articles/%s/draft/publish", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListAudiencesRequest generates requests for ListAudiences
+func NewListAudiencesRequest(server string, params *ListAudiencesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/audiences")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateAudienceRequest calls the generic CreateAudience builder with application/json body
+func NewCreateAudienceRequest(server string, params *CreateAudienceParams, body CreateAudienceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateAudienceRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateAudienceRequestWithBody generates requests for CreateAudience with any type of body
+func NewCreateAudienceRequestWithBody(server string, params *CreateAudienceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/audiences")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteAudienceRequest generates requests for DeleteAudience
+func NewDeleteAudienceRequest(server string, id string, params *DeleteAudienceParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/audiences/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetrieveAudienceRequest generates requests for RetrieveAudience
+func NewRetrieveAudienceRequest(server string, id string, params *RetrieveAudienceParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/audiences/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateAudienceRequest calls the generic UpdateAudience builder with application/json body
+func NewUpdateAudienceRequest(server string, id string, params *UpdateAudienceParams, body UpdateAudienceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAudienceRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewUpdateAudienceRequestWithBody generates requests for UpdateAudience with any type of body
+func NewUpdateAudienceRequestWithBody(server string, id string, params *UpdateAudienceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/audiences/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -19209,6 +27949,68 @@ func NewListCompanyNotesRequest(server string, companyId string, params *ListCom
 	return req, nil
 }
 
+// NewCreateCompanyNoteRequest calls the generic CreateCompanyNote builder with application/json body
+func NewCreateCompanyNoteRequest(server string, companyId string, params *CreateCompanyNoteParams, body CreateCompanyNoteJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateCompanyNoteRequestWithBody(server, companyId, params, "application/json", bodyReader)
+}
+
+// NewCreateCompanyNoteRequestWithBody generates requests for CreateCompanyNote with any type of body
+func NewCreateCompanyNoteRequestWithBody(server string, companyId string, params *CreateCompanyNoteParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "company_id", companyId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/companies/%s/notes", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListAttachedSegmentsForCompaniesRequest generates requests for ListAttachedSegmentsForCompanies
 func NewListAttachedSegmentsForCompaniesRequest(server string, companyId string, params *ListAttachedSegmentsForCompaniesParams) (*http.Request, error) {
 	var err error
@@ -19275,6 +28077,28 @@ func NewListContactsRequest(server string, params *ListContactsParams) (*http.Re
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeMergeHistory != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_merge_history", *params.IncludeMergeHistory, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -19381,6 +28205,28 @@ func NewShowContactByExternalIdRequest(server string, externalId string, params 
 		return nil, err
 	}
 
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeMergeHistory != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_merge_history", *params.IncludeMergeHistory, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -19432,6 +28278,28 @@ func NewMergeContactRequestWithBody(server string, params *MergeContactParams, c
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeMergeHistory != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_merge_history", *params.IncludeMergeHistory, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), body)
@@ -19487,6 +28355,28 @@ func NewSearchContactsRequestWithBody(server string, params *SearchContactsParam
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeMergeHistory != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_merge_history", *params.IncludeMergeHistory, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), body)
@@ -19589,6 +28479,28 @@ func NewShowContactRequest(server string, contactId string, params *ShowContactP
 		return nil, err
 	}
 
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeMergeHistory != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_merge_history", *params.IncludeMergeHistory, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
@@ -19647,6 +28559,28 @@ func NewUpdateContactRequestWithBody(server string, contactId string, params *Up
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeMergeHistory != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_merge_history", *params.IncludeMergeHistory, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("PUT", queryURL.String(), body)
@@ -20482,6 +29416,1050 @@ func NewUnarchiveContactRequest(server string, contactId string, params *Unarchi
 	return req, nil
 }
 
+// NewListContactBannersRequest generates requests for ListContactBanners
+func NewListContactBannersRequest(server string, id string, params *ListContactBannersParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/contacts/%s/banners", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDismissContactBannerRequest generates requests for DismissContactBanner
+func NewDismissContactBannerRequest(server string, id string, viewId string, params *DismissContactBannerParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "view_id", viewId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/contacts/%s/banners/%s/dismiss", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListContactMergeHistoryRequest generates requests for ListContactMergeHistory
+func NewListContactMergeHistoryRequest(server string, id string, params *ListContactMergeHistoryParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/contacts/%s/merge_history", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cursor", *params.Cursor, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Order != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "order", *params.Order, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewBulkContentActionsRequest calls the generic BulkContentActions builder with application/json body
+func NewBulkContentActionsRequest(server string, params *BulkContentActionsParams, body BulkContentActionsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewBulkContentActionsRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewBulkContentActionsRequestWithBody generates requests for BulkContentActions with any type of body
+func NewBulkContentActionsRequestWithBody(server string, params *BulkContentActionsParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content/bulk_actions")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewSearchContentRequest generates requests for SearchContent
+func NewSearchContentRequest(server string, params *SearchContentParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content/search")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Query != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "query", *params.Query, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.States != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", false, "states", *params.States, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Locales != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", false, "locales", *params.Locales, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.TagIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", false, "tag_ids", *params.TagIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.TagOperator != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "tag_operator", *params.TagOperator, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.AnyTagIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", false, "any_tag_ids", *params.AnyTagIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.FolderIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", false, "folder_ids", *params.FolderIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.FolderEntityType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "folder_entity_type", *params.FolderEntityType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ContentTypes != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", false, "content_types", *params.ContentTypes, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.CopilotState != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "copilot_state", *params.CopilotState, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.FinServiceState != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "fin_service_state", *params.FinServiceState, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.FinSalesState != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "fin_sales_state", *params.FinSalesState, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.CreatedByIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", false, "created_by_ids", *params.CreatedByIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.LastUpdatedByIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", false, "last_updated_by_ids", *params.LastUpdatedByIds, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.CreatedAtAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_at_after", *params.CreatedAtAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.CreatedAtBefore != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "created_at_before", *params.CreatedAtBefore, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.UpdatedAtAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "updated_at_after", *params.UpdatedAtAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.UpdatedAtBefore != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "updated_at_before", *params.UpdatedAtBefore, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListContentSnippetsRequest generates requests for ListContentSnippets
+func NewListContentSnippetsRequest(server string, params *ListContentSnippetsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content_snippets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateContentSnippetRequest calls the generic CreateContentSnippet builder with application/json body
+func NewCreateContentSnippetRequest(server string, params *CreateContentSnippetParams, body CreateContentSnippetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateContentSnippetRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateContentSnippetRequestWithBody generates requests for CreateContentSnippet with any type of body
+func NewCreateContentSnippetRequestWithBody(server string, params *CreateContentSnippetParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content_snippets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewAttachTagToContentSnippetRequest calls the generic AttachTagToContentSnippet builder with application/json body
+func NewAttachTagToContentSnippetRequest(server string, contentSnippetId string, params *AttachTagToContentSnippetParams, body AttachTagToContentSnippetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAttachTagToContentSnippetRequestWithBody(server, contentSnippetId, params, "application/json", bodyReader)
+}
+
+// NewAttachTagToContentSnippetRequestWithBody generates requests for AttachTagToContentSnippet with any type of body
+func NewAttachTagToContentSnippetRequestWithBody(server string, contentSnippetId string, params *AttachTagToContentSnippetParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "content_snippet_id", contentSnippetId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content_snippets/%s/tags", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDetachTagFromContentSnippetRequest generates requests for DetachTagFromContentSnippet
+func NewDetachTagFromContentSnippetRequest(server string, contentSnippetId string, id string, params *DetachTagFromContentSnippetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "content_snippet_id", contentSnippetId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content_snippets/%s/tags/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteContentSnippetRequest generates requests for DeleteContentSnippet
+func NewDeleteContentSnippetRequest(server string, id string, params *DeleteContentSnippetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content_snippets/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetContentSnippetRequest generates requests for GetContentSnippet
+func NewGetContentSnippetRequest(server string, id string, params *GetContentSnippetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content_snippets/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateContentSnippetRequest calls the generic UpdateContentSnippet builder with application/json body
+func NewUpdateContentSnippetRequest(server string, id string, params *UpdateContentSnippetParams, body UpdateContentSnippetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateContentSnippetRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewUpdateContentSnippetRequestWithBody generates requests for UpdateContentSnippet with any type of body
+func NewUpdateContentSnippetRequestWithBody(server string, id string, params *UpdateContentSnippetParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/content_snippets/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListConversationsRequest generates requests for ListConversations
 func NewListConversationsRequest(server string, params *ListConversationsParams) (*http.Request, error) {
 	var err error
@@ -20617,6 +30595,568 @@ func NewCreateConversationRequestWithBody(server string, params *CreateConversat
 	return req, nil
 }
 
+// NewListConversationAttributesRequest generates requests for ListConversationAttributes
+func NewListConversationAttributesRequest(server string, params *ListConversationAttributesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/attributes")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeArchived != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_archived", *params.IncludeArchived, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateConversationAttributeRequest calls the generic CreateConversationAttribute builder with application/json body
+func NewCreateConversationAttributeRequest(server string, params *CreateConversationAttributeParams, body CreateConversationAttributeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateConversationAttributeRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateConversationAttributeRequestWithBody generates requests for CreateConversationAttribute with any type of body
+func NewCreateConversationAttributeRequestWithBody(server string, params *CreateConversationAttributeParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/attributes")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteConversationAttributeRequest generates requests for DeleteConversationAttribute
+func NewDeleteConversationAttributeRequest(server string, id int, params *DeleteConversationAttributeParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/attributes/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetConversationAttributeRequest generates requests for GetConversationAttribute
+func NewGetConversationAttributeRequest(server string, id int, params *GetConversationAttributeParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/attributes/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateConversationAttributeRequest calls the generic UpdateConversationAttribute builder with application/json body
+func NewUpdateConversationAttributeRequest(server string, id int, params *UpdateConversationAttributeParams, body UpdateConversationAttributeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateConversationAttributeRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewUpdateConversationAttributeRequestWithBody generates requests for UpdateConversationAttribute with any type of body
+func NewUpdateConversationAttributeRequestWithBody(server string, id int, params *UpdateConversationAttributeParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/attributes/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateConversationAttributeOptionRequest calls the generic CreateConversationAttributeOption builder with application/json body
+func NewCreateConversationAttributeOptionRequest(server string, id int, params *CreateConversationAttributeOptionParams, body CreateConversationAttributeOptionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateConversationAttributeOptionRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewCreateConversationAttributeOptionRequestWithBody generates requests for CreateConversationAttributeOption with any type of body
+func NewCreateConversationAttributeOptionRequestWithBody(server string, id int, params *CreateConversationAttributeOptionParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/attributes/%s/options", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteConversationAttributeOptionRequest generates requests for DeleteConversationAttributeOption
+func NewDeleteConversationAttributeOptionRequest(server string, id int, optionId string, params *DeleteConversationAttributeOptionParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "option_id", optionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/attributes/%s/options/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateConversationAttributeOptionRequest calls the generic UpdateConversationAttributeOption builder with application/json body
+func NewUpdateConversationAttributeOptionRequest(server string, id int, optionId string, params *UpdateConversationAttributeOptionParams, body UpdateConversationAttributeOptionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateConversationAttributeOptionRequestWithBody(server, id, optionId, params, "application/json", bodyReader)
+}
+
+// NewUpdateConversationAttributeOptionRequestWithBody generates requests for UpdateConversationAttributeOption with any type of body
+func NewUpdateConversationAttributeOptionRequestWithBody(server string, id int, optionId string, params *UpdateConversationAttributeOptionParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "option_id", optionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/attributes/%s/options/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListDeletedConversationIdsRequest generates requests for ListDeletedConversationIds
+func NewListDeletedConversationIdsRequest(server string, params *ListDeletedConversationIdsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/deleted")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Order != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "order", *params.Order, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewRedactConversationRequest calls the generic RedactConversation builder with application/json body
 func NewRedactConversationRequest(server string, params *RedactConversationParams, body RedactConversationJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -20702,6 +31242,44 @@ func NewSearchConversationsRequestWithBody(server string, params *SearchConversa
 		return nil, err
 	}
 
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeMonitors != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_monitors", *params.IncludeMonitors, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeScorecards != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_scorecards", *params.IncludeScorecards, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
 	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
@@ -20751,6 +31329,28 @@ func NewDeleteConversationRequest(server string, conversationId int, params *Del
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.RetainMetrics != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "retain_metrics", *params.RetainMetrics, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
@@ -21444,6 +32044,155 @@ func NewListHandlingEventsRequest(server string, id string, params *ListHandling
 	return req, nil
 }
 
+// NewMergeConversationRequest calls the generic MergeConversation builder with application/json body
+func NewMergeConversationRequest(server string, id string, params *MergeConversationParams, body MergeConversationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewMergeConversationRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewMergeConversationRequestWithBody generates requests for MergeConversation with any type of body
+func NewMergeConversationRequestWithBody(server string, id string, params *MergeConversationParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/%s/merge", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListSideConversationsRequest generates requests for ListSideConversations
+func NewListSideConversationsRequest(server string, id string, params *ListSideConversationsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/conversations/%s/side_conversations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewDeleteCustomObjectInstancesByIdRequest generates requests for DeleteCustomObjectInstancesById
 func NewDeleteCustomObjectInstancesByIdRequest(server string, customObjectTypeIdentifier string, params *DeleteCustomObjectInstancesByIdParams) (*http.Request, error) {
 	var err error
@@ -21511,8 +32260,8 @@ func NewDeleteCustomObjectInstancesByIdRequest(server string, customObjectTypeId
 	return req, nil
 }
 
-// NewGetCustomObjectInstancesByExternalIdRequest generates requests for GetCustomObjectInstancesByExternalId
-func NewGetCustomObjectInstancesByExternalIdRequest(server string, customObjectTypeIdentifier string, params *GetCustomObjectInstancesByExternalIdParams) (*http.Request, error) {
+// NewListCustomObjectInstancesRequest generates requests for ListCustomObjectInstances
+func NewListCustomObjectInstancesRequest(server string, customObjectTypeIdentifier string, params *ListCustomObjectInstancesParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -21540,16 +32289,84 @@ func NewGetCustomObjectInstancesByExternalIdRequest(server string, customObjectT
 	if params != nil {
 		queryValues := queryURL.Query()
 
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "external_id", params.ExternalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
+		if params.ReferencesContactId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "references_contact_id", *params.ReferencesContactId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
 				}
 			}
+
+		}
+
+		if params.ReferencesConversationId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "references_conversation_id", *params.ReferencesConversationId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ExternalId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "external_id", *params.ExternalId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
 		}
 
 		queryURL.RawQuery = queryValues.Encode()
@@ -21925,6 +32742,546 @@ func NewUpdateDataAttributeRequestWithBody(server string, dataAttributeId int, p
 	}
 
 	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListDataConnectorsRequest generates requests for ListDataConnectors
+func NewListDataConnectorsRequest(server string, params *ListDataConnectorsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/data_connectors")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.StartingAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "starting_after", *params.StartingAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateDataConnectorRequest calls the generic CreateDataConnector builder with application/json body
+func NewCreateDataConnectorRequest(server string, params *CreateDataConnectorParams, body CreateDataConnectorJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDataConnectorRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateDataConnectorRequestWithBody generates requests for CreateDataConnector with any type of body
+func NewCreateDataConnectorRequestWithBody(server string, params *CreateDataConnectorParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/data_connectors")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListDataConnectorExecutionResultsRequest generates requests for ListDataConnectorExecutionResults
+func NewListDataConnectorExecutionResultsRequest(server string, dataConnectorId string, params *ListDataConnectorExecutionResultsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "data_connector_id", dataConnectorId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/data_connectors/%s/execution_results", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.StartingAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "starting_after", *params.StartingAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Success != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "success", *params.Success, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ErrorType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "error_type", *params.ErrorType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.StartTs != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "start_ts", *params.StartTs, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.EndTs != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "end_ts", *params.EndTs, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeBodies != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "include_bodies", *params.IncludeBodies, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewShowDataConnectorExecutionResultRequest generates requests for ShowDataConnectorExecutionResult
+func NewShowDataConnectorExecutionResultRequest(server string, dataConnectorId string, id string, params *ShowDataConnectorExecutionResultParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "data_connector_id", dataConnectorId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/data_connectors/%s/execution_results/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteDataConnectorRequest generates requests for DeleteDataConnector
+func NewDeleteDataConnectorRequest(server string, id string, params *DeleteDataConnectorParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/data_connectors/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetrieveDataConnectorRequest generates requests for RetrieveDataConnector
+func NewRetrieveDataConnectorRequest(server string, id string, params *RetrieveDataConnectorParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/data_connectors/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.StateVersion != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "state_version", *params.StateVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateDataConnectorRequest calls the generic UpdateDataConnector builder with application/json body
+func NewUpdateDataConnectorRequest(server string, id string, params *UpdateDataConnectorParams, body UpdateDataConnectorJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateDataConnectorRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewUpdateDataConnectorRequestWithBody generates requests for UpdateDataConnector with any type of body
+func NewUpdateDataConnectorRequestWithBody(server string, id string, params *UpdateDataConnectorParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/data_connectors/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -22741,6 +34098,61 @@ func NewExportWorkflowRequest(server string, id string, params *ExportWorkflowPa
 	return req, nil
 }
 
+// NewSubmitFinCsatRequest calls the generic SubmitFinCsat builder with application/json body
+func NewSubmitFinCsatRequest(server string, params *SubmitFinCsatParams, body SubmitFinCsatJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSubmitFinCsatRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewSubmitFinCsatRequestWithBody generates requests for SubmitFinCsat with any type of body
+func NewSubmitFinCsatRequestWithBody(server string, params *SubmitFinCsatParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/fin/csat")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewReplyToFinRequest calls the generic ReplyToFin builder with application/json body
 func NewReplyToFinRequest(server string, params *ReplyToFinParams, body ReplyToFinJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -23375,6 +34787,267 @@ func NewRetrieveHelpCenterRequest(server string, helpCenterId int, params *Retri
 	return req, nil
 }
 
+// NewListHelpCenterRedirectsRequest generates requests for ListHelpCenterRedirects
+func NewListHelpCenterRedirectsRequest(server string, helpCenterId string, params *ListHelpCenterRedirectsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "help_center_id", helpCenterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/help_center/help_centers/%s/redirects", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateHelpCenterRedirectRequest calls the generic CreateHelpCenterRedirect builder with application/json body
+func NewCreateHelpCenterRedirectRequest(server string, helpCenterId string, params *CreateHelpCenterRedirectParams, body CreateHelpCenterRedirectJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateHelpCenterRedirectRequestWithBody(server, helpCenterId, params, "application/json", bodyReader)
+}
+
+// NewCreateHelpCenterRedirectRequestWithBody generates requests for CreateHelpCenterRedirect with any type of body
+func NewCreateHelpCenterRedirectRequestWithBody(server string, helpCenterId string, params *CreateHelpCenterRedirectParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "help_center_id", helpCenterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/help_center/help_centers/%s/redirects", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteHelpCenterRedirectRequest generates requests for DeleteHelpCenterRedirect
+func NewDeleteHelpCenterRedirectRequest(server string, helpCenterId string, id string, params *DeleteHelpCenterRedirectParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "help_center_id", helpCenterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/help_center/help_centers/%s/redirects/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetrieveHelpCenterRedirectRequest generates requests for RetrieveHelpCenterRedirect
+func NewRetrieveHelpCenterRedirectRequest(server string, helpCenterId string, id string, params *RetrieveHelpCenterRedirectParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "help_center_id", helpCenterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/help_center/help_centers/%s/redirects/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewListInternalArticlesRequest generates requests for ListInternalArticles
 func NewListInternalArticlesRequest(server string, params *ListInternalArticlesParams) (*http.Request, error) {
 	var err error
@@ -23696,6 +35369,124 @@ func NewUpdateInternalArticleRequestWithBody(server string, internalArticleId in
 	return req, nil
 }
 
+// NewAttachTagToInternalArticleRequest calls the generic AttachTagToInternalArticle builder with application/json body
+func NewAttachTagToInternalArticleRequest(server string, internalArticleId int, params *AttachTagToInternalArticleParams, body AttachTagToInternalArticleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAttachTagToInternalArticleRequestWithBody(server, internalArticleId, params, "application/json", bodyReader)
+}
+
+// NewAttachTagToInternalArticleRequestWithBody generates requests for AttachTagToInternalArticle with any type of body
+func NewAttachTagToInternalArticleRequestWithBody(server string, internalArticleId int, params *AttachTagToInternalArticleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "internal_article_id", internalArticleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/internal_articles/%s/tags", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDetachTagFromInternalArticleRequest generates requests for DetachTagFromInternalArticle
+func NewDetachTagFromInternalArticleRequest(server string, internalArticleId int, id string, params *DetachTagFromInternalArticleParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "internal_article_id", internalArticleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/internal_articles/%s/tags/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewGetIpAllowlistRequest generates requests for GetIpAllowlist
 func NewGetIpAllowlistRequest(server string, params *GetIpAllowlistParams) (*http.Request, error) {
 	var err error
@@ -23842,6 +35633,151 @@ func NewJobsStatusRequest(server string, jobId string, params *JobsStatusParams)
 	return req, nil
 }
 
+// NewListMacrosRequest generates requests for ListMacros
+func NewListMacrosRequest(server string, params *ListMacrosParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/macros")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.StartingAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "starting_after", *params.StartingAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.UpdatedSince != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "updated_since", *params.UpdatedSince, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: "int64"}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetMacroRequest generates requests for GetMacro
+func NewGetMacroRequest(server string, id string, params *GetMacroParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/macros/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewIdentifyAdminRequest generates requests for IdentifyAdmin
 func NewIdentifyAdminRequest(server string, params *IdentifyAdminParams) (*http.Request, error) {
 	var err error
@@ -23920,6 +35856,158 @@ func NewCreateMessageRequestWithBody(server string, params *CreateMessageParams,
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetWhatsAppMessageStatusRequest generates requests for GetWhatsAppMessageStatus
+func NewGetWhatsAppMessageStatusRequest(server string, params *GetWhatsAppMessageStatusParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/messages/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "ruleset_id", params.RulesetId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.StartingAfter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "starting_after", *params.StartingAfter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewRetrieveWhatsAppMessageStatusRequest generates requests for RetrieveWhatsAppMessageStatus
+func NewRetrieveWhatsAppMessageStatusRequest(server string, params *RetrieveWhatsAppMessageStatusParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/messages/whatsapp/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "message_id", params.MessageId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	if params != nil {
 
@@ -24366,6 +36454,555 @@ func NewRetrieveNoteRequest(server string, noteId int, params *RetrieveNoteParam
 	if err != nil {
 		return nil, err
 	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListOfficeHoursSchedulesRequest generates requests for ListOfficeHoursSchedules
+func NewListOfficeHoursSchedulesRequest(server string, params *ListOfficeHoursSchedulesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateOfficeHoursScheduleRequest calls the generic CreateOfficeHoursSchedule builder with application/json body
+func NewCreateOfficeHoursScheduleRequest(server string, params *CreateOfficeHoursScheduleParams, body CreateOfficeHoursScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateOfficeHoursScheduleRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateOfficeHoursScheduleRequestWithBody generates requests for CreateOfficeHoursSchedule with any type of body
+func NewCreateOfficeHoursScheduleRequestWithBody(server string, params *CreateOfficeHoursScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteOfficeHoursScheduleRequest generates requests for DeleteOfficeHoursSchedule
+func NewDeleteOfficeHoursScheduleRequest(server string, id string, params *DeleteOfficeHoursScheduleParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetOfficeHoursScheduleRequest generates requests for GetOfficeHoursSchedule
+func NewGetOfficeHoursScheduleRequest(server string, id string, params *GetOfficeHoursScheduleParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateOfficeHoursScheduleRequest calls the generic UpdateOfficeHoursSchedule builder with application/json body
+func NewUpdateOfficeHoursScheduleRequest(server string, id string, params *UpdateOfficeHoursScheduleParams, body UpdateOfficeHoursScheduleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateOfficeHoursScheduleRequestWithBody(server, id, params, "application/json", bodyReader)
+}
+
+// NewUpdateOfficeHoursScheduleRequestWithBody generates requests for UpdateOfficeHoursSchedule with any type of body
+func NewUpdateOfficeHoursScheduleRequestWithBody(server string, id string, params *UpdateOfficeHoursScheduleParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewListOfficeHoursExceptionsRequest generates requests for ListOfficeHoursExceptions
+func NewListOfficeHoursExceptionsRequest(server string, officeHoursScheduleId string, params *ListOfficeHoursExceptionsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "office_hours_schedule_id", officeHoursScheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules/%s/office_hours_exceptions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewCreateOfficeHoursExceptionRequest calls the generic CreateOfficeHoursException builder with application/json body
+func NewCreateOfficeHoursExceptionRequest(server string, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, body CreateOfficeHoursExceptionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateOfficeHoursExceptionRequestWithBody(server, officeHoursScheduleId, params, "application/json", bodyReader)
+}
+
+// NewCreateOfficeHoursExceptionRequestWithBody generates requests for CreateOfficeHoursException with any type of body
+func NewCreateOfficeHoursExceptionRequestWithBody(server string, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "office_hours_schedule_id", officeHoursScheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules/%s/office_hours_exceptions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteOfficeHoursExceptionRequest generates requests for DeleteOfficeHoursException
+func NewDeleteOfficeHoursExceptionRequest(server string, officeHoursScheduleId string, id string, params *DeleteOfficeHoursExceptionParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "office_hours_schedule_id", officeHoursScheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules/%s/office_hours_exceptions/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetOfficeHoursExceptionRequest generates requests for GetOfficeHoursException
+func NewGetOfficeHoursExceptionRequest(server string, officeHoursScheduleId string, id string, params *GetOfficeHoursExceptionParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "office_hours_schedule_id", officeHoursScheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules/%s/office_hours_exceptions/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUpdateOfficeHoursExceptionRequest calls the generic UpdateOfficeHoursException builder with application/json body
+func NewUpdateOfficeHoursExceptionRequest(server string, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, body UpdateOfficeHoursExceptionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateOfficeHoursExceptionRequestWithBody(server, officeHoursScheduleId, id, params, "application/json", bodyReader)
+}
+
+// NewUpdateOfficeHoursExceptionRequestWithBody generates requests for UpdateOfficeHoursException with any type of body
+func NewUpdateOfficeHoursExceptionRequestWithBody(server string, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "office_hours_schedule_id", officeHoursScheduleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/office_hours_schedules/%s/office_hours_exceptions/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	if params != nil {
 
@@ -24856,6 +37493,77 @@ func NewRetrieveTeamRequest(server string, teamId string, params *RetrieveTeamPa
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetTeamMetricsRequest generates requests for GetTeamMetrics
+func NewGetTeamMetricsRequest(server string, teamId string, params *GetTeamMetricsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "team_id", teamId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/teams/%s/metrics", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IdleThreshold != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "idle_threshold", *params.IdleThreshold, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -25587,6 +38295,186 @@ func NewUpdateTicketRequestWithBody(server string, ticketId string, params *Upda
 	return req, nil
 }
 
+// NewChangeTicketTypeRequest calls the generic ChangeTicketType builder with application/json body
+func NewChangeTicketTypeRequest(server string, ticketId string, params *ChangeTicketTypeParams, body ChangeTicketTypeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewChangeTicketTypeRequestWithBody(server, ticketId, params, "application/json", bodyReader)
+}
+
+// NewChangeTicketTypeRequestWithBody generates requests for ChangeTicketType with any type of body
+func NewChangeTicketTypeRequestWithBody(server string, ticketId string, params *ChangeTicketTypeParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "ticket_id", ticketId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tickets/%s/change_type", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewLinkConversationToTicketRequest calls the generic LinkConversationToTicket builder with application/json body
+func NewLinkConversationToTicketRequest(server string, ticketId string, params *LinkConversationToTicketParams, body LinkConversationToTicketJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLinkConversationToTicketRequestWithBody(server, ticketId, params, "application/json", bodyReader)
+}
+
+// NewLinkConversationToTicketRequestWithBody generates requests for LinkConversationToTicket with any type of body
+func NewLinkConversationToTicketRequestWithBody(server string, ticketId string, params *LinkConversationToTicketParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "ticket_id", ticketId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tickets/%s/linked_conversations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewUnlinkConversationFromTicketRequest generates requests for UnlinkConversationFromTicket
+func NewUnlinkConversationFromTicketRequest(server string, ticketId string, id string, params *UnlinkConversationFromTicketParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "ticket_id", ticketId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/tickets/%s/linked_conversations/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+
+		if params.IntercomVersion != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithOptions("simple", false, "Intercom-Version", *params.IntercomVersion, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationHeader, Type: "string", Format: ""})
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Intercom-Version", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
 // NewReplyTicketRequest calls the generic ReplyTicket builder with application/json body
 func NewReplyTicketRequest(server string, ticketId string, params *ReplyTicketParams, body ReplyTicketJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -25996,8 +38884,16 @@ type ClientWithResponsesInterface interface {
 	// ListAdminsWithResponse request
 	ListAdminsWithResponse(ctx context.Context, params *ListAdminsParams, reqEditors ...RequestEditorFn) (*ListAdminsResponse, error)
 
+	// ListActivityLogEventTypesWithResponse request
+	ListActivityLogEventTypesWithResponse(ctx context.Context, params *ListActivityLogEventTypesParams, reqEditors ...RequestEditorFn) (*ListActivityLogEventTypesResponse, error)
+
 	// ListActivityLogsWithResponse request
 	ListActivityLogsWithResponse(ctx context.Context, params *ListActivityLogsParams, reqEditors ...RequestEditorFn) (*ListActivityLogsResponse, error)
+
+	// SearchActivityLogsWithBodyWithResponse request with any body
+	SearchActivityLogsWithBodyWithResponse(ctx context.Context, params *SearchActivityLogsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SearchActivityLogsResponse, error)
+
+	SearchActivityLogsWithResponse(ctx context.Context, params *SearchActivityLogsParams, body SearchActivityLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*SearchActivityLogsResponse, error)
 
 	// RetrieveAdminWithResponse request
 	RetrieveAdminWithResponse(ctx context.Context, adminId int, params *RetrieveAdminParams, reqEditors ...RequestEditorFn) (*RetrieveAdminResponse, error)
@@ -26067,6 +38963,52 @@ type ClientWithResponsesInterface interface {
 
 	UpdateArticleWithResponse(ctx context.Context, articleId int, params *UpdateArticleParams, body UpdateArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateArticleResponse, error)
 
+	// AttachTagToArticleWithBodyWithResponse request with any body
+	AttachTagToArticleWithBodyWithResponse(ctx context.Context, articleId int, params *AttachTagToArticleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachTagToArticleResponse, error)
+
+	AttachTagToArticleWithResponse(ctx context.Context, articleId int, params *AttachTagToArticleParams, body AttachTagToArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachTagToArticleResponse, error)
+
+	// DetachTagFromArticleWithResponse request
+	DetachTagFromArticleWithResponse(ctx context.Context, articleId int, id string, params *DetachTagFromArticleParams, reqEditors ...RequestEditorFn) (*DetachTagFromArticleResponse, error)
+
+	// ListArticleVersionsWithResponse request
+	ListArticleVersionsWithResponse(ctx context.Context, articleId int, params *ListArticleVersionsParams, reqEditors ...RequestEditorFn) (*ListArticleVersionsResponse, error)
+
+	// RetrieveArticleVersionWithResponse request
+	RetrieveArticleVersionWithResponse(ctx context.Context, articleId int, id string, params *RetrieveArticleVersionParams, reqEditors ...RequestEditorFn) (*RetrieveArticleVersionResponse, error)
+
+	// RetrieveArticleDraftWithResponse request
+	RetrieveArticleDraftWithResponse(ctx context.Context, id int, params *RetrieveArticleDraftParams, reqEditors ...RequestEditorFn) (*RetrieveArticleDraftResponse, error)
+
+	// StageArticleDraftWithBodyWithResponse request with any body
+	StageArticleDraftWithBodyWithResponse(ctx context.Context, id int, params *StageArticleDraftParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StageArticleDraftResponse, error)
+
+	StageArticleDraftWithResponse(ctx context.Context, id int, params *StageArticleDraftParams, body StageArticleDraftJSONRequestBody, reqEditors ...RequestEditorFn) (*StageArticleDraftResponse, error)
+
+	// PublishArticleDraftWithBodyWithResponse request with any body
+	PublishArticleDraftWithBodyWithResponse(ctx context.Context, id int, params *PublishArticleDraftParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PublishArticleDraftResponse, error)
+
+	PublishArticleDraftWithResponse(ctx context.Context, id int, params *PublishArticleDraftParams, body PublishArticleDraftJSONRequestBody, reqEditors ...RequestEditorFn) (*PublishArticleDraftResponse, error)
+
+	// ListAudiencesWithResponse request
+	ListAudiencesWithResponse(ctx context.Context, params *ListAudiencesParams, reqEditors ...RequestEditorFn) (*ListAudiencesResponse, error)
+
+	// CreateAudienceWithBodyWithResponse request with any body
+	CreateAudienceWithBodyWithResponse(ctx context.Context, params *CreateAudienceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAudienceResponse, error)
+
+	CreateAudienceWithResponse(ctx context.Context, params *CreateAudienceParams, body CreateAudienceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAudienceResponse, error)
+
+	// DeleteAudienceWithResponse request
+	DeleteAudienceWithResponse(ctx context.Context, id string, params *DeleteAudienceParams, reqEditors ...RequestEditorFn) (*DeleteAudienceResponse, error)
+
+	// RetrieveAudienceWithResponse request
+	RetrieveAudienceWithResponse(ctx context.Context, id string, params *RetrieveAudienceParams, reqEditors ...RequestEditorFn) (*RetrieveAudienceResponse, error)
+
+	// UpdateAudienceWithBodyWithResponse request with any body
+	UpdateAudienceWithBodyWithResponse(ctx context.Context, id string, params *UpdateAudienceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAudienceResponse, error)
+
+	UpdateAudienceWithResponse(ctx context.Context, id string, params *UpdateAudienceParams, body UpdateAudienceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAudienceResponse, error)
+
 	// ListAwayStatusReasonsWithResponse request
 	ListAwayStatusReasonsWithResponse(ctx context.Context, params *ListAwayStatusReasonsParams, reqEditors ...RequestEditorFn) (*ListAwayStatusReasonsResponse, error)
 
@@ -26123,6 +39065,11 @@ type ClientWithResponsesInterface interface {
 
 	// ListCompanyNotesWithResponse request
 	ListCompanyNotesWithResponse(ctx context.Context, companyId string, params *ListCompanyNotesParams, reqEditors ...RequestEditorFn) (*ListCompanyNotesResponse, error)
+
+	// CreateCompanyNoteWithBodyWithResponse request with any body
+	CreateCompanyNoteWithBodyWithResponse(ctx context.Context, companyId string, params *CreateCompanyNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCompanyNoteResponse, error)
+
+	CreateCompanyNoteWithResponse(ctx context.Context, companyId string, params *CreateCompanyNoteParams, body CreateCompanyNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCompanyNoteResponse, error)
 
 	// ListAttachedSegmentsForCompaniesWithResponse request
 	ListAttachedSegmentsForCompaniesWithResponse(ctx context.Context, companyId string, params *ListAttachedSegmentsForCompaniesParams, reqEditors ...RequestEditorFn) (*ListAttachedSegmentsForCompaniesResponse, error)
@@ -26212,6 +39159,50 @@ type ClientWithResponsesInterface interface {
 	// UnarchiveContactWithResponse request
 	UnarchiveContactWithResponse(ctx context.Context, contactId string, params *UnarchiveContactParams, reqEditors ...RequestEditorFn) (*UnarchiveContactResponse, error)
 
+	// ListContactBannersWithResponse request
+	ListContactBannersWithResponse(ctx context.Context, id string, params *ListContactBannersParams, reqEditors ...RequestEditorFn) (*ListContactBannersResponse, error)
+
+	// DismissContactBannerWithResponse request
+	DismissContactBannerWithResponse(ctx context.Context, id string, viewId string, params *DismissContactBannerParams, reqEditors ...RequestEditorFn) (*DismissContactBannerResponse, error)
+
+	// ListContactMergeHistoryWithResponse request
+	ListContactMergeHistoryWithResponse(ctx context.Context, id string, params *ListContactMergeHistoryParams, reqEditors ...RequestEditorFn) (*ListContactMergeHistoryResponse, error)
+
+	// BulkContentActionsWithBodyWithResponse request with any body
+	BulkContentActionsWithBodyWithResponse(ctx context.Context, params *BulkContentActionsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkContentActionsResponse, error)
+
+	BulkContentActionsWithResponse(ctx context.Context, params *BulkContentActionsParams, body BulkContentActionsJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkContentActionsResponse, error)
+
+	// SearchContentWithResponse request
+	SearchContentWithResponse(ctx context.Context, params *SearchContentParams, reqEditors ...RequestEditorFn) (*SearchContentResponse, error)
+
+	// ListContentSnippetsWithResponse request
+	ListContentSnippetsWithResponse(ctx context.Context, params *ListContentSnippetsParams, reqEditors ...RequestEditorFn) (*ListContentSnippetsResponse, error)
+
+	// CreateContentSnippetWithBodyWithResponse request with any body
+	CreateContentSnippetWithBodyWithResponse(ctx context.Context, params *CreateContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateContentSnippetResponse, error)
+
+	CreateContentSnippetWithResponse(ctx context.Context, params *CreateContentSnippetParams, body CreateContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateContentSnippetResponse, error)
+
+	// AttachTagToContentSnippetWithBodyWithResponse request with any body
+	AttachTagToContentSnippetWithBodyWithResponse(ctx context.Context, contentSnippetId string, params *AttachTagToContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachTagToContentSnippetResponse, error)
+
+	AttachTagToContentSnippetWithResponse(ctx context.Context, contentSnippetId string, params *AttachTagToContentSnippetParams, body AttachTagToContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachTagToContentSnippetResponse, error)
+
+	// DetachTagFromContentSnippetWithResponse request
+	DetachTagFromContentSnippetWithResponse(ctx context.Context, contentSnippetId string, id string, params *DetachTagFromContentSnippetParams, reqEditors ...RequestEditorFn) (*DetachTagFromContentSnippetResponse, error)
+
+	// DeleteContentSnippetWithResponse request
+	DeleteContentSnippetWithResponse(ctx context.Context, id string, params *DeleteContentSnippetParams, reqEditors ...RequestEditorFn) (*DeleteContentSnippetResponse, error)
+
+	// GetContentSnippetWithResponse request
+	GetContentSnippetWithResponse(ctx context.Context, id string, params *GetContentSnippetParams, reqEditors ...RequestEditorFn) (*GetContentSnippetResponse, error)
+
+	// UpdateContentSnippetWithBodyWithResponse request with any body
+	UpdateContentSnippetWithBodyWithResponse(ctx context.Context, id string, params *UpdateContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateContentSnippetResponse, error)
+
+	UpdateContentSnippetWithResponse(ctx context.Context, id string, params *UpdateContentSnippetParams, body UpdateContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateContentSnippetResponse, error)
+
 	// ListConversationsWithResponse request
 	ListConversationsWithResponse(ctx context.Context, params *ListConversationsParams, reqEditors ...RequestEditorFn) (*ListConversationsResponse, error)
 
@@ -26219,6 +39210,41 @@ type ClientWithResponsesInterface interface {
 	CreateConversationWithBodyWithResponse(ctx context.Context, params *CreateConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConversationResponse, error)
 
 	CreateConversationWithResponse(ctx context.Context, params *CreateConversationParams, body CreateConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConversationResponse, error)
+
+	// ListConversationAttributesWithResponse request
+	ListConversationAttributesWithResponse(ctx context.Context, params *ListConversationAttributesParams, reqEditors ...RequestEditorFn) (*ListConversationAttributesResponse, error)
+
+	// CreateConversationAttributeWithBodyWithResponse request with any body
+	CreateConversationAttributeWithBodyWithResponse(ctx context.Context, params *CreateConversationAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConversationAttributeResponse, error)
+
+	CreateConversationAttributeWithResponse(ctx context.Context, params *CreateConversationAttributeParams, body CreateConversationAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConversationAttributeResponse, error)
+
+	// DeleteConversationAttributeWithResponse request
+	DeleteConversationAttributeWithResponse(ctx context.Context, id int, params *DeleteConversationAttributeParams, reqEditors ...RequestEditorFn) (*DeleteConversationAttributeResponse, error)
+
+	// GetConversationAttributeWithResponse request
+	GetConversationAttributeWithResponse(ctx context.Context, id int, params *GetConversationAttributeParams, reqEditors ...RequestEditorFn) (*GetConversationAttributeResponse, error)
+
+	// UpdateConversationAttributeWithBodyWithResponse request with any body
+	UpdateConversationAttributeWithBodyWithResponse(ctx context.Context, id int, params *UpdateConversationAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConversationAttributeResponse, error)
+
+	UpdateConversationAttributeWithResponse(ctx context.Context, id int, params *UpdateConversationAttributeParams, body UpdateConversationAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConversationAttributeResponse, error)
+
+	// CreateConversationAttributeOptionWithBodyWithResponse request with any body
+	CreateConversationAttributeOptionWithBodyWithResponse(ctx context.Context, id int, params *CreateConversationAttributeOptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConversationAttributeOptionResponse, error)
+
+	CreateConversationAttributeOptionWithResponse(ctx context.Context, id int, params *CreateConversationAttributeOptionParams, body CreateConversationAttributeOptionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConversationAttributeOptionResponse, error)
+
+	// DeleteConversationAttributeOptionWithResponse request
+	DeleteConversationAttributeOptionWithResponse(ctx context.Context, id int, optionId string, params *DeleteConversationAttributeOptionParams, reqEditors ...RequestEditorFn) (*DeleteConversationAttributeOptionResponse, error)
+
+	// UpdateConversationAttributeOptionWithBodyWithResponse request with any body
+	UpdateConversationAttributeOptionWithBodyWithResponse(ctx context.Context, id int, optionId string, params *UpdateConversationAttributeOptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConversationAttributeOptionResponse, error)
+
+	UpdateConversationAttributeOptionWithResponse(ctx context.Context, id int, optionId string, params *UpdateConversationAttributeOptionParams, body UpdateConversationAttributeOptionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConversationAttributeOptionResponse, error)
+
+	// ListDeletedConversationIdsWithResponse request
+	ListDeletedConversationIdsWithResponse(ctx context.Context, params *ListDeletedConversationIdsParams, reqEditors ...RequestEditorFn) (*ListDeletedConversationIdsResponse, error)
 
 	// RedactConversationWithBodyWithResponse request with any body
 	RedactConversationWithBodyWithResponse(ctx context.Context, params *RedactConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RedactConversationResponse, error)
@@ -26279,11 +39305,19 @@ type ClientWithResponsesInterface interface {
 	// ListHandlingEventsWithResponse request
 	ListHandlingEventsWithResponse(ctx context.Context, id string, params *ListHandlingEventsParams, reqEditors ...RequestEditorFn) (*ListHandlingEventsResponse, error)
 
+	// MergeConversationWithBodyWithResponse request with any body
+	MergeConversationWithBodyWithResponse(ctx context.Context, id string, params *MergeConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*MergeConversationResponse, error)
+
+	MergeConversationWithResponse(ctx context.Context, id string, params *MergeConversationParams, body MergeConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*MergeConversationResponse, error)
+
+	// ListSideConversationsWithResponse request
+	ListSideConversationsWithResponse(ctx context.Context, id string, params *ListSideConversationsParams, reqEditors ...RequestEditorFn) (*ListSideConversationsResponse, error)
+
 	// DeleteCustomObjectInstancesByIdWithResponse request
 	DeleteCustomObjectInstancesByIdWithResponse(ctx context.Context, customObjectTypeIdentifier string, params *DeleteCustomObjectInstancesByIdParams, reqEditors ...RequestEditorFn) (*DeleteCustomObjectInstancesByIdResponse, error)
 
-	// GetCustomObjectInstancesByExternalIdWithResponse request
-	GetCustomObjectInstancesByExternalIdWithResponse(ctx context.Context, customObjectTypeIdentifier string, params *GetCustomObjectInstancesByExternalIdParams, reqEditors ...RequestEditorFn) (*GetCustomObjectInstancesByExternalIdResponse, error)
+	// ListCustomObjectInstancesWithResponse request
+	ListCustomObjectInstancesWithResponse(ctx context.Context, customObjectTypeIdentifier string, params *ListCustomObjectInstancesParams, reqEditors ...RequestEditorFn) (*ListCustomObjectInstancesResponse, error)
 
 	// CreateCustomObjectInstancesWithBodyWithResponse request with any body
 	CreateCustomObjectInstancesWithBodyWithResponse(ctx context.Context, customObjectTypeIdentifier string, params *CreateCustomObjectInstancesParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCustomObjectInstancesResponse, error)
@@ -26308,6 +39342,31 @@ type ClientWithResponsesInterface interface {
 	UpdateDataAttributeWithBodyWithResponse(ctx context.Context, dataAttributeId int, params *UpdateDataAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDataAttributeResponse, error)
 
 	UpdateDataAttributeWithResponse(ctx context.Context, dataAttributeId int, params *UpdateDataAttributeParams, body UpdateDataAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDataAttributeResponse, error)
+
+	// ListDataConnectorsWithResponse request
+	ListDataConnectorsWithResponse(ctx context.Context, params *ListDataConnectorsParams, reqEditors ...RequestEditorFn) (*ListDataConnectorsResponse, error)
+
+	// CreateDataConnectorWithBodyWithResponse request with any body
+	CreateDataConnectorWithBodyWithResponse(ctx context.Context, params *CreateDataConnectorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDataConnectorResponse, error)
+
+	CreateDataConnectorWithResponse(ctx context.Context, params *CreateDataConnectorParams, body CreateDataConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDataConnectorResponse, error)
+
+	// ListDataConnectorExecutionResultsWithResponse request
+	ListDataConnectorExecutionResultsWithResponse(ctx context.Context, dataConnectorId string, params *ListDataConnectorExecutionResultsParams, reqEditors ...RequestEditorFn) (*ListDataConnectorExecutionResultsResponse, error)
+
+	// ShowDataConnectorExecutionResultWithResponse request
+	ShowDataConnectorExecutionResultWithResponse(ctx context.Context, dataConnectorId string, id string, params *ShowDataConnectorExecutionResultParams, reqEditors ...RequestEditorFn) (*ShowDataConnectorExecutionResultResponse, error)
+
+	// DeleteDataConnectorWithResponse request
+	DeleteDataConnectorWithResponse(ctx context.Context, id string, params *DeleteDataConnectorParams, reqEditors ...RequestEditorFn) (*DeleteDataConnectorResponse, error)
+
+	// RetrieveDataConnectorWithResponse request
+	RetrieveDataConnectorWithResponse(ctx context.Context, id string, params *RetrieveDataConnectorParams, reqEditors ...RequestEditorFn) (*RetrieveDataConnectorResponse, error)
+
+	// UpdateDataConnectorWithBodyWithResponse request with any body
+	UpdateDataConnectorWithBodyWithResponse(ctx context.Context, id string, params *UpdateDataConnectorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDataConnectorResponse, error)
+
+	UpdateDataConnectorWithResponse(ctx context.Context, id string, params *UpdateDataConnectorParams, body UpdateDataConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDataConnectorResponse, error)
 
 	// DownloadDataExportWithResponse request
 	DownloadDataExportWithResponse(ctx context.Context, jobIdentifier string, params *DownloadDataExportParams, reqEditors ...RequestEditorFn) (*DownloadDataExportResponse, error)
@@ -26358,6 +39417,11 @@ type ClientWithResponsesInterface interface {
 
 	// ExportWorkflowWithResponse request
 	ExportWorkflowWithResponse(ctx context.Context, id string, params *ExportWorkflowParams, reqEditors ...RequestEditorFn) (*ExportWorkflowResponse, error)
+
+	// SubmitFinCsatWithBodyWithResponse request with any body
+	SubmitFinCsatWithBodyWithResponse(ctx context.Context, params *SubmitFinCsatParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SubmitFinCsatResponse, error)
+
+	SubmitFinCsatWithResponse(ctx context.Context, params *SubmitFinCsatParams, body SubmitFinCsatJSONRequestBody, reqEditors ...RequestEditorFn) (*SubmitFinCsatResponse, error)
 
 	// ReplyToFinWithBodyWithResponse request with any body
 	ReplyToFinWithBodyWithResponse(ctx context.Context, params *ReplyToFinParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReplyToFinResponse, error)
@@ -26411,6 +39475,20 @@ type ClientWithResponsesInterface interface {
 	// RetrieveHelpCenterWithResponse request
 	RetrieveHelpCenterWithResponse(ctx context.Context, helpCenterId int, params *RetrieveHelpCenterParams, reqEditors ...RequestEditorFn) (*RetrieveHelpCenterResponse, error)
 
+	// ListHelpCenterRedirectsWithResponse request
+	ListHelpCenterRedirectsWithResponse(ctx context.Context, helpCenterId string, params *ListHelpCenterRedirectsParams, reqEditors ...RequestEditorFn) (*ListHelpCenterRedirectsResponse, error)
+
+	// CreateHelpCenterRedirectWithBodyWithResponse request with any body
+	CreateHelpCenterRedirectWithBodyWithResponse(ctx context.Context, helpCenterId string, params *CreateHelpCenterRedirectParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateHelpCenterRedirectResponse, error)
+
+	CreateHelpCenterRedirectWithResponse(ctx context.Context, helpCenterId string, params *CreateHelpCenterRedirectParams, body CreateHelpCenterRedirectJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateHelpCenterRedirectResponse, error)
+
+	// DeleteHelpCenterRedirectWithResponse request
+	DeleteHelpCenterRedirectWithResponse(ctx context.Context, helpCenterId string, id string, params *DeleteHelpCenterRedirectParams, reqEditors ...RequestEditorFn) (*DeleteHelpCenterRedirectResponse, error)
+
+	// RetrieveHelpCenterRedirectWithResponse request
+	RetrieveHelpCenterRedirectWithResponse(ctx context.Context, helpCenterId string, id string, params *RetrieveHelpCenterRedirectParams, reqEditors ...RequestEditorFn) (*RetrieveHelpCenterRedirectResponse, error)
+
 	// ListInternalArticlesWithResponse request
 	ListInternalArticlesWithResponse(ctx context.Context, params *ListInternalArticlesParams, reqEditors ...RequestEditorFn) (*ListInternalArticlesResponse, error)
 
@@ -26433,6 +39511,14 @@ type ClientWithResponsesInterface interface {
 
 	UpdateInternalArticleWithResponse(ctx context.Context, internalArticleId int, params *UpdateInternalArticleParams, body UpdateInternalArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateInternalArticleResponse, error)
 
+	// AttachTagToInternalArticleWithBodyWithResponse request with any body
+	AttachTagToInternalArticleWithBodyWithResponse(ctx context.Context, internalArticleId int, params *AttachTagToInternalArticleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachTagToInternalArticleResponse, error)
+
+	AttachTagToInternalArticleWithResponse(ctx context.Context, internalArticleId int, params *AttachTagToInternalArticleParams, body AttachTagToInternalArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachTagToInternalArticleResponse, error)
+
+	// DetachTagFromInternalArticleWithResponse request
+	DetachTagFromInternalArticleWithResponse(ctx context.Context, internalArticleId int, id string, params *DetachTagFromInternalArticleParams, reqEditors ...RequestEditorFn) (*DetachTagFromInternalArticleResponse, error)
+
 	// GetIpAllowlistWithResponse request
 	GetIpAllowlistWithResponse(ctx context.Context, params *GetIpAllowlistParams, reqEditors ...RequestEditorFn) (*GetIpAllowlistResponse, error)
 
@@ -26444,6 +39530,12 @@ type ClientWithResponsesInterface interface {
 	// JobsStatusWithResponse request
 	JobsStatusWithResponse(ctx context.Context, jobId string, params *JobsStatusParams, reqEditors ...RequestEditorFn) (*JobsStatusResponse, error)
 
+	// ListMacrosWithResponse request
+	ListMacrosWithResponse(ctx context.Context, params *ListMacrosParams, reqEditors ...RequestEditorFn) (*ListMacrosResponse, error)
+
+	// GetMacroWithResponse request
+	GetMacroWithResponse(ctx context.Context, id string, params *GetMacroParams, reqEditors ...RequestEditorFn) (*GetMacroResponse, error)
+
 	// IdentifyAdminWithResponse request
 	IdentifyAdminWithResponse(ctx context.Context, params *IdentifyAdminParams, reqEditors ...RequestEditorFn) (*IdentifyAdminResponse, error)
 
@@ -26451,6 +39543,12 @@ type ClientWithResponsesInterface interface {
 	CreateMessageWithBodyWithResponse(ctx context.Context, params *CreateMessageParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMessageResponse, error)
 
 	CreateMessageWithResponse(ctx context.Context, params *CreateMessageParams, body CreateMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMessageResponse, error)
+
+	// GetWhatsAppMessageStatusWithResponse request
+	GetWhatsAppMessageStatusWithResponse(ctx context.Context, params *GetWhatsAppMessageStatusParams, reqEditors ...RequestEditorFn) (*GetWhatsAppMessageStatusResponse, error)
+
+	// RetrieveWhatsAppMessageStatusWithResponse request
+	RetrieveWhatsAppMessageStatusWithResponse(ctx context.Context, params *RetrieveWhatsAppMessageStatusParams, reqEditors ...RequestEditorFn) (*RetrieveWhatsAppMessageStatusResponse, error)
 
 	// ListNewsItemsWithResponse request
 	ListNewsItemsWithResponse(ctx context.Context, params *ListNewsItemsParams, reqEditors ...RequestEditorFn) (*ListNewsItemsResponse, error)
@@ -26482,6 +39580,44 @@ type ClientWithResponsesInterface interface {
 
 	// RetrieveNoteWithResponse request
 	RetrieveNoteWithResponse(ctx context.Context, noteId int, params *RetrieveNoteParams, reqEditors ...RequestEditorFn) (*RetrieveNoteResponse, error)
+
+	// ListOfficeHoursSchedulesWithResponse request
+	ListOfficeHoursSchedulesWithResponse(ctx context.Context, params *ListOfficeHoursSchedulesParams, reqEditors ...RequestEditorFn) (*ListOfficeHoursSchedulesResponse, error)
+
+	// CreateOfficeHoursScheduleWithBodyWithResponse request with any body
+	CreateOfficeHoursScheduleWithBodyWithResponse(ctx context.Context, params *CreateOfficeHoursScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOfficeHoursScheduleResponse, error)
+
+	CreateOfficeHoursScheduleWithResponse(ctx context.Context, params *CreateOfficeHoursScheduleParams, body CreateOfficeHoursScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOfficeHoursScheduleResponse, error)
+
+	// DeleteOfficeHoursScheduleWithResponse request
+	DeleteOfficeHoursScheduleWithResponse(ctx context.Context, id string, params *DeleteOfficeHoursScheduleParams, reqEditors ...RequestEditorFn) (*DeleteOfficeHoursScheduleResponse, error)
+
+	// GetOfficeHoursScheduleWithResponse request
+	GetOfficeHoursScheduleWithResponse(ctx context.Context, id string, params *GetOfficeHoursScheduleParams, reqEditors ...RequestEditorFn) (*GetOfficeHoursScheduleResponse, error)
+
+	// UpdateOfficeHoursScheduleWithBodyWithResponse request with any body
+	UpdateOfficeHoursScheduleWithBodyWithResponse(ctx context.Context, id string, params *UpdateOfficeHoursScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOfficeHoursScheduleResponse, error)
+
+	UpdateOfficeHoursScheduleWithResponse(ctx context.Context, id string, params *UpdateOfficeHoursScheduleParams, body UpdateOfficeHoursScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOfficeHoursScheduleResponse, error)
+
+	// ListOfficeHoursExceptionsWithResponse request
+	ListOfficeHoursExceptionsWithResponse(ctx context.Context, officeHoursScheduleId string, params *ListOfficeHoursExceptionsParams, reqEditors ...RequestEditorFn) (*ListOfficeHoursExceptionsResponse, error)
+
+	// CreateOfficeHoursExceptionWithBodyWithResponse request with any body
+	CreateOfficeHoursExceptionWithBodyWithResponse(ctx context.Context, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOfficeHoursExceptionResponse, error)
+
+	CreateOfficeHoursExceptionWithResponse(ctx context.Context, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, body CreateOfficeHoursExceptionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOfficeHoursExceptionResponse, error)
+
+	// DeleteOfficeHoursExceptionWithResponse request
+	DeleteOfficeHoursExceptionWithResponse(ctx context.Context, officeHoursScheduleId string, id string, params *DeleteOfficeHoursExceptionParams, reqEditors ...RequestEditorFn) (*DeleteOfficeHoursExceptionResponse, error)
+
+	// GetOfficeHoursExceptionWithResponse request
+	GetOfficeHoursExceptionWithResponse(ctx context.Context, officeHoursScheduleId string, id string, params *GetOfficeHoursExceptionParams, reqEditors ...RequestEditorFn) (*GetOfficeHoursExceptionResponse, error)
+
+	// UpdateOfficeHoursExceptionWithBodyWithResponse request with any body
+	UpdateOfficeHoursExceptionWithBodyWithResponse(ctx context.Context, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOfficeHoursExceptionResponse, error)
+
+	UpdateOfficeHoursExceptionWithResponse(ctx context.Context, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, body UpdateOfficeHoursExceptionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOfficeHoursExceptionResponse, error)
 
 	// CreatePhoneSwitchWithBodyWithResponse request with any body
 	CreatePhoneSwitchWithBodyWithResponse(ctx context.Context, params *CreatePhoneSwitchParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePhoneSwitchResponse, error)
@@ -26516,6 +39652,9 @@ type ClientWithResponsesInterface interface {
 
 	// RetrieveTeamWithResponse request
 	RetrieveTeamWithResponse(ctx context.Context, teamId string, params *RetrieveTeamParams, reqEditors ...RequestEditorFn) (*RetrieveTeamResponse, error)
+
+	// GetTeamMetricsWithResponse request
+	GetTeamMetricsWithResponse(ctx context.Context, teamId string, params *GetTeamMetricsParams, reqEditors ...RequestEditorFn) (*GetTeamMetricsResponse, error)
 
 	// ListTicketStatesWithResponse request
 	ListTicketStatesWithResponse(ctx context.Context, params *ListTicketStatesParams, reqEditors ...RequestEditorFn) (*ListTicketStatesResponse, error)
@@ -26572,6 +39711,19 @@ type ClientWithResponsesInterface interface {
 
 	UpdateTicketWithResponse(ctx context.Context, ticketId string, params *UpdateTicketParams, body UpdateTicketJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTicketResponse, error)
 
+	// ChangeTicketTypeWithBodyWithResponse request with any body
+	ChangeTicketTypeWithBodyWithResponse(ctx context.Context, ticketId string, params *ChangeTicketTypeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeTicketTypeResponse, error)
+
+	ChangeTicketTypeWithResponse(ctx context.Context, ticketId string, params *ChangeTicketTypeParams, body ChangeTicketTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeTicketTypeResponse, error)
+
+	// LinkConversationToTicketWithBodyWithResponse request with any body
+	LinkConversationToTicketWithBodyWithResponse(ctx context.Context, ticketId string, params *LinkConversationToTicketParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LinkConversationToTicketResponse, error)
+
+	LinkConversationToTicketWithResponse(ctx context.Context, ticketId string, params *LinkConversationToTicketParams, body LinkConversationToTicketJSONRequestBody, reqEditors ...RequestEditorFn) (*LinkConversationToTicketResponse, error)
+
+	// UnlinkConversationFromTicketWithResponse request
+	UnlinkConversationFromTicketWithResponse(ctx context.Context, ticketId string, id string, params *UnlinkConversationFromTicketParams, reqEditors ...RequestEditorFn) (*UnlinkConversationFromTicketResponse, error)
+
 	// ReplyTicketWithBodyWithResponse request with any body
 	ReplyTicketWithBodyWithResponse(ctx context.Context, ticketId string, params *ReplyTicketParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReplyTicketResponse, error)
 
@@ -26624,6 +39776,29 @@ func (r ListAdminsResponse) StatusCode() int {
 	return 0
 }
 
+type ListActivityLogEventTypesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ActivityLogEventTypeListSchema
+	JSON401      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListActivityLogEventTypesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListActivityLogEventTypesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListActivityLogsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -26641,6 +39816,29 @@ func (r ListActivityLogsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r ListActivityLogsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SearchActivityLogsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ActivityLogListSchema
+	JSON401      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r SearchActivityLogsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SearchActivityLogsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -27060,6 +40258,299 @@ func (r UpdateArticleResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateArticleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AttachTagToArticleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TagSchema
+	JSON401      *Unauthorized
+	JSON403      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r AttachTagToArticleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AttachTagToArticleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DetachTagFromArticleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TagSchema
+	JSON401      *Unauthorized
+	JSON403      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DetachTagFromArticleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DetachTagFromArticleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListArticleVersionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ArticleVersionListSchema
+	JSON400      *ErrorSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+}
+
+// Status returns HTTPResponse.Status
+func (r ListArticleVersionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListArticleVersionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetrieveArticleVersionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ArticleVersionSchema
+	JSON400      *ErrorSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveArticleVersionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveArticleVersionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetrieveArticleDraftResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ArticleSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveArticleDraftResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveArticleDraftResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type StageArticleDraftResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ArticleSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r StageArticleDraftResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r StageArticleDraftResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PublishArticleDraftResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ArticleSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r PublishArticleDraftResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PublishArticleDraftResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListAudiencesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AudienceListSchema
+	JSON401      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListAudiencesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListAudiencesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateAudienceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *AudienceSchema
+	JSON401      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateAudienceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateAudienceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteAudienceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteAudienceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteAudienceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetrieveAudienceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AudienceSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveAudienceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveAudienceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateAudienceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AudienceSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateAudienceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAudienceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -27521,6 +41012,30 @@ func (r ListCompanyNotesResponse) StatusCode() int {
 	return 0
 }
 
+type CreateCompanyNoteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *NoteSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateCompanyNoteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateCompanyNoteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListAttachedSegmentsForCompaniesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -27596,6 +41111,7 @@ type ShowContactByExternalIdResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *ContactSchema
 	JSON401      *ErrorSchema
+	JSON410      *ErrorSchema
 }
 
 // Status returns HTTPResponse.Status
@@ -27618,6 +41134,7 @@ type MergeContactResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ContactSchema
+	JSON400      *ErrorSchema
 	JSON401      *ErrorSchema
 }
 
@@ -27641,6 +41158,7 @@ type SearchContactsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ContactListSchema
+	JSON400      *ErrorSchema
 	JSON401      *ErrorSchema
 }
 
@@ -27688,6 +41206,7 @@ type ShowContactResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *ContactSchema
 	JSON401      *ErrorSchema
+	JSON410      *ErrorSchema
 }
 
 // Status returns HTTPResponse.Status
@@ -28082,6 +41601,291 @@ func (r UnarchiveContactResponse) StatusCode() int {
 	return 0
 }
 
+type ListContactBannersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BannerListSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListContactBannersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListContactBannersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DismissContactBannerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *BannerDismissSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DismissContactBannerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DismissContactBannerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListContactMergeHistoryResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *MergeHistoryListSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListContactMergeHistoryResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListContactMergeHistoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type BulkContentActionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON202      *ContentBulkActionResponseSchema
+	JSON401      *ErrorSchema
+	JSON403      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r BulkContentActionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BulkContentActionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SearchContentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ContentSearchResponseSchema
+	JSON401      *Unauthorized
+	JSON422      *ValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r SearchContentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SearchContentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListContentSnippetsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ContentSnippetListSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListContentSnippetsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListContentSnippetsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateContentSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *ContentSnippetSchema
+	JSON404      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateContentSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateContentSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AttachTagToContentSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TagSchema
+	JSON401      *Unauthorized
+	JSON403      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r AttachTagToContentSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AttachTagToContentSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DetachTagFromContentSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TagSchema
+	JSON401      *Unauthorized
+	JSON403      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DetachTagFromContentSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DetachTagFromContentSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteContentSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteContentSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteContentSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetContentSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ContentSnippetSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r GetContentSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetContentSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateContentSnippetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ContentSnippetSchema
+	JSON404      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateContentSnippetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateContentSnippetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListConversationsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -28125,6 +41929,224 @@ func (r CreateConversationResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateConversationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListConversationAttributesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationAttributeListSchema
+	JSON401      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListConversationAttributesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListConversationAttributesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateConversationAttributeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationAttribute
+	JSON401      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateConversationAttributeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateConversationAttributeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteConversationAttributeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationAttribute
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteConversationAttributeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteConversationAttributeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetConversationAttributeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationAttribute
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r GetConversationAttributeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConversationAttributeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateConversationAttributeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationAttribute
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateConversationAttributeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateConversationAttributeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateConversationAttributeOptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationAttribute
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateConversationAttributeOptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateConversationAttributeOptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteConversationAttributeOptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationAttribute
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteConversationAttributeOptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteConversationAttributeOptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateConversationAttributeOptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationAttribute
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateConversationAttributeOptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateConversationAttributeOptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListDeletedConversationIdsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DeletedConversationListSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListDeletedConversationIdsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListDeletedConversationIdsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -28447,6 +42469,56 @@ func (r ListHandlingEventsResponse) StatusCode() int {
 	return 0
 }
 
+type MergeConversationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON403      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r MergeConversationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r MergeConversationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListSideConversationsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *SideConversationListSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSideConversationsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSideConversationsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteCustomObjectInstancesByIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -28471,16 +42543,16 @@ func (r DeleteCustomObjectInstancesByIdResponse) StatusCode() int {
 	return 0
 }
 
-type GetCustomObjectInstancesByExternalIdResponse struct {
+type ListCustomObjectInstancesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *CustomObjectInstanceSchema
+	JSON200      *CustomObjectInstancesPaginatedListSchema
 	JSON401      *Unauthorized
-	JSON404      *ObjectNotFound
+	JSON404      *TypeNotFound
 }
 
 // Status returns HTTPResponse.Status
-func (r GetCustomObjectInstancesByExternalIdResponse) Status() string {
+func (r ListCustomObjectInstancesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -28488,7 +42560,7 @@ func (r GetCustomObjectInstancesByExternalIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetCustomObjectInstancesByExternalIdResponse) StatusCode() int {
+func (r ListCustomObjectInstancesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -28572,6 +42644,7 @@ type LisDataAttributesResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *DataAttributeListSchema
 	JSON401      *ErrorSchema
+	JSON422      *ErrorSchema
 }
 
 // Status returns HTTPResponse.Status
@@ -28634,6 +42707,179 @@ func (r UpdateDataAttributeResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateDataAttributeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListDataConnectorsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DataConnectorListSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListDataConnectorsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListDataConnectorsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateDataConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DataConnectorDetailSchema
+	JSON401      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateDataConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateDataConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListDataConnectorExecutionResultsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DataConnectorExecutionResultListSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListDataConnectorExecutionResultsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListDataConnectorExecutionResultsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ShowDataConnectorExecutionResultResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DataConnectorExecutionResultSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ShowDataConnectorExecutionResultResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ShowDataConnectorExecutionResultResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteDataConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DeletedDataConnectorObjectSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+	JSON409      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteDataConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteDataConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetrieveDataConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DataConnectorDetailSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveDataConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveDataConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateDataConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DataConnectorDetailSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+	JSON409      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateDataConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateDataConnectorResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -28899,8 +43145,12 @@ type GetExportReportingDataGetDatasetsResponse struct {
 	JSON200      *struct {
 		Data *[]struct {
 			Attributes *[]struct {
+				// Id The simple attribute identifier. Note that this may be ambiguous if the same name exists across different attribute types. Use qualified_id when calling the enqueue endpoint.
 				Id   *string `json:"id,omitempty"`
 				Name *string `json:"name,omitempty"`
+
+				// QualifiedId A namespaced identifier that uniquely identifies the attribute across all types. Format is "prefix.name" (e.g., "people.Brand", "conversation.Brand"). Required when calling the enqueue endpoint.
+				QualifiedId *string `json:"qualified_id,omitempty"`
 			} `json:"attributes,omitempty"`
 			DefaultTimeAttributeId *string `json:"default_time_attribute_id,omitempty"`
 			Description            *string `json:"description,omitempty"`
@@ -28979,6 +43229,44 @@ func (r ExportWorkflowResponse) StatusCode() int {
 	return 0
 }
 
+type SubmitFinCsatResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ConversationId The external ID of the rated conversation.
+		ConversationId *string `json:"conversation_id,omitempty"`
+
+		// Rating The rating now recorded on the conversation.
+		Rating *SubmitFinCsat200Rating `json:"rating,omitempty"`
+
+		// Status The result of the submission.
+		Status *SubmitFinCsat200Status `json:"status,omitempty"`
+	}
+	JSON401 *ErrorSchema
+	JSON422 *struct {
+		// Errors Validation messages keyed by the field they apply to, or `base` for conversation-level failures.
+		Errors *map[string]string `json:"errors,omitempty"`
+	}
+}
+type SubmitFinCsat200Rating string
+type SubmitFinCsat200Status string
+
+// Status returns HTTPResponse.Status
+func (r SubmitFinCsatResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SubmitFinCsatResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ReplyToFinResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -28992,7 +43280,7 @@ type ReplyToFinResponse struct {
 		// FinAgentAttributeErrorsSchema Contains error details if any user or conversation attribute updates failed.
 		FinAgentAttributeErrorsSchema *FinAgentAttributeErrorsSchema `json:"errors,omitempty"`
 
-		// SseSubscriptionUrl Optional. A URL to subscribe to Server-Sent Events (SSE) for this conversation, if SSE is enabled. The access token is a JWT with a 3-minute TTL. The token is revoked when Fin sets the conversation to awaiting_user_reply or complete status.
+		// SseSubscriptionUrl Optional. A URL to subscribe to Server-Sent Events (SSE) for this conversation, if SSE is enabled. The access token is a JWT with a 3-minute TTL. The token is revoked when Fin sets the conversation to awaiting_user_reply or complete status. When CSAT is enabled and a survey will follow the resolution, `complete` revocation is deferred until the `csat_requested` event is delivered or the token expires.
 		SseSubscriptionUrl *string `json:"sse_subscription_url,omitempty"`
 
 		// Status Fin's current status in the conversation workflow.
@@ -29035,7 +43323,7 @@ type StartFinConversationResponse struct {
 		// FinAgentAttributeErrorsSchema Contains error details if any user or conversation attribute updates failed.
 		FinAgentAttributeErrorsSchema *FinAgentAttributeErrorsSchema `json:"errors,omitempty"`
 
-		// SseSubscriptionUrl Optional. A URL to subscribe to Server-Sent Events (SSE) for this conversation, if SSE is enabled. The access token is a JWT with a 3-minute TTL. The token is revoked when Fin sets the conversation to awaiting_user_reply or complete status.
+		// SseSubscriptionUrl Optional. A URL to subscribe to Server-Sent Events (SSE) for this conversation, if SSE is enabled. The access token is a JWT with a 3-minute TTL. The token is revoked when Fin sets the conversation to awaiting_user_reply or complete status. When CSAT is enabled and a survey will follow the resolution, `complete` revocation is deferred until the `csat_requested` event is delivered or the token expires.
 		SseSubscriptionUrl *string `json:"sse_subscription_url,omitempty"`
 
 		// Status Fin's current status in the conversation workflow.
@@ -29352,6 +43640,105 @@ func (r RetrieveHelpCenterResponse) StatusCode() int {
 	return 0
 }
 
+type ListHelpCenterRedirectsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *HelpCenterRedirectListSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListHelpCenterRedirectsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListHelpCenterRedirectsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateHelpCenterRedirectResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *HelpCenterRedirectSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+	JSON409      *ErrorSchema
+	JSON422      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateHelpCenterRedirectResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateHelpCenterRedirectResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteHelpCenterRedirectResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DeletedHelpCenterRedirectObjectSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteHelpCenterRedirectResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteHelpCenterRedirectResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetrieveHelpCenterRedirectResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *HelpCenterRedirectSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveHelpCenterRedirectResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveHelpCenterRedirectResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ListInternalArticlesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -29494,6 +43881,56 @@ func (r UpdateInternalArticleResponse) StatusCode() int {
 	return 0
 }
 
+type AttachTagToInternalArticleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TagSchema
+	JSON401      *Unauthorized
+	JSON403      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r AttachTagToInternalArticleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AttachTagToInternalArticleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DetachTagFromInternalArticleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TagSchema
+	JSON401      *Unauthorized
+	JSON403      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r DetachTagFromInternalArticleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DetachTagFromInternalArticleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetIpAllowlistResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -29565,6 +44002,56 @@ func (r JobsStatusResponse) StatusCode() int {
 	return 0
 }
 
+type ListMacrosResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *MacroListSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON403      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ListMacrosResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListMacrosResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMacroResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *MacroSchema
+	JSON401      *ErrorSchema
+	JSON403      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMacroResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMacroResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type IdentifyAdminResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -29607,6 +44094,57 @@ func (r CreateMessageResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateMessageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetWhatsAppMessageStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *WhatsappMessageStatusListSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON403      *ErrorSchema
+	JSON500      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r GetWhatsAppMessageStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetWhatsAppMessageStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RetrieveWhatsAppMessageStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *WhatsappMessageStatusSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r RetrieveWhatsAppMessageStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetrieveWhatsAppMessageStatusResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -29824,6 +44362,256 @@ func (r RetrieveNoteResponse) StatusCode() int {
 	return 0
 }
 
+type ListOfficeHoursSchedulesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *OfficeHoursScheduleListSchema
+	JSON401      *Unauthorized
+}
+
+// Status returns HTTPResponse.Status
+func (r ListOfficeHoursSchedulesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListOfficeHoursSchedulesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateOfficeHoursScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *OfficeHoursScheduleSchema
+	JSON401      *Unauthorized
+	JSON422      *ValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateOfficeHoursScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateOfficeHoursScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteOfficeHoursScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Deleted *bool   `json:"deleted,omitempty"`
+		Id      *string `json:"id,omitempty"`
+		Object  *string `json:"object,omitempty"`
+	}
+	JSON401 *Unauthorized
+	JSON404 *ObjectNotFound
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteOfficeHoursScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteOfficeHoursScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetOfficeHoursScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *OfficeHoursScheduleSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOfficeHoursScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOfficeHoursScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateOfficeHoursScheduleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *OfficeHoursScheduleSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+	JSON422      *ValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateOfficeHoursScheduleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateOfficeHoursScheduleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListOfficeHoursExceptionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *OfficeHoursExceptionListSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+}
+
+// Status returns HTTPResponse.Status
+func (r ListOfficeHoursExceptionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListOfficeHoursExceptionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateOfficeHoursExceptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *OfficeHoursExceptionSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+	JSON422      *ValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateOfficeHoursExceptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateOfficeHoursExceptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteOfficeHoursExceptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Deleted *bool   `json:"deleted,omitempty"`
+		Id      *string `json:"id,omitempty"`
+		Object  *string `json:"object,omitempty"`
+	}
+	JSON401 *Unauthorized
+	JSON404 *ObjectNotFound
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteOfficeHoursExceptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteOfficeHoursExceptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetOfficeHoursExceptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *OfficeHoursExceptionSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+}
+
+// Status returns HTTPResponse.Status
+func (r GetOfficeHoursExceptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOfficeHoursExceptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateOfficeHoursExceptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *OfficeHoursExceptionSchema
+	JSON401      *Unauthorized
+	JSON404      *ObjectNotFound
+	JSON422      *ValidationError
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateOfficeHoursExceptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateOfficeHoursExceptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type CreatePhoneSwitchResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -29943,10 +44731,9 @@ func (r ListTagsResponse) StatusCode() int {
 type CreateTagResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *TagBasicSchema
+	JSON200      *TagCreateResponse
 	JSON400      *ErrorSchema
 	JSON401      *ErrorSchema
-	JSON404      *ErrorSchema
 }
 
 // Status returns HTTPResponse.Status
@@ -30054,6 +44841,31 @@ func (r RetrieveTeamResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r RetrieveTeamResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetTeamMetricsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TeamMetricListSchema
+	JSON401      *Unauthorized
+	JSON403      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTeamMetricsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTeamMetricsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -30361,6 +45173,81 @@ func (r UpdateTicketResponse) StatusCode() int {
 	return 0
 }
 
+type ChangeTicketTypeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *TicketSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r ChangeTicketTypeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ChangeTicketTypeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type LinkConversationToTicketResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r LinkConversationToTicketResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LinkConversationToTicketResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UnlinkConversationFromTicketResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConversationSchema
+	JSON400      *ErrorSchema
+	JSON401      *ErrorSchema
+	JSON404      *ErrorSchema
+}
+
+// Status returns HTTPResponse.Status
+func (r UnlinkConversationFromTicketResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UnlinkConversationFromTicketResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type ReplyTicketResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -30514,6 +45401,15 @@ func (c *ClientWithResponses) ListAdminsWithResponse(ctx context.Context, params
 	return ParseListAdminsResponse(rsp)
 }
 
+// ListActivityLogEventTypesWithResponse request returning *ListActivityLogEventTypesResponse
+func (c *ClientWithResponses) ListActivityLogEventTypesWithResponse(ctx context.Context, params *ListActivityLogEventTypesParams, reqEditors ...RequestEditorFn) (*ListActivityLogEventTypesResponse, error) {
+	rsp, err := c.ListActivityLogEventTypes(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListActivityLogEventTypesResponse(rsp)
+}
+
 // ListActivityLogsWithResponse request returning *ListActivityLogsResponse
 func (c *ClientWithResponses) ListActivityLogsWithResponse(ctx context.Context, params *ListActivityLogsParams, reqEditors ...RequestEditorFn) (*ListActivityLogsResponse, error) {
 	rsp, err := c.ListActivityLogs(ctx, params, reqEditors...)
@@ -30521,6 +45417,23 @@ func (c *ClientWithResponses) ListActivityLogsWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseListActivityLogsResponse(rsp)
+}
+
+// SearchActivityLogsWithBodyWithResponse request with arbitrary body returning *SearchActivityLogsResponse
+func (c *ClientWithResponses) SearchActivityLogsWithBodyWithResponse(ctx context.Context, params *SearchActivityLogsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SearchActivityLogsResponse, error) {
+	rsp, err := c.SearchActivityLogsWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSearchActivityLogsResponse(rsp)
+}
+
+func (c *ClientWithResponses) SearchActivityLogsWithResponse(ctx context.Context, params *SearchActivityLogsParams, body SearchActivityLogsJSONRequestBody, reqEditors ...RequestEditorFn) (*SearchActivityLogsResponse, error) {
+	rsp, err := c.SearchActivityLogs(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSearchActivityLogsResponse(rsp)
 }
 
 // RetrieveAdminWithResponse request returning *RetrieveAdminResponse
@@ -30741,6 +45654,154 @@ func (c *ClientWithResponses) UpdateArticleWithResponse(ctx context.Context, art
 	return ParseUpdateArticleResponse(rsp)
 }
 
+// AttachTagToArticleWithBodyWithResponse request with arbitrary body returning *AttachTagToArticleResponse
+func (c *ClientWithResponses) AttachTagToArticleWithBodyWithResponse(ctx context.Context, articleId int, params *AttachTagToArticleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachTagToArticleResponse, error) {
+	rsp, err := c.AttachTagToArticleWithBody(ctx, articleId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachTagToArticleResponse(rsp)
+}
+
+func (c *ClientWithResponses) AttachTagToArticleWithResponse(ctx context.Context, articleId int, params *AttachTagToArticleParams, body AttachTagToArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachTagToArticleResponse, error) {
+	rsp, err := c.AttachTagToArticle(ctx, articleId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachTagToArticleResponse(rsp)
+}
+
+// DetachTagFromArticleWithResponse request returning *DetachTagFromArticleResponse
+func (c *ClientWithResponses) DetachTagFromArticleWithResponse(ctx context.Context, articleId int, id string, params *DetachTagFromArticleParams, reqEditors ...RequestEditorFn) (*DetachTagFromArticleResponse, error) {
+	rsp, err := c.DetachTagFromArticle(ctx, articleId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDetachTagFromArticleResponse(rsp)
+}
+
+// ListArticleVersionsWithResponse request returning *ListArticleVersionsResponse
+func (c *ClientWithResponses) ListArticleVersionsWithResponse(ctx context.Context, articleId int, params *ListArticleVersionsParams, reqEditors ...RequestEditorFn) (*ListArticleVersionsResponse, error) {
+	rsp, err := c.ListArticleVersions(ctx, articleId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListArticleVersionsResponse(rsp)
+}
+
+// RetrieveArticleVersionWithResponse request returning *RetrieveArticleVersionResponse
+func (c *ClientWithResponses) RetrieveArticleVersionWithResponse(ctx context.Context, articleId int, id string, params *RetrieveArticleVersionParams, reqEditors ...RequestEditorFn) (*RetrieveArticleVersionResponse, error) {
+	rsp, err := c.RetrieveArticleVersion(ctx, articleId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveArticleVersionResponse(rsp)
+}
+
+// RetrieveArticleDraftWithResponse request returning *RetrieveArticleDraftResponse
+func (c *ClientWithResponses) RetrieveArticleDraftWithResponse(ctx context.Context, id int, params *RetrieveArticleDraftParams, reqEditors ...RequestEditorFn) (*RetrieveArticleDraftResponse, error) {
+	rsp, err := c.RetrieveArticleDraft(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveArticleDraftResponse(rsp)
+}
+
+// StageArticleDraftWithBodyWithResponse request with arbitrary body returning *StageArticleDraftResponse
+func (c *ClientWithResponses) StageArticleDraftWithBodyWithResponse(ctx context.Context, id int, params *StageArticleDraftParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*StageArticleDraftResponse, error) {
+	rsp, err := c.StageArticleDraftWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStageArticleDraftResponse(rsp)
+}
+
+func (c *ClientWithResponses) StageArticleDraftWithResponse(ctx context.Context, id int, params *StageArticleDraftParams, body StageArticleDraftJSONRequestBody, reqEditors ...RequestEditorFn) (*StageArticleDraftResponse, error) {
+	rsp, err := c.StageArticleDraft(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseStageArticleDraftResponse(rsp)
+}
+
+// PublishArticleDraftWithBodyWithResponse request with arbitrary body returning *PublishArticleDraftResponse
+func (c *ClientWithResponses) PublishArticleDraftWithBodyWithResponse(ctx context.Context, id int, params *PublishArticleDraftParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PublishArticleDraftResponse, error) {
+	rsp, err := c.PublishArticleDraftWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePublishArticleDraftResponse(rsp)
+}
+
+func (c *ClientWithResponses) PublishArticleDraftWithResponse(ctx context.Context, id int, params *PublishArticleDraftParams, body PublishArticleDraftJSONRequestBody, reqEditors ...RequestEditorFn) (*PublishArticleDraftResponse, error) {
+	rsp, err := c.PublishArticleDraft(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePublishArticleDraftResponse(rsp)
+}
+
+// ListAudiencesWithResponse request returning *ListAudiencesResponse
+func (c *ClientWithResponses) ListAudiencesWithResponse(ctx context.Context, params *ListAudiencesParams, reqEditors ...RequestEditorFn) (*ListAudiencesResponse, error) {
+	rsp, err := c.ListAudiences(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListAudiencesResponse(rsp)
+}
+
+// CreateAudienceWithBodyWithResponse request with arbitrary body returning *CreateAudienceResponse
+func (c *ClientWithResponses) CreateAudienceWithBodyWithResponse(ctx context.Context, params *CreateAudienceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAudienceResponse, error) {
+	rsp, err := c.CreateAudienceWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAudienceResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateAudienceWithResponse(ctx context.Context, params *CreateAudienceParams, body CreateAudienceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAudienceResponse, error) {
+	rsp, err := c.CreateAudience(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAudienceResponse(rsp)
+}
+
+// DeleteAudienceWithResponse request returning *DeleteAudienceResponse
+func (c *ClientWithResponses) DeleteAudienceWithResponse(ctx context.Context, id string, params *DeleteAudienceParams, reqEditors ...RequestEditorFn) (*DeleteAudienceResponse, error) {
+	rsp, err := c.DeleteAudience(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteAudienceResponse(rsp)
+}
+
+// RetrieveAudienceWithResponse request returning *RetrieveAudienceResponse
+func (c *ClientWithResponses) RetrieveAudienceWithResponse(ctx context.Context, id string, params *RetrieveAudienceParams, reqEditors ...RequestEditorFn) (*RetrieveAudienceResponse, error) {
+	rsp, err := c.RetrieveAudience(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveAudienceResponse(rsp)
+}
+
+// UpdateAudienceWithBodyWithResponse request with arbitrary body returning *UpdateAudienceResponse
+func (c *ClientWithResponses) UpdateAudienceWithBodyWithResponse(ctx context.Context, id string, params *UpdateAudienceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAudienceResponse, error) {
+	rsp, err := c.UpdateAudienceWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAudienceResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAudienceWithResponse(ctx context.Context, id string, params *UpdateAudienceParams, body UpdateAudienceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAudienceResponse, error) {
+	rsp, err := c.UpdateAudience(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAudienceResponse(rsp)
+}
+
 // ListAwayStatusReasonsWithResponse request returning *ListAwayStatusReasonsResponse
 func (c *ClientWithResponses) ListAwayStatusReasonsWithResponse(ctx context.Context, params *ListAwayStatusReasonsParams, reqEditors ...RequestEditorFn) (*ListAwayStatusReasonsResponse, error) {
 	rsp, err := c.ListAwayStatusReasons(ctx, params, reqEditors...)
@@ -30916,6 +45977,23 @@ func (c *ClientWithResponses) ListCompanyNotesWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseListCompanyNotesResponse(rsp)
+}
+
+// CreateCompanyNoteWithBodyWithResponse request with arbitrary body returning *CreateCompanyNoteResponse
+func (c *ClientWithResponses) CreateCompanyNoteWithBodyWithResponse(ctx context.Context, companyId string, params *CreateCompanyNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCompanyNoteResponse, error) {
+	rsp, err := c.CreateCompanyNoteWithBody(ctx, companyId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCompanyNoteResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateCompanyNoteWithResponse(ctx context.Context, companyId string, params *CreateCompanyNoteParams, body CreateCompanyNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCompanyNoteResponse, error) {
+	rsp, err := c.CreateCompanyNote(ctx, companyId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCompanyNoteResponse(rsp)
 }
 
 // ListAttachedSegmentsForCompaniesWithResponse request returning *ListAttachedSegmentsForCompaniesResponse
@@ -31198,6 +46276,146 @@ func (c *ClientWithResponses) UnarchiveContactWithResponse(ctx context.Context, 
 	return ParseUnarchiveContactResponse(rsp)
 }
 
+// ListContactBannersWithResponse request returning *ListContactBannersResponse
+func (c *ClientWithResponses) ListContactBannersWithResponse(ctx context.Context, id string, params *ListContactBannersParams, reqEditors ...RequestEditorFn) (*ListContactBannersResponse, error) {
+	rsp, err := c.ListContactBanners(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListContactBannersResponse(rsp)
+}
+
+// DismissContactBannerWithResponse request returning *DismissContactBannerResponse
+func (c *ClientWithResponses) DismissContactBannerWithResponse(ctx context.Context, id string, viewId string, params *DismissContactBannerParams, reqEditors ...RequestEditorFn) (*DismissContactBannerResponse, error) {
+	rsp, err := c.DismissContactBanner(ctx, id, viewId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDismissContactBannerResponse(rsp)
+}
+
+// ListContactMergeHistoryWithResponse request returning *ListContactMergeHistoryResponse
+func (c *ClientWithResponses) ListContactMergeHistoryWithResponse(ctx context.Context, id string, params *ListContactMergeHistoryParams, reqEditors ...RequestEditorFn) (*ListContactMergeHistoryResponse, error) {
+	rsp, err := c.ListContactMergeHistory(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListContactMergeHistoryResponse(rsp)
+}
+
+// BulkContentActionsWithBodyWithResponse request with arbitrary body returning *BulkContentActionsResponse
+func (c *ClientWithResponses) BulkContentActionsWithBodyWithResponse(ctx context.Context, params *BulkContentActionsParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkContentActionsResponse, error) {
+	rsp, err := c.BulkContentActionsWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBulkContentActionsResponse(rsp)
+}
+
+func (c *ClientWithResponses) BulkContentActionsWithResponse(ctx context.Context, params *BulkContentActionsParams, body BulkContentActionsJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkContentActionsResponse, error) {
+	rsp, err := c.BulkContentActions(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBulkContentActionsResponse(rsp)
+}
+
+// SearchContentWithResponse request returning *SearchContentResponse
+func (c *ClientWithResponses) SearchContentWithResponse(ctx context.Context, params *SearchContentParams, reqEditors ...RequestEditorFn) (*SearchContentResponse, error) {
+	rsp, err := c.SearchContent(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSearchContentResponse(rsp)
+}
+
+// ListContentSnippetsWithResponse request returning *ListContentSnippetsResponse
+func (c *ClientWithResponses) ListContentSnippetsWithResponse(ctx context.Context, params *ListContentSnippetsParams, reqEditors ...RequestEditorFn) (*ListContentSnippetsResponse, error) {
+	rsp, err := c.ListContentSnippets(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListContentSnippetsResponse(rsp)
+}
+
+// CreateContentSnippetWithBodyWithResponse request with arbitrary body returning *CreateContentSnippetResponse
+func (c *ClientWithResponses) CreateContentSnippetWithBodyWithResponse(ctx context.Context, params *CreateContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateContentSnippetResponse, error) {
+	rsp, err := c.CreateContentSnippetWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateContentSnippetResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateContentSnippetWithResponse(ctx context.Context, params *CreateContentSnippetParams, body CreateContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateContentSnippetResponse, error) {
+	rsp, err := c.CreateContentSnippet(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateContentSnippetResponse(rsp)
+}
+
+// AttachTagToContentSnippetWithBodyWithResponse request with arbitrary body returning *AttachTagToContentSnippetResponse
+func (c *ClientWithResponses) AttachTagToContentSnippetWithBodyWithResponse(ctx context.Context, contentSnippetId string, params *AttachTagToContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachTagToContentSnippetResponse, error) {
+	rsp, err := c.AttachTagToContentSnippetWithBody(ctx, contentSnippetId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachTagToContentSnippetResponse(rsp)
+}
+
+func (c *ClientWithResponses) AttachTagToContentSnippetWithResponse(ctx context.Context, contentSnippetId string, params *AttachTagToContentSnippetParams, body AttachTagToContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachTagToContentSnippetResponse, error) {
+	rsp, err := c.AttachTagToContentSnippet(ctx, contentSnippetId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachTagToContentSnippetResponse(rsp)
+}
+
+// DetachTagFromContentSnippetWithResponse request returning *DetachTagFromContentSnippetResponse
+func (c *ClientWithResponses) DetachTagFromContentSnippetWithResponse(ctx context.Context, contentSnippetId string, id string, params *DetachTagFromContentSnippetParams, reqEditors ...RequestEditorFn) (*DetachTagFromContentSnippetResponse, error) {
+	rsp, err := c.DetachTagFromContentSnippet(ctx, contentSnippetId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDetachTagFromContentSnippetResponse(rsp)
+}
+
+// DeleteContentSnippetWithResponse request returning *DeleteContentSnippetResponse
+func (c *ClientWithResponses) DeleteContentSnippetWithResponse(ctx context.Context, id string, params *DeleteContentSnippetParams, reqEditors ...RequestEditorFn) (*DeleteContentSnippetResponse, error) {
+	rsp, err := c.DeleteContentSnippet(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteContentSnippetResponse(rsp)
+}
+
+// GetContentSnippetWithResponse request returning *GetContentSnippetResponse
+func (c *ClientWithResponses) GetContentSnippetWithResponse(ctx context.Context, id string, params *GetContentSnippetParams, reqEditors ...RequestEditorFn) (*GetContentSnippetResponse, error) {
+	rsp, err := c.GetContentSnippet(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetContentSnippetResponse(rsp)
+}
+
+// UpdateContentSnippetWithBodyWithResponse request with arbitrary body returning *UpdateContentSnippetResponse
+func (c *ClientWithResponses) UpdateContentSnippetWithBodyWithResponse(ctx context.Context, id string, params *UpdateContentSnippetParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateContentSnippetResponse, error) {
+	rsp, err := c.UpdateContentSnippetWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateContentSnippetResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateContentSnippetWithResponse(ctx context.Context, id string, params *UpdateContentSnippetParams, body UpdateContentSnippetJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateContentSnippetResponse, error) {
+	rsp, err := c.UpdateContentSnippet(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateContentSnippetResponse(rsp)
+}
+
 // ListConversationsWithResponse request returning *ListConversationsResponse
 func (c *ClientWithResponses) ListConversationsWithResponse(ctx context.Context, params *ListConversationsParams, reqEditors ...RequestEditorFn) (*ListConversationsResponse, error) {
 	rsp, err := c.ListConversations(ctx, params, reqEditors...)
@@ -31222,6 +46440,119 @@ func (c *ClientWithResponses) CreateConversationWithResponse(ctx context.Context
 		return nil, err
 	}
 	return ParseCreateConversationResponse(rsp)
+}
+
+// ListConversationAttributesWithResponse request returning *ListConversationAttributesResponse
+func (c *ClientWithResponses) ListConversationAttributesWithResponse(ctx context.Context, params *ListConversationAttributesParams, reqEditors ...RequestEditorFn) (*ListConversationAttributesResponse, error) {
+	rsp, err := c.ListConversationAttributes(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListConversationAttributesResponse(rsp)
+}
+
+// CreateConversationAttributeWithBodyWithResponse request with arbitrary body returning *CreateConversationAttributeResponse
+func (c *ClientWithResponses) CreateConversationAttributeWithBodyWithResponse(ctx context.Context, params *CreateConversationAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConversationAttributeResponse, error) {
+	rsp, err := c.CreateConversationAttributeWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateConversationAttributeResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateConversationAttributeWithResponse(ctx context.Context, params *CreateConversationAttributeParams, body CreateConversationAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConversationAttributeResponse, error) {
+	rsp, err := c.CreateConversationAttribute(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateConversationAttributeResponse(rsp)
+}
+
+// DeleteConversationAttributeWithResponse request returning *DeleteConversationAttributeResponse
+func (c *ClientWithResponses) DeleteConversationAttributeWithResponse(ctx context.Context, id int, params *DeleteConversationAttributeParams, reqEditors ...RequestEditorFn) (*DeleteConversationAttributeResponse, error) {
+	rsp, err := c.DeleteConversationAttribute(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteConversationAttributeResponse(rsp)
+}
+
+// GetConversationAttributeWithResponse request returning *GetConversationAttributeResponse
+func (c *ClientWithResponses) GetConversationAttributeWithResponse(ctx context.Context, id int, params *GetConversationAttributeParams, reqEditors ...RequestEditorFn) (*GetConversationAttributeResponse, error) {
+	rsp, err := c.GetConversationAttribute(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConversationAttributeResponse(rsp)
+}
+
+// UpdateConversationAttributeWithBodyWithResponse request with arbitrary body returning *UpdateConversationAttributeResponse
+func (c *ClientWithResponses) UpdateConversationAttributeWithBodyWithResponse(ctx context.Context, id int, params *UpdateConversationAttributeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConversationAttributeResponse, error) {
+	rsp, err := c.UpdateConversationAttributeWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConversationAttributeResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateConversationAttributeWithResponse(ctx context.Context, id int, params *UpdateConversationAttributeParams, body UpdateConversationAttributeJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConversationAttributeResponse, error) {
+	rsp, err := c.UpdateConversationAttribute(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConversationAttributeResponse(rsp)
+}
+
+// CreateConversationAttributeOptionWithBodyWithResponse request with arbitrary body returning *CreateConversationAttributeOptionResponse
+func (c *ClientWithResponses) CreateConversationAttributeOptionWithBodyWithResponse(ctx context.Context, id int, params *CreateConversationAttributeOptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConversationAttributeOptionResponse, error) {
+	rsp, err := c.CreateConversationAttributeOptionWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateConversationAttributeOptionResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateConversationAttributeOptionWithResponse(ctx context.Context, id int, params *CreateConversationAttributeOptionParams, body CreateConversationAttributeOptionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConversationAttributeOptionResponse, error) {
+	rsp, err := c.CreateConversationAttributeOption(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateConversationAttributeOptionResponse(rsp)
+}
+
+// DeleteConversationAttributeOptionWithResponse request returning *DeleteConversationAttributeOptionResponse
+func (c *ClientWithResponses) DeleteConversationAttributeOptionWithResponse(ctx context.Context, id int, optionId string, params *DeleteConversationAttributeOptionParams, reqEditors ...RequestEditorFn) (*DeleteConversationAttributeOptionResponse, error) {
+	rsp, err := c.DeleteConversationAttributeOption(ctx, id, optionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteConversationAttributeOptionResponse(rsp)
+}
+
+// UpdateConversationAttributeOptionWithBodyWithResponse request with arbitrary body returning *UpdateConversationAttributeOptionResponse
+func (c *ClientWithResponses) UpdateConversationAttributeOptionWithBodyWithResponse(ctx context.Context, id int, optionId string, params *UpdateConversationAttributeOptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConversationAttributeOptionResponse, error) {
+	rsp, err := c.UpdateConversationAttributeOptionWithBody(ctx, id, optionId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConversationAttributeOptionResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateConversationAttributeOptionWithResponse(ctx context.Context, id int, optionId string, params *UpdateConversationAttributeOptionParams, body UpdateConversationAttributeOptionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConversationAttributeOptionResponse, error) {
+	rsp, err := c.UpdateConversationAttributeOption(ctx, id, optionId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConversationAttributeOptionResponse(rsp)
+}
+
+// ListDeletedConversationIdsWithResponse request returning *ListDeletedConversationIdsResponse
+func (c *ClientWithResponses) ListDeletedConversationIdsWithResponse(ctx context.Context, params *ListDeletedConversationIdsParams, reqEditors ...RequestEditorFn) (*ListDeletedConversationIdsResponse, error) {
+	rsp, err := c.ListDeletedConversationIds(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListDeletedConversationIdsResponse(rsp)
 }
 
 // RedactConversationWithBodyWithResponse request with arbitrary body returning *RedactConversationResponse
@@ -31421,6 +46752,32 @@ func (c *ClientWithResponses) ListHandlingEventsWithResponse(ctx context.Context
 	return ParseListHandlingEventsResponse(rsp)
 }
 
+// MergeConversationWithBodyWithResponse request with arbitrary body returning *MergeConversationResponse
+func (c *ClientWithResponses) MergeConversationWithBodyWithResponse(ctx context.Context, id string, params *MergeConversationParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*MergeConversationResponse, error) {
+	rsp, err := c.MergeConversationWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseMergeConversationResponse(rsp)
+}
+
+func (c *ClientWithResponses) MergeConversationWithResponse(ctx context.Context, id string, params *MergeConversationParams, body MergeConversationJSONRequestBody, reqEditors ...RequestEditorFn) (*MergeConversationResponse, error) {
+	rsp, err := c.MergeConversation(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseMergeConversationResponse(rsp)
+}
+
+// ListSideConversationsWithResponse request returning *ListSideConversationsResponse
+func (c *ClientWithResponses) ListSideConversationsWithResponse(ctx context.Context, id string, params *ListSideConversationsParams, reqEditors ...RequestEditorFn) (*ListSideConversationsResponse, error) {
+	rsp, err := c.ListSideConversations(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSideConversationsResponse(rsp)
+}
+
 // DeleteCustomObjectInstancesByIdWithResponse request returning *DeleteCustomObjectInstancesByIdResponse
 func (c *ClientWithResponses) DeleteCustomObjectInstancesByIdWithResponse(ctx context.Context, customObjectTypeIdentifier string, params *DeleteCustomObjectInstancesByIdParams, reqEditors ...RequestEditorFn) (*DeleteCustomObjectInstancesByIdResponse, error) {
 	rsp, err := c.DeleteCustomObjectInstancesById(ctx, customObjectTypeIdentifier, params, reqEditors...)
@@ -31430,13 +46787,13 @@ func (c *ClientWithResponses) DeleteCustomObjectInstancesByIdWithResponse(ctx co
 	return ParseDeleteCustomObjectInstancesByIdResponse(rsp)
 }
 
-// GetCustomObjectInstancesByExternalIdWithResponse request returning *GetCustomObjectInstancesByExternalIdResponse
-func (c *ClientWithResponses) GetCustomObjectInstancesByExternalIdWithResponse(ctx context.Context, customObjectTypeIdentifier string, params *GetCustomObjectInstancesByExternalIdParams, reqEditors ...RequestEditorFn) (*GetCustomObjectInstancesByExternalIdResponse, error) {
-	rsp, err := c.GetCustomObjectInstancesByExternalId(ctx, customObjectTypeIdentifier, params, reqEditors...)
+// ListCustomObjectInstancesWithResponse request returning *ListCustomObjectInstancesResponse
+func (c *ClientWithResponses) ListCustomObjectInstancesWithResponse(ctx context.Context, customObjectTypeIdentifier string, params *ListCustomObjectInstancesParams, reqEditors ...RequestEditorFn) (*ListCustomObjectInstancesResponse, error) {
+	rsp, err := c.ListCustomObjectInstances(ctx, customObjectTypeIdentifier, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetCustomObjectInstancesByExternalIdResponse(rsp)
+	return ParseListCustomObjectInstancesResponse(rsp)
 }
 
 // CreateCustomObjectInstancesWithBodyWithResponse request with arbitrary body returning *CreateCustomObjectInstancesResponse
@@ -31515,6 +46872,85 @@ func (c *ClientWithResponses) UpdateDataAttributeWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseUpdateDataAttributeResponse(rsp)
+}
+
+// ListDataConnectorsWithResponse request returning *ListDataConnectorsResponse
+func (c *ClientWithResponses) ListDataConnectorsWithResponse(ctx context.Context, params *ListDataConnectorsParams, reqEditors ...RequestEditorFn) (*ListDataConnectorsResponse, error) {
+	rsp, err := c.ListDataConnectors(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListDataConnectorsResponse(rsp)
+}
+
+// CreateDataConnectorWithBodyWithResponse request with arbitrary body returning *CreateDataConnectorResponse
+func (c *ClientWithResponses) CreateDataConnectorWithBodyWithResponse(ctx context.Context, params *CreateDataConnectorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDataConnectorResponse, error) {
+	rsp, err := c.CreateDataConnectorWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDataConnectorResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateDataConnectorWithResponse(ctx context.Context, params *CreateDataConnectorParams, body CreateDataConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDataConnectorResponse, error) {
+	rsp, err := c.CreateDataConnector(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDataConnectorResponse(rsp)
+}
+
+// ListDataConnectorExecutionResultsWithResponse request returning *ListDataConnectorExecutionResultsResponse
+func (c *ClientWithResponses) ListDataConnectorExecutionResultsWithResponse(ctx context.Context, dataConnectorId string, params *ListDataConnectorExecutionResultsParams, reqEditors ...RequestEditorFn) (*ListDataConnectorExecutionResultsResponse, error) {
+	rsp, err := c.ListDataConnectorExecutionResults(ctx, dataConnectorId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListDataConnectorExecutionResultsResponse(rsp)
+}
+
+// ShowDataConnectorExecutionResultWithResponse request returning *ShowDataConnectorExecutionResultResponse
+func (c *ClientWithResponses) ShowDataConnectorExecutionResultWithResponse(ctx context.Context, dataConnectorId string, id string, params *ShowDataConnectorExecutionResultParams, reqEditors ...RequestEditorFn) (*ShowDataConnectorExecutionResultResponse, error) {
+	rsp, err := c.ShowDataConnectorExecutionResult(ctx, dataConnectorId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseShowDataConnectorExecutionResultResponse(rsp)
+}
+
+// DeleteDataConnectorWithResponse request returning *DeleteDataConnectorResponse
+func (c *ClientWithResponses) DeleteDataConnectorWithResponse(ctx context.Context, id string, params *DeleteDataConnectorParams, reqEditors ...RequestEditorFn) (*DeleteDataConnectorResponse, error) {
+	rsp, err := c.DeleteDataConnector(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteDataConnectorResponse(rsp)
+}
+
+// RetrieveDataConnectorWithResponse request returning *RetrieveDataConnectorResponse
+func (c *ClientWithResponses) RetrieveDataConnectorWithResponse(ctx context.Context, id string, params *RetrieveDataConnectorParams, reqEditors ...RequestEditorFn) (*RetrieveDataConnectorResponse, error) {
+	rsp, err := c.RetrieveDataConnector(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveDataConnectorResponse(rsp)
+}
+
+// UpdateDataConnectorWithBodyWithResponse request with arbitrary body returning *UpdateDataConnectorResponse
+func (c *ClientWithResponses) UpdateDataConnectorWithBodyWithResponse(ctx context.Context, id string, params *UpdateDataConnectorParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDataConnectorResponse, error) {
+	rsp, err := c.UpdateDataConnectorWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateDataConnectorResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateDataConnectorWithResponse(ctx context.Context, id string, params *UpdateDataConnectorParams, body UpdateDataConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDataConnectorResponse, error) {
+	rsp, err := c.UpdateDataConnector(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateDataConnectorResponse(rsp)
 }
 
 // DownloadDataExportWithResponse request returning *DownloadDataExportResponse
@@ -31673,6 +47109,23 @@ func (c *ClientWithResponses) ExportWorkflowWithResponse(ctx context.Context, id
 		return nil, err
 	}
 	return ParseExportWorkflowResponse(rsp)
+}
+
+// SubmitFinCsatWithBodyWithResponse request with arbitrary body returning *SubmitFinCsatResponse
+func (c *ClientWithResponses) SubmitFinCsatWithBodyWithResponse(ctx context.Context, params *SubmitFinCsatParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SubmitFinCsatResponse, error) {
+	rsp, err := c.SubmitFinCsatWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSubmitFinCsatResponse(rsp)
+}
+
+func (c *ClientWithResponses) SubmitFinCsatWithResponse(ctx context.Context, params *SubmitFinCsatParams, body SubmitFinCsatJSONRequestBody, reqEditors ...RequestEditorFn) (*SubmitFinCsatResponse, error) {
+	rsp, err := c.SubmitFinCsat(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSubmitFinCsatResponse(rsp)
 }
 
 // ReplyToFinWithBodyWithResponse request with arbitrary body returning *ReplyToFinResponse
@@ -31841,6 +47294,50 @@ func (c *ClientWithResponses) RetrieveHelpCenterWithResponse(ctx context.Context
 	return ParseRetrieveHelpCenterResponse(rsp)
 }
 
+// ListHelpCenterRedirectsWithResponse request returning *ListHelpCenterRedirectsResponse
+func (c *ClientWithResponses) ListHelpCenterRedirectsWithResponse(ctx context.Context, helpCenterId string, params *ListHelpCenterRedirectsParams, reqEditors ...RequestEditorFn) (*ListHelpCenterRedirectsResponse, error) {
+	rsp, err := c.ListHelpCenterRedirects(ctx, helpCenterId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListHelpCenterRedirectsResponse(rsp)
+}
+
+// CreateHelpCenterRedirectWithBodyWithResponse request with arbitrary body returning *CreateHelpCenterRedirectResponse
+func (c *ClientWithResponses) CreateHelpCenterRedirectWithBodyWithResponse(ctx context.Context, helpCenterId string, params *CreateHelpCenterRedirectParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateHelpCenterRedirectResponse, error) {
+	rsp, err := c.CreateHelpCenterRedirectWithBody(ctx, helpCenterId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateHelpCenterRedirectResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateHelpCenterRedirectWithResponse(ctx context.Context, helpCenterId string, params *CreateHelpCenterRedirectParams, body CreateHelpCenterRedirectJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateHelpCenterRedirectResponse, error) {
+	rsp, err := c.CreateHelpCenterRedirect(ctx, helpCenterId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateHelpCenterRedirectResponse(rsp)
+}
+
+// DeleteHelpCenterRedirectWithResponse request returning *DeleteHelpCenterRedirectResponse
+func (c *ClientWithResponses) DeleteHelpCenterRedirectWithResponse(ctx context.Context, helpCenterId string, id string, params *DeleteHelpCenterRedirectParams, reqEditors ...RequestEditorFn) (*DeleteHelpCenterRedirectResponse, error) {
+	rsp, err := c.DeleteHelpCenterRedirect(ctx, helpCenterId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteHelpCenterRedirectResponse(rsp)
+}
+
+// RetrieveHelpCenterRedirectWithResponse request returning *RetrieveHelpCenterRedirectResponse
+func (c *ClientWithResponses) RetrieveHelpCenterRedirectWithResponse(ctx context.Context, helpCenterId string, id string, params *RetrieveHelpCenterRedirectParams, reqEditors ...RequestEditorFn) (*RetrieveHelpCenterRedirectResponse, error) {
+	rsp, err := c.RetrieveHelpCenterRedirect(ctx, helpCenterId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveHelpCenterRedirectResponse(rsp)
+}
+
 // ListInternalArticlesWithResponse request returning *ListInternalArticlesResponse
 func (c *ClientWithResponses) ListInternalArticlesWithResponse(ctx context.Context, params *ListInternalArticlesParams, reqEditors ...RequestEditorFn) (*ListInternalArticlesResponse, error) {
 	rsp, err := c.ListInternalArticles(ctx, params, reqEditors...)
@@ -31911,6 +47408,32 @@ func (c *ClientWithResponses) UpdateInternalArticleWithResponse(ctx context.Cont
 	return ParseUpdateInternalArticleResponse(rsp)
 }
 
+// AttachTagToInternalArticleWithBodyWithResponse request with arbitrary body returning *AttachTagToInternalArticleResponse
+func (c *ClientWithResponses) AttachTagToInternalArticleWithBodyWithResponse(ctx context.Context, internalArticleId int, params *AttachTagToInternalArticleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttachTagToInternalArticleResponse, error) {
+	rsp, err := c.AttachTagToInternalArticleWithBody(ctx, internalArticleId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachTagToInternalArticleResponse(rsp)
+}
+
+func (c *ClientWithResponses) AttachTagToInternalArticleWithResponse(ctx context.Context, internalArticleId int, params *AttachTagToInternalArticleParams, body AttachTagToInternalArticleJSONRequestBody, reqEditors ...RequestEditorFn) (*AttachTagToInternalArticleResponse, error) {
+	rsp, err := c.AttachTagToInternalArticle(ctx, internalArticleId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttachTagToInternalArticleResponse(rsp)
+}
+
+// DetachTagFromInternalArticleWithResponse request returning *DetachTagFromInternalArticleResponse
+func (c *ClientWithResponses) DetachTagFromInternalArticleWithResponse(ctx context.Context, internalArticleId int, id string, params *DetachTagFromInternalArticleParams, reqEditors ...RequestEditorFn) (*DetachTagFromInternalArticleResponse, error) {
+	rsp, err := c.DetachTagFromInternalArticle(ctx, internalArticleId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDetachTagFromInternalArticleResponse(rsp)
+}
+
 // GetIpAllowlistWithResponse request returning *GetIpAllowlistResponse
 func (c *ClientWithResponses) GetIpAllowlistWithResponse(ctx context.Context, params *GetIpAllowlistParams, reqEditors ...RequestEditorFn) (*GetIpAllowlistResponse, error) {
 	rsp, err := c.GetIpAllowlist(ctx, params, reqEditors...)
@@ -31946,6 +47469,24 @@ func (c *ClientWithResponses) JobsStatusWithResponse(ctx context.Context, jobId 
 	return ParseJobsStatusResponse(rsp)
 }
 
+// ListMacrosWithResponse request returning *ListMacrosResponse
+func (c *ClientWithResponses) ListMacrosWithResponse(ctx context.Context, params *ListMacrosParams, reqEditors ...RequestEditorFn) (*ListMacrosResponse, error) {
+	rsp, err := c.ListMacros(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListMacrosResponse(rsp)
+}
+
+// GetMacroWithResponse request returning *GetMacroResponse
+func (c *ClientWithResponses) GetMacroWithResponse(ctx context.Context, id string, params *GetMacroParams, reqEditors ...RequestEditorFn) (*GetMacroResponse, error) {
+	rsp, err := c.GetMacro(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMacroResponse(rsp)
+}
+
 // IdentifyAdminWithResponse request returning *IdentifyAdminResponse
 func (c *ClientWithResponses) IdentifyAdminWithResponse(ctx context.Context, params *IdentifyAdminParams, reqEditors ...RequestEditorFn) (*IdentifyAdminResponse, error) {
 	rsp, err := c.IdentifyAdmin(ctx, params, reqEditors...)
@@ -31970,6 +47511,24 @@ func (c *ClientWithResponses) CreateMessageWithResponse(ctx context.Context, par
 		return nil, err
 	}
 	return ParseCreateMessageResponse(rsp)
+}
+
+// GetWhatsAppMessageStatusWithResponse request returning *GetWhatsAppMessageStatusResponse
+func (c *ClientWithResponses) GetWhatsAppMessageStatusWithResponse(ctx context.Context, params *GetWhatsAppMessageStatusParams, reqEditors ...RequestEditorFn) (*GetWhatsAppMessageStatusResponse, error) {
+	rsp, err := c.GetWhatsAppMessageStatus(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetWhatsAppMessageStatusResponse(rsp)
+}
+
+// RetrieveWhatsAppMessageStatusWithResponse request returning *RetrieveWhatsAppMessageStatusResponse
+func (c *ClientWithResponses) RetrieveWhatsAppMessageStatusWithResponse(ctx context.Context, params *RetrieveWhatsAppMessageStatusParams, reqEditors ...RequestEditorFn) (*RetrieveWhatsAppMessageStatusResponse, error) {
+	rsp, err := c.RetrieveWhatsAppMessageStatus(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRetrieveWhatsAppMessageStatusResponse(rsp)
 }
 
 // ListNewsItemsWithResponse request returning *ListNewsItemsResponse
@@ -32067,6 +47626,128 @@ func (c *ClientWithResponses) RetrieveNoteWithResponse(ctx context.Context, note
 		return nil, err
 	}
 	return ParseRetrieveNoteResponse(rsp)
+}
+
+// ListOfficeHoursSchedulesWithResponse request returning *ListOfficeHoursSchedulesResponse
+func (c *ClientWithResponses) ListOfficeHoursSchedulesWithResponse(ctx context.Context, params *ListOfficeHoursSchedulesParams, reqEditors ...RequestEditorFn) (*ListOfficeHoursSchedulesResponse, error) {
+	rsp, err := c.ListOfficeHoursSchedules(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListOfficeHoursSchedulesResponse(rsp)
+}
+
+// CreateOfficeHoursScheduleWithBodyWithResponse request with arbitrary body returning *CreateOfficeHoursScheduleResponse
+func (c *ClientWithResponses) CreateOfficeHoursScheduleWithBodyWithResponse(ctx context.Context, params *CreateOfficeHoursScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOfficeHoursScheduleResponse, error) {
+	rsp, err := c.CreateOfficeHoursScheduleWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOfficeHoursScheduleResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateOfficeHoursScheduleWithResponse(ctx context.Context, params *CreateOfficeHoursScheduleParams, body CreateOfficeHoursScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOfficeHoursScheduleResponse, error) {
+	rsp, err := c.CreateOfficeHoursSchedule(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOfficeHoursScheduleResponse(rsp)
+}
+
+// DeleteOfficeHoursScheduleWithResponse request returning *DeleteOfficeHoursScheduleResponse
+func (c *ClientWithResponses) DeleteOfficeHoursScheduleWithResponse(ctx context.Context, id string, params *DeleteOfficeHoursScheduleParams, reqEditors ...RequestEditorFn) (*DeleteOfficeHoursScheduleResponse, error) {
+	rsp, err := c.DeleteOfficeHoursSchedule(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteOfficeHoursScheduleResponse(rsp)
+}
+
+// GetOfficeHoursScheduleWithResponse request returning *GetOfficeHoursScheduleResponse
+func (c *ClientWithResponses) GetOfficeHoursScheduleWithResponse(ctx context.Context, id string, params *GetOfficeHoursScheduleParams, reqEditors ...RequestEditorFn) (*GetOfficeHoursScheduleResponse, error) {
+	rsp, err := c.GetOfficeHoursSchedule(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOfficeHoursScheduleResponse(rsp)
+}
+
+// UpdateOfficeHoursScheduleWithBodyWithResponse request with arbitrary body returning *UpdateOfficeHoursScheduleResponse
+func (c *ClientWithResponses) UpdateOfficeHoursScheduleWithBodyWithResponse(ctx context.Context, id string, params *UpdateOfficeHoursScheduleParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOfficeHoursScheduleResponse, error) {
+	rsp, err := c.UpdateOfficeHoursScheduleWithBody(ctx, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOfficeHoursScheduleResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateOfficeHoursScheduleWithResponse(ctx context.Context, id string, params *UpdateOfficeHoursScheduleParams, body UpdateOfficeHoursScheduleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOfficeHoursScheduleResponse, error) {
+	rsp, err := c.UpdateOfficeHoursSchedule(ctx, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOfficeHoursScheduleResponse(rsp)
+}
+
+// ListOfficeHoursExceptionsWithResponse request returning *ListOfficeHoursExceptionsResponse
+func (c *ClientWithResponses) ListOfficeHoursExceptionsWithResponse(ctx context.Context, officeHoursScheduleId string, params *ListOfficeHoursExceptionsParams, reqEditors ...RequestEditorFn) (*ListOfficeHoursExceptionsResponse, error) {
+	rsp, err := c.ListOfficeHoursExceptions(ctx, officeHoursScheduleId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListOfficeHoursExceptionsResponse(rsp)
+}
+
+// CreateOfficeHoursExceptionWithBodyWithResponse request with arbitrary body returning *CreateOfficeHoursExceptionResponse
+func (c *ClientWithResponses) CreateOfficeHoursExceptionWithBodyWithResponse(ctx context.Context, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOfficeHoursExceptionResponse, error) {
+	rsp, err := c.CreateOfficeHoursExceptionWithBody(ctx, officeHoursScheduleId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOfficeHoursExceptionResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateOfficeHoursExceptionWithResponse(ctx context.Context, officeHoursScheduleId string, params *CreateOfficeHoursExceptionParams, body CreateOfficeHoursExceptionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOfficeHoursExceptionResponse, error) {
+	rsp, err := c.CreateOfficeHoursException(ctx, officeHoursScheduleId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOfficeHoursExceptionResponse(rsp)
+}
+
+// DeleteOfficeHoursExceptionWithResponse request returning *DeleteOfficeHoursExceptionResponse
+func (c *ClientWithResponses) DeleteOfficeHoursExceptionWithResponse(ctx context.Context, officeHoursScheduleId string, id string, params *DeleteOfficeHoursExceptionParams, reqEditors ...RequestEditorFn) (*DeleteOfficeHoursExceptionResponse, error) {
+	rsp, err := c.DeleteOfficeHoursException(ctx, officeHoursScheduleId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteOfficeHoursExceptionResponse(rsp)
+}
+
+// GetOfficeHoursExceptionWithResponse request returning *GetOfficeHoursExceptionResponse
+func (c *ClientWithResponses) GetOfficeHoursExceptionWithResponse(ctx context.Context, officeHoursScheduleId string, id string, params *GetOfficeHoursExceptionParams, reqEditors ...RequestEditorFn) (*GetOfficeHoursExceptionResponse, error) {
+	rsp, err := c.GetOfficeHoursException(ctx, officeHoursScheduleId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOfficeHoursExceptionResponse(rsp)
+}
+
+// UpdateOfficeHoursExceptionWithBodyWithResponse request with arbitrary body returning *UpdateOfficeHoursExceptionResponse
+func (c *ClientWithResponses) UpdateOfficeHoursExceptionWithBodyWithResponse(ctx context.Context, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOfficeHoursExceptionResponse, error) {
+	rsp, err := c.UpdateOfficeHoursExceptionWithBody(ctx, officeHoursScheduleId, id, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOfficeHoursExceptionResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateOfficeHoursExceptionWithResponse(ctx context.Context, officeHoursScheduleId string, id string, params *UpdateOfficeHoursExceptionParams, body UpdateOfficeHoursExceptionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOfficeHoursExceptionResponse, error) {
+	rsp, err := c.UpdateOfficeHoursException(ctx, officeHoursScheduleId, id, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOfficeHoursExceptionResponse(rsp)
 }
 
 // CreatePhoneSwitchWithBodyWithResponse request with arbitrary body returning *CreatePhoneSwitchResponse
@@ -32173,6 +47854,15 @@ func (c *ClientWithResponses) RetrieveTeamWithResponse(ctx context.Context, team
 		return nil, err
 	}
 	return ParseRetrieveTeamResponse(rsp)
+}
+
+// GetTeamMetricsWithResponse request returning *GetTeamMetricsResponse
+func (c *ClientWithResponses) GetTeamMetricsWithResponse(ctx context.Context, teamId string, params *GetTeamMetricsParams, reqEditors ...RequestEditorFn) (*GetTeamMetricsResponse, error) {
+	rsp, err := c.GetTeamMetrics(ctx, teamId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTeamMetricsResponse(rsp)
 }
 
 // ListTicketStatesWithResponse request returning *ListTicketStatesResponse
@@ -32356,6 +48046,49 @@ func (c *ClientWithResponses) UpdateTicketWithResponse(ctx context.Context, tick
 	return ParseUpdateTicketResponse(rsp)
 }
 
+// ChangeTicketTypeWithBodyWithResponse request with arbitrary body returning *ChangeTicketTypeResponse
+func (c *ClientWithResponses) ChangeTicketTypeWithBodyWithResponse(ctx context.Context, ticketId string, params *ChangeTicketTypeParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeTicketTypeResponse, error) {
+	rsp, err := c.ChangeTicketTypeWithBody(ctx, ticketId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeTicketTypeResponse(rsp)
+}
+
+func (c *ClientWithResponses) ChangeTicketTypeWithResponse(ctx context.Context, ticketId string, params *ChangeTicketTypeParams, body ChangeTicketTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeTicketTypeResponse, error) {
+	rsp, err := c.ChangeTicketType(ctx, ticketId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeTicketTypeResponse(rsp)
+}
+
+// LinkConversationToTicketWithBodyWithResponse request with arbitrary body returning *LinkConversationToTicketResponse
+func (c *ClientWithResponses) LinkConversationToTicketWithBodyWithResponse(ctx context.Context, ticketId string, params *LinkConversationToTicketParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LinkConversationToTicketResponse, error) {
+	rsp, err := c.LinkConversationToTicketWithBody(ctx, ticketId, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLinkConversationToTicketResponse(rsp)
+}
+
+func (c *ClientWithResponses) LinkConversationToTicketWithResponse(ctx context.Context, ticketId string, params *LinkConversationToTicketParams, body LinkConversationToTicketJSONRequestBody, reqEditors ...RequestEditorFn) (*LinkConversationToTicketResponse, error) {
+	rsp, err := c.LinkConversationToTicket(ctx, ticketId, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLinkConversationToTicketResponse(rsp)
+}
+
+// UnlinkConversationFromTicketWithResponse request returning *UnlinkConversationFromTicketResponse
+func (c *ClientWithResponses) UnlinkConversationFromTicketWithResponse(ctx context.Context, ticketId string, id string, params *UnlinkConversationFromTicketParams, reqEditors ...RequestEditorFn) (*UnlinkConversationFromTicketResponse, error) {
+	rsp, err := c.UnlinkConversationFromTicket(ctx, ticketId, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUnlinkConversationFromTicketResponse(rsp)
+}
+
 // ReplyTicketWithBodyWithResponse request with arbitrary body returning *ReplyTicketResponse
 func (c *ClientWithResponses) ReplyTicketWithBodyWithResponse(ctx context.Context, ticketId string, params *ReplyTicketParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReplyTicketResponse, error) {
 	rsp, err := c.ReplyTicketWithBody(ctx, ticketId, params, contentType, body, reqEditors...)
@@ -32483,6 +48216,39 @@ func ParseListAdminsResponse(rsp *http.Response) (*ListAdminsResponse, error) {
 	return response, nil
 }
 
+// ParseListActivityLogEventTypesResponse parses an HTTP response from a ListActivityLogEventTypesWithResponse call
+func ParseListActivityLogEventTypesResponse(rsp *http.Response) (*ListActivityLogEventTypesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListActivityLogEventTypesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ActivityLogEventTypeListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListActivityLogsResponse parses an HTTP response from a ListActivityLogsWithResponse call
 func ParseListActivityLogsResponse(rsp *http.Response) (*ListActivityLogsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -32492,6 +48258,39 @@ func ParseListActivityLogsResponse(rsp *http.Response) (*ListActivityLogsRespons
 	}
 
 	response := &ListActivityLogsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ActivityLogListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSearchActivityLogsResponse parses an HTTP response from a SearchActivityLogsWithResponse call
+func ParseSearchActivityLogsResponse(rsp *http.Response) (*SearchActivityLogsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SearchActivityLogsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -33139,6 +48938,521 @@ func ParseUpdateArticleResponse(rsp *http.Response) (*UpdateArticleResponse, err
 			return nil, err
 		}
 		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAttachTagToArticleResponse parses an HTTP response from a AttachTagToArticleWithResponse call
+func ParseAttachTagToArticleResponse(rsp *http.Response) (*AttachTagToArticleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AttachTagToArticleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TagSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDetachTagFromArticleResponse parses an HTTP response from a DetachTagFromArticleWithResponse call
+func ParseDetachTagFromArticleResponse(rsp *http.Response) (*DetachTagFromArticleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DetachTagFromArticleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TagSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListArticleVersionsResponse parses an HTTP response from a ListArticleVersionsWithResponse call
+func ParseListArticleVersionsResponse(rsp *http.Response) (*ListArticleVersionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListArticleVersionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ArticleVersionListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveArticleVersionResponse parses an HTTP response from a RetrieveArticleVersionWithResponse call
+func ParseRetrieveArticleVersionResponse(rsp *http.Response) (*RetrieveArticleVersionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveArticleVersionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ArticleVersionSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveArticleDraftResponse parses an HTTP response from a RetrieveArticleDraftWithResponse call
+func ParseRetrieveArticleDraftResponse(rsp *http.Response) (*RetrieveArticleDraftResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveArticleDraftResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ArticleSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseStageArticleDraftResponse parses an HTTP response from a StageArticleDraftWithResponse call
+func ParseStageArticleDraftResponse(rsp *http.Response) (*StageArticleDraftResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &StageArticleDraftResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ArticleSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePublishArticleDraftResponse parses an HTTP response from a PublishArticleDraftWithResponse call
+func ParsePublishArticleDraftResponse(rsp *http.Response) (*PublishArticleDraftResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PublishArticleDraftResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ArticleSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListAudiencesResponse parses an HTTP response from a ListAudiencesWithResponse call
+func ParseListAudiencesResponse(rsp *http.Response) (*ListAudiencesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListAudiencesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AudienceListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateAudienceResponse parses an HTTP response from a CreateAudienceWithResponse call
+func ParseCreateAudienceResponse(rsp *http.Response) (*CreateAudienceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateAudienceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest AudienceSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteAudienceResponse parses an HTTP response from a DeleteAudienceWithResponse call
+func ParseDeleteAudienceResponse(rsp *http.Response) (*DeleteAudienceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteAudienceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveAudienceResponse parses an HTTP response from a RetrieveAudienceWithResponse call
+func ParseRetrieveAudienceResponse(rsp *http.Response) (*RetrieveAudienceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveAudienceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AudienceSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAudienceResponse parses an HTTP response from a UpdateAudienceWithResponse call
+func ParseUpdateAudienceResponse(rsp *http.Response) (*UpdateAudienceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAudienceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AudienceSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
 
 	}
 
@@ -33818,6 +50132,46 @@ func ParseListCompanyNotesResponse(rsp *http.Response) (*ListCompanyNotesRespons
 	return response, nil
 }
 
+// ParseCreateCompanyNoteResponse parses an HTTP response from a CreateCompanyNoteWithResponse call
+func ParseCreateCompanyNoteResponse(rsp *http.Response) (*CreateCompanyNoteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateCompanyNoteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest NoteSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListAttachedSegmentsForCompaniesResponse parses an HTTP response from a ListAttachedSegmentsForCompaniesWithResponse call
 func ParseListAttachedSegmentsForCompaniesResponse(rsp *http.Response) (*ListAttachedSegmentsForCompaniesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -33952,6 +50306,13 @@ func ParseShowContactByExternalIdResponse(rsp *http.Response) (*ShowContactByExt
 		}
 		response.JSON401 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 410:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON410 = &dest
+
 	}
 
 	return response, nil
@@ -33977,6 +50338,13 @@ func ParseMergeContactResponse(rsp *http.Response) (*MergeContactResponse, error
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
 		var dest ErrorSchema
@@ -34010,6 +50378,13 @@ func ParseSearchContactsResponse(rsp *http.Response) (*SearchContactsResponse, e
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
 		var dest ErrorSchema
@@ -34083,6 +50458,13 @@ func ParseShowContactResponse(rsp *http.Response) (*ShowContactResponse, error) 
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 410:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON410 = &dest
 
 	}
 
@@ -34673,6 +51055,465 @@ func ParseUnarchiveContactResponse(rsp *http.Response) (*UnarchiveContactRespons
 	return response, nil
 }
 
+// ParseListContactBannersResponse parses an HTTP response from a ListContactBannersWithResponse call
+func ParseListContactBannersResponse(rsp *http.Response) (*ListContactBannersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListContactBannersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BannerListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDismissContactBannerResponse parses an HTTP response from a DismissContactBannerWithResponse call
+func ParseDismissContactBannerResponse(rsp *http.Response) (*DismissContactBannerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DismissContactBannerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest BannerDismissSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListContactMergeHistoryResponse parses an HTTP response from a ListContactMergeHistoryWithResponse call
+func ParseListContactMergeHistoryResponse(rsp *http.Response) (*ListContactMergeHistoryResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListContactMergeHistoryResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MergeHistoryListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseBulkContentActionsResponse parses an HTTP response from a BulkContentActionsWithResponse call
+func ParseBulkContentActionsResponse(rsp *http.Response) (*BulkContentActionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BulkContentActionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest ContentBulkActionResponseSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSearchContentResponse parses an HTTP response from a SearchContentWithResponse call
+func ParseSearchContentResponse(rsp *http.Response) (*SearchContentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SearchContentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ContentSearchResponseSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListContentSnippetsResponse parses an HTTP response from a ListContentSnippetsWithResponse call
+func ParseListContentSnippetsResponse(rsp *http.Response) (*ListContentSnippetsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListContentSnippetsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ContentSnippetListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateContentSnippetResponse parses an HTTP response from a CreateContentSnippetWithResponse call
+func ParseCreateContentSnippetResponse(rsp *http.Response) (*CreateContentSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateContentSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest ContentSnippetSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAttachTagToContentSnippetResponse parses an HTTP response from a AttachTagToContentSnippetWithResponse call
+func ParseAttachTagToContentSnippetResponse(rsp *http.Response) (*AttachTagToContentSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AttachTagToContentSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TagSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDetachTagFromContentSnippetResponse parses an HTTP response from a DetachTagFromContentSnippetWithResponse call
+func ParseDetachTagFromContentSnippetResponse(rsp *http.Response) (*DetachTagFromContentSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DetachTagFromContentSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TagSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteContentSnippetResponse parses an HTTP response from a DeleteContentSnippetWithResponse call
+func ParseDeleteContentSnippetResponse(rsp *http.Response) (*DeleteContentSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteContentSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetContentSnippetResponse parses an HTTP response from a GetContentSnippetWithResponse call
+func ParseGetContentSnippetResponse(rsp *http.Response) (*GetContentSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetContentSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ContentSnippetSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateContentSnippetResponse parses an HTTP response from a UpdateContentSnippetWithResponse call
+func ParseUpdateContentSnippetResponse(rsp *http.Response) (*UpdateContentSnippetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateContentSnippetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ContentSnippetSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListConversationsResponse parses an HTTP response from a ListConversationsWithResponse call
 func ParseListConversationsResponse(rsp *http.Response) (*ListConversationsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -34754,6 +51595,380 @@ func ParseCreateConversationResponse(rsp *http.Response) (*CreateConversationRes
 			return nil, err
 		}
 		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListConversationAttributesResponse parses an HTTP response from a ListConversationAttributesWithResponse call
+func ParseListConversationAttributesResponse(rsp *http.Response) (*ListConversationAttributesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListConversationAttributesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationAttributeListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateConversationAttributeResponse parses an HTTP response from a CreateConversationAttributeWithResponse call
+func ParseCreateConversationAttributeResponse(rsp *http.Response) (*CreateConversationAttributeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateConversationAttributeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationAttribute
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteConversationAttributeResponse parses an HTTP response from a DeleteConversationAttributeWithResponse call
+func ParseDeleteConversationAttributeResponse(rsp *http.Response) (*DeleteConversationAttributeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteConversationAttributeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationAttribute
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetConversationAttributeResponse parses an HTTP response from a GetConversationAttributeWithResponse call
+func ParseGetConversationAttributeResponse(rsp *http.Response) (*GetConversationAttributeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConversationAttributeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationAttribute
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateConversationAttributeResponse parses an HTTP response from a UpdateConversationAttributeWithResponse call
+func ParseUpdateConversationAttributeResponse(rsp *http.Response) (*UpdateConversationAttributeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateConversationAttributeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationAttribute
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateConversationAttributeOptionResponse parses an HTTP response from a CreateConversationAttributeOptionWithResponse call
+func ParseCreateConversationAttributeOptionResponse(rsp *http.Response) (*CreateConversationAttributeOptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateConversationAttributeOptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationAttribute
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteConversationAttributeOptionResponse parses an HTTP response from a DeleteConversationAttributeOptionWithResponse call
+func ParseDeleteConversationAttributeOptionResponse(rsp *http.Response) (*DeleteConversationAttributeOptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteConversationAttributeOptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationAttribute
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateConversationAttributeOptionResponse parses an HTTP response from a UpdateConversationAttributeOptionWithResponse call
+func ParseUpdateConversationAttributeOptionResponse(rsp *http.Response) (*UpdateConversationAttributeOptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateConversationAttributeOptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationAttribute
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListDeletedConversationIdsResponse parses an HTTP response from a ListDeletedConversationIdsWithResponse call
+func ParseListDeletedConversationIdsResponse(rsp *http.Response) (*ListDeletedConversationIdsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListDeletedConversationIdsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DeletedConversationListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
 
 	}
 
@@ -35308,6 +52523,100 @@ func ParseListHandlingEventsResponse(rsp *http.Response) (*ListHandlingEventsRes
 	return response, nil
 }
 
+// ParseMergeConversationResponse parses an HTTP response from a MergeConversationWithResponse call
+func ParseMergeConversationResponse(rsp *http.Response) (*MergeConversationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &MergeConversationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListSideConversationsResponse parses an HTTP response from a ListSideConversationsWithResponse call
+func ParseListSideConversationsResponse(rsp *http.Response) (*ListSideConversationsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSideConversationsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SideConversationListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteCustomObjectInstancesByIdResponse parses an HTTP response from a DeleteCustomObjectInstancesByIdWithResponse call
 func ParseDeleteCustomObjectInstancesByIdResponse(rsp *http.Response) (*DeleteCustomObjectInstancesByIdResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -35348,22 +52657,22 @@ func ParseDeleteCustomObjectInstancesByIdResponse(rsp *http.Response) (*DeleteCu
 	return response, nil
 }
 
-// ParseGetCustomObjectInstancesByExternalIdResponse parses an HTTP response from a GetCustomObjectInstancesByExternalIdWithResponse call
-func ParseGetCustomObjectInstancesByExternalIdResponse(rsp *http.Response) (*GetCustomObjectInstancesByExternalIdResponse, error) {
+// ParseListCustomObjectInstancesResponse parses an HTTP response from a ListCustomObjectInstancesWithResponse call
+func ParseListCustomObjectInstancesResponse(rsp *http.Response) (*ListCustomObjectInstancesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetCustomObjectInstancesByExternalIdResponse{
+	response := &ListCustomObjectInstancesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CustomObjectInstanceSchema
+		var dest CustomObjectInstancesPaginatedListSchema
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -35377,7 +52686,7 @@ func ParseGetCustomObjectInstancesByExternalIdResponse(rsp *http.Response) (*Get
 		response.JSON401 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ObjectNotFound
+		var dest TypeNotFound
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -35536,6 +52845,13 @@ func ParseLisDataAttributesResponse(rsp *http.Response) (*LisDataAttributesRespo
 		}
 		response.JSON401 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
 	}
 
 	return response, nil
@@ -35622,6 +52938,321 @@ func ParseUpdateDataAttributeResponse(rsp *http.Response) (*UpdateDataAttributeR
 			return nil, err
 		}
 		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListDataConnectorsResponse parses an HTTP response from a ListDataConnectorsWithResponse call
+func ParseListDataConnectorsResponse(rsp *http.Response) (*ListDataConnectorsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListDataConnectorsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DataConnectorListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateDataConnectorResponse parses an HTTP response from a CreateDataConnectorWithResponse call
+func ParseCreateDataConnectorResponse(rsp *http.Response) (*CreateDataConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDataConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DataConnectorDetailSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListDataConnectorExecutionResultsResponse parses an HTTP response from a ListDataConnectorExecutionResultsWithResponse call
+func ParseListDataConnectorExecutionResultsResponse(rsp *http.Response) (*ListDataConnectorExecutionResultsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListDataConnectorExecutionResultsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DataConnectorExecutionResultListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseShowDataConnectorExecutionResultResponse parses an HTTP response from a ShowDataConnectorExecutionResultWithResponse call
+func ParseShowDataConnectorExecutionResultResponse(rsp *http.Response) (*ShowDataConnectorExecutionResultResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ShowDataConnectorExecutionResultResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DataConnectorExecutionResultSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteDataConnectorResponse parses an HTTP response from a DeleteDataConnectorWithResponse call
+func ParseDeleteDataConnectorResponse(rsp *http.Response) (*DeleteDataConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteDataConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DeletedDataConnectorObjectSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveDataConnectorResponse parses an HTTP response from a RetrieveDataConnectorWithResponse call
+func ParseRetrieveDataConnectorResponse(rsp *http.Response) (*RetrieveDataConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveDataConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DataConnectorDetailSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateDataConnectorResponse parses an HTTP response from a UpdateDataConnectorWithResponse call
+func ParseUpdateDataConnectorResponse(rsp *http.Response) (*UpdateDataConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateDataConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DataConnectorDetailSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
 		var dest ErrorSchema
@@ -35983,8 +53614,12 @@ func ParseGetExportReportingDataGetDatasetsResponse(rsp *http.Response) (*GetExp
 		var dest struct {
 			Data *[]struct {
 				Attributes *[]struct {
+					// Id The simple attribute identifier. Note that this may be ambiguous if the same name exists across different attribute types. Use qualified_id when calling the enqueue endpoint.
 					Id   *string `json:"id,omitempty"`
 					Name *string `json:"name,omitempty"`
+
+					// QualifiedId A namespaced identifier that uniquely identifies the attribute across all types. Format is "prefix.name" (e.g., "people.Brand", "conversation.Brand"). Required when calling the enqueue endpoint.
+					QualifiedId *string `json:"qualified_id,omitempty"`
 				} `json:"attributes,omitempty"`
 				DefaultTimeAttributeId *string `json:"default_time_attribute_id,omitempty"`
 				Description            *string `json:"description,omitempty"`
@@ -36081,6 +53716,58 @@ func ParseExportWorkflowResponse(rsp *http.Response) (*ExportWorkflowResponse, e
 	return response, nil
 }
 
+// ParseSubmitFinCsatResponse parses an HTTP response from a SubmitFinCsatWithResponse call
+func ParseSubmitFinCsatResponse(rsp *http.Response) (*SubmitFinCsatResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SubmitFinCsatResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ConversationId The external ID of the rated conversation.
+			ConversationId *string `json:"conversation_id,omitempty"`
+
+			// Rating The rating now recorded on the conversation.
+			Rating *SubmitFinCsat200Rating `json:"rating,omitempty"`
+
+			// Status The result of the submission.
+			Status *SubmitFinCsat200Status `json:"status,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest struct {
+			// Errors Validation messages keyed by the field they apply to, or `base` for conversation-level failures.
+			Errors *map[string]string `json:"errors,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseReplyToFinResponse parses an HTTP response from a ReplyToFinWithResponse call
 func ParseReplyToFinResponse(rsp *http.Response) (*ReplyToFinResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -36106,7 +53793,7 @@ func ParseReplyToFinResponse(rsp *http.Response) (*ReplyToFinResponse, error) {
 			// FinAgentAttributeErrorsSchema Contains error details if any user or conversation attribute updates failed.
 			FinAgentAttributeErrorsSchema *FinAgentAttributeErrorsSchema `json:"errors,omitempty"`
 
-			// SseSubscriptionUrl Optional. A URL to subscribe to Server-Sent Events (SSE) for this conversation, if SSE is enabled. The access token is a JWT with a 3-minute TTL. The token is revoked when Fin sets the conversation to awaiting_user_reply or complete status.
+			// SseSubscriptionUrl Optional. A URL to subscribe to Server-Sent Events (SSE) for this conversation, if SSE is enabled. The access token is a JWT with a 3-minute TTL. The token is revoked when Fin sets the conversation to awaiting_user_reply or complete status. When CSAT is enabled and a survey will follow the resolution, `complete` revocation is deferred until the `csat_requested` event is delivered or the token expires.
 			SseSubscriptionUrl *string `json:"sse_subscription_url,omitempty"`
 
 			// Status Fin's current status in the conversation workflow.
@@ -36164,7 +53851,7 @@ func ParseStartFinConversationResponse(rsp *http.Response) (*StartFinConversatio
 			// FinAgentAttributeErrorsSchema Contains error details if any user or conversation attribute updates failed.
 			FinAgentAttributeErrorsSchema *FinAgentAttributeErrorsSchema `json:"errors,omitempty"`
 
-			// SseSubscriptionUrl Optional. A URL to subscribe to Server-Sent Events (SSE) for this conversation, if SSE is enabled. The access token is a JWT with a 3-minute TTL. The token is revoked when Fin sets the conversation to awaiting_user_reply or complete status.
+			// SseSubscriptionUrl Optional. A URL to subscribe to Server-Sent Events (SSE) for this conversation, if SSE is enabled. The access token is a JWT with a 3-minute TTL. The token is revoked when Fin sets the conversation to awaiting_user_reply or complete status. When CSAT is enabled and a survey will follow the resolution, `complete` revocation is deferred until the `csat_requested` event is delivered or the token expires.
 			SseSubscriptionUrl *string `json:"sse_subscription_url,omitempty"`
 
 			// Status Fin's current status in the conversation workflow.
@@ -36670,6 +54357,187 @@ func ParseRetrieveHelpCenterResponse(rsp *http.Response) (*RetrieveHelpCenterRes
 	return response, nil
 }
 
+// ParseListHelpCenterRedirectsResponse parses an HTTP response from a ListHelpCenterRedirectsWithResponse call
+func ParseListHelpCenterRedirectsResponse(rsp *http.Response) (*ListHelpCenterRedirectsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListHelpCenterRedirectsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest HelpCenterRedirectListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateHelpCenterRedirectResponse parses an HTTP response from a CreateHelpCenterRedirectWithResponse call
+func ParseCreateHelpCenterRedirectResponse(rsp *http.Response) (*CreateHelpCenterRedirectResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateHelpCenterRedirectResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest HelpCenterRedirectSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteHelpCenterRedirectResponse parses an HTTP response from a DeleteHelpCenterRedirectWithResponse call
+func ParseDeleteHelpCenterRedirectResponse(rsp *http.Response) (*DeleteHelpCenterRedirectResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteHelpCenterRedirectResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DeletedHelpCenterRedirectObjectSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveHelpCenterRedirectResponse parses an HTTP response from a RetrieveHelpCenterRedirectWithResponse call
+func ParseRetrieveHelpCenterRedirectResponse(rsp *http.Response) (*RetrieveHelpCenterRedirectResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveHelpCenterRedirectResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest HelpCenterRedirectSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseListInternalArticlesResponse parses an HTTP response from a ListInternalArticlesWithResponse call
 func ParseListInternalArticlesResponse(rsp *http.Response) (*ListInternalArticlesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -36896,6 +54764,100 @@ func ParseUpdateInternalArticleResponse(rsp *http.Response) (*UpdateInternalArti
 	return response, nil
 }
 
+// ParseAttachTagToInternalArticleResponse parses an HTTP response from a AttachTagToInternalArticleWithResponse call
+func ParseAttachTagToInternalArticleResponse(rsp *http.Response) (*AttachTagToInternalArticleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AttachTagToInternalArticleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TagSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDetachTagFromInternalArticleResponse parses an HTTP response from a DetachTagFromInternalArticleWithResponse call
+func ParseDetachTagFromInternalArticleResponse(rsp *http.Response) (*DetachTagFromInternalArticleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DetachTagFromInternalArticleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TagSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetIpAllowlistResponse parses an HTTP response from a GetIpAllowlistWithResponse call
 func ParseGetIpAllowlistResponse(rsp *http.Response) (*GetIpAllowlistResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -37009,6 +54971,100 @@ func ParseJobsStatusResponse(rsp *http.Response) (*JobsStatusResponse, error) {
 	return response, nil
 }
 
+// ParseListMacrosResponse parses an HTTP response from a ListMacrosWithResponse call
+func ParseListMacrosResponse(rsp *http.Response) (*ListMacrosResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListMacrosResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MacroListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMacroResponse parses an HTTP response from a GetMacroWithResponse call
+func ParseGetMacroResponse(rsp *http.Response) (*GetMacroResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMacroResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MacroSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseIdentifyAdminResponse parses an HTTP response from a IdentifyAdminWithResponse call
 func ParseIdentifyAdminResponse(rsp *http.Response) (*IdentifyAdminResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -37083,6 +55139,107 @@ func ParseCreateMessageResponse(rsp *http.Response) (*CreateMessageResponse, err
 			return nil, err
 		}
 		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetWhatsAppMessageStatusResponse parses an HTTP response from a GetWhatsAppMessageStatusWithResponse call
+func ParseGetWhatsAppMessageStatusResponse(rsp *http.Response) (*GetWhatsAppMessageStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetWhatsAppMessageStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest WhatsappMessageStatusListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRetrieveWhatsAppMessageStatusResponse parses an HTTP response from a RetrieveWhatsAppMessageStatusWithResponse call
+func ParseRetrieveWhatsAppMessageStatusResponse(rsp *http.Response) (*RetrieveWhatsAppMessageStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RetrieveWhatsAppMessageStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest WhatsappMessageStatusSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 
@@ -37414,6 +55571,428 @@ func ParseRetrieveNoteResponse(rsp *http.Response) (*RetrieveNoteResponse, error
 	return response, nil
 }
 
+// ParseListOfficeHoursSchedulesResponse parses an HTTP response from a ListOfficeHoursSchedulesWithResponse call
+func ParseListOfficeHoursSchedulesResponse(rsp *http.Response) (*ListOfficeHoursSchedulesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListOfficeHoursSchedulesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OfficeHoursScheduleListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateOfficeHoursScheduleResponse parses an HTTP response from a CreateOfficeHoursScheduleWithResponse call
+func ParseCreateOfficeHoursScheduleResponse(rsp *http.Response) (*CreateOfficeHoursScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateOfficeHoursScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest OfficeHoursScheduleSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteOfficeHoursScheduleResponse parses an HTTP response from a DeleteOfficeHoursScheduleWithResponse call
+func ParseDeleteOfficeHoursScheduleResponse(rsp *http.Response) (*DeleteOfficeHoursScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteOfficeHoursScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Deleted *bool   `json:"deleted,omitempty"`
+			Id      *string `json:"id,omitempty"`
+			Object  *string `json:"object,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetOfficeHoursScheduleResponse parses an HTTP response from a GetOfficeHoursScheduleWithResponse call
+func ParseGetOfficeHoursScheduleResponse(rsp *http.Response) (*GetOfficeHoursScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOfficeHoursScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OfficeHoursScheduleSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateOfficeHoursScheduleResponse parses an HTTP response from a UpdateOfficeHoursScheduleWithResponse call
+func ParseUpdateOfficeHoursScheduleResponse(rsp *http.Response) (*UpdateOfficeHoursScheduleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateOfficeHoursScheduleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OfficeHoursScheduleSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListOfficeHoursExceptionsResponse parses an HTTP response from a ListOfficeHoursExceptionsWithResponse call
+func ParseListOfficeHoursExceptionsResponse(rsp *http.Response) (*ListOfficeHoursExceptionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListOfficeHoursExceptionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OfficeHoursExceptionListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateOfficeHoursExceptionResponse parses an HTTP response from a CreateOfficeHoursExceptionWithResponse call
+func ParseCreateOfficeHoursExceptionResponse(rsp *http.Response) (*CreateOfficeHoursExceptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateOfficeHoursExceptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest OfficeHoursExceptionSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteOfficeHoursExceptionResponse parses an HTTP response from a DeleteOfficeHoursExceptionWithResponse call
+func ParseDeleteOfficeHoursExceptionResponse(rsp *http.Response) (*DeleteOfficeHoursExceptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteOfficeHoursExceptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Deleted *bool   `json:"deleted,omitempty"`
+			Id      *string `json:"id,omitempty"`
+			Object  *string `json:"object,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetOfficeHoursExceptionResponse parses an HTTP response from a GetOfficeHoursExceptionWithResponse call
+func ParseGetOfficeHoursExceptionResponse(rsp *http.Response) (*GetOfficeHoursExceptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOfficeHoursExceptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OfficeHoursExceptionSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateOfficeHoursExceptionResponse parses an HTTP response from a UpdateOfficeHoursExceptionWithResponse call
+func ParseUpdateOfficeHoursExceptionResponse(rsp *http.Response) (*UpdateOfficeHoursExceptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateOfficeHoursExceptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest OfficeHoursExceptionSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ObjectNotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseCreatePhoneSwitchResponse parses an HTTP response from a CreatePhoneSwitchWithResponse call
 func ParseCreatePhoneSwitchResponse(rsp *http.Response) (*CreatePhoneSwitchResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -37601,7 +56180,7 @@ func ParseCreateTagResponse(rsp *http.Response) (*CreateTagResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest TagBasicSchema
+		var dest TagCreateResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -37620,13 +56199,6 @@ func ParseCreateTagResponse(rsp *http.Response) (*CreateTagResponse, error) {
 			return nil, err
 		}
 		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ErrorSchema
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
 
 	}
 
@@ -37773,6 +56345,53 @@ func ParseRetrieveTeamResponse(rsp *http.Response) (*RetrieveTeamResponse, error
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTeamMetricsResponse parses an HTTP response from a GetTeamMetricsWithResponse call
+func ParseGetTeamMetricsResponse(rsp *http.Response) (*GetTeamMetricsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTeamMetricsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TeamMetricListSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthorized
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
 		var dest ErrorSchema
@@ -38223,6 +56842,147 @@ func ParseUpdateTicketResponse(rsp *http.Response) (*UpdateTicketResponse, error
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseChangeTicketTypeResponse parses an HTTP response from a ChangeTicketTypeWithResponse call
+func ParseChangeTicketTypeResponse(rsp *http.Response) (*ChangeTicketTypeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ChangeTicketTypeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TicketSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLinkConversationToTicketResponse parses an HTTP response from a LinkConversationToTicketWithResponse call
+func ParseLinkConversationToTicketResponse(rsp *http.Response) (*LinkConversationToTicketResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LinkConversationToTicketResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUnlinkConversationFromTicketResponse parses an HTTP response from a UnlinkConversationFromTicketWithResponse call
+func ParseUnlinkConversationFromTicketResponse(rsp *http.Response) (*UnlinkConversationFromTicketResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UnlinkConversationFromTicketResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConversationSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorSchema
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	}
 

@@ -32,7 +32,64 @@ type ConversationHandlingEvent = gen.HandlingEventSchema
 type ConversationHandlingEventList = gen.HandlingEventListSchema
 
 // Ticket is an Intercom ticket.
-type Ticket = gen.TicketSchema
+//
+// Assignee identifiers remain strings for source compatibility with earlier
+// SDK releases. Intercom API 2.16 represents the same identifiers as
+// integers; ticketFromGenerated converts them at the API boundary.
+type Ticket struct {
+	AdminAssigneeId       *string                           `json:"admin_assignee_id,omitempty"`
+	Category              *gen.TicketCategory               `json:"category,omitempty"`
+	Contacts              *gen.TicketContactsSchema         `json:"contacts,omitempty"`
+	CreatedAt             *int                              `json:"created_at,omitempty"`
+	Id                    *string                           `json:"id,omitempty"`
+	IsShared              *bool                             `json:"is_shared,omitempty"`
+	LinkedObjects         *gen.LinkedObjectListSchema       `json:"linked_objects,omitempty"`
+	Open                  *bool                             `json:"open,omitempty"`
+	PreviousTicketStateId *string                           `json:"previous_ticket_state_id,omitempty"`
+	SnoozedUntil          *int                              `json:"snoozed_until,omitempty"`
+	TeamAssigneeId        *string                           `json:"team_assignee_id,omitempty"`
+	TicketAttributes      *gen.TicketCustomAttributesSchema `json:"ticket_attributes,omitempty"`
+	TicketId              *string                           `json:"ticket_id,omitempty"`
+	TicketParts           *gen.TicketPartsSchema            `json:"ticket_parts,omitempty"`
+	TicketState           *gen.TicketStateSchema            `json:"ticket_state,omitempty"`
+	TicketType            *gen.TicketTypeSchema             `json:"ticket_type,omitempty"`
+	Type                  *gen.TicketType                   `json:"type,omitempty"`
+	UpdatedAt             *int                              `json:"updated_at,omitempty"`
+}
+
+func ticketFromGenerated(ticket *gen.TicketSchema) *Ticket {
+	if ticket == nil {
+		return nil
+	}
+
+	result := &Ticket{
+		Category:              ticket.Category,
+		Contacts:              ticket.Contacts,
+		CreatedAt:             ticket.CreatedAt,
+		Id:                    ticket.Id,
+		IsShared:              ticket.IsShared,
+		LinkedObjects:         ticket.LinkedObjects,
+		Open:                  ticket.Open,
+		PreviousTicketStateId: ticket.PreviousTicketStateId,
+		SnoozedUntil:          ticket.SnoozedUntil,
+		TicketAttributes:      ticket.TicketAttributes,
+		TicketId:              ticket.TicketId,
+		TicketParts:           ticket.TicketParts,
+		TicketState:           ticket.TicketState,
+		TicketType:            ticket.TicketType,
+		Type:                  ticket.Type,
+		UpdatedAt:             ticket.UpdatedAt,
+	}
+	if ticket.AdminAssigneeId != nil {
+		adminID := strconv.Itoa(*ticket.AdminAssigneeId)
+		result.AdminAssigneeId = &adminID
+	}
+	if ticket.TeamAssigneeId != nil {
+		teamID := strconv.Itoa(*ticket.TeamAssigneeId)
+		result.TeamAssigneeId = &teamID
+	}
+	return result
+}
 
 // ConversationCreate holds the fields for creating a conversation.
 type ConversationCreate = gen.CreateConversationRequestSchema
@@ -76,9 +133,51 @@ type ConversationToTicket = gen.ConvertConversationToTicketRequestSchema
 // ConversationSearchQuery holds the query for searching conversations.
 type ConversationSearchQuery = gen.SearchRequestSchema
 
+// ConversationDeletedList is a list of deleted conversation IDs.
+type ConversationDeletedList = gen.DeletedConversationListSchema
+
+// ConversationDeletedListParams configures a deleted-conversation list request.
+type ConversationDeletedListParams = gen.ListDeletedConversationIdsParams
+
+// ConversationMerge holds the fields for merging conversations.
+type ConversationMerge = gen.MergeConversationJSONRequestBody
+
+// ConversationSideList is a list of side conversations.
+type ConversationSideList = gen.SideConversationListSchema
+
+// ConversationSideListParams configures a side-conversation list request.
+type ConversationSideListParams = gen.ListSideConversationsParams
+
 // ConversationsService exposes conversation-related Intercom API operations.
 type ConversationsService struct {
 	client *Client
+}
+
+// ListDeletedIDs returns recently deleted conversation IDs.
+func (s *ConversationsService) ListDeletedIDs(ctx context.Context, params *ConversationDeletedListParams) (*ConversationDeletedList, error) {
+	res, err := s.client.generated.ListDeletedConversationIdsWithResponse(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list deleted conversation IDs", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// Merge merges another conversation into a conversation.
+func (s *ConversationsService) Merge(ctx context.Context, conversationID string, request ConversationMerge) (*Conversation, error) {
+	res, err := s.client.generated.MergeConversationWithResponse(ctx, conversationID, nil, request)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("merge conversation", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// ListSideConversations returns side conversations for a conversation.
+func (s *ConversationsService) ListSideConversations(ctx context.Context, conversationID string, params *ConversationSideListParams) (*ConversationSideList, error) {
+	res, err := s.client.generated.ListSideConversationsWithResponse(ctx, conversationID, params)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list side conversations", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // List returns all conversations.
@@ -326,7 +425,8 @@ func (s *ConversationsService) ConvertToTicket(ctx context.Context, conversation
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("convert conversation to ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	ticket, err := requireOK("convert conversation to ticket", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return ticketFromGenerated(ticket), err
 }
 
 // AttachTag attaches a tag to a conversation.

@@ -17,6 +17,24 @@ func TestCustomObjectsServiceRequests(t *testing.T) {
 		wantQuery  string
 	}{
 		{
+			name:     "list",
+			response: `{"data":[]}`,
+			call: func(ctx context.Context, client *Client) error {
+				contactID := "contact-1"
+				page := 2
+				perPage := 50
+				_, err := client.CustomObjects.List(ctx, "Order", &CustomObjectInstanceListParams{
+					ReferencesContactId: &contactID,
+					Page:                &page,
+					PerPage:             &perPage,
+				})
+				return err
+			},
+			wantMethod: http.MethodGet,
+			wantPath:   "/custom_object_instances/Order",
+			wantQuery:  "page=2&per_page=50&references_contact_id=contact-1",
+		},
+		{
 			name:     "create or update",
 			response: `{"id":"22","type":"Order","external_id":"external-1","custom_attributes":{"order_number":"ORDER-12345"}}`,
 			call: func(ctx context.Context, client *Client) error {
@@ -198,6 +216,34 @@ func TestCustomObjectsServiceErrors(t *testing.T) {
 			if err := call(ctx, client); err == nil {
 				t.Fatal("expected transport error")
 			}
+		}
+	})
+
+	t.Run("external ID request creation failure", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(*http.Request) (*http.Response, error) {
+			t.Fatal("request creation failure should not send a request")
+			return nil, nil
+		}))
+		client.baseURL = "://invalid"
+
+		if _, err := client.CustomObjects.GetByExternalID(ctx, "Order", "external-1"); err == nil {
+			t.Fatal("expected request creation error")
+		}
+	})
+
+	t.Run("external ID response read failure", func(t *testing.T) {
+		client := newSupportingServicesTestClient(t, roundTripFunc(func(req *http.Request) (*http.Response, error) {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Status:     http.StatusText(http.StatusOK),
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				Body:       errorReadCloser{},
+				Request:    req,
+			}, nil
+		}))
+
+		if _, err := client.CustomObjects.GetByExternalID(ctx, "Order", "external-1"); err == nil {
+			t.Fatal("expected response read error")
 		}
 	})
 }

@@ -35,6 +35,25 @@ const (
 // FinUser identifies the user participating in a Fin conversation.
 type FinUser = gen.FinAgentUserSchema
 
+// FinCSATSubmission holds the fields for submitting Fin customer-satisfaction feedback.
+type FinCSATSubmission = gen.SubmitFinCsatJSONRequestBody
+
+// FinCSATRating is a submitted Fin customer-satisfaction rating.
+type FinCSATRating = gen.SubmitFinCsat200Rating
+
+// FinCSATSubmissionRating is a rating key accepted when submitting Fin feedback.
+type FinCSATSubmissionRating = gen.SubmitFinCsatJSONBodyRating
+
+// FinCSATStatus is the result status of a Fin customer-satisfaction submission.
+type FinCSATStatus = gen.SubmitFinCsat200Status
+
+// FinCSATResponse is the result of submitting Fin customer-satisfaction feedback.
+type FinCSATResponse struct {
+	ConversationID *string        `json:"conversation_id,omitempty"`
+	Rating         *FinCSATRating `json:"rating,omitempty"`
+	Status         *FinCSATStatus `json:"status,omitempty"`
+}
+
 // FinReply is a request to continue a Fin conversation.
 type FinReply struct {
 	Attachments    *[]FinAttachment `json:"attachments,omitempty"`
@@ -95,6 +114,15 @@ type FinConversationErrors struct {
 // FinService exposes Fin-related Intercom API operations.
 type FinService struct {
 	client *Client
+}
+
+// SubmitCSAT submits customer-satisfaction feedback for Fin.
+func (s *FinService) SubmitCSAT(ctx context.Context, request FinCSATSubmission) (*FinCSATResponse, error) {
+	res, err := s.client.generated.SubmitFinCsatWithResponse(ctx, nil, request)
+	if err != nil {
+		return nil, err
+	}
+	return requireJSON[FinCSATResponse]("submit Fin CSAT", res.StatusCode(), res.Body, responseHeaders(res.HTTPResponse))
 }
 
 // Reply continues a Fin conversation.

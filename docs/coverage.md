@@ -1,10 +1,10 @@
 # Public SDK Coverage
 
-This SDK wraps the pinned Intercom API `2.15` OpenAPI spec with public root-package services while keeping generated code internal.
+This SDK wraps the pinned Intercom API `2.16` OpenAPI spec with public root-package services while keeping generated code internal.
 
 ## Current status
 
-- The generated client exposes 161 response-returning operations.
+- The generated client exposes all response-returning operations in the pinned 2.16 specification.
 - Public SDK services cover those operations through idiomatic wrappers.
 - `DataEvents.List` is the known audit exception: it intentionally uses `Client.NewRequest` and `Client.Do` instead of the generated `LisDataEventsWithResponse` helper so the SDK can provide explicit identifier validation and query encoding.
 - `TestGeneratedOperationsAreAccountedFor` is the adopted offline contract check for public wrapper coverage. It parses the generated `ClientWithResponsesInterface` and root-package SDK code, then fails if a generated operation is neither wrapped nor listed as an intentional exception.
@@ -16,23 +16,30 @@ This SDK wraps the pinned Intercom API `2.15` OpenAPI spec with public root-pack
 - `AIContent`
 - `Admins`
 - `Articles`
+- `Audiences`
 - `AwayStatusReasons`
 - `Brands`
 - `Calls`
 - `Collections`
 - `Companies`
+- `Content`
 - `Contacts`
 - `Conversations`
+- `ConversationAttributes`
 - `CustomObjects`
 - `DataAttributes`
 - `DataEvents`
+- `DataConnectors`
 - `Emails`
 - `Fin`
 - `HelpCenters`
+- `HelpCenterRedirects`
 - `InternalArticles`
 - `Messages`
+- `Macros`
 - `News`
 - `Notes`
+- `OfficeHours`
 - `PhoneSwitches`
 - `Segments`
 - `SubscriptionTypes`
@@ -40,6 +47,7 @@ This SDK wraps the pinned Intercom API `2.15` OpenAPI spec with public root-pack
 - `Teams`
 - `Tickets`
 - `Visitors`
+- `WhatsApp`
 - `Workspace`
 
 ## Audit notes

@@ -87,11 +87,27 @@ coverage evolve without forcing consumers to wait for an SDK release.
 
 ## Automated compatibility gate
 
-`make api-compatibility` exports the public module API and generated model API
-from the current working tree and compares both with the pinned released
-baseline using Go's `apidiff` tool. The command fails when an incompatible
-compile-time change is reported. CI runs it in the quality job, and
-`make pre-push` runs it locally.
+`make api-compatibility` exports the public module API from the current working
+tree and compares it with the pinned released baseline using Go's `apidiff`
+tool. The command fails when an incompatible compile-time change is reported.
+CI runs it in the quality job, and `make pre-push` runs it locally.
+
+The generated OpenAPI client is under Go's `internal/` boundary, so downstream
+SDK consumers cannot import it. It is verified for reproducibility by `make
+generate-check`, rather than treated as a second public API surface.
+
+The checker has a narrow source-compatibility allowance for the reviewed
+Contact, Ticket, and Article boundary models: API 2.16 changed Intercom's wire
+representation of `Contact.owner_id` from an integer to a string and Ticket
+assignee IDs from strings to integers. The SDK preserves the historical public
+field types and converts the wire values at the boundary, including contact
+values returned by company and visitor operations. API 2.16 also replaces
+Article's historical `parent_id` and `parent_type` with `parent_ids`; the SDK
+retains the legacy fields and maps the first parent ID when possible. `apidiff` reports the
+required alias-to-struct change and its dependent methods and iterators as
+incompatible, so the checker permits only those exact entries. External
+consumer compile and response-conversion regression tests cover the preserved
+contracts. No other `apidiff` finding is suppressed.
 
 The current baseline is `v0.2.0`. After publishing a release that expands the
 public API, maintainers advance `API_BASELINE` in `Makefile` to that release so

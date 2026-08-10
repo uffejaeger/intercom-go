@@ -11,10 +11,69 @@ import (
 )
 
 // Contact is an Intercom contact.
-type Contact = gen.ContactSchema
+//
+// OwnerID remains an integer for source compatibility with earlier SDK
+// releases. Intercom API 2.16 represents the same identifier as a string;
+// contactFromGenerated converts it at the API boundary.
+type Contact struct {
+	AndroidAppName    *string `json:"android_app_name,omitempty"`
+	AndroidAppVersion *string `json:"android_app_version,omitempty"`
+	AndroidDevice     *string `json:"android_device,omitempty"`
+	AndroidLastSeenAt *int    `json:"android_last_seen_at,omitempty"`
+	AndroidOsVersion  *string `json:"android_os_version,omitempty"`
+	AndroidSdkVersion *string `json:"android_sdk_version,omitempty"`
+	Avatar            *struct {
+		ImageUrl *string `json:"image_url,omitempty"`
+		Type     *string `json:"type,omitempty"`
+	} `json:"avatar,omitempty"`
+	Browser                *string                          `json:"browser,omitempty"`
+	BrowserLanguage        *string                          `json:"browser_language,omitempty"`
+	BrowserVersion         *string                          `json:"browser_version,omitempty"`
+	Companies              *gen.ContactCompaniesSchema      `json:"companies,omitempty"`
+	CreatedAt              *int                             `json:"created_at,omitempty"`
+	CustomAttributes       *map[string]any                  `json:"custom_attributes,omitempty"`
+	Email                  *string                          `json:"email,omitempty"`
+	EmailDomain            *string                          `json:"email_domain,omitempty"`
+	ExternalId             *string                          `json:"external_id,omitempty"`
+	HasHardBounced         *bool                            `json:"has_hard_bounced,omitempty"`
+	Id                     *string                          `json:"id,omitempty"`
+	IosAppName             *string                          `json:"ios_app_name,omitempty"`
+	IosAppVersion          *string                          `json:"ios_app_version,omitempty"`
+	IosDevice              *string                          `json:"ios_device,omitempty"`
+	IosLastSeenAt          *int                             `json:"ios_last_seen_at,omitempty"`
+	IosOsVersion           *string                          `json:"ios_os_version,omitempty"`
+	IosSdkVersion          *string                          `json:"ios_sdk_version,omitempty"`
+	LanguageOverride       *string                          `json:"language_override,omitempty"`
+	LastContactedAt        *int                             `json:"last_contacted_at,omitempty"`
+	LastEmailClickedAt     *int                             `json:"last_email_clicked_at,omitempty"`
+	LastEmailOpenedAt      *int                             `json:"last_email_opened_at,omitempty"`
+	LastRepliedAt          *int                             `json:"last_replied_at,omitempty"`
+	LastSeenAt             *int                             `json:"last_seen_at,omitempty"`
+	Location               *gen.ContactLocationSchema       `json:"location,omitempty"`
+	MarkedEmailAsSpam      *bool                            `json:"marked_email_as_spam,omitempty"`
+	MergeHistory           *[]gen.MergeHistoryItemSchema    `json:"merge_history,omitempty"`
+	Name                   *string                          `json:"name,omitempty"`
+	Notes                  *gen.ContactNotesSchema          `json:"notes,omitempty"`
+	Os                     *string                          `json:"os,omitempty"`
+	OwnerId                *int                             `json:"owner_id,omitempty"`
+	Phone                  *string                          `json:"phone,omitempty"`
+	Role                   *string                          `json:"role,omitempty"`
+	SignedUpAt             *int                             `json:"signed_up_at,omitempty"`
+	SocialProfiles         *gen.ContactSocialProfilesSchema `json:"social_profiles,omitempty"`
+	Tags                   *gen.ContactTagsSchema           `json:"tags,omitempty"`
+	Type                   *string                          `json:"type,omitempty"`
+	UnsubscribedFromEmails *bool                            `json:"unsubscribed_from_emails,omitempty"`
+	UpdatedAt              *int                             `json:"updated_at,omitempty"`
+	WorkspaceId            *string                          `json:"workspace_id,omitempty"`
+}
 
 // ContactList is a page of Intercom contacts.
-type ContactList = gen.ContactListSchema
+type ContactList struct {
+	Data       *[]Contact             `json:"data,omitempty"`
+	Pages      *gen.CursorPagesSchema `json:"pages,omitempty"`
+	TotalCount *int                   `json:"total_count,omitempty"`
+	Type       *gen.ContactListType   `json:"type,omitempty"`
+}
 
 // ContactDeleted is the result of deleting a contact.
 type ContactDeleted = gen.ContactDeleted
@@ -29,10 +88,168 @@ type ContactUnarchived = gen.ContactUnarchived
 type ContactBlocked = gen.ContactBlockedSchema
 
 // ContactCreate holds the fields for creating a contact.
-type ContactCreate = gen.CreateContactRequestSchema
+//
+// OwnerID remains an integer for source compatibility with earlier SDK
+// releases. Intercom API 2.16 represents the same identifier as a string;
+// Create converts it before sending the request.
+type ContactCreate struct {
+	Avatar                 *string         `json:"avatar,omitempty"`
+	CustomAttributes       *map[string]any `json:"custom_attributes,omitempty"`
+	Email                  *string         `json:"email,omitempty"`
+	EmailVerified          *bool           `json:"email_verified,omitempty"`
+	ExternalId             *string         `json:"external_id,omitempty"`
+	LastSeenAt             *int            `json:"last_seen_at,omitempty"`
+	Name                   *string         `json:"name,omitempty"`
+	OwnerId                *int            `json:"owner_id,omitempty"`
+	Phone                  *string         `json:"phone,omitempty"`
+	Role                   *string         `json:"role,omitempty"`
+	SignedUpAt             *int            `json:"signed_up_at,omitempty"`
+	UnsubscribedFromEmails *bool           `json:"unsubscribed_from_emails,omitempty"`
+}
 
 // ContactUpdate holds the fields for updating a contact.
-type ContactUpdate = gen.UpdateContactRequestSchema
+//
+// OwnerID remains an integer for source compatibility with earlier SDK
+// releases. Intercom API 2.16 represents the same identifier as a string;
+// Update converts it before sending the request.
+type ContactUpdate struct {
+	Avatar                 *string         `json:"avatar,omitempty"`
+	CustomAttributes       *map[string]any `json:"custom_attributes,omitempty"`
+	Email                  *string         `json:"email,omitempty"`
+	EmailVerified          *bool           `json:"email_verified,omitempty"`
+	ExternalId             *string         `json:"external_id,omitempty"`
+	LastSeenAt             *int            `json:"last_seen_at,omitempty"`
+	Name                   *string         `json:"name,omitempty"`
+	OwnerId                *int            `json:"owner_id,omitempty"`
+	Phone                  *string         `json:"phone,omitempty"`
+	Role                   *string         `json:"role,omitempty"`
+	SignedUpAt             *int            `json:"signed_up_at,omitempty"`
+	UnsubscribedFromEmails *bool           `json:"unsubscribed_from_emails,omitempty"`
+}
+
+func (c ContactCreate) toGenerated() gen.CreateContactRequestSchema {
+	return gen.CreateContactRequestSchema{
+		Avatar:                 c.Avatar,
+		CustomAttributes:       c.CustomAttributes,
+		Email:                  c.Email,
+		EmailVerified:          c.EmailVerified,
+		ExternalId:             c.ExternalId,
+		LastSeenAt:             c.LastSeenAt,
+		Name:                   c.Name,
+		OwnerId:                contactOwnerID(c.OwnerId),
+		Phone:                  c.Phone,
+		Role:                   c.Role,
+		SignedUpAt:             c.SignedUpAt,
+		UnsubscribedFromEmails: c.UnsubscribedFromEmails,
+	}
+}
+
+func (c ContactUpdate) toGenerated() gen.UpdateContactRequestSchema {
+	return gen.UpdateContactRequestSchema{
+		Avatar:                 c.Avatar,
+		CustomAttributes:       c.CustomAttributes,
+		Email:                  c.Email,
+		EmailVerified:          c.EmailVerified,
+		ExternalId:             c.ExternalId,
+		LastSeenAt:             c.LastSeenAt,
+		Name:                   c.Name,
+		OwnerId:                contactOwnerID(c.OwnerId),
+		Phone:                  c.Phone,
+		Role:                   c.Role,
+		SignedUpAt:             c.SignedUpAt,
+		UnsubscribedFromEmails: c.UnsubscribedFromEmails,
+	}
+}
+
+func contactOwnerID(ownerID *int) *string {
+	if ownerID == nil {
+		return nil
+	}
+	value := strconv.Itoa(*ownerID)
+	return &value
+}
+
+func contactFromGenerated(contact *gen.ContactSchema) *Contact {
+	if contact == nil {
+		return nil
+	}
+
+	result := &Contact{
+		AndroidAppName:         contact.AndroidAppName,
+		AndroidAppVersion:      contact.AndroidAppVersion,
+		AndroidDevice:          contact.AndroidDevice,
+		AndroidLastSeenAt:      contact.AndroidLastSeenAt,
+		AndroidOsVersion:       contact.AndroidOsVersion,
+		AndroidSdkVersion:      contact.AndroidSdkVersion,
+		Avatar:                 contact.Avatar,
+		Browser:                contact.Browser,
+		BrowserLanguage:        contact.BrowserLanguage,
+		BrowserVersion:         contact.BrowserVersion,
+		Companies:              contact.Companies,
+		CreatedAt:              contact.CreatedAt,
+		CustomAttributes:       contact.CustomAttributes,
+		Email:                  contact.Email,
+		EmailDomain:            contact.EmailDomain,
+		ExternalId:             contact.ExternalId,
+		HasHardBounced:         contact.HasHardBounced,
+		Id:                     contact.Id,
+		IosAppName:             contact.IosAppName,
+		IosAppVersion:          contact.IosAppVersion,
+		IosDevice:              contact.IosDevice,
+		IosLastSeenAt:          contact.IosLastSeenAt,
+		IosOsVersion:           contact.IosOsVersion,
+		IosSdkVersion:          contact.IosSdkVersion,
+		LanguageOverride:       contact.LanguageOverride,
+		LastContactedAt:        contact.LastContactedAt,
+		LastEmailClickedAt:     contact.LastEmailClickedAt,
+		LastEmailOpenedAt:      contact.LastEmailOpenedAt,
+		LastRepliedAt:          contact.LastRepliedAt,
+		LastSeenAt:             contact.LastSeenAt,
+		Location:               contact.Location,
+		MarkedEmailAsSpam:      contact.MarkedEmailAsSpam,
+		MergeHistory:           contact.MergeHistory,
+		Name:                   contact.Name,
+		Notes:                  contact.Notes,
+		Os:                     contact.Os,
+		Phone:                  contact.Phone,
+		Role:                   contact.Role,
+		SignedUpAt:             contact.SignedUpAt,
+		SocialProfiles:         contact.SocialProfiles,
+		Tags:                   contact.Tags,
+		Type:                   contact.Type,
+		UnsubscribedFromEmails: contact.UnsubscribedFromEmails,
+		UpdatedAt:              contact.UpdatedAt,
+		WorkspaceId:            contact.WorkspaceId,
+	}
+	if contact.OwnerId == nil {
+		return result
+	}
+	ownerID, err := strconv.Atoi(*contact.OwnerId)
+	if err == nil {
+		result.OwnerId = &ownerID
+	}
+	return result
+}
+
+func contactListFromGenerated(list *gen.ContactListSchema) *ContactList {
+	if list == nil {
+		return nil
+	}
+
+	result := &ContactList{Pages: list.Pages, TotalCount: list.TotalCount, Type: list.Type}
+	if list.Data == nil {
+		return result
+	}
+	contacts := make([]Contact, 0, len(*list.Data))
+	for i := range *list.Data {
+		contact := contactFromGenerated(&(*list.Data)[i])
+		if contact != nil {
+			contacts = append(contacts, *contact)
+		}
+	}
+	result.Data = &contacts
+	return result
+}
 
 // Note is an Intercom note on a contact.
 type Note = gen.NoteSchema
@@ -55,9 +272,45 @@ type Tag = gen.TagSchema
 // TagList is a list of tags.
 type TagList = gen.TagListSchema
 
+// ContactBannerList is the list of banners shown to a contact.
+type ContactBannerList = gen.BannerListSchema
+
+// ContactBannerDismissal is the result of dismissing a contact banner.
+type ContactBannerDismissal = gen.BannerDismissSchema
+
+// ContactMergeHistory is the merge history for a contact.
+type ContactMergeHistory = gen.MergeHistoryListSchema
+
 // ContactsService exposes contact-related Intercom API operations.
 type ContactsService struct {
 	client *Client
+}
+
+// ListBanners returns banners shown to a contact.
+func (s *ContactsService) ListBanners(ctx context.Context, contactID string) (*ContactBannerList, error) {
+	res, err := s.client.generated.ListContactBannersWithResponse(ctx, contactID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list contact banners", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// DismissBanner dismisses one banner for a contact.
+func (s *ContactsService) DismissBanner(ctx context.Context, contactID, viewID string) (*ContactBannerDismissal, error) {
+	res, err := s.client.generated.DismissContactBannerWithResponse(ctx, contactID, viewID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("dismiss contact banner", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+}
+
+// ListMergeHistory returns a contact's merge history.
+func (s *ContactsService) ListMergeHistory(ctx context.Context, contactID string) (*ContactMergeHistory, error) {
+	res, err := s.client.generated.ListContactMergeHistoryWithResponse(ctx, contactID, nil)
+	if err != nil {
+		return nil, err
+	}
+	return requireOK("list contact merge history", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
 }
 
 // ContactSearchOperator is an Intercom contact search operator.
@@ -91,7 +344,8 @@ func (s *ContactsService) Get(ctx context.Context, contactID string) (*Contact, 
 		return nil, err
 	}
 
-	return requireOK("get contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contact, err := requireOK("get contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(contact), err
 }
 
 // GetByExternalID retrieves a contact by external ID.
@@ -105,7 +359,8 @@ func (s *ContactsService) GetByExternalID(ctx context.Context, externalID string
 		return nil, err
 	}
 
-	return requireOK("get contact by external ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contact, err := requireOK("get contact by external ID", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(contact), err
 }
 
 // List returns contacts.
@@ -115,7 +370,8 @@ func (s *ContactsService) List(ctx context.Context) (*ContactList, error) {
 		return nil, err
 	}
 
-	return requireOK("list contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contacts, err := requireOK("list contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactListFromGenerated(contacts), err
 }
 
 // Search searches contacts using one Intercom search filter.
@@ -130,12 +386,13 @@ func (s *ContactsService) Search(ctx context.Context, search ContactSearch) (*Co
 		return nil, err
 	}
 
-	return requireOK("search contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	contacts, err := requireOK("search contacts", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactListFromGenerated(contacts), err
 }
 
 // Create creates a new contact.
 func (s *ContactsService) Create(ctx context.Context, contact ContactCreate) (*Contact, error) {
-	body, err := marshalBody(contact)
+	body, err := marshalBody(contact.toGenerated())
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +400,8 @@ func (s *ContactsService) Create(ctx context.Context, contact ContactCreate) (*C
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("create contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	created, err := requireOK("create contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(created), err
 }
 
 // Update updates an existing contact.
@@ -151,7 +409,7 @@ func (s *ContactsService) Update(ctx context.Context, contactID string, contact 
 	if contactID == "" {
 		return nil, fmt.Errorf("intercom: contact ID is required")
 	}
-	body, err := marshalBody(contact)
+	body, err := marshalBody(contact.toGenerated())
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +417,8 @@ func (s *ContactsService) Update(ctx context.Context, contactID string, contact 
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("update contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	updated, err := requireOK("update contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(updated), err
 }
 
 // Merge merges a lead (from) into a user (into).
@@ -179,7 +438,8 @@ func (s *ContactsService) Merge(ctx context.Context, from, into string) (*Contac
 		return nil, err
 	}
 
-	return requireOK("merge contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	merged, err := requireOK("merge contact", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	return contactFromGenerated(merged), err
 }
 
 // Archive archives a contact.
@@ -417,7 +677,7 @@ func (s ContactSearch) toGenerated() (gen.SearchContactsJSONRequestBody, error) 
 		Value:    &value,
 	}
 
-	var query gen.SearchRequest_Query
+	var query gen.ContactSearchRequest_Query
 	_ = query.FromSingleFilterSearchRequestSchema(filter) // json.Marshal on a simple struct, never fails
 
 	body := gen.SearchContactsJSONRequestBody{
