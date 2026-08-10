@@ -44,7 +44,7 @@ func main() {
 }
 
 func reachableGeneratedTypes(moduleRoot string) (map[string]struct{}, error) {
-	targets, err := generatedAliasTargets(moduleRoot)
+	targets, err := generatedPublicTargets(moduleRoot)
 	if err != nil {
 		return nil, err
 	}
@@ -84,8 +84,21 @@ func reachableGeneratedTypes(moduleRoot string) (map[string]struct{}, error) {
 	return reachable, nil
 }
 
-func generatedAliasTargets(moduleRoot string) (map[string]struct{}, error) {
-	targets := make(map[string]struct{})
+type rootExpression struct {
+	expression       ast.Expr
+	generatedAliases map[string]struct{}
+}
+
+type rootReferences struct {
+	generated map[string]struct{}
+	local     map[string]struct{}
+}
+
+func generatedPublicTargets(moduleRoot string) (map[string]struct{}, error) {
+	rootTypes := make(map[string][]rootExpression)
+	publicTypes := make(map[string]struct{})
+	var publicExpressions []rootExpression
+
 	entries, err := os.ReadDir(moduleRoot)
 	if err != nil {
 		return nil, err
@@ -117,31 +130,182 @@ func generatedAliasTargets(moduleRoot string) (map[string]struct{}, error) {
 		}
 
 		for _, declaration := range file.Decls {
-			general, ok := declaration.(*ast.GenDecl)
-			if !ok || general.Tok != token.TYPE {
-				continue
+			switch declaration := declaration.(type) {
+			case *ast.GenDecl:
+				switch declaration.Tok {
+				case token.TYPE:
+					for _, rawSpec := range declaration.Specs {
+						typeSpec, ok := rawSpec.(*ast.TypeSpec)
+						if !ok {
+							continue
+						}
+						rootTypes[typeSpec.Name.Name] = append(rootTypes[typeSpec.Name.Name], rootExpression{
+							expression:       typeSpec.Type,
+							generatedAliases: generatedAliases,
+						})
+						if ast.IsExported(typeSpec.Name.Name) {
+							publicTypes[typeSpec.Name.Name] = struct{}{}
+						}
+					}
+				case token.CONST, token.VAR:
+					for _, rawSpec := range declaration.Specs {
+						valueSpec, ok := rawSpec.(*ast.ValueSpec)
+						if !ok || valueSpec.Type == nil || !valueSpecIsExported(valueSpec) {
+							continue
+						}
+						publicExpressions = append(publicExpressions, rootExpression{
+							expression:       valueSpec.Type,
+							generatedAliases: generatedAliases,
+						})
+					}
+				}
+			case *ast.FuncDecl:
+				if !ast.IsExported(declaration.Name.Name) {
+					continue
+				}
+				expression := rootExpression{
+					expression:       declaration.Type,
+					generatedAliases: generatedAliases,
+				}
+				if receiver, ok := receiverTypeName(declaration.Recv); ok {
+					rootTypes[receiver] = append(rootTypes[receiver], expression)
+				} else {
+					publicExpressions = append(publicExpressions, expression)
+				}
 			}
-			for _, rawSpec := range general.Specs {
-				typeSpec, ok := rawSpec.(*ast.TypeSpec)
-				if !ok || !typeSpec.Assign.IsValid() {
-					continue
-				}
-				selector, ok := typeSpec.Type.(*ast.SelectorExpr)
-				if !ok {
-					continue
-				}
-				packageName, ok := selector.X.(*ast.Ident)
-				if !ok {
-					continue
-				}
-				if _, generated := generatedAliases[packageName.Name]; generated {
-					targets[selector.Sel.Name] = struct{}{}
+		}
+	}
+
+	targets := make(map[string]struct{})
+	queue := make([]string, 0, len(publicTypes))
+	for name := range publicTypes {
+		queue = append(queue, name)
+	}
+	for _, expression := range publicExpressions {
+		references := collectRootReferences(expression)
+		for generated := range references.generated {
+			targets[generated] = struct{}{}
+		}
+		for local := range references.local {
+			if _, exists := rootTypes[local]; exists {
+				queue = append(queue, local)
+			}
+		}
+	}
+
+	visited := make(map[string]struct{})
+	for len(queue) > 0 {
+		name := queue[0]
+		queue = queue[1:]
+		if _, seen := visited[name]; seen {
+			continue
+		}
+		visited[name] = struct{}{}
+
+		for _, expression := range rootTypes[name] {
+			references := collectRootReferences(expression)
+			for generated := range references.generated {
+				targets[generated] = struct{}{}
+			}
+			for local := range references.local {
+				if _, exists := rootTypes[local]; exists {
+					queue = append(queue, local)
 				}
 			}
 		}
 	}
 
 	return targets, nil
+}
+
+func collectRootReferences(root rootExpression) rootReferences {
+	references := rootReferences{
+		generated: make(map[string]struct{}),
+		local:     make(map[string]struct{}),
+	}
+	collectRootExpressionReferences(root.expression, root.generatedAliases, references)
+	return references
+}
+
+func collectRootExpressionReferences(expression ast.Expr, generatedAliases map[string]struct{}, references rootReferences) {
+	switch expression := expression.(type) {
+	case *ast.Ident:
+		references.local[expression.Name] = struct{}{}
+	case *ast.SelectorExpr:
+		packageName, ok := expression.X.(*ast.Ident)
+		if ok {
+			if _, generated := generatedAliases[packageName.Name]; generated {
+				references.generated[expression.Sel.Name] = struct{}{}
+			}
+		}
+	case *ast.ParenExpr:
+		collectRootExpressionReferences(expression.X, generatedAliases, references)
+	case *ast.StarExpr:
+		collectRootExpressionReferences(expression.X, generatedAliases, references)
+	case *ast.ArrayType:
+		collectRootExpressionReferences(expression.Elt, generatedAliases, references)
+	case *ast.MapType:
+		collectRootExpressionReferences(expression.Key, generatedAliases, references)
+		collectRootExpressionReferences(expression.Value, generatedAliases, references)
+	case *ast.ChanType:
+		collectRootExpressionReferences(expression.Value, generatedAliases, references)
+	case *ast.Ellipsis:
+		collectRootExpressionReferences(expression.Elt, generatedAliases, references)
+	case *ast.IndexExpr:
+		collectRootExpressionReferences(expression.X, generatedAliases, references)
+		collectRootExpressionReferences(expression.Index, generatedAliases, references)
+	case *ast.IndexListExpr:
+		collectRootExpressionReferences(expression.X, generatedAliases, references)
+		for _, index := range expression.Indices {
+			collectRootExpressionReferences(index, generatedAliases, references)
+		}
+	case *ast.StructType:
+		for _, field := range expression.Fields.List {
+			if fieldIsExported(field) {
+				collectRootExpressionReferences(field.Type, generatedAliases, references)
+			}
+		}
+	case *ast.InterfaceType:
+		for _, method := range expression.Methods.List {
+			if fieldIsExported(method) {
+				collectRootExpressionReferences(method.Type, generatedAliases, references)
+			}
+		}
+	case *ast.FuncType:
+		collectRootFieldListReferences(expression.TypeParams, generatedAliases, references)
+		collectRootFieldListReferences(expression.Params, generatedAliases, references)
+		collectRootFieldListReferences(expression.Results, generatedAliases, references)
+	}
+}
+
+func collectRootFieldListReferences(fields *ast.FieldList, generatedAliases map[string]struct{}, references rootReferences) {
+	if fields == nil {
+		return
+	}
+	for _, field := range fields.List {
+		collectRootExpressionReferences(field.Type, generatedAliases, references)
+	}
+}
+
+func fieldIsExported(field *ast.Field) bool {
+	if len(field.Names) == 0 {
+		return true
+	}
+	for _, name := range field.Names {
+		if ast.IsExported(name.Name) {
+			return true
+		}
+	}
+	return false
+}
+
+func valueSpecIsExported(spec *ast.ValueSpec) bool {
+	for _, name := range spec.Names {
+		if ast.IsExported(name.Name) {
+			return true
+		}
+	}
+	return false
 }
 
 func generatedTypeExpressions(directory string) (map[string][]ast.Expr, error) {

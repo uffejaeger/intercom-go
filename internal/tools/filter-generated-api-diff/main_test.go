@@ -33,6 +33,49 @@ func TestReachableGeneratedTypes(t *testing.T) {
 import gen "example.test/sdk/internal/generated/intercom"
 
 type Public = gen.Root
+
+type PublicStruct struct {
+	Direct gen.Direct
+	ViaLocal localHelper
+	hidden gen.HiddenField
+}
+
+type localHelper struct {
+	Exposed gen.ViaLocal
+	hidden gen.HiddenLocalField
+}
+
+type Service struct{}
+
+func (*Service) PublicMethod(gen.PublicMethodParameter) gen.PublicMethodResult {
+	return gen.PublicMethodResult{}
+}
+
+func (*Service) privateMethod(gen.PrivateMethodParameter) {}
+
+func PublicFunction(gen.PublicFunctionParameter) gen.PublicFunctionResult {
+	return gen.PublicFunctionResult{}
+}
+
+func privateFunction(gen.PrivateFunctionParameter) {}
+
+type privateStruct struct {
+	Exposed gen.PrivateStructField
+}
+
+type inferredLocalResult struct{}
+
+func (inferredLocalResult) PublicMethod() gen.InferredMethodResult {
+	return gen.InferredMethodResult{}
+}
+
+func PublicLocalResult() inferredLocalResult {
+	return inferredLocalResult{}
+}
+
+var PublicVariable gen.PublicVariable
+const PublicConstant gen.PublicConstant = "public"
+var privateVariable gen.PrivateVariable
 `)
 	writeTestFile(t, root, "internal/generated/intercom/models.go", `package intercom
 
@@ -56,6 +99,22 @@ type MethodParameter struct {
 	Value string
 }
 
+type Direct struct{}
+type ViaLocal struct{}
+type HiddenField struct{}
+type HiddenLocalField struct{}
+type PublicMethodParameter struct{}
+type PublicMethodResult struct{}
+type PrivateMethodParameter struct{}
+type PublicFunctionParameter struct{}
+type PublicFunctionResult struct{}
+type PrivateFunctionParameter struct{}
+type PrivateStructField struct{}
+type InferredMethodResult struct{}
+type PublicVariable struct{}
+type PublicConstant string
+type PrivateVariable struct{}
+
 type Unreachable struct {
 	Ignored bool
 }
@@ -71,13 +130,38 @@ func (*Root) Accept(MethodParameter) {}
 	if err != nil {
 		t.Fatalf("reachableGeneratedTypes: %v", err)
 	}
-	for _, name := range []string{"Root", "Nested", "MethodResult", "MethodNested", "MethodParameter"} {
+	for _, name := range []string{
+		"Root",
+		"Nested",
+		"MethodResult",
+		"MethodNested",
+		"MethodParameter",
+		"Direct",
+		"ViaLocal",
+		"PublicMethodParameter",
+		"PublicMethodResult",
+		"PublicFunctionParameter",
+		"PublicFunctionResult",
+		"InferredMethodResult",
+		"PublicVariable",
+		"PublicConstant",
+	} {
 		if _, ok := reachable[name]; !ok {
 			t.Errorf("%s is not reachable", name)
 		}
 	}
-	if _, ok := reachable["Unreachable"]; ok {
-		t.Error("Unreachable unexpectedly reported as reachable")
+	for _, name := range []string{
+		"HiddenField",
+		"HiddenLocalField",
+		"PrivateMethodParameter",
+		"PrivateFunctionParameter",
+		"PrivateStructField",
+		"PrivateVariable",
+		"Unreachable",
+	} {
+		if _, ok := reachable[name]; ok {
+			t.Errorf("%s unexpectedly reported as reachable", name)
+		}
 	}
 }
 
