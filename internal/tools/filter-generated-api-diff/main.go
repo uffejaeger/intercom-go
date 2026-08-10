@@ -49,7 +49,7 @@ func reachableGeneratedTypes(moduleRoot string) (map[string]struct{}, error) {
 		return nil, err
 	}
 
-	declarations, err := generatedTypeDeclarations(filepath.Join(moduleRoot, "internal", "generated", "intercom"))
+	typeExpressions, err := generatedTypeExpressions(filepath.Join(moduleRoot, "internal", "generated", "intercom"))
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func reachableGeneratedTypes(moduleRoot string) (map[string]struct{}, error) {
 	reachable := make(map[string]struct{}, len(targets))
 	queue := make([]string, 0, len(targets))
 	for target := range targets {
-		if _, exists := declarations[target]; exists {
+		if _, exists := typeExpressions[target]; exists {
 			queue = append(queue, target)
 		}
 	}
@@ -71,9 +71,11 @@ func reachableGeneratedTypes(moduleRoot string) (map[string]struct{}, error) {
 		reachable[name] = struct{}{}
 
 		dependencies := make(map[string]struct{})
-		collectTypeDependencies(declarations[name], dependencies)
+		for _, expression := range typeExpressions[name] {
+			collectTypeDependencies(expression, dependencies)
+		}
 		for dependency := range dependencies {
-			if _, exists := declarations[dependency]; exists {
+			if _, exists := typeExpressions[dependency]; exists {
 				queue = append(queue, dependency)
 			}
 		}
@@ -142,8 +144,8 @@ func generatedAliasTargets(moduleRoot string) (map[string]struct{}, error) {
 	return targets, nil
 }
 
-func generatedTypeDeclarations(directory string) (map[string]ast.Expr, error) {
-	declarations := make(map[string]ast.Expr)
+func generatedTypeExpressions(directory string) (map[string][]ast.Expr, error) {
+	typeExpressions := make(map[string][]ast.Expr)
 	fileset := token.NewFileSet()
 	packages, err := parser.ParseDir(fileset, directory, func(info os.FileInfo) bool {
 		return strings.HasSuffix(info.Name(), ".go") && !strings.HasSuffix(info.Name(), "_test.go")
@@ -155,21 +157,52 @@ func generatedTypeDeclarations(directory string) (map[string]ast.Expr, error) {
 	for _, pkg := range packages {
 		for _, file := range pkg.Files {
 			for _, declaration := range file.Decls {
-				general, ok := declaration.(*ast.GenDecl)
-				if !ok || general.Tok != token.TYPE {
-					continue
-				}
-				for _, rawSpec := range general.Specs {
-					typeSpec, ok := rawSpec.(*ast.TypeSpec)
+				switch declaration := declaration.(type) {
+				case *ast.GenDecl:
+					if declaration.Tok != token.TYPE {
+						continue
+					}
+					for _, rawSpec := range declaration.Specs {
+						typeSpec, ok := rawSpec.(*ast.TypeSpec)
+						if ok {
+							typeExpressions[typeSpec.Name.Name] = append(typeExpressions[typeSpec.Name.Name], typeSpec.Type)
+						}
+					}
+				case *ast.FuncDecl:
+					receiver, ok := receiverTypeName(declaration.Recv)
 					if ok {
-						declarations[typeSpec.Name.Name] = typeSpec.Type
+						typeExpressions[receiver] = append(typeExpressions[receiver], declaration.Type)
 					}
 				}
 			}
 		}
 	}
 
-	return declarations, nil
+	return typeExpressions, nil
+}
+
+func receiverTypeName(receiver *ast.FieldList) (string, bool) {
+	if receiver == nil || len(receiver.List) != 1 {
+		return "", false
+	}
+
+	expression := receiver.List[0].Type
+	for {
+		switch typed := expression.(type) {
+		case *ast.Ident:
+			return typed.Name, true
+		case *ast.ParenExpr:
+			expression = typed.X
+		case *ast.StarExpr:
+			expression = typed.X
+		case *ast.IndexExpr:
+			expression = typed.X
+		case *ast.IndexListExpr:
+			expression = typed.X
+		default:
+			return "", false
+		}
+	}
 }
 
 func collectTypeDependencies(expression ast.Expr, dependencies map[string]struct{}) {

@@ -44,16 +44,34 @@ type Nested struct {
 	Value string
 }
 
+type MethodResult struct {
+	Nested *MethodNested
+}
+
+type MethodNested struct {
+	Value string
+}
+
+type MethodParameter struct {
+	Value string
+}
+
 type Unreachable struct {
 	Ignored bool
 }
+
+func (Root) Result() MethodResult {
+	return MethodResult{}
+}
+
+func (*Root) Accept(MethodParameter) {}
 `)
 
 	reachable, err := reachableGeneratedTypes(root)
 	if err != nil {
 		t.Fatalf("reachableGeneratedTypes: %v", err)
 	}
-	for _, name := range []string{"Root", "Nested"} {
+	for _, name := range []string{"Root", "Nested", "MethodResult", "MethodNested", "MethodParameter"} {
 		if _, ok := reachable[name]; !ok {
 			t.Errorf("%s is not reachable", name)
 		}
