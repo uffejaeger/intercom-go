@@ -99,6 +99,26 @@ func TestArticleParentCompatibility(t *testing.T) {
 	_ = intercom.ArticleList{Data: &[]intercom.Article{article}}
 }
 
+func TestConversationSourceAuthorCompatibility(t *testing.T) {
+	conversation := intercom.Conversation{}
+	if conversation.Source == nil || conversation.Source.Author == nil {
+		return
+	}
+	var _ *bool = conversation.Source.Author.FromAiAgent
+	var _ *bool = conversation.Source.Author.IsAiAnswer
+}
+
+func TestSearchRequestAliasCompatibility(t *testing.T) {
+	var conversation intercom.ConversationSearchQuery
+	var ticket intercom.TicketSearchQuery
+	var _ interface {
+		MarshalJSON() ([]byte, error)
+	} = conversation.Query
+	var _ interface {
+		UnmarshalJSON([]byte) error
+	} = &ticket.Query
+}
+
 func TestConversationAttributeConstructorsAreImportable(t *testing.T) {
 	constructors := []func() error{
 		func() error {

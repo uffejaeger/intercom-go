@@ -8694,8 +8694,8 @@ type ConversationScorecardReviewedTeammateType string
 // ConversationSourceSchema The type of the conversation part that started this conversation. Can be Contact, Admin, Campaign, Automated or Operator initiated.
 type ConversationSourceSchema struct {
 	// Attachments A list of attachments for the part.
-	Attachments *[]PartAttachmentSchema         `json:"attachments,omitempty"`
-	Author      *ConversationSourceAuthorSchema `json:"author,omitempty"`
+	Attachments *[]PartAttachmentSchema       `json:"attachments,omitempty"`
+	Author      *ConversationPartAuthorSchema `json:"author,omitempty"`
 
 	// Body The message body, which may contain HTML. For Twitter, this will show a generic message regarding why the body is obscured. In webhook payloads for API version 2.15+, this field returns plain text.
 	Body *string `json:"body,omitempty"`
