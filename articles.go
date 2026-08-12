@@ -329,11 +329,11 @@ func (s *ArticlesService) GetDraft(ctx context.Context, articleID string) (*Arti
 	if err != nil {
 		return nil, err
 	}
-	res, err := s.client.generated.RetrieveArticleDraftWithResponse(ctx, id, nil)
+	res, err := s.client.generated.RetrieveArticleDraft(ctx, id, nil)
 	if err != nil {
 		return nil, err
 	}
-	article, err := requireOK("get article draft", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	article, err := requireHTTPJSON[gen.ArticleSchema]("get article draft", res)
 	return articleFromGenerated(article), err
 }
 

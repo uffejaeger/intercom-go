@@ -15,7 +15,8 @@ func TestGeneratedOperationsAreAccountedFor(t *testing.T) {
 	generatedOperations := generatedResponseOperations(t)
 	wrappedOperations := wrappedGeneratedOperations(t)
 	exceptions := map[string]string{
-		"LisDataEvents": "DataEvents.List uses Client.NewRequest and Client.Do for explicit identifier validation and query encoding.",
+		"LisDataEvents":        "DataEvents.List uses Client.NewRequest and Client.Do for explicit identifier validation and query encoding.",
+		"RetrieveArticleDraft": "Articles.GetDraft uses the raw generated operation so an empty successful response can be reported as a semantic API error.",
 	}
 
 	var missing []string

@@ -310,7 +310,28 @@ func (s *ContactsService) ListMergeHistory(ctx context.Context, contactID string
 	if err != nil {
 		return nil, err
 	}
-	return requireOK("list contact merge history", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	history, err := requireOK("list contact merge history", res.StatusCode(), res.Body, res.JSON200, responseHeaders(res.HTTPResponse))
+	if err == nil || !IsNotFound(err) {
+		return history, err
+	}
+
+	includeMergeHistory := true
+	contactResponse, fallbackErr := s.client.generated.ShowContactWithResponse(ctx, contactID, &gen.ShowContactParams{IncludeMergeHistory: &includeMergeHistory})
+	if fallbackErr != nil {
+		return nil, fallbackErr
+	}
+	contact, fallbackErr := requireOK("get contact merge history", contactResponse.StatusCode(), contactResponse.Body, contactResponse.JSON200, responseHeaders(contactResponse.HTTPResponse))
+	if fallbackErr != nil {
+		return nil, fallbackErr
+	}
+
+	historyType := gen.MergeHistoryListType("list")
+	hasMore := false
+	return &ContactMergeHistory{
+		Data:    contact.MergeHistory,
+		HasMore: &hasMore,
+		Type:    &historyType,
+	}, nil
 }
 
 // ContactSearchOperator is an Intercom contact search operator.
@@ -521,17 +542,12 @@ func (s *ContactsService) CreateNote(ctx context.Context, contactID string, body
 		return nil, fmt.Errorf("intercom: note body is required")
 	}
 
-	id, err := contactIDToInt(contactID)
-	if err != nil {
-		return nil, err
-	}
-
 	req := gen.CreateNoteJSONRequestBody{Body: body}
 	if adminID != "" {
 		req.AdminId = &adminID
 	}
 
-	res, err := s.client.generated.CreateNoteWithResponse(ctx, id, nil, req)
+	res, err := s.client.generated.CreateNoteWithResponse(ctx, contactID, nil, req)
 	if err != nil {
 		return nil, err
 	}
@@ -732,13 +748,4 @@ func marshalBody(v any) (*bytes.Reader, error) {
 		return nil, fmt.Errorf("intercom: marshal request body: %w", err)
 	}
 	return bytes.NewReader(b), nil
-}
-
-// contactIDToInt converts a string contact ID to int as required by some generated endpoints.
-func contactIDToInt(contactID string) (int, error) {
-	id, err := strconv.Atoi(contactID)
-	if err != nil {
-		return 0, fmt.Errorf("intercom: contact ID %q is not a valid integer: %w", contactID, err)
-	}
-	return id, nil
 }

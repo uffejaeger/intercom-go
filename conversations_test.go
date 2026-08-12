@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"testing"
 
-	openapi_types "github.com/oapi-codegen/runtime/types"
-
 	gen "github.com/uffejaeger/intercom-go/internal/generated/intercom"
 )
 
@@ -75,9 +73,9 @@ func TestConversationsServiceRequests(t *testing.T) {
 				msg, err := client.Conversations.Create(ctx, ConversationCreate{
 					Body: "hello",
 					From: struct {
-						Id   openapi_types.UUID                    `json:"id"`
+						Id   string                                `json:"id"`
 						Type gen.CreateConversationRequestFromType `json:"type"`
-					}{Type: "user"},
+					}{Id: "536e564f316c83104c000020", Type: "user"},
 				})
 				if err != nil {
 					return err

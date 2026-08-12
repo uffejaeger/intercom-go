@@ -28,6 +28,7 @@ func main() {
 	}
 
 	patchPathParameters(&spec)
+	patchLiveAPICompatibility(&spec)
 	patchComponentGoNames(&spec)
 	patchConversationAttributeDiscriminator(&spec)
 	patchPropertyGoNames(&spec)
@@ -42,6 +43,49 @@ func main() {
 		_, _ = fmt.Fprintf(os.Stderr, "write output: %v\n", err)
 		os.Exit(1)
 	}
+}
+
+// patchLiveAPICompatibility corrects upstream schema constraints that do not
+// match identifiers observed from the live API. Keeping these transformations
+// in the normalizer leaves the pinned upstream specification untouched while
+// making generation reproducible.
+func patchLiveAPICompatibility(spec *yaml.Node) {
+	setScalar(lookup(spec, "components", "schemas", "create_conversation_request", "properties", "from", "properties", "id", "format"), "")
+	setScalar(lookup(spec, "components", "schemas", "error", "properties", "request_id", "format"), "")
+	medianTime := lookup(spec, "components", "schemas", "conversation_statistics", "properties", "median_time_to_reply")
+	setMappingScalar(medianTime, "type", "number")
+	setMappingScalar(medianTime, "format", "double")
+
+	parameters := lookup(spec, "paths", "/contacts/{contact_id}/notes", "post", "parameters")
+	if parameters == nil || parameters.Kind != yaml.SequenceNode {
+		return
+	}
+	for _, parameter := range parameters.Content {
+		if scalarValue(lookup(parameter, "name")) == "contact_id" {
+			setScalar(lookup(parameter, "schema", "type"), "string")
+		}
+	}
+}
+
+func setMappingScalar(mapping *yaml.Node, key, value string) {
+	if mapping == nil || mapping.Kind != yaml.MappingNode {
+		return
+	}
+	if existing := lookup(mapping, key); existing != nil {
+		setScalar(existing, value)
+		return
+	}
+	mapping.Content = append(mapping.Content,
+		&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: key},
+		&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: value},
+	)
+}
+
+func setScalar(node *yaml.Node, value string) {
+	if node == nil || node.Kind != yaml.ScalarNode {
+		return
+	}
+	node.Value = value
 }
 
 func patchPropertyGoNames(spec *yaml.Node) {

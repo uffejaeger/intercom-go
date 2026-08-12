@@ -881,20 +881,6 @@ func TestContactsValidation(t *testing.T) {
 			},
 		},
 		{
-			name: "create note: non-numeric contact ID",
-			call: func(ctx context.Context, client *Client) error {
-				_, err := client.Contacts.CreateNote(ctx, "not-an-int", "body", "")
-				return err
-			},
-		},
-		{
-			name: "create note: partial-numeric contact ID",
-			call: func(ctx context.Context, client *Client) error {
-				_, err := client.Contacts.CreateNote(ctx, "123abc", "body", "")
-				return err
-			},
-		},
-		{
 			name: "list segments: empty contact ID",
 			call: func(ctx context.Context, client *Client) error {
 				_, err := client.Contacts.ListSegments(ctx, "")

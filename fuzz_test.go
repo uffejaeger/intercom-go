@@ -30,7 +30,7 @@ func FuzzParseErrorResponse(f *testing.F) {
 	})
 }
 
-func FuzzIntegerIDConversionHelpers(f *testing.F) {
+func FuzzConversationIDConversion(f *testing.F) {
 	f.Add("1")
 	f.Add("0")
 	f.Add("-1")
@@ -40,9 +40,6 @@ func FuzzIntegerIDConversionHelpers(f *testing.F) {
 
 	f.Fuzz(func(t *testing.T, id string) {
 		want, wantErr := strconv.Atoi(id)
-
-		contactID, contactErr := contactIDToInt(id)
-		assertFuzzIDConversion(t, "contactIDToInt", contactID, contactErr, want, wantErr)
 
 		conversationID, conversationErr := conversationIDToInt(id)
 		assertFuzzIDConversion(t, "conversationIDToInt", conversationID, conversationErr, want, wantErr)
