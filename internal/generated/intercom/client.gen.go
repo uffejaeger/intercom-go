@@ -40,6 +40,8 @@ const (
 	AdminLoginFailure                        ActivityLogActivityType = "admin_login_failure"
 	AdminLoginSuccess                        ActivityLogActivityType = "admin_login_success"
 	AdminLogout                              ActivityLogActivityType = "admin_logout"
+	AdminOccupancySettingChange              ActivityLogActivityType = "admin_occupancy_setting_change"
+	AdminOccupancyStateChange                ActivityLogActivityType = "admin_occupancy_state_change"
 	AdminPasswordResetRequest                ActivityLogActivityType = "admin_password_reset_request"
 	AdminPasswordResetSuccess                ActivityLogActivityType = "admin_password_reset_success"
 	AdminPermissionChange                    ActivityLogActivityType = "admin_permission_change"
@@ -171,6 +173,10 @@ func (e ActivityLogActivityType) Valid() bool {
 	case AdminLoginSuccess:
 		return true
 	case AdminLogout:
+		return true
+	case AdminOccupancySettingChange:
+		return true
+	case AdminOccupancyStateChange:
 		return true
 	case AdminPasswordResetRequest:
 		return true
@@ -5590,6 +5596,9 @@ type ActivityLogMetadataSchema struct {
 	// After The state of settings or values after the change. Structure varies by activity type.
 	After *map[string]interface{} `json:"after,omitempty"`
 
+	// Auto Indicates the state was derived automatically rather than set by an Admin.
+	Auto *bool `json:"auto,omitempty"`
+
 	// AutoChanged Indicates if the status was changed automatically or manually.
 	AutoChanged *string `json:"auto_changed,omitempty"`
 
@@ -5601,6 +5610,15 @@ type ActivityLogMetadataSchema struct {
 
 	// Before The state of settings or values before the change. Structure varies by activity type.
 	Before *map[string]interface{} `json:"before,omitempty"`
+
+	// Changes The settings altered by the change, keyed by setting name. Only settings whose value actually moved are included, so an unchanged setting is absent rather than present with equal values.
+	Changes *map[string]struct {
+		// After The value after the change.
+		After interface{} `json:"after,omitempty"`
+
+		// Before The value before the change.
+		Before interface{} `json:"before,omitempty"`
+	} `json:"changes,omitempty"`
 
 	// ConsentId The ID of the impersonation consent.
 	ConsentId *int `json:"consent_id,omitempty"`
@@ -5617,11 +5635,23 @@ type ActivityLogMetadataSchema struct {
 	// ExternalId The unique identifier for the contact which is provided by the Client.
 	ExternalId *string `json:"external_id,omitempty"`
 
+	// LastActivityAt The time of the Admin's last recorded activity.
+	LastActivityAt *int `json:"last_activity_at,omitempty"`
+
 	// Mode The mode of the setting (e.g., when_away_only, when_away_and_reassign).
 	Mode *string `json:"mode,omitempty"`
 
+	// NewState The state after the change. `idle` or `occupied`.
+	NewState *string `json:"new_state,omitempty"`
+
+	// PreviousState The state before the change. `idle` or `occupied`, and null when the Admin had not been classified yet.
+	PreviousState *string `json:"previous_state,omitempty"`
+
 	// ReassignConversations Indicates if conversations should be reassigned while an Admin is away.
 	ReassignConversations *bool `json:"reassign_conversations,omitempty"`
+
+	// SettingType The group of workspace settings the change belongs to, for example `teammate_occupancy` or `automatic_away_mode`.
+	SettingType *string `json:"setting_type,omitempty"`
 
 	// SignInMethod The way the admin signed in.
 	SignInMethod *string `json:"sign_in_method,omitempty"`
@@ -5640,6 +5670,9 @@ type ActivityLogMetadataSchema struct {
 
 	// TeamAssignmentLimit The team assignment limit value (null if limit was removed).
 	TeamAssignmentLimit *int `json:"team_assignment_limit,omitempty"`
+
+	// ThresholdMinutes The inactivity window, in minutes, used to classify the Admin.
+	ThresholdMinutes *int `json:"threshold_minutes,omitempty"`
 
 	// TicketAssignmentLimit The ticket assignment limit value for an admin.
 	TicketAssignmentLimit *int `json:"ticket_assignment_limit,omitempty"`
