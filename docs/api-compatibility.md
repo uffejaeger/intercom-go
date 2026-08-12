@@ -35,10 +35,10 @@ type changes must not bypass compatibility review.
 
 Go's API export data does not expand aliases into an `internal` package during a
 normal public-module comparison. To avoid a blind spot, the automated gate also
-compares the generated model package directly. This is deliberately
-conservative: it can flag a changed generated type that is not currently
-reachable through a root-package alias. Maintainers should confirm reachability
-during review, but must preserve any shape that is publicly exposed.
+compares the generated model package directly and filters that report to types
+reachable from current root-package aliases. Changes beneath those aliases are
+therefore checked without treating the private generated client itself as a
+second public API surface.
 
 ### Request-scoped options
 
@@ -93,8 +93,9 @@ tool. The command fails when an incompatible compile-time change is reported.
 CI runs it in the quality job, and `make pre-push` runs it locally.
 
 The generated OpenAPI client is under Go's `internal/` boundary, so downstream
-SDK consumers cannot import it. It is verified for reproducibility by `make
-generate-check`, rather than treated as a second public API surface.
+SDK consumers cannot import it. `make generate-check` verifies reproducibility,
+while the compatibility gate separately checks only generated model shapes that
+are exposed transitively through public aliases.
 
 The checker has a narrow source-compatibility allowance for the reviewed
 Contact, Ticket, and Article boundary models: API 2.16 changed Intercom's wire
@@ -107,7 +108,13 @@ retains the legacy fields and maps the first parent ID when possible. `apidiff` 
 required alias-to-struct change and its dependent methods and iterators as
 incompatible, so the checker permits only those exact entries. External
 consumer compile and response-conversion regression tests cover the preserved
-contracts. No other `apidiff` finding is suppressed.
+contracts.
+
+The generated-alias comparison also permits two identity-only findings for
+`SearchRequestSchema` and `SearchRequest_Query`. Their exported fields and
+method sets are unchanged, but `apidiff` reports the oapi-codegen union wrappers
+as changing from each named type to itself. External consumer compile tests
+cover those public aliases. No other `apidiff` finding is suppressed.
 
 The current baseline is `v0.2.0`. After publishing a release that expands the
 public API, maintainers advance `API_BASELINE` in `Makefile` to that release so

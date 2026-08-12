@@ -30,6 +30,7 @@ func main() {
 	patchPathParameters(&spec)
 	patchComponentGoNames(&spec)
 	patchConversationAttributeDiscriminator(&spec)
+	patchConversationSourceAuthorCompatibility(&spec)
 	patchPropertyGoNames(&spec)
 
 	output, err := yaml.Marshal(&spec)
@@ -41,6 +42,26 @@ func main() {
 	if err := os.WriteFile(os.Args[2], output, 0o644); err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "write output: %v\n", err)
 		os.Exit(1)
+	}
+}
+
+// patchConversationSourceAuthorCompatibility preserves the source-compatible
+// author shape exposed through the root Conversation alias. API 2.16 points the
+// source author at a new, narrower schema that omits from_ai_agent and
+// is_ai_answer. The historical conversation_part_author schema is wire
+// compatible and retains those optional fields for existing SDK consumers.
+func patchConversationSourceAuthorCompatibility(spec *yaml.Node) {
+	authorRef := lookup(
+		spec,
+		"components",
+		"schemas",
+		"conversation_source",
+		"properties",
+		"author",
+		"$ref",
+	)
+	if scalarValue(authorRef) == "#/components/schemas/conversation_source_author" {
+		authorRef.Value = "#/components/schemas/conversation_part_author"
 	}
 }
 
