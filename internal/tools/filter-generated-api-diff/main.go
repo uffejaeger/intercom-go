@@ -1,5 +1,5 @@
 // Command filter-generated-api-diff keeps apidiff findings for generated
-// model types that are reachable through aliases in the public root package.
+// model types that are reachable through the public root package.
 package main
 
 import (
@@ -49,7 +49,7 @@ func reachableGeneratedTypes(moduleRoot string) (map[string]struct{}, error) {
 		return nil, err
 	}
 
-	typeExpressions, err := generatedTypeExpressions(filepath.Join(moduleRoot, "internal", "generated", "intercom"))
+	symbolExpressions, typeNames, err := generatedSymbolExpressions(filepath.Join(moduleRoot, "internal", "generated", "intercom"))
 	if err != nil {
 		return nil, err
 	}
@@ -57,25 +57,29 @@ func reachableGeneratedTypes(moduleRoot string) (map[string]struct{}, error) {
 	reachable := make(map[string]struct{}, len(targets))
 	queue := make([]string, 0, len(targets))
 	for target := range targets {
-		if _, exists := typeExpressions[target]; exists {
+		if _, exists := symbolExpressions[target]; exists {
 			queue = append(queue, target)
 		}
 	}
 
+	visited := make(map[string]struct{})
 	for len(queue) > 0 {
 		name := queue[0]
 		queue = queue[1:]
-		if _, seen := reachable[name]; seen {
+		if _, seen := visited[name]; seen {
 			continue
 		}
-		reachable[name] = struct{}{}
+		visited[name] = struct{}{}
+		if _, isType := typeNames[name]; isType {
+			reachable[name] = struct{}{}
+		}
 
 		dependencies := make(map[string]struct{})
-		for _, expression := range typeExpressions[name] {
+		for _, expression := range symbolExpressions[name] {
 			collectTypeDependencies(expression, dependencies)
 		}
 		for dependency := range dependencies {
-			if _, exists := typeExpressions[dependency]; exists {
+			if _, exists := symbolExpressions[dependency]; exists {
 				queue = append(queue, dependency)
 			}
 		}
@@ -150,13 +154,21 @@ func generatedPublicTargets(moduleRoot string) (map[string]struct{}, error) {
 				case token.CONST, token.VAR:
 					for _, rawSpec := range declaration.Specs {
 						valueSpec, ok := rawSpec.(*ast.ValueSpec)
-						if !ok || valueSpec.Type == nil || !valueSpecIsExported(valueSpec) {
+						if !ok || !valueSpecIsExported(valueSpec) {
 							continue
 						}
-						publicExpressions = append(publicExpressions, rootExpression{
-							expression:       valueSpec.Type,
-							generatedAliases: generatedAliases,
-						})
+						if valueSpec.Type != nil {
+							publicExpressions = append(publicExpressions, rootExpression{
+								expression:       valueSpec.Type,
+								generatedAliases: generatedAliases,
+							})
+						}
+						for _, value := range exportedValueInitializers(valueSpec) {
+							publicExpressions = append(publicExpressions, rootExpression{
+								expression:       value,
+								generatedAliases: generatedAliases,
+							})
+						}
 					}
 				}
 			case *ast.FuncDecl:
@@ -275,6 +287,20 @@ func collectRootExpressionReferences(expression ast.Expr, generatedAliases map[s
 		collectRootFieldListReferences(expression.TypeParams, generatedAliases, references)
 		collectRootFieldListReferences(expression.Params, generatedAliases, references)
 		collectRootFieldListReferences(expression.Results, generatedAliases, references)
+	case *ast.CompositeLit:
+		if expression.Type != nil {
+			collectRootExpressionReferences(expression.Type, generatedAliases, references)
+		}
+	case *ast.CallExpr:
+		collectRootExpressionReferences(expression.Fun, generatedAliases, references)
+		for _, argument := range expression.Args {
+			collectRootExpressionReferences(argument, generatedAliases, references)
+		}
+	case *ast.UnaryExpr:
+		collectRootExpressionReferences(expression.X, generatedAliases, references)
+	case *ast.BinaryExpr:
+		collectRootExpressionReferences(expression.X, generatedAliases, references)
+		collectRootExpressionReferences(expression.Y, generatedAliases, references)
 	}
 }
 
@@ -308,14 +334,35 @@ func valueSpecIsExported(spec *ast.ValueSpec) bool {
 	return false
 }
 
-func generatedTypeExpressions(directory string) (map[string][]ast.Expr, error) {
-	typeExpressions := make(map[string][]ast.Expr)
+func exportedValueInitializers(spec *ast.ValueSpec) []ast.Expr {
+	if len(spec.Values) == len(spec.Names) {
+		values := make([]ast.Expr, 0, len(spec.Values))
+		for index, name := range spec.Names {
+			if ast.IsExported(name.Name) {
+				values = append(values, spec.Values[index])
+			}
+		}
+		return values
+	}
+
+	// A single initializer can provide multiple values. Its result types cannot
+	// be paired with individual names syntactically, so inspect it when any name
+	// in the declaration is exported.
+	if len(spec.Values) == 1 && valueSpecIsExported(spec) {
+		return spec.Values
+	}
+	return nil
+}
+
+func generatedSymbolExpressions(directory string) (map[string][]ast.Expr, map[string]struct{}, error) {
+	symbolExpressions := make(map[string][]ast.Expr)
+	typeNames := make(map[string]struct{})
 	fileset := token.NewFileSet()
 	packages, err := parser.ParseDir(fileset, directory, func(info os.FileInfo) bool {
 		return strings.HasSuffix(info.Name(), ".go") && !strings.HasSuffix(info.Name(), "_test.go")
 	}, 0)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	for _, pkg := range packages {
@@ -323,26 +370,48 @@ func generatedTypeExpressions(directory string) (map[string][]ast.Expr, error) {
 			for _, declaration := range file.Decls {
 				switch declaration := declaration.(type) {
 				case *ast.GenDecl:
-					if declaration.Tok != token.TYPE {
-						continue
-					}
-					for _, rawSpec := range declaration.Specs {
-						typeSpec, ok := rawSpec.(*ast.TypeSpec)
-						if ok {
-							typeExpressions[typeSpec.Name.Name] = append(typeExpressions[typeSpec.Name.Name], typeSpec.Type)
+					switch declaration.Tok {
+					case token.TYPE:
+						for _, rawSpec := range declaration.Specs {
+							typeSpec, ok := rawSpec.(*ast.TypeSpec)
+							if ok {
+								typeNames[typeSpec.Name.Name] = struct{}{}
+								symbolExpressions[typeSpec.Name.Name] = append(symbolExpressions[typeSpec.Name.Name], typeSpec.Type)
+							}
+						}
+					case token.CONST, token.VAR:
+						for _, rawSpec := range declaration.Specs {
+							valueSpec, ok := rawSpec.(*ast.ValueSpec)
+							if !ok {
+								continue
+							}
+							for index, name := range valueSpec.Names {
+								if valueSpec.Type != nil {
+									symbolExpressions[name.Name] = append(symbolExpressions[name.Name], valueSpec.Type)
+								}
+								if len(valueSpec.Values) == len(valueSpec.Names) {
+									symbolExpressions[name.Name] = append(symbolExpressions[name.Name], valueSpec.Values[index])
+								} else if len(valueSpec.Values) == 1 {
+									symbolExpressions[name.Name] = append(symbolExpressions[name.Name], valueSpec.Values[0])
+								}
+							}
 						}
 					}
 				case *ast.FuncDecl:
 					receiver, ok := receiverTypeName(declaration.Recv)
 					if ok {
-						typeExpressions[receiver] = append(typeExpressions[receiver], declaration.Type)
+						symbolExpressions[receiver] = append(symbolExpressions[receiver], declaration.Type)
+					} else if declaration.Type.Results != nil {
+						for _, result := range declaration.Type.Results.List {
+							symbolExpressions[declaration.Name.Name] = append(symbolExpressions[declaration.Name.Name], result.Type)
+						}
 					}
 				}
 			}
 		}
 	}
 
-	return typeExpressions, nil
+	return symbolExpressions, typeNames, nil
 }
 
 func receiverTypeName(receiver *ast.FieldList) (string, bool) {
@@ -402,6 +471,20 @@ func collectTypeDependencies(expression ast.Expr, dependencies map[string]struct
 		collectFieldListDependencies(expression.TypeParams, dependencies)
 		collectFieldListDependencies(expression.Params, dependencies)
 		collectFieldListDependencies(expression.Results, dependencies)
+	case *ast.CompositeLit:
+		if expression.Type != nil {
+			collectTypeDependencies(expression.Type, dependencies)
+		}
+	case *ast.CallExpr:
+		collectTypeDependencies(expression.Fun, dependencies)
+		for _, argument := range expression.Args {
+			collectTypeDependencies(argument, dependencies)
+		}
+	case *ast.UnaryExpr:
+		collectTypeDependencies(expression.X, dependencies)
+	case *ast.BinaryExpr:
+		collectTypeDependencies(expression.X, dependencies)
+		collectTypeDependencies(expression.Y, dependencies)
 	}
 }
 

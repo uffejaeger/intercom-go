@@ -75,6 +75,15 @@ func PublicLocalResult() inferredLocalResult {
 
 var PublicVariable gen.PublicVariable
 const PublicConstant gen.PublicConstant = "public"
+var InferredPublicVariable = gen.InferredPublicVariable{}
+const InferredPublicConstant = gen.InferredPublicConstant("public")
+const InferredPublicConstantFromValue = gen.InferredPublicConstantValue
+var InferredPublicConstructed = gen.NewInferredPublicConstructed()
+var privateInferredVariable = gen.PrivateInferredVariable{}
+const privateInferredConstant = gen.PrivateInferredConstant("private")
+const privateInferredConstantFromValue = gen.PrivateInferredConstantValue
+var privateInferredConstructed = gen.NewPrivateInferredConstructed()
+var InferredPublicMixed, privateInferredMixed = gen.InferredPublicMixed{}, gen.PrivateInferredMixed{}
 var privateVariable gen.PrivateVariable
 `)
 	writeTestFile(t, root, "internal/generated/intercom/models.go", `package intercom
@@ -113,6 +122,16 @@ type PrivateStructField struct{}
 type InferredMethodResult struct{}
 type PublicVariable struct{}
 type PublicConstant string
+type InferredPublicVariable struct{}
+type InferredPublicConstant string
+const InferredPublicConstantValue InferredPublicConstant = "public"
+type InferredPublicConstructed struct{}
+type PrivateInferredVariable struct{}
+type PrivateInferredConstant string
+const PrivateInferredConstantValue PrivateInferredConstant = "private"
+type PrivateInferredConstructed struct{}
+type InferredPublicMixed struct{}
+type PrivateInferredMixed struct{}
 type PrivateVariable struct{}
 
 type Unreachable struct {
@@ -124,6 +143,14 @@ func (Root) Result() MethodResult {
 }
 
 func (*Root) Accept(MethodParameter) {}
+
+func NewInferredPublicConstructed() InferredPublicConstructed {
+	return InferredPublicConstructed{}
+}
+
+func NewPrivateInferredConstructed() PrivateInferredConstructed {
+	return PrivateInferredConstructed{}
+}
 `)
 
 	reachable, err := reachableGeneratedTypes(root)
@@ -145,6 +172,10 @@ func (*Root) Accept(MethodParameter) {}
 		"InferredMethodResult",
 		"PublicVariable",
 		"PublicConstant",
+		"InferredPublicVariable",
+		"InferredPublicConstant",
+		"InferredPublicConstructed",
+		"InferredPublicMixed",
 	} {
 		if _, ok := reachable[name]; !ok {
 			t.Errorf("%s is not reachable", name)
@@ -156,6 +187,10 @@ func (*Root) Accept(MethodParameter) {}
 		"PrivateMethodParameter",
 		"PrivateFunctionParameter",
 		"PrivateStructField",
+		"PrivateInferredVariable",
+		"PrivateInferredConstant",
+		"PrivateInferredConstructed",
+		"PrivateInferredMixed",
 		"PrivateVariable",
 		"Unreachable",
 	} {
