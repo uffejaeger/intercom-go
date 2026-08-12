@@ -230,6 +230,50 @@ func TestLiveAPIMergeHistoryFallsBackToContactField(t *testing.T) {
 	}
 }
 
+func TestLiveAPIMergeHistoryFallbackErrors(t *testing.T) {
+	tests := []struct {
+		name         string
+		secondStatus int
+		secondBody   string
+		secondErr    error
+	}{
+		{name: "transport error", secondErr: errors.New("fallback failed")},
+		{name: "API error", secondStatus: http.StatusInternalServerError, secondBody: `{"type":"error.list","request_id":"request-2","errors":[{"code":"server_error","message":"failed"}]}`},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			requestCount := 0
+			transport := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+				requestCount++
+				if requestCount == 2 && tt.secondErr != nil {
+					return nil, tt.secondErr
+				}
+				status := http.StatusNotFound
+				body := `{"type":"error.list","request_id":"request-1","errors":[{"code":"not_found","message":"missing"}]}`
+				if requestCount == 2 {
+					status = tt.secondStatus
+					body = tt.secondBody
+				}
+				return &http.Response{
+					StatusCode: status,
+					Header:     http.Header{"Content-Type": []string{"application/json"}},
+					Body:       io.NopCloser(strings.NewReader(body)),
+					Request:    req,
+				}, nil
+			})
+			client, err := NewClient("token", WithBaseURL("https://example.test"), WithHTTPClient(&http.Client{Transport: transport}))
+			if err != nil {
+				t.Fatalf("NewClient returned error: %v", err)
+			}
+
+			if _, err := client.Contacts.ListMergeHistory(context.Background(), "6762f0ad1bb69f9f2193bb62"); err == nil {
+				t.Fatal("expected fallback error")
+			}
+		})
+	}
+}
+
 func TestLiveAPIConversationCreateUsesStringContactID(t *testing.T) {
 	typeOfRequest := reflect.TypeFor[ConversationCreate]()
 	from, ok := typeOfRequest.FieldByName("From")
