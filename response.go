@@ -1,8 +1,10 @@
 package intercom
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -47,6 +49,29 @@ func requireJSON[T any](operation string, statusCode int, body []byte, headers .
 		return nil, fmt.Errorf("intercom: decode %s response: %w", operation, err)
 	}
 
+	return &value, nil
+}
+
+func requireHTTPJSON[T any](operation string, response *http.Response) (*T, error) {
+	if response == nil {
+		return nil, fmt.Errorf("intercom: %s returned no HTTP response", operation)
+	}
+	defer response.Body.Close()
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, fmt.Errorf("intercom: read %s response: %w", operation, err)
+	}
+	if response.StatusCode != http.StatusOK {
+		return nil, parseErrorResponse(response.StatusCode, body, response.Header)
+	}
+	if len(bytes.TrimSpace(body)) == 0 {
+		return nil, fmt.Errorf("intercom: %s returned status %d without a response body", operation, response.StatusCode)
+	}
+
+	var value T
+	if err := json.Unmarshal(body, &value); err != nil {
+		return nil, fmt.Errorf("intercom: decode %s response: %w", operation, err)
+	}
 	return &value, nil
 }
 

@@ -8843,7 +8843,7 @@ type ConversationStatisticsSchema struct {
 	LastContactReplyAt *int `json:"last_contact_reply_at,omitempty"`
 
 	// MedianTimeToReply Median based on all admin replies after a contact reply. Subtracts out of business hours. In seconds.
-	MedianTimeToReply *int `json:"median_time_to_reply,omitempty"`
+	MedianTimeToReply *float64 `json:"median_time_to_reply,omitempty"`
 
 	// TimeToAdminReply Duration until first admin reply. Subtracts out of business hours. In seconds.
 	TimeToAdminReply *int `json:"time_to_admin_reply,omitempty"`
@@ -9315,7 +9315,7 @@ type CreateConversationRequestSchema struct {
 	CreatedAt *int `json:"created_at,omitempty"`
 	From      struct {
 		// Id The identifier for the contact which is given by Intercom.
-		Id openapi_types.UUID `json:"id"`
+		Id string `json:"id"`
 
 		// Type The role associated to the contact - user or lead.
 		Type CreateConversationRequestFromType `json:"type"`
@@ -10836,7 +10836,7 @@ type ErrorSchema struct {
 		// Message Optional. Human readable description of the error.
 		Message *string `json:"message,omitempty"`
 	} `json:"errors"`
-	RequestId *openapi_types.UUID `json:"request_id,omitempty"`
+	RequestId *string `json:"request_id,omitempty"`
 
 	// Type The type is error.list
 	Type string `json:"type"`
@@ -20486,9 +20486,9 @@ type ClientInterface interface {
 	ListNotes(ctx context.Context, contactId string, params *ListNotesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateNoteWithBody request with any body
-	CreateNoteWithBody(ctx context.Context, contactId int, params *CreateNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateNoteWithBody(ctx context.Context, contactId string, params *CreateNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateNote(ctx context.Context, contactId int, params *CreateNoteParams, body CreateNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateNote(ctx context.Context, contactId string, params *CreateNoteParams, body CreateNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListSegmentsForAContact request
 	ListSegmentsForAContact(ctx context.Context, contactId string, params *ListSegmentsForAContactParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -22180,7 +22180,7 @@ func (c *Client) ListNotes(ctx context.Context, contactId string, params *ListNo
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateNoteWithBody(ctx context.Context, contactId int, params *CreateNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) CreateNoteWithBody(ctx context.Context, contactId string, params *CreateNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateNoteRequestWithBody(c.Server, contactId, params, contentType, body)
 	if err != nil {
 		return nil, err
@@ -22192,7 +22192,7 @@ func (c *Client) CreateNoteWithBody(ctx context.Context, contactId int, params *
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateNote(ctx context.Context, contactId int, params *CreateNoteParams, body CreateNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) CreateNote(ctx context.Context, contactId string, params *CreateNoteParams, body CreateNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateNoteRequest(c.Server, contactId, params, body)
 	if err != nil {
 		return nil, err
@@ -28956,7 +28956,7 @@ func NewListNotesRequest(server string, contactId string, params *ListNotesParam
 }
 
 // NewCreateNoteRequest calls the generic CreateNote builder with application/json body
-func NewCreateNoteRequest(server string, contactId int, params *CreateNoteParams, body CreateNoteJSONRequestBody) (*http.Request, error) {
+func NewCreateNoteRequest(server string, contactId string, params *CreateNoteParams, body CreateNoteJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
@@ -28967,12 +28967,12 @@ func NewCreateNoteRequest(server string, contactId int, params *CreateNoteParams
 }
 
 // NewCreateNoteRequestWithBody generates requests for CreateNote with any type of body
-func NewCreateNoteRequestWithBody(server string, contactId int, params *CreateNoteParams, contentType string, body io.Reader) (*http.Request, error) {
+func NewCreateNoteRequestWithBody(server string, contactId string, params *CreateNoteParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "contact_id", contactId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "contact_id", contactId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
 	if err != nil {
 		return nil, err
 	}
@@ -39160,9 +39160,9 @@ type ClientWithResponsesInterface interface {
 	ListNotesWithResponse(ctx context.Context, contactId string, params *ListNotesParams, reqEditors ...RequestEditorFn) (*ListNotesResponse, error)
 
 	// CreateNoteWithBodyWithResponse request with any body
-	CreateNoteWithBodyWithResponse(ctx context.Context, contactId int, params *CreateNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error)
+	CreateNoteWithBodyWithResponse(ctx context.Context, contactId string, params *CreateNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error)
 
-	CreateNoteWithResponse(ctx context.Context, contactId int, params *CreateNoteParams, body CreateNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error)
+	CreateNoteWithResponse(ctx context.Context, contactId string, params *CreateNoteParams, body CreateNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error)
 
 	// ListSegmentsForAContactWithResponse request
 	ListSegmentsForAContactWithResponse(ctx context.Context, contactId string, params *ListSegmentsForAContactParams, reqEditors ...RequestEditorFn) (*ListSegmentsForAContactResponse, error)
@@ -46205,7 +46205,7 @@ func (c *ClientWithResponses) ListNotesWithResponse(ctx context.Context, contact
 }
 
 // CreateNoteWithBodyWithResponse request with arbitrary body returning *CreateNoteResponse
-func (c *ClientWithResponses) CreateNoteWithBodyWithResponse(ctx context.Context, contactId int, params *CreateNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error) {
+func (c *ClientWithResponses) CreateNoteWithBodyWithResponse(ctx context.Context, contactId string, params *CreateNoteParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error) {
 	rsp, err := c.CreateNoteWithBody(ctx, contactId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -46213,7 +46213,7 @@ func (c *ClientWithResponses) CreateNoteWithBodyWithResponse(ctx context.Context
 	return ParseCreateNoteResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateNoteWithResponse(ctx context.Context, contactId int, params *CreateNoteParams, body CreateNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error) {
+func (c *ClientWithResponses) CreateNoteWithResponse(ctx context.Context, contactId string, params *CreateNoteParams, body CreateNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateNoteResponse, error) {
 	rsp, err := c.CreateNote(ctx, contactId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
