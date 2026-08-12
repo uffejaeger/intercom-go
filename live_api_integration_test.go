@@ -4,6 +4,7 @@ package intercom
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -338,6 +339,7 @@ func TestLiveAPIFixtureCompatibility(t *testing.T) {
 		t.Fatal("created company has no ID")
 	}
 	companyID := *company.Id
+	liveWaitForCompany(t, client, companyID)
 
 	t.Cleanup(func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -380,16 +382,24 @@ func TestLiveAPIFixtureCompatibility(t *testing.T) {
 
 	t.Run("issue 101 company contact association", func(t *testing.T) {
 		ctx, cancel := liveAPIContext(t)
-		_, err := client.Companies.AttachContact(ctx, contactID, companyID)
+		attached, err := client.Companies.AttachContact(ctx, contactID, companyID)
 		cancel()
 		liveRequireNoError(t, err)
+		if attached == nil || attached.Id == nil {
+			t.Fatal("attach response has no company ID")
+		}
+		t.Logf("attach response company ID=%s; created company ID=%s", *attached.Id, companyID)
 
-		deadline := time.Now().Add(10 * time.Second)
+		deadline := time.Now().Add(5 * time.Minute)
+		var lastCompanies *ContactCompanies
+		var lastContacts *CompanyContacts
 		for {
 			ctx, cancel := liveAPIContext(t)
 			companies, companiesErr := client.Companies.ListForContact(ctx, contactID)
 			contacts, contactsErr := client.Companies.ListContacts(ctx, companyID)
 			cancel()
+			lastCompanies = companies
+			lastContacts = contacts
 			if companiesErr == nil && contactsErr == nil && liveHasCompany(companies, companyID) && liveHasContact(contacts, contactID) {
 				return
 			}
@@ -397,11 +407,61 @@ func TestLiveAPIFixtureCompatibility(t *testing.T) {
 				if companiesErr != nil || contactsErr != nil {
 					t.Fatalf("association lists failed: companies=%v contacts=%v", companiesErr, contactsErr)
 				}
-				t.Fatalf("attached resources absent from association lists")
+				t.Fatalf("attached resources absent from association lists: company IDs=%v contact IDs=%v raw contact-company response=%s", liveCompanyIDs(lastCompanies), liveContactIDs(lastContacts), liveRawCompaniesForContact(t, client, contactID))
 			}
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(5 * time.Second)
 		}
 	})
+}
+
+func TestLiveAPIContentExportJobCompatibility(t *testing.T) {
+	client := newLiveAPIClient(t)
+	now := time.Now()
+
+	ctx, cancel := liveAPIContext(t)
+	export, err := client.Workspace.CreateDataExport(ctx, DataExportCreate{
+		CreatedAtAfter:  int(now.Add(-2 * time.Hour).Unix()),
+		CreatedAtBefore: int(now.Add(-time.Hour).Unix()),
+	})
+	cancel()
+	liveRequireNoError(t, err)
+	if export.JobIdentifier == nil || *export.JobIdentifier == "" {
+		t.Fatal("created data export has no job identifier")
+	}
+	jobID := *export.JobIdentifier
+	t.Cleanup(func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
+		_, _ = client.Workspace.CancelDataExport(ctx, jobID)
+	})
+
+	t.Run("issue 98 real export identifier has typed job status", func(t *testing.T) {
+		ctx, cancel := liveAPIContext(t)
+		defer cancel()
+		_, err := client.Workspace.JobStatus(ctx, jobID)
+		if err == nil {
+			return
+		}
+		var apiErr *ErrorResponse
+		if !errors.As(err, &apiErr) {
+			t.Fatalf("JobStatus error = %T %v, want job or typed API response", err, err)
+		}
+	})
+
+	ctx, cancel = liveAPIContext(t)
+	got, err := client.Workspace.GetDataExport(ctx, jobID)
+	cancel()
+	liveRequireNoError(t, err)
+	if got.JobIdentifier == nil || *got.JobIdentifier != jobID {
+		t.Fatalf("GetDataExport job identifier = %v, want %q", got.JobIdentifier, jobID)
+	}
+
+	ctx, cancel = liveAPIContext(t)
+	_, cancelErr := client.Workspace.CancelDataExport(ctx, jobID)
+	cancel()
+	if cancelErr != nil {
+		t.Logf("content export could not be cancelled after verification: %v", cancelErr)
+	}
 }
 
 func newLiveAPIClient(t *testing.T) *Client {
@@ -459,4 +519,60 @@ func liveHasContact(contacts *CompanyContacts, contactID string) bool {
 		}
 	}
 	return false
+}
+
+func liveCompanyIDs(companies *ContactCompanies) []string {
+	if companies == nil || companies.Companies == nil {
+		return nil
+	}
+	ids := make([]string, 0, len(*companies.Companies))
+	for _, company := range *companies.Companies {
+		if company.Id != nil {
+			ids = append(ids, *company.Id)
+		}
+	}
+	return ids
+}
+
+func liveContactIDs(contacts *CompanyContacts) []string {
+	if contacts == nil || contacts.Data == nil {
+		return nil
+	}
+	ids := make([]string, 0, len(*contacts.Data))
+	for _, contact := range *contacts.Data {
+		if contact.Id != nil {
+			ids = append(ids, *contact.Id)
+		}
+	}
+	return ids
+}
+
+func liveWaitForCompany(t *testing.T, client *Client, companyID string) {
+	t.Helper()
+	started := time.Now()
+	deadline := started.Add(60 * time.Second)
+	for {
+		ctx, cancel := liveAPIContext(t)
+		_, err := client.Companies.Retrieve(ctx, companyID)
+		cancel()
+		if err == nil {
+			t.Logf("company became readable after %s", time.Since(started).Round(time.Millisecond))
+			return
+		}
+		if !IsNotFound(err) || time.Now().After(deadline) {
+			t.Fatalf("created company did not become readable: %T %v", err, err)
+		}
+		time.Sleep(time.Second)
+	}
+}
+
+func liveRawCompaniesForContact(t *testing.T, client *Client, contactID string) string {
+	t.Helper()
+	ctx, cancel := liveAPIContext(t)
+	defer cancel()
+	response, err := client.generated.ListCompaniesForAContactWithResponse(ctx, contactID, nil)
+	if err != nil {
+		t.Fatalf("raw list companies for contact: %v", err)
+	}
+	return string(response.Body)
 }

@@ -188,6 +188,19 @@ func TestLiveAPIContactNoteUsesStringContactID(t *testing.T) {
 	}
 }
 
+func TestLiveAPIContactCompanyListAcceptsDataEnvelope(t *testing.T) {
+	const companyID = "company-1"
+	client := liveRegressionClient(t, http.StatusOK, `{"type":"list","data":[{"type":"company","id":"company-1","name":"Example"}],"pages":{"type":"pages","page":1,"per_page":50,"total_pages":1},"total_count":1}`, nil)
+
+	companies, err := client.Companies.ListForContact(context.Background(), "contact-1")
+	if err != nil {
+		t.Fatalf("ListForContact returned error: %v", err)
+	}
+	if companies.Companies == nil || len(*companies.Companies) != 1 || (*companies.Companies)[0].Id == nil || *(*companies.Companies)[0].Id != companyID {
+		t.Fatalf("Companies = %#v", companies.Companies)
+	}
+}
+
 func TestLiveAPIMergeHistoryFallsBackToContactField(t *testing.T) {
 	const contactID = "6762f0ad1bb69f9f2193bb62"
 	requestCount := 0

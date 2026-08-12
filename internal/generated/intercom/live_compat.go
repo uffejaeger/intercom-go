@@ -73,6 +73,21 @@ func (value *CallSchema) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (value *ContactAttachedCompaniesSchema) UnmarshalJSON(data []byte) error {
+	type alias ContactAttachedCompaniesSchema
+	decoded := struct {
+		*alias
+		Data *[]CompanySchema `json:"data"`
+	}{alias: (*alias)(value)}
+	if err := json.Unmarshal(data, &decoded); err != nil {
+		return err
+	}
+	if decoded.Data != nil {
+		value.Companies = decoded.Data
+	}
+	return nil
+}
+
 func (value *ConversationStatisticsSchema) UnmarshalJSON(data []byte) error {
 	type alias ConversationStatisticsSchema
 	normalized, err := normalizeIntegralNumberFields(data)
