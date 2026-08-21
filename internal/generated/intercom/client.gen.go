@@ -4288,16 +4288,18 @@ func (e SideConversationListType) Valid() bool {
 
 // Defines values for SingleFilterSearchRequestOperator.
 const (
-	SingleFilterSearchRequestOperatorCaret       SingleFilterSearchRequestOperator = "^"
-	SingleFilterSearchRequestOperatorDollarSign  SingleFilterSearchRequestOperator = "$"
-	SingleFilterSearchRequestOperatorEmpty       SingleFilterSearchRequestOperator = "!="
-	SingleFilterSearchRequestOperatorEqual       SingleFilterSearchRequestOperator = "="
-	SingleFilterSearchRequestOperatorGreaterThan SingleFilterSearchRequestOperator = ">"
-	SingleFilterSearchRequestOperatorIN          SingleFilterSearchRequestOperator = "IN"
-	SingleFilterSearchRequestOperatorLessThan    SingleFilterSearchRequestOperator = "<"
-	SingleFilterSearchRequestOperatorN1          SingleFilterSearchRequestOperator = "!~"
-	SingleFilterSearchRequestOperatorNIN         SingleFilterSearchRequestOperator = "NIN"
-	SingleFilterSearchRequestOperatorTilde       SingleFilterSearchRequestOperator = "~"
+	SingleFilterSearchRequestOperatorCaret            SingleFilterSearchRequestOperator = "^"
+	SingleFilterSearchRequestOperatorDollarSign       SingleFilterSearchRequestOperator = "$"
+	SingleFilterSearchRequestOperatorEmpty            SingleFilterSearchRequestOperator = "!="
+	SingleFilterSearchRequestOperatorEqual            SingleFilterSearchRequestOperator = "="
+	SingleFilterSearchRequestOperatorGreaterThan      SingleFilterSearchRequestOperator = ">"
+	SingleFilterSearchRequestOperatorGreaterThanEqual SingleFilterSearchRequestOperator = ">="
+	SingleFilterSearchRequestOperatorIN               SingleFilterSearchRequestOperator = "IN"
+	SingleFilterSearchRequestOperatorLessThan         SingleFilterSearchRequestOperator = "<"
+	SingleFilterSearchRequestOperatorLessThanEqual    SingleFilterSearchRequestOperator = "<="
+	SingleFilterSearchRequestOperatorN1               SingleFilterSearchRequestOperator = "!~"
+	SingleFilterSearchRequestOperatorNIN              SingleFilterSearchRequestOperator = "NIN"
+	SingleFilterSearchRequestOperatorTilde            SingleFilterSearchRequestOperator = "~"
 )
 
 // Valid indicates whether the value is a known member of the SingleFilterSearchRequestOperator enum.
@@ -4313,9 +4315,13 @@ func (e SingleFilterSearchRequestOperator) Valid() bool {
 		return true
 	case SingleFilterSearchRequestOperatorGreaterThan:
 		return true
+	case SingleFilterSearchRequestOperatorGreaterThanEqual:
+		return true
 	case SingleFilterSearchRequestOperatorIN:
 		return true
 	case SingleFilterSearchRequestOperatorLessThan:
+		return true
+	case SingleFilterSearchRequestOperatorLessThanEqual:
 		return true
 	case SingleFilterSearchRequestOperatorN1:
 		return true
@@ -12389,14 +12395,24 @@ type SingleFilterSearchRequestSchema struct {
 	// Field The accepted field that you want to search on.
 	Field *string `json:"field,omitempty"`
 
-	// Operator The accepted operators you can use to define how you want to search for the value.
+	// Operator The accepted operators you can use to define how you want to search for the value. Operator support depends on the field's data type. The breakdown below is for Contacts search; the other search endpoints that share this schema accept a different set per field:
+	// - `string` fields: `=`, `!=`, `IN`, `NIN`, `~`, `!~`, `^`, `$`
+	// - `tag_id`: `=` and `!=` only. Every other operator returns an error.
+	// - `boolean` fields: `=`, `!=`, `IN`, `NIN`
+	// - `integer` fields: `=`, `!=`, `IN`, `NIN`, `<`, `>`, `<=`, `>=`
+	// - `date` fields (all standard timestamp attributes and date custom attributes): `=`, `<`, `>` only. `!=`, `<=`, `>=`, `IN`, and `NIN` are not supported and return an error.
 	Operator *SingleFilterSearchRequestOperator `json:"operator,omitempty"`
 
 	// Value The value that you want to search on.
 	Value *SingleFilterSearchRequest_Value `json:"value,omitempty"`
 }
 
-// SingleFilterSearchRequestOperator The accepted operators you can use to define how you want to search for the value.
+// SingleFilterSearchRequestOperator The accepted operators you can use to define how you want to search for the value. Operator support depends on the field's data type. The breakdown below is for Contacts search; the other search endpoints that share this schema accept a different set per field:
+// - `string` fields: `=`, `!=`, `IN`, `NIN`, `~`, `!~`, `^`, `$`
+// - `tag_id`: `=` and `!=` only. Every other operator returns an error.
+// - `boolean` fields: `=`, `!=`, `IN`, `NIN`
+// - `integer` fields: `=`, `!=`, `IN`, `NIN`, `<`, `>`, `<=`, `>=`
+// - `date` fields (all standard timestamp attributes and date custom attributes): `=`, `<`, `>` only. `!=`, `<=`, `>=`, `IN`, and `NIN` are not supported and return an error.
 type SingleFilterSearchRequestOperator string
 
 // SingleFilterSearchRequestValue0 defines model for .
