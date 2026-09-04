@@ -4288,16 +4288,18 @@ func (e SideConversationListType) Valid() bool {
 
 // Defines values for SingleFilterSearchRequestOperator.
 const (
-	SingleFilterSearchRequestOperatorCaret       SingleFilterSearchRequestOperator = "^"
-	SingleFilterSearchRequestOperatorDollarSign  SingleFilterSearchRequestOperator = "$"
-	SingleFilterSearchRequestOperatorEmpty       SingleFilterSearchRequestOperator = "!="
-	SingleFilterSearchRequestOperatorEqual       SingleFilterSearchRequestOperator = "="
-	SingleFilterSearchRequestOperatorGreaterThan SingleFilterSearchRequestOperator = ">"
-	SingleFilterSearchRequestOperatorIN          SingleFilterSearchRequestOperator = "IN"
-	SingleFilterSearchRequestOperatorLessThan    SingleFilterSearchRequestOperator = "<"
-	SingleFilterSearchRequestOperatorN1          SingleFilterSearchRequestOperator = "!~"
-	SingleFilterSearchRequestOperatorNIN         SingleFilterSearchRequestOperator = "NIN"
-	SingleFilterSearchRequestOperatorTilde       SingleFilterSearchRequestOperator = "~"
+	SingleFilterSearchRequestOperatorCaret            SingleFilterSearchRequestOperator = "^"
+	SingleFilterSearchRequestOperatorDollarSign       SingleFilterSearchRequestOperator = "$"
+	SingleFilterSearchRequestOperatorEmpty            SingleFilterSearchRequestOperator = "!="
+	SingleFilterSearchRequestOperatorEqual            SingleFilterSearchRequestOperator = "="
+	SingleFilterSearchRequestOperatorGreaterThan      SingleFilterSearchRequestOperator = ">"
+	SingleFilterSearchRequestOperatorGreaterThanEqual SingleFilterSearchRequestOperator = ">="
+	SingleFilterSearchRequestOperatorIN               SingleFilterSearchRequestOperator = "IN"
+	SingleFilterSearchRequestOperatorLessThan         SingleFilterSearchRequestOperator = "<"
+	SingleFilterSearchRequestOperatorLessThanEqual    SingleFilterSearchRequestOperator = "<="
+	SingleFilterSearchRequestOperatorN1               SingleFilterSearchRequestOperator = "!~"
+	SingleFilterSearchRequestOperatorNIN              SingleFilterSearchRequestOperator = "NIN"
+	SingleFilterSearchRequestOperatorTilde            SingleFilterSearchRequestOperator = "~"
 )
 
 // Valid indicates whether the value is a known member of the SingleFilterSearchRequestOperator enum.
@@ -4313,9 +4315,13 @@ func (e SingleFilterSearchRequestOperator) Valid() bool {
 		return true
 	case SingleFilterSearchRequestOperatorGreaterThan:
 		return true
+	case SingleFilterSearchRequestOperatorGreaterThanEqual:
+		return true
 	case SingleFilterSearchRequestOperatorIN:
 		return true
 	case SingleFilterSearchRequestOperatorLessThan:
+		return true
+	case SingleFilterSearchRequestOperatorLessThanEqual:
 		return true
 	case SingleFilterSearchRequestOperatorN1:
 		return true
@@ -8536,7 +8542,7 @@ type ConversationPartSchema struct {
 	// AppPackageCode The app package code if this part was created via API. null if the part was not created via API.
 	AppPackageCode *string `json:"app_package_code,omitempty"`
 
-	// AssignedTo The id of the admin that was assigned the conversation by this conversation_part (null if there has been no change in assignment.)
+	// AssignedTo The assignee this conversation_part assigned the conversation to, as a reference whose `type` is `admin`, `team` or `bot`. When the part unassigned the conversation, `type` is `nobody_admin` and `id` is `null`. Null when the part did not change the assignment, or when the assignee has since been deleted.
 	AssignedTo *ReferenceSchema `json:"assigned_to,omitempty"`
 
 	// Attachments A list of attachments for the part.
@@ -12389,14 +12395,24 @@ type SingleFilterSearchRequestSchema struct {
 	// Field The accepted field that you want to search on.
 	Field *string `json:"field,omitempty"`
 
-	// Operator The accepted operators you can use to define how you want to search for the value.
+	// Operator The accepted operators you can use to define how you want to search for the value. Operator support depends on the field's data type. The breakdown below is for Contacts search; the other search endpoints that share this schema accept a different set per field:
+	// - `string` fields: `=`, `!=`, `IN`, `NIN`, `~`, `!~`, `^`, `$`
+	// - `tag_id`: `=` and `!=` only. Every other operator returns an error.
+	// - `boolean` fields: `=`, `!=`, `IN`, `NIN`
+	// - `integer` fields: `=`, `!=`, `IN`, `NIN`, `<`, `>`, `<=`, `>=`
+	// - `date` fields (all standard timestamp attributes and date custom attributes): `=`, `<`, `>` only. `!=`, `<=`, `>=`, `IN`, and `NIN` are not supported and return an error.
 	Operator *SingleFilterSearchRequestOperator `json:"operator,omitempty"`
 
 	// Value The value that you want to search on.
 	Value *SingleFilterSearchRequest_Value `json:"value,omitempty"`
 }
 
-// SingleFilterSearchRequestOperator The accepted operators you can use to define how you want to search for the value.
+// SingleFilterSearchRequestOperator The accepted operators you can use to define how you want to search for the value. Operator support depends on the field's data type. The breakdown below is for Contacts search; the other search endpoints that share this schema accept a different set per field:
+// - `string` fields: `=`, `!=`, `IN`, `NIN`, `~`, `!~`, `^`, `$`
+// - `tag_id`: `=` and `!=` only. Every other operator returns an error.
+// - `boolean` fields: `=`, `!=`, `IN`, `NIN`
+// - `integer` fields: `=`, `!=`, `IN`, `NIN`, `<`, `>`, `<=`, `>=`
+// - `date` fields (all standard timestamp attributes and date custom attributes): `=`, `<`, `>` only. `!=`, `<=`, `>=`, `IN`, and `NIN` are not supported and return an error.
 type SingleFilterSearchRequestOperator string
 
 // SingleFilterSearchRequestValue0 defines model for .
@@ -12853,7 +12869,7 @@ type TicketPartSchema struct {
 	// AppPackageCode The app package code if this part was created via API. Note this field won't show if the part was not created via API.
 	AppPackageCode *string `json:"app_package_code,omitempty"`
 
-	// AssignedTo The id of the admin that was assigned the ticket by this ticket_part (null if there has been no change in assignment.)
+	// AssignedTo The assignee this ticket_part assigned the ticket to, as a reference whose `type` is `admin`, `team` or `bot`. When the part unassigned the ticket, `type` is `nobody_admin` and `id` is `null`. Null when the part did not change the assignment, or when the assignee has since been deleted.
 	AssignedTo *ReferenceSchema `json:"assigned_to,omitempty"`
 
 	// Attachments A list of attachments for the part.
@@ -13281,7 +13297,7 @@ type UpdateArticleRequestSchema struct {
 	// ScheduledUnpublishAt ISO 8601 timestamp at which to schedule a future unpublish of the article. Setting `null` cancels a pending unpublish schedule. Timestamps in the past or equal to the current time are rejected with 400 `parameter_invalid` — the value must be strictly in the future. Rejected with 400 `parameter_invalid` if the article has never been published. Sending in the same request as `scheduled_publish_at` returns 400 — only one pending schedule per article. Empty string returns 400 `parameter_invalid`.
 	ScheduledUnpublishAt *time.Time `json:"scheduled_unpublish_at,omitempty"`
 
-	// State Whether the article will be `published` or will be a `draft`. Defaults to draft. For multilingual articles, this will be the state of the default language's content.
+	// State Whether the article will be `published` or will be a `draft`. Omitting this field leaves the publish state unchanged, so a draft stays a draft and an edit to a published article goes live immediately unless that article already has a pending draft or a scheduled publish time is set in the same request. The `PUT /articles/{id}/draft` endpoint ignores this field and always stages a draft. For multilingual articles, this will be the state of the default language's content.
 	State *UpdateArticleRequestState `json:"state,omitempty"`
 
 	// Title The title of the article.For multilingual articles, this will be the title of the default language's content.
@@ -13289,7 +13305,7 @@ type UpdateArticleRequestSchema struct {
 	TranslatedContent *ArticleTranslatedContentSchema `json:"translated_content,omitempty"`
 }
 
-// UpdateArticleRequestState Whether the article will be `published` or will be a `draft`. Defaults to draft. For multilingual articles, this will be the state of the default language's content.
+// UpdateArticleRequestState Whether the article will be `published` or will be a `draft`. Omitting this field leaves the publish state unchanged, so a draft stays a draft and an edit to a published article goes live immediately unless that article already has a pending draft or a scheduled publish time is set in the same request. The `PUT /articles/{id}/draft` endpoint ignores this field and always stages a draft. For multilingual articles, this will be the state of the default language's content.
 type UpdateArticleRequestState string
 
 // UpdateAudienceRequestSchema The request payload for updating an audience. All fields are optional — only provided fields will be updated.
